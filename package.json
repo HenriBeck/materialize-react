@@ -2,9 +2,23 @@
   "name": "tf2pickup-components",
   "version": "0.0.1",
   "description": "React Components for TF2Pickup Website and other stuff",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "options": {
+    "eslint": "--ext .jsx,.js src/ .storybook/ tests/",
+    "storybook": "-p 9001"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update": "npm i",
+    "start-storybook": "start-storybook $npm_package_options_storybook",
+    "build-storybook": "build-storybook -o ./.storybook-build",
+    "test": "cross-env NODE_ENV=\"test\" ava",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "nyc npm run test",
+    "generate-report:html": "nyc report --reporter=html",
+    "generate-report:lcov": "nyc report --reporter=text-lcov",
+    "report-coverage": "npm run generate-report:lcov | coveralls",
+    "lint": "eslint $npm_package_options_eslint",
+    "lint:fix": "npm run lint -- --fix"
   },
   "repository": {
     "type": "git",
@@ -15,5 +29,78 @@
   "bugs": {
     "url": "https://github.com/TF2PickupNET/components/issues"
   },
-  "homepage": "https://github.com/TF2PickupNET/components#readme"
+  "homepage": "https://github.com/TF2PickupNET/components#readme",
+  "dependencies": {
+    "babel-polyfill": "6.22.0",
+    "chance": "1.0.4",
+    "emojione": "2.2.7",
+    "is_js": "0.9.0",
+    "marked": "0.3.6",
+    "mdi": "1.8.36",
+    "react": "15.4.2",
+    "web-animations-js": "2.2.2"
+  },
+  "devDependencies": {
+    "@kadira/storybook": "2.35.3",
+    "@kadira/storybook-addon-comments": "1.9.1",
+    "@kadira/storybook-addon-knobs": "1.7.1",
+    "@kadira/storybook-addon-options": "1.0.1",
+    "@kadira/storybook-database-cloud": "2.3.2",
+    "ava": "0.18.1",
+    "babel-plugin-transform-export-extensions": "6.22.0",
+    "babel-plugin-webpack-alias": "2.1.2",
+    "babel-preset-latest": "6.22.0",
+    "babel-preset-react": "6.22.0",
+    "babel-preset-stage-2": "6.22.0",
+    "babel-register": "6.22.0",
+    "browser-env": "2.0.21",
+    "coveralls": "2.11.16",
+    "cross-env": "3.1.4",
+    "css-loader": "0.26.1",
+    "enzyme": "2.7.1",
+    "eslint": "3.15.0",
+    "eslint-config-tf2pickup": "4.9.1",
+    "normalize.css": "5.0.0",
+    "nyc": "10.1.2",
+    "pre-commit": "1.2.2",
+    "react-addons-test-utils": "15.4.2",
+    "react-dom": "15.4.2",
+    "sinon": "1.17.7",
+    "style-loader": "0.13.1"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js",
+      "src/*.spec.js"
+    ],
+    "require": [
+      "babel-register",
+      "babel-polyfill",
+      "./tests/helpers/browser-env.js",
+      "./tests/helpers/element-animate.js"
+    ],
+    "babel": {
+      "babelrc": true
+    }
+  },
+  "nyc": {
+    "extension": [
+      ".jsx"
+    ],
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/*.spec.js",
+      "tests/**/*"
+    ],
+    "lines": 75,
+    "statements": 75,
+    "functions": 75,
+    "branches": 75,
+    "report-dir": "./.coverage"
+  },
+  "pre-commit": [
+    "update",
+    "test",
+    "lint"
+  ]
 }

@@ -1,0 +1,216 @@
+import React, {
+  PureComponent,
+  PropTypes,
+} from 'react';
+
+import getNotDeclaredProps from 'utils/react/get-not-declared-props';
+import Stylesheet from 'styles/stylesheet';
+import { easeInOutCubic } from 'styles/timings';
+
+/**
+ * A spinner that follows the material guidelines.
+ */
+export default class Spinner extends PureComponent {
+  static propTypes = {
+    active: PropTypes.bool,
+    colors: PropTypes.shape({
+      layer1: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+      layer2: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+      layer3: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+      layer4: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    }),
+    style: PropTypes.object,
+  };
+
+  static defaultProps = {
+    active: false,
+    style: {},
+    colors: {
+      layer1: false,
+      layer2: false,
+      layer3: false,
+      layer4: false,
+    },
+  };
+
+  static contextTypes = { theme: PropTypes.object };
+
+  componentDidMount() {
+    this.setupAnimations();
+
+    if (this.props.active) {
+      this.fadeIn();
+    } else {
+      this.fadeOut();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.active !== this.props.active) {
+      if (this.props.active) {
+        this.fadeIn();
+      } else {
+        this.fadeOut();
+      }
+    }
+  }
+
+  get theme() {
+    return this.context.theme.spinner;
+  }
+
+  setupAnimations() {
+    const {
+      radius,
+      arctime,
+      arcsize,
+      arcStartRotate,
+    } = this.theme;
+
+    this.container.animate({
+      transform: [
+        'rotate(0deg)',
+        'rotate(360deg)',
+      ],
+    }, {
+      duration: 360 * arctime / (arcStartRotate + 360 - arcsize),
+      iterations: Infinity,
+    });
+
+    this.spinner.animate({
+      strokeDashoffset: [
+        2 * radius * Math.PI * arcsize / 360 - 0.1,
+        0,
+        -(2 * radius * Math.PI * arcsize / 360 - 0.5),
+      ],
+    }, {
+      iterations: Infinity,
+      easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+      fill: 'forwards',
+      duration: arctime,
+    });
+
+    this.spinner.animate([{
+      offset: 0,
+      stroke: this.props.colors.layer1 || this.theme.layer1,
+    }, {
+      offset: 0.2,
+      stroke: this.props.colors.layer1 || this.theme.layer1,
+    }, {
+      offset: 0.25,
+      stroke: this.props.colors.layer2 || this.theme.layer2,
+    }, {
+      offset: 0.45,
+      stroke: this.props.colors.layer2 || this.theme.layer2,
+    }, {
+      offset: 0.5,
+      stroke: this.props.colors.layer3 || this.theme.layer3,
+    }, {
+      offset: 0.7,
+      stroke: this.props.colors.layer3 || this.theme.layer3,
+    }, {
+      offset: 0.75,
+      stroke: this.props.colors.layer4 || this.theme.layer4,
+    }, {
+      offset: 0.95,
+      stroke: this.props.colors.layer4 || this.theme.layer4,
+    }, {
+      offset: 1,
+      stroke: this.props.colors.layer1 || this.theme.layer1,
+    }], {
+      iterations: Infinity,
+      fill: 'forwards',
+      duration: arctime * 4,
+    });
+
+    this.spinner.animate({
+      transform: [
+        'rotate(0deg)',
+        'rotate(-360deg)',
+      ],
+    }, {
+      iterations: Infinity,
+      fill: 'forwards',
+      duration: arctime * 4,
+      easing: 'steps(4)',
+    });
+  }
+
+  get styles() {
+    const arrayAndOffset = 2 * this.theme.radius * Math.PI * this.theme.arcsize / 360;
+
+    return Stylesheet.compile({
+      root: {
+        size: '48px',
+        display: 'inline-block',
+        position: 'relative',
+        margin: 8,
+        opacity: 0,
+        ...this.props.style,
+      },
+
+      container: {
+        strokeWidth: this.theme.strokeWidth,
+        transformOrigin: '50% 50%',
+        size: 64,
+      },
+
+      spinner: {
+        strokeDasharray: arrayAndOffset,
+        strokeDashoffset: arrayAndOffset,
+        transformOrigin: '50% 50%',
+      },
+    });
+  }
+
+  fadeIn() {
+    this.root.animate({ opacity: [0, 1] }, {
+      duration: this.theme.arctime / 2,
+      easing: easeInOutCubic,
+      fill: 'forwards',
+    });
+  }
+
+  fadeOut() {
+    this.root.animate({ opacity: [1, 0] }, {
+      duration: this.theme.arctime / 2,
+      easing: easeInOutCubic,
+      fill: 'forwards',
+    });
+  }
+
+  render() {
+    const styles = this.styles;
+    const {
+      radius,
+      strokeWidth,
+    } = this.theme;
+
+    return (
+      <div
+        {...getNotDeclaredProps(this)}
+        style={styles.root}
+        ref={(element) => { this.root = element; }}
+      >
+        <svg
+          width="48px"
+          height="48px"
+          viewBox={`0 0 ${radius * 2 + strokeWidth} ${radius * 2 + strokeWidth}`}
+        >
+          <g
+            style={styles.container}
+            ref={(element) => { this.container = element; }}
+          >
+            <path
+              fill="none"
+              d="M 14,1.5 A 12.5,12.5 0 1 1 1.5,14"
+              strokeLinecap="round"
+              style={styles.spinner}
+              ref={(element) => { this.spinner = element; }}
+            />
+          </g>
+        </svg>
+      </div>
+    );
+  }
+}
