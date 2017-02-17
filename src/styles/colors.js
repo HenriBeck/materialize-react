@@ -294,23 +294,23 @@ export const grey900 = '#212121';
 
 // Black
 export const black500 = '#000000';
-export const blackText = 'rgba(0, 0, 0, .87)';
-export const blackSecondaryText = 'rgba(0, 0, 0, .54)';
-export const blackIcons = 'rgba(0, 0, 0, .54)';
-export const blackDisabled = 'rgba(0, 0, 0, .26)';
-export const blackHint = 'rgba(0, 0, 0, .26)';
-export const blackDivider = 'rgba(0, 0, 0, .12)';
+export const blackText = 'rgba(0, 0, 0, 0.87)';
+export const blackSecondaryText = 'rgba(0, 0, 0, 0.54)';
+export const blackIcons = 'rgba(0, 0, 0, 0.54)';
+export const blackDisabled = 'rgba(0, 0, 0, 0.26)';
+export const blackHint = 'rgba(0, 0, 0, 0.26)';
+export const blackDivider = 'rgba(0, 0, 0, 0.12)';
 
 // White
 export const white500 = '#ffffff';
 export const whiteText = '#ffffff';
-export const whiteSecondaryText = 'rgba(255, 255, 255, .7)';
+export const whiteSecondaryText = 'rgba(255, 255, 255, 0.7)';
 export const whiteIcons = '#ffffff';
-export const whiteDisabled = 'rgba(255, 255, 255, .3)';
-export const whiteHint = 'rgba(255, 255, 255, .3)';
-export const whiteDivider = 'rgba(255, 255, 255, .12)';
+export const whiteDisabled = 'rgba(255, 255, 255, 0.3)';
+export const whiteHint = 'rgba(255, 255, 255, 0.3)';
+export const whiteDivider = 'rgba(255, 255, 255, 0.12)';
 
 // Shadow colors
-export const shadow1 = 'rgba(0, 0, 0, .14)';
-export const shadow2 = 'rgba(0, 0, 0, .12)';
-export const shadow3 = 'rgba(0, 0, 0, .2)';
+export const shadow1 = 'rgba(0, 0, 0, 0.14)';
+export const shadow2 = 'rgba(0, 0, 0, 0.12)';
+export const shadow3 = 'rgba(0, 0, 0, 0.2)';

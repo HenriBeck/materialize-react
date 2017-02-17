@@ -9,6 +9,7 @@ import { schema as progress } from 'components/progress/theme';
 import { schema as spinner } from 'components/spinner/theme';
 import { schema as icon } from 'components/icon/theme';
 import { schema as switchSchema } from 'components/switch/theme';
+import { schema as radioButton } from 'components/radio-button/theme';
 
 export default PropTypes.shape({
   variables: PropTypes.shape({
@@ -44,4 +45,5 @@ export default PropTypes.shape({
   spinner,
   icon,
   switch: switchSchema,
+  radioButton,
 });

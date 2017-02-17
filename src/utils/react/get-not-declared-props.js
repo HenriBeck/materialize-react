@@ -14,6 +14,7 @@ export default function getNotDeclaredProps(instance) {
     return {};
   }
 
+  // eslint-disable-next-line react/forbid-foreign-prop-types
   const { propTypes } = instance._reactInternalInstance._currentElement.type;
   const props = instance.props;
 
