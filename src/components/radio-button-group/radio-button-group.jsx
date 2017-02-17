@@ -8,6 +8,7 @@ import Chance from 'chance';
 import getNotDeclaredProps from 'utils/react/get-not-declared-props';
 import Stylesheet from 'styles/stylesheet';
 import Label from '../label';
+import warning from 'utils/warning';
 
 export default class RadioButtonGroup extends PureComponent {
   static propTypes = {
@@ -38,9 +39,7 @@ export default class RadioButtonGroup extends PureComponent {
       }
     });
 
-    if (radioButtonCount <= 1) {
-      throw new Error('RadioButtonGroup must have atleast two RadioButton\'s inside');
-    }
+    warning(radioButtonCount <= 1, 'RadioButtonGroup must have atleast two RadioButton\'s inside');
   }
 
   buttons = {};
