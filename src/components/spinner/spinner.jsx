@@ -20,12 +20,6 @@ export default class Spinner extends PureComponent {
   static defaultProps = {
     active: false,
     style: {},
-    colors: {
-      layer1: false,
-      layer2: false,
-      layer3: false,
-      layer4: false,
-    },
     className: '',
   };
 
