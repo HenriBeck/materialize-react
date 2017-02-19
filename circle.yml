@@ -6,6 +6,7 @@ dependencies:
     - yarn install
 test:
   override:
+    - npm run lint
     - npm run test:coverage
   post:
     - npm run report-coverage
