@@ -11,7 +11,7 @@ export default function Icon({
 }, { theme }) {
   return (
     <i
-      className={`mdi mdi-24px mdi-${icon} ${className}`}
+      className={`icon mdi mdi-24px mdi-${icon} ${className}`}
       style={{
         color: disabled ? theme.icon.disabledColor : theme.icon.color,
         lineHeight: 1,

@@ -18,6 +18,7 @@ export default class Progress extends PureComponent {
       'indeterminate',
     ]),
     progress: PropTypes.number,
+    className: PropTypes.string,
     style: PropTypes.object,
     disabled: PropTypes.bool,
     active: PropTypes.bool,
@@ -26,6 +27,7 @@ export default class Progress extends PureComponent {
   static defaultProps = {
     mode: 'normal',
     progress: 0,
+    className: '',
     style: {},
     disabled: false,
     active: false,
@@ -231,19 +233,22 @@ export default class Progress extends PureComponent {
     return (
       <span
         {...getNotDeclaredProps(this)}
-        style={styles.root}
         role="progressbar"
         data-mode={this.props.mode}
+        className={`progress ${this.props.className}`}
+        style={styles.root}
         {...props}
       >
         <span
           style={styles.bar}
+          className="progress--bar"
           ref={(element) => { this.bar = element; }}
         />
 
         {this.isIndeterminate && (
           <span
             style={styles.indeterminate}
+            className="progress--indeterminate"
             ref={(element) => { this.indeterminate = element; }}
           />
         )}

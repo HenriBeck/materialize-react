@@ -16,25 +16,25 @@ test('should have a root node with the role of progressbar', (t) => {
 
 test('should have aria-valuemin and aria-valuemax on the root node', (t) => {
   const wrapper = shallow(<Progress mode="normal" />);
-  const props = wrapper.find({ role: 'progressbar' }).props();
+  const root = wrapper.find({ role: 'progressbar' });
 
   // Check if the valuemin and valuemax props are set
-  t.deepEqual(props['aria-valuemin'], 0);
-  t.deepEqual(props['aria-valuemax'], 100);
+  t.deepEqual(root.prop('aria-valuemin'), 0);
+  t.deepEqual(root.prop('aria-valuemax'), 100);
 });
 
 test('should have aria-disabled on the root node when the progress bar is disabled', (t) => {
   const wrapper = shallow(<Progress disabled />);
-  const prop = wrapper.find({ role: 'progressbar' }).prop('aria-disabled');
+  const root = wrapper.find({ role: 'progressbar' });
 
-  t.deepEqual(prop, true);
+  t.deepEqual(root.prop('aria-disabled'), true);
 });
 
 test('should set the aria-valuenow to the value of the progress prop', (t) => {
   const wrapper = mount(<Progress progress={40} />);
-  const prop = wrapper.find({ role: 'progressbar' }).prop('aria-valuenow');
+  const root = wrapper.find({ role: 'progressbar' });
 
-  t.deepEqual(prop, 40);
+  t.deepEqual(root.prop('aria-valuenow'), 40);
 });
 
 test('should change the aria-valuenow when the progress prop changes', (t) => {
@@ -42,9 +42,9 @@ test('should change the aria-valuenow when the progress prop changes', (t) => {
 
   wrapper.setProps({ progress: 80 });
 
-  const value = wrapper.find({ role: 'progressbar' }).prop('aria-valuenow');
+  const root = wrapper.find({ role: 'progressbar' });
 
-  t.deepEqual(value, 80);
+  t.deepEqual(root.prop('aria-valuenow'), 80);
 });
 
 test('should have two children when the mode is set to indeterminate', (t) => {

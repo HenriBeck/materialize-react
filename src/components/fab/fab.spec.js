@@ -20,17 +20,6 @@ test('should have a ripple inside', (t) => {
   t.deepEqual(wrapper.find('Ripple').length, 1);
 });
 
-test('should not have a ripple inside when noink attribute is passed', (t) => {
-  const wrapper = shallow(
-    <Fab
-      noink
-      icon="build"
-    />,
-  );
-
-  t.deepEqual(wrapper.find('Ripple').length, 0);
-});
-
 test('should animate the fab in', (t) => {
   mount(
     <Fab

@@ -15,6 +15,7 @@ export default class Button extends PureComponent {
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
     noink: PropTypes.bool,
+    className: PropTypes.string,
     onPress: PropTypes.func,
     onRelease: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -32,6 +33,7 @@ export default class Button extends PureComponent {
     disabled: false,
     raised: false,
     noink: false,
+    className: '',
     style: {},
     onPress: () => {},
     onRelease: () => {},
@@ -217,6 +219,7 @@ export default class Button extends PureComponent {
     return (
       <button
         {...getNotDeclaredProps(this)}
+        className={`button ${this.props.className}`}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         style={this.styles}
@@ -231,6 +234,7 @@ export default class Button extends PureComponent {
         ref={(element) => { this.root = element; }}
       >
         <Ripple
+          className="button--ripple"
           ref={(element) => { this.ripple = element; }}
           nowaves={this.props.noink}
           {...this.rippleProps}

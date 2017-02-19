@@ -56,8 +56,9 @@ export default class Wave extends PureComponent {
   render() {
     return (
       <span
-        ref={(element) => { this.wave = element; }}
+        className="ripple--wave"
         style={this.style}
+        ref={(element) => { this.wave = element; }}
       />
     );
   }

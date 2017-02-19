@@ -12,11 +12,13 @@ export default class Parallax extends PureComponent {
     image: PropTypes.string.isRequired,
     children: PropTypes.node,
     style: PropTypes.object,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
     children: '',
     style: {},
+    className: '',
   };
 
   componentDidMount() {
@@ -81,28 +83,29 @@ export default class Parallax extends PureComponent {
   };
 
   render() {
-    const {
-      image,
-      children,
-    } = this.props;
     const styles = this.styles;
 
     return (
       <div
         {...getNotDeclaredProps(this)}
-        ref={(element) => { this.root = element; }}
+        className={`parallax ${this.props.className}`}
         style={styles.root}
+        ref={(element) => { this.root = element; }}
       >
         <img
           width="100%"
-          src={image}
+          src={this.props.image}
+          className="parallax--image"
           alt="parallax"
           ref={(element) => { this.image = element; }}
           style={styles.image}
         />
 
-        <div style={styles.content}>
-          {children}
+        <div
+          className="parallax--content"
+          style={styles.content}
+        >
+          {this.props.children}
         </div>
       </div>
     );

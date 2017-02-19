@@ -13,7 +13,7 @@
     "build-storybook": "build-storybook -o ./.storybook-build",
     "test": "cross-env NODE_ENV=\"test\" ava",
     "test:watch": "npm run test -- --watch",
-    "test:coverage": "nyc npm run test",
+    "test:coverage": "nyc npm run test -- --serial",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
     "report-coverage": "npm run generate-report:lcov | coveralls",

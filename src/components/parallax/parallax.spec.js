@@ -1,16 +1,15 @@
 import React from 'react';
 import test from 'ava';
+import sinon from 'sinon';
 
 import { mount } from 'tests/enzyme';
 import Parallax from './parallax.jsx';
 
 test('should render a div with an img and a div inside', (t) => {
   const wrapper = mount(<Parallax image="image" />);
-  const children = wrapper.children();
 
-  t.deepEqual(wrapper.find('div').length, 2);
-  t.deepEqual(children.find('img').length, 1);
-  t.deepEqual(children.find('div').length, 1);
+  t.deepEqual(wrapper.find('img').length, 1);
+  t.deepEqual(wrapper.find('.parallax--content').length, 1);
 });
 
 test('should not calculate the position if onScroll get\'s called twice', (t) => {
@@ -29,15 +28,16 @@ test('should not update the scroll pos when the image isn\'t visible', (t) => {
 
   window.innerHeight = -100;
 
-  instance.onScroll();
+  t.deepEqual(instance.isVisible, false);
 
-  t.pass();
+  instance.onScroll();
 });
 
 test('should remove the event listener when the node get\'s unmounted', (t) => {
   const wrapper = mount(<Parallax image="image" />);
+  const removeEventListener = sinon.spy(window, 'removeEventListener');
 
   wrapper.unmount();
 
-  t.pass();
+  t.deepEqual(removeEventListener.callCount, 1);
 });

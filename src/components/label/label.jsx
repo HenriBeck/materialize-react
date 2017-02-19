@@ -6,6 +6,7 @@ import omit from 'utils/object/omit';
 export default function Label({
   children,
   style,
+  className,
   ...otherProps
 }, { theme }) {
   const compiledStyle = Stylesheet.compile({
@@ -18,6 +19,7 @@ export default function Label({
   return (
     <label
       htmlFor={otherProps.for}
+      className={`label ${className}`}
       style={compiledStyle}
       {...omit(otherProps, 'for')}
     >
@@ -30,8 +32,12 @@ Label.propTypes = {
   children: PropTypes.node.isRequired,
   for: PropTypes.string.isRequired,
   style: PropTypes.object,
+  className: PropTypes.string,
 };
 
-Label.defaultProps = { style: {} };
+Label.defaultProps = {
+  style: {},
+  className: '',
+};
 
 Label.contextTypes = { theme: PropTypes.object };

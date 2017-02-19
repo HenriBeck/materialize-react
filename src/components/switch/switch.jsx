@@ -237,9 +237,13 @@ export default class Switch extends PureComponent {
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
       >
-        <span style={styles.container}>
+        <span
+          style={styles.container}
+          className="switch--container"
+        >
           <span
             style={styles.thumb}
+            className="switch--thumb"
             ref={(element) => { this.thumb = element; }}
             onMouseDown={this.handleClick}
             onTouchStart={this.handleClick}
@@ -248,6 +252,7 @@ export default class Switch extends PureComponent {
               round
               center
               style={styles.ripple}
+              className="switch--ripple"
               nowaves={this.props.noink}
               color={this.state.toggled
                 ? this.theme.activeRippleColor
@@ -258,6 +263,7 @@ export default class Switch extends PureComponent {
 
           <span
             style={styles.track}
+            className="switch--track"
             ref={(element) => { this.track = element; }}
           />
         </span>
@@ -265,6 +271,7 @@ export default class Switch extends PureComponent {
         <Label
           style={styles.label}
           for={this.id}
+          className="switch--label"
         >
           {this.props.children}
         </Label>

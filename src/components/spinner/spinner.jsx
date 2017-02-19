@@ -13,13 +13,8 @@ import { easeInOutCubic } from 'styles/timings';
 export default class Spinner extends PureComponent {
   static propTypes = {
     active: PropTypes.bool,
-    colors: PropTypes.shape({
-      layer1: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-      layer2: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-      layer3: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-      layer4: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    }),
     style: PropTypes.object,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
@@ -31,6 +26,7 @@ export default class Spinner extends PureComponent {
       layer3: false,
       layer4: false,
     },
+    className: '',
   };
 
   static contextTypes = { theme: PropTypes.object };
@@ -92,31 +88,31 @@ export default class Spinner extends PureComponent {
 
     this.spinner.animate([{
       offset: 0,
-      stroke: this.props.colors.layer1 || this.theme.layer1,
+      stroke: this.theme.layer1,
     }, {
       offset: 0.2,
-      stroke: this.props.colors.layer1 || this.theme.layer1,
+      stroke: this.theme.layer1,
     }, {
       offset: 0.25,
-      stroke: this.props.colors.layer2 || this.theme.layer2,
+      stroke: this.theme.layer2,
     }, {
       offset: 0.45,
-      stroke: this.props.colors.layer2 || this.theme.layer2,
+      stroke: this.theme.layer2,
     }, {
       offset: 0.5,
-      stroke: this.props.colors.layer3 || this.theme.layer3,
+      stroke: this.theme.layer3,
     }, {
       offset: 0.7,
-      stroke: this.props.colors.layer3 || this.theme.layer3,
+      stroke: this.theme.layer3,
     }, {
       offset: 0.75,
-      stroke: this.props.colors.layer4 || this.theme.layer4,
+      stroke: this.theme.layer4,
     }, {
       offset: 0.95,
-      stroke: this.props.colors.layer4 || this.theme.layer4,
+      stroke: this.theme.layer4,
     }, {
       offset: 1,
-      stroke: this.props.colors.layer1 || this.theme.layer1,
+      stroke: this.theme.layer1,
     }], {
       iterations: Infinity,
       fill: 'forwards',
@@ -189,6 +185,7 @@ export default class Spinner extends PureComponent {
     return (
       <div
         {...getNotDeclaredProps(this)}
+        className={`spinner ${this.props.className}`}
         style={styles.root}
         ref={(element) => { this.root = element; }}
       >
@@ -196,9 +193,11 @@ export default class Spinner extends PureComponent {
           width="48px"
           height="48px"
           viewBox={`0 0 ${radius * 2 + strokeWidth} ${radius * 2 + strokeWidth}`}
+          className="spinner--svg"
         >
           <g
             style={styles.container}
+            className="spinner--container"
             ref={(element) => { this.container = element; }}
           >
             <path
@@ -206,6 +205,7 @@ export default class Spinner extends PureComponent {
               d="M 14,1.5 A 12.5,12.5 0 1 1 1.5,14"
               strokeLinecap="round"
               style={styles.spinner}
+              className="spinner--spinner"
               ref={(element) => { this.spinner = element; }}
             />
           </g>

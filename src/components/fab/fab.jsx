@@ -12,6 +12,7 @@ import { easeInOutCubic } from 'styles/timings';
 export default class FAB extends PureComponent {
   static propTypes = {
     icon: PropTypes.string.isRequired,
+    className: PropTypes.string,
     style: PropTypes.object,
     noink: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -30,6 +31,7 @@ export default class FAB extends PureComponent {
   };
 
   static defaultProps = {
+    className: '',
     style: {},
     noink: false,
     disabled: false,
@@ -49,10 +51,7 @@ export default class FAB extends PureComponent {
 
   static contextTypes = { theme: PropTypes.object };
 
-  static keyCodes = [
-    13,
-    32,
-  ];
+  static keyCodes = [13, 32];
 
   state = {
     pressed: false,
@@ -182,16 +181,13 @@ export default class FAB extends PureComponent {
   };
 
   render() {
-    const {
-      icon,
-      noink,
-      disabled,
-    } = this.props;
+    const { disabled } = this.props;
     const styles = this.styles;
 
     return (
       <button
         {...getNotDeclaredProps(this)}
+        className={`fab ${this.props.className}`}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         ref={(element) => { this.root = element; }}
@@ -205,14 +201,17 @@ export default class FAB extends PureComponent {
         onTouchStart={this.handleTouchStart}
         onTouchEnd={this.handleTouchEnd}
       >
-        {noink ? '' : <Ripple
+        <Ripple
           round
           center
+          className="fab--ripple"
+          nowaves={this.props.noink}
           ref={(element) => { this.ripple = element; }}
-        />}
+        />
 
         <Icon
-          icon={icon}
+          className="fab--icon"
+          icon={this.props.icon}
           disabled={disabled}
           style={styles.icon}
         />

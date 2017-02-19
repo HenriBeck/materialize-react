@@ -12,6 +12,7 @@ import Event from 'utils/event';
 export default class Ripple extends PureComponent {
   static propTypes = {
     style: PropTypes.object,
+    className: PropTypes.string,
     round: PropTypes.bool,
     center: PropTypes.bool,
     initialOpacity: PropTypes.number,
@@ -27,6 +28,7 @@ export default class Ripple extends PureComponent {
 
   static defaultProps = {
     style: {},
+    className: '',
     round: false,
     center: false,
     initialOpacity: 0.25,
@@ -245,19 +247,24 @@ export default class Ripple extends PureComponent {
     return (
       <span
         {...getNotDeclaredProps(this)}
-        ref={(element) => { this.root = element; }}
+        className={`ripple ${this.props.className}`}
         style={styles.root}
+        ref={(element) => { this.root = element; }}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onTouchStart={this.handleTouchStart}
         onTouchEnd={this.handleTouchEnd}
       >
         <span
-          ref={(element) => { this.focus = element; }}
+          className="ripple--focus"
           style={styles.focus}
+          ref={(element) => { this.focus = element; }}
         />
 
-        <span style={styles.waveContainer}>
+        <span
+          className="ripple--wave-container"
+          style={styles.waveContainer}
+        >
           {this.renderWaves()}
         </span>
       </span>
