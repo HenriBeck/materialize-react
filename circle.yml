@@ -3,7 +3,7 @@ machine:
     version: 4.5.0
 dependencies:
   override:
-    - npm install
+    - yarn install
 test:
   override:
     - npm run test:coverage
