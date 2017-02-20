@@ -13,8 +13,9 @@ export default function Label({
     typo: theme.label.typo,
     userSelect: 'none',
     padding: '0 8px',
+    color: 'var(textColor)',
     ...style,
-  });
+  }, { variables: theme.variables });
 
   return (
     <label
