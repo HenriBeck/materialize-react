@@ -81,7 +81,8 @@
     ],
     "babel": {
       "babelrc": true
-    }
+    },
+    "serial": "true"
   },
   "nyc": {
     "extension": [
