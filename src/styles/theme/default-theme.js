@@ -24,6 +24,8 @@ import { defaultTheme as icon } from 'components/icon/theme';
 import { defaultTheme as switchTheme } from 'components/switch/theme';
 import { defaultTheme as radioButton } from 'components/radio-button/theme';
 import { defaultTheme as iconButton } from 'components/icon-button/theme';
+import { defaultTheme as tabs } from 'components/tabs/theme';
+import { defaultTheme as tab } from 'components/tab/theme';
 
 export default {
   variables: {
@@ -61,4 +63,6 @@ export default {
   switch: switchTheme,
   radioButton,
   iconButton,
+  tabs,
+  tab,
 };

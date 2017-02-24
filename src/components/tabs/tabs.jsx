@@ -25,6 +25,14 @@ export default class Tabs extends PureComponent {
 
   static contextTypes = { theme: PropTypes.object };
 
+  static getNewIndex(keyCode, index, tabs) {
+    if (keyCode === 37) {
+      return index === 0 ? tabs.length - 1 : index - 1;
+    }
+
+    return index === tabs.length - 1 ? 0 : index + 1;
+  }
+
   state = { selectedTab: this.props.initialTabId };
 
   componentWillMount() {
@@ -56,8 +64,23 @@ export default class Tabs extends PureComponent {
     this.oldValue = `scaleX(${width}) translateX(${relativeLeft / width * 100}%)`;
   }
 
+  componentDidUpdate(prevProps, { selectedTab }) {
+    if (!this.props.noBar && this.state.selectedTab !== selectedTab) {
+      const {
+        width,
+        left,
+      } = this.tabs[this.state.selectedTab].position;
+
+      this.animateBar(width, left);
+    }
+
+    this.props.onTabChange(this.state.selectedTab);
+  }
+
   tabs = {};
   oldValue = '';
+  currentlyFocusedTab = null;
+  keyDown = false;
 
   get rootRect() {
     return this.root.getBoundingClientRect();
@@ -69,6 +92,7 @@ export default class Tabs extends PureComponent {
         position: 'relative',
         layout: { direction: 'horizontal' },
         overflow: 'hidden',
+        outline: 0,
         ...this.props.style,
       },
 
@@ -84,22 +108,14 @@ export default class Tabs extends PureComponent {
     });
   }
 
-  get isScrollable() {
-    return Object
-      .values(this.tabs)
-      .reduce((current, tab) => current + tab.position.width, 0) > this.rootRect.width;
-  }
-
   animateBar(width, left) {
     const relativeLeft = left - this.rootRect.left;
     const translateY = relativeLeft / width * 100;
     const value = `scaleX(${width}) translateX(${translateY}%)`;
-    const prevValue = parseInt(this.oldValue.match(/translateX\((\d+)%\)/)[1], 10);
 
     this.bar.animate({
       transform: [
         this.oldValue,
-        `scaleX(${width * 1.2}) translateX(${prevValue + (translateY - prevValue) / 2}%)`,
         value,
       ],
     }, {
@@ -112,18 +128,42 @@ export default class Tabs extends PureComponent {
   }
 
   handleTabChanged = (tabId) => {
-    if (!this.props.noBar) {
-      const {
-        width,
-        left,
-      } = this.tabs[tabId].position;
-
-      this.animateBar(width, left);
-    }
-
     this.setState({ selectedTab: tabId });
+  };
 
-    this.props.onTabChange(tabId);
+  handleFocus = () => {
+    this.currentlyFocusedTab = this.state.selectedTab;
+
+    this.tabs[this.currentlyFocusedTab].focus();
+  };
+
+  handleBlur = () => {
+    this.tabs[this.currentlyFocusedTab].blur();
+  };
+
+  handleKeyDown = (ev) => {
+    if (!this.keyDown) {
+      if (ev.keyCode === 13 || ev.keyCode === 32) {
+        if (this.state.selectedTab !== this.currentlyFocusedTab) {
+          this.setState({ selectedTab: this.currentlyFocusedTab });
+        }
+      } else if (ev.keyCode === 37 || ev.keyCode === 39) {
+        this.tabs[this.currentlyFocusedTab].blur();
+
+        const tabs = Object.keys(this.tabs);
+        const index = tabs.findIndex(tab => tab === this.currentlyFocusedTab);
+
+        this.currentlyFocusedTab = tabs[Tabs.getNewIndex(ev.keyCode, index, tabs)];
+
+        this.tabs[this.currentlyFocusedTab].focus();
+      }
+
+      this.keyDown = true;
+    }
+  };
+
+  handleKeyUp = () => {
+    this.keyDown = false;
   };
 
   renderTabs() {
@@ -143,10 +183,16 @@ export default class Tabs extends PureComponent {
     const styles = this.styles;
 
     return (
+      // eslint-disable-next-line
       <div
         role="tablist"
+        tabIndex="0"
         className="tabs"
         style={styles.root}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.handleKeyUp}
         ref={(element) => { this.root = element; }}
       >
         {this.renderTabs()}

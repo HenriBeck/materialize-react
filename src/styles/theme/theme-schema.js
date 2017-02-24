@@ -11,6 +11,8 @@ import { schema as icon } from 'components/icon/theme';
 import { schema as switchSchema } from 'components/switch/theme';
 import { schema as radioButton } from 'components/radio-button/theme';
 import { schema as iconButton } from 'components/icon-button/theme';
+import { schema as tabs } from 'components/tabs/theme';
+import { schema as tab } from 'components/tab/theme';
 
 export default PropTypes.shape({
   variables: PropTypes.shape({
@@ -48,4 +50,6 @@ export default PropTypes.shape({
   switch: switchSchema,
   radioButton,
   iconButton,
+  tabs,
+  tab,
 });

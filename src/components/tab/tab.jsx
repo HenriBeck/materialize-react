@@ -2,7 +2,6 @@ import React, {
   PureComponent,
   PropTypes,
 } from 'react';
-import is from 'is_js';
 
 import Stylesheet from 'styles/stylesheet';
 import Ripple from '../ripple';
@@ -11,17 +10,25 @@ export default class Tab extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     id: PropTypes.string.isRequired,
+    noink: PropTypes.bool,
     active: PropTypes.bool.isRequired,
     style: PropTypes.object,
     onPress: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onTouchStart: PropTypes.func,
   };
 
   static defaultProps = {
+    noink: false,
     style: {},
     onPress: () => {},
+    onMouseDown: () => {},
+    onTouchStart: () => {},
   };
 
   static contextTypes = { theme: PropTypes.object };
+
+  state = { isFocused: false };
 
   componentDidMount() {
     this.content.style.color = this.getColor(this.props.active);
@@ -41,9 +48,8 @@ export default class Tab extends PureComponent {
     }
   }
 
-  getColor(active) {
-    return active ? this.theme.activeColor : this.theme.inactiveColor;
-  }
+  focus = this.toggleFocus;
+  blur = this.toggleFocus;
 
   get theme() {
     return this.context.theme.tab;
@@ -54,7 +60,7 @@ export default class Tab extends PureComponent {
       root: {
         maxWidth: '264px',
         minWidth: '160px',
-        padding: `0 ${is.desktop() ? 24 : 12}px`,
+        padding: '0 12px',
         height: 48,
         position: 'relative',
         layout: {
@@ -72,6 +78,7 @@ export default class Tab extends PureComponent {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         textAlign: 'center',
+        fontWeight: this.state.isFocused && 700,
       },
     });
   }
@@ -80,7 +87,25 @@ export default class Tab extends PureComponent {
     return this.root.getBoundingClientRect();
   }
 
-  handlePress = () => {
+  toggleFocus() {
+    this.setState(({ isFocused }) => {
+      return { isFocused: !isFocused };
+    });
+  }
+
+  getColor(active) {
+    return active ? this.theme.activeColor : this.theme.inactiveColor;
+  }
+
+  handleMouseDown = (ev) => {
+    this.props.onMouseDown(ev);
+
+    this.props.onPress(this.props.id);
+  };
+
+  handleTouchStart = (ev) => {
+    this.props.onTouchStart(ev);
+
     this.props.onPress(this.props.id);
   };
 
@@ -92,8 +117,9 @@ export default class Tab extends PureComponent {
         role="tab"
         className="tab"
         style={styles.root}
-        onMouseDown={this.handlePress}
-        onTouchStart={this.handlePress}
+        aria-selected={this.props.active}
+        onMouseDown={this.handleMouseDown}
+        onTouchStart={this.handleTouchStart}
         ref={(element) => { this.root = element; }}
       >
         <span
@@ -104,7 +130,11 @@ export default class Tab extends PureComponent {
           {this.props.children}
         </span>
 
-        <Ripple />
+        <Ripple
+          className="tab--ripple"
+          nowaves={this.props.noink}
+          ref={(element) => { this.ripple = element; }}
+        />
       </div>
     );
   }
