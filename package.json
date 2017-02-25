@@ -77,7 +77,8 @@
       "babel-register",
       "babel-polyfill",
       "./tests/helpers/browser-env.js",
-      "./tests/helpers/element-animate.js"
+      "./tests/helpers/element-animate.js",
+      "./tests/helpers/react.js"
     ],
     "babel": {
       "babelrc": true

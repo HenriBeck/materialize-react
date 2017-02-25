@@ -17,16 +17,11 @@ export default class RadioButton extends PureComponent {
     noink: PropTypes.bool,
     defaultOn: PropTypes.bool,
     children: PropTypes.node,
-    tabIndex: PropTypes.number,
     labelPosition: PropTypes.oneOf([
       'left',
       'right',
     ]),
     onChange: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
@@ -35,18 +30,11 @@ export default class RadioButton extends PureComponent {
     defaultOn: false,
     labelPosition: 'right',
     children: '',
-    tabIndex: 0,
     style: {},
     onChange: () => {},
-    onKeyDown: () => {},
-    onKeyUp: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
   };
 
   static contextTypes = { theme: PropTypes.object };
-
-  static keyCodes = [13, 32];
 
   state = { on: this.props.defaultOn };
 
@@ -87,7 +75,6 @@ export default class RadioButton extends PureComponent {
     }
   }
 
-  keyDown = false;
   id = new Chance().string();
   borderDiameter = this.theme.circleSize + 2 * (this.theme.borderDistance + this.theme.borderWidth);
   animationOptions = {
@@ -194,20 +181,12 @@ export default class RadioButton extends PureComponent {
     );
   }
 
-  handleKeyDown = (ev) => {
-    this.props.onKeyDown(ev);
-
-    if (RadioButton.keyCodes.includes(ev.keyCode) && !this.keyDown) {
-      this.keyDown = true;
-
-      this.handleToggle();
-    }
+  focus = () => {
+    this.ripple.addFocus();
   };
 
-  handleKeyUp = (ev) => {
-    this.props.onKeyUp(ev);
-
-    this.keyDown = false;
+  blur = () => {
+    this.ripple.removeFocus();
   };
 
   handleToggle = () => {
@@ -216,18 +195,6 @@ export default class RadioButton extends PureComponent {
         return { on: !prevState.on };
       }, () => this.props.onChange(this.props.name, this.state.on));
     }
-  };
-
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.ripple.addFocus();
-  };
-
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.ripple.removeFocus();
   };
 
   render() {
@@ -242,12 +209,7 @@ export default class RadioButton extends PureComponent {
         id={this.id}
         aria-checked={on}
         aria-disabled={disabled}
-        tabIndex={disabled ? -1 : this.props.tabIndex}
         style={styles.root}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
       >
         <span
           className="radio-button--container"

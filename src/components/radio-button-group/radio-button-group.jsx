@@ -8,43 +8,51 @@ import Chance from 'chance';
 import getNotDeclaredProps from 'utils/react/get-not-declared-props';
 import Stylesheet from 'styles/stylesheet';
 import Label from '../label';
-import warning from 'utils/warning';
+import getNextIndex from 'utils/get-next-index';
+import RadioButton from '../radio-button';
 
 export default class RadioButtonGroup extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    defaultSelected: PropTypes.string,
+    children({ children }) {
+      return Children
+        .toArray(children)
+        .reduce((count, elem) => {
+          const isRadioButton = elem.type === RadioButton;
+
+          return count + (isRadioButton ? 1 : 0);
+        }, 0) <= 1 ? new Error(
+          'RadioButtonGroup must have atleast two RadioButton\'s inside',
+        ) : null;
+    },
+    defaultSelected: PropTypes.string.isRequired,
     label: PropTypes.string,
     style: PropTypes.object,
     onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyUp: PropTypes.func,
   };
 
   static defaultProps = {
-    name: '',
+    children: '',
     label: '',
-    defaultSelected: '',
     style: {},
     onChange: () => {},
+    onFocus: () => {},
+    onBlur: () => {},
+    onKeyDown: () => {},
+    onKeyUp: () => {},
   };
 
   static contextTypes = { theme: PropTypes.object };
 
-  componentWillMount() {
-    let radioButtonCount = 0;
-
-    Children.forEach(this.props.children, (elem) => {
-      if (elem.type.name === 'RadioButton') {
-        radioButtonCount += 1;
-      }
-    });
-
-    warning(radioButtonCount <= 1, 'RadioButtonGroup must have atleast two RadioButton\'s inside');
-  }
-
   buttons = {};
-  activeButton = this.props.defaultSelected;
+  selectedButton = this.props.defaultSelected;
+  focusedButton = null;
   id = new Chance().string();
+  keyDown = false;
 
   get styles() {
     return Stylesheet.compile({
@@ -52,33 +60,79 @@ export default class RadioButtonGroup extends PureComponent {
         layout: {
           direction: 'vertical',
           inline: true,
-          padding: 8,
-          ...this.props.style,
         },
-
-        label: { typo: 'title' },
+        padding: 8,
+        outline: 0,
+        ...this.props.style,
       },
+
+      label: { typo: 'title' },
     });
   }
 
   handleChange = (name, state) => {
     if (state) {
-      if (this.activeButton) {
-        this.buttons[this.activeButton].on = false;
-      }
+      this.buttons[this.selectedButton].on = false;
 
-      this.activeButton = name;
+      this.selectedButton = name;
 
       this.props.onChange(this.props.name, name);
     }
   };
 
+  handleKeyDown = (ev) => {
+    this.props.onKeyDown(ev);
+
+    if (!this.keyDown) {
+      if (ev.keyCode === 13 || ev.keyCode === 32) {
+        if (this.selectedButton !== this.focusedButton) {
+          this.buttons[this.selectedButton].on = false;
+          this.buttons[this.focusedButton].on = true;
+
+          this.selectedButton = this.focusedButton;
+        }
+      } else if (ev.keyCode === 38 || ev.keyCode === 40) {
+        const buttons = Object.keys(this.buttons);
+        const index = buttons.findIndex(button => button === this.focusedButton);
+        const direction = ev.keyCode === 38 ? 'left' : 'right';
+        const nextIndex = getNextIndex(buttons, index, direction);
+
+        this.buttons[this.focusedButton].blur();
+        this.focusedButton = buttons[nextIndex];
+        this.buttons[this.focusedButton].focus();
+      }
+
+      this.keyDown = true;
+    }
+  };
+
+  handleKeyUp = (ev) => {
+    this.props.onKeyUp(ev);
+
+    this.keyDown = false;
+  };
+
+  handleFocus = (ev) => {
+    this.props.onFocus(ev);
+
+    this.focusedButton = this.selectedButton;
+
+    this.buttons[this.focusedButton].focus();
+  };
+
+  handleBlur = (ev) => {
+    this.props.onBlur(ev);
+
+    this.buttons[this.focusedButton].blur();
+  };
+
   renderChildren() {
     return Children.map(this.props.children, (elem) => {
-      const { name } = elem.props;
-      const props = { ...elem.props };
+      const props = {};
 
-      if (elem.type.name === 'RadioButton') {
+      if (elem.type === RadioButton) {
+        const { name } = elem.props;
+
         props.ref = (element) => {
           this.buttons[name] = element;
         };
@@ -86,11 +140,7 @@ export default class RadioButtonGroup extends PureComponent {
         props.onChange = this.handleChange;
       }
 
-      return (
-        <elem.type {...props}>
-          {elem.props.children}
-        </elem.type>
-      );
+      return React.cloneElement(elem, props);
     });
   }
 
@@ -98,11 +148,17 @@ export default class RadioButtonGroup extends PureComponent {
     const styles = this.styles;
 
     return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         {...getNotDeclaredProps(this)}
         role="radiogroup"
+        tabIndex="0"
         id={this.id}
         style={styles.root}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.handleKeyUp}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
       >
         <Label
           className="radio-button-group--label"
