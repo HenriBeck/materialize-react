@@ -4,64 +4,69 @@ import React, {
   Children,
 } from 'react';
 
-import warning from 'utils/warning';
 import Stylesheet from 'styles/stylesheet';
 import { easeInOutQuad } from 'styles/timings';
+import getNextIndex from 'utils/get-next-index';
+import Tab from '../tab';
 
 export default class Tabs extends PureComponent {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children({ children }) {
+      let validationError = null;
+
+      Children.forEach(children, (elem) => {
+        if (elem.type !== Tab) {
+          validationError = new Error(
+            'All children of the Tabs Component need to be Tab Components!',
+          );
+        }
+      });
+
+      if (Children.count(children) <= 1) {
+        validationError = new Error(
+          'You need to pass atleast two Tab Components to the Tabs Component!',
+        );
+      }
+
+      return validationError;
+    },
     initialTabId: PropTypes.string.isRequired,
     noBar: PropTypes.bool,
     onTabChange: PropTypes.func,
     style: PropTypes.object,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyUp: PropTypes.func,
   };
 
   static defaultProps = {
+    children: '',
     noBar: false,
     onTabChange: () => {},
     style: {},
+    onFocus: () => {},
+    onBlur: () => {},
+    onKeyDown: () => {},
+    onKeyUp: () => {},
   };
 
   static contextTypes = { theme: PropTypes.object };
 
-  static getNewIndex(keyCode, index, tabs) {
-    if (keyCode === 37) {
-      return index === 0 ? tabs.length - 1 : index - 1;
-    }
-
-    return index === tabs.length - 1 ? 0 : index + 1;
-  }
-
   state = { selectedTab: this.props.initialTabId };
 
-  componentWillMount() {
-    let allChildrenAreTabs = true;
-
-    Children.forEach(this.props.children, (elem) => {
-      if (elem.type.name !== 'Tab') {
-        allChildrenAreTabs = false;
-      }
-    });
-
-    warning(
-      Children.count(this.props.children) <= 1,
-      'You need to pass atleast two Tab Components to the Tabs Component!',
-    );
-
-    warning(!allChildrenAreTabs, 'All children of the Tabs Component need to be Tab Components!');
-  }
-
   componentDidMount() {
-    const {
-      width,
-      left,
-    } = this.tabs[this.props.initialTabId].position;
-    const relativeLeft = left - this.rootRect.left;
+    if (!this.props.noBar) {
+      const {
+        width,
+        left,
+      } = this.tabs[this.props.initialTabId].position;
+      const relativeLeft = left - this.rootRect.left;
 
-    this.bar.style.transform = `scaleX(${width}) translateX(${relativeLeft / width * 100}%)`;
+      this.bar.style.transform = `scaleX(${width}) translateX(${relativeLeft / width * 100}%)`;
 
-    this.oldValue = `scaleX(${width}) translateX(${relativeLeft / width * 100}%)`;
+      this.oldValue = `scaleX(${width}) translateX(${relativeLeft / width * 100}%)`;
+    }
   }
 
   componentDidUpdate(prevProps, { selectedTab }) {
@@ -79,7 +84,7 @@ export default class Tabs extends PureComponent {
 
   tabs = {};
   oldValue = '';
-  currentlyFocusedTab = null;
+  focusedTab = null;
   keyDown = false;
 
   get rootRect() {
@@ -131,59 +136,66 @@ export default class Tabs extends PureComponent {
     this.setState({ selectedTab: tabId });
   };
 
-  handleFocus = () => {
-    this.currentlyFocusedTab = this.state.selectedTab;
+  handleFocus = (ev) => {
+    this.props.onFocus(ev);
 
-    this.tabs[this.currentlyFocusedTab].focus();
+    this.focusedTab = this.state.selectedTab;
+
+    this.tabs[this.focusedTab].focus();
   };
 
-  handleBlur = () => {
-    this.tabs[this.currentlyFocusedTab].blur();
+  handleBlur = (ev) => {
+    this.props.onBlur(ev);
+
+    this.tabs[this.focusedTab].blur();
   };
 
   handleKeyDown = (ev) => {
+    this.props.onKeyDown(ev);
+
     if (!this.keyDown) {
       if (ev.keyCode === 13 || ev.keyCode === 32) {
-        if (this.state.selectedTab !== this.currentlyFocusedTab) {
-          this.setState({ selectedTab: this.currentlyFocusedTab });
+        if (this.state.selectedTab !== this.focusedTab) {
+          this.setState({ selectedTab: this.focusedTab });
         }
       } else if (ev.keyCode === 37 || ev.keyCode === 39) {
-        this.tabs[this.currentlyFocusedTab].blur();
-
         const tabs = Object.keys(this.tabs);
-        const index = tabs.findIndex(tab => tab === this.currentlyFocusedTab);
+        const index = tabs.findIndex(tab => tab === this.focusedTab);
+        const direction = ev.keyCode === 37 ? 'left' : 'right';
+        const nextIndex = getNextIndex(tabs, index, direction);
 
-        this.currentlyFocusedTab = tabs[Tabs.getNewIndex(ev.keyCode, index, tabs)];
-
-        this.tabs[this.currentlyFocusedTab].focus();
+        this.tabs[this.focusedTab].blur();
+        this.focusedTab = tabs[nextIndex];
+        this.tabs[this.focusedTab].focus();
       }
 
       this.keyDown = true;
     }
   };
 
-  handleKeyUp = () => {
+  handleKeyUp = (ev) => {
+    this.props.onKeyUp(ev);
+
     this.keyDown = false;
   };
 
-  renderTabs() {
-    return Children.map(this.props.children, elem => (
-      <elem.type
-        {...elem.props}
-        active={this.state.selectedTab === elem.props.id}
-        ref={(element) => { this.tabs[elem.props.id] = element; }}
-        onPress={this.handleTabChanged}
-      >
-        {elem.props.children}
-      </elem.type>
-    ));
-  }
+  renderTabs = () => Children.map(this.props.children, (elem) => {
+    const props = {
+      active: this.state.selectedTab === elem.props.id,
+      ref: (element) => {
+        this.tabs[elem.props.id] = element;
+      },
+      onPress: this.handleTabChanged,
+    };
+
+    return React.cloneElement(elem, props);
+  });
 
   render() {
     const styles = this.styles;
 
     return (
-      // eslint-disable-next-line
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         role="tablist"
         tabIndex="0"

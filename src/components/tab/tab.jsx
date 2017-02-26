@@ -11,7 +11,7 @@ export default class Tab extends PureComponent {
     children: PropTypes.node.isRequired,
     id: PropTypes.string.isRequired,
     noink: PropTypes.bool,
-    active: PropTypes.bool.isRequired,
+    active: PropTypes.bool,
     style: PropTypes.object,
     onPress: PropTypes.func,
     onMouseDown: PropTypes.func,
@@ -21,6 +21,7 @@ export default class Tab extends PureComponent {
   static defaultProps = {
     noink: false,
     style: {},
+    active: false,
     onPress: () => {},
     onMouseDown: () => {},
     onTouchStart: () => {},
