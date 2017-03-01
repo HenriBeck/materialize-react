@@ -26,6 +26,7 @@ import { defaultTheme as radioButton } from 'components/radio-button/theme';
 import { defaultTheme as iconButton } from 'components/icon-button/theme';
 import { defaultTheme as tabs } from 'components/tabs/theme';
 import { defaultTheme as tab } from 'components/tab/theme';
+import { defaultTheme as chip } from 'components/chip/theme';
 
 export default {
   variables: {
@@ -65,4 +66,5 @@ export default {
   iconButton,
   tabs,
   tab,
+  chip,
 };
