@@ -1,8 +1,8 @@
 {
   "name": "tf2pickup-components",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "React Components for TF2Pickup Website and other stuff",
-  "main": "dist/index.js",
+  "main": "dist/",
   "options": {
     "eslint": "--ext .jsx,.js src/ .storybook/ tests/",
     "storybook": "-p 9001"
