@@ -80,39 +80,6 @@ export default class Spinner extends PureComponent {
       duration: arctime,
     });
 
-    this.spinner.animate([{
-      offset: 0,
-      stroke: this.theme.layer1,
-    }, {
-      offset: 0.2,
-      stroke: this.theme.layer1,
-    }, {
-      offset: 0.25,
-      stroke: this.theme.layer2,
-    }, {
-      offset: 0.45,
-      stroke: this.theme.layer2,
-    }, {
-      offset: 0.5,
-      stroke: this.theme.layer3,
-    }, {
-      offset: 0.7,
-      stroke: this.theme.layer3,
-    }, {
-      offset: 0.75,
-      stroke: this.theme.layer4,
-    }, {
-      offset: 0.95,
-      stroke: this.theme.layer4,
-    }, {
-      offset: 1,
-      stroke: this.theme.layer1,
-    }], {
-      iterations: Infinity,
-      fill: 'forwards',
-      duration: arctime * 4,
-    });
-
     this.spinner.animate({
       transform: [
         'rotate(0deg)',
@@ -131,11 +98,13 @@ export default class Spinner extends PureComponent {
 
     return Stylesheet.compile({
       root: {
-        size: '48px',
+        size: 64,
         display: 'inline-block',
         position: 'relative',
         margin: 8,
         opacity: 0,
+        padding: 8,
+        boxSizing: 'border-box',
         ...this.props.style,
       },
 
@@ -149,6 +118,7 @@ export default class Spinner extends PureComponent {
         strokeDasharray: arrayAndOffset,
         strokeDashoffset: arrayAndOffset,
         transformOrigin: '50% 50%',
+        stroke: this.theme.color,
       },
     });
   }
@@ -178,7 +148,7 @@ export default class Spinner extends PureComponent {
 
     return (
       <div
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, Spinner)}
         className={`spinner ${this.props.className}`}
         style={styles.root}
         ref={(element) => { this.root = element; }}

@@ -16,6 +16,7 @@ storiesOf('Chip', module)
       img={{
         color: 'blue',
         text: 'ab',
+        textColor: 'white',
       }}
     >
       Hello
@@ -45,6 +46,7 @@ storiesOf('Chip', module)
       img={{
         color: 'blue',
         text: 'ab',
+        textColor: 'white',
       }}
       onDelete={action('Delete')}
     >

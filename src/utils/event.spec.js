@@ -41,7 +41,7 @@ test('should get the cords when they are in the clientX and clientY property', (
 });
 
 test('should return null when no cords are available', (t) => {
-  const event = new Event({});
+  const event = new Event();
 
   t.deepEqual(event.getCords(), null);
 });

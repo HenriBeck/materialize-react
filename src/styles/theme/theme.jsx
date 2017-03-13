@@ -1,5 +1,3 @@
-/* eslint require-jsdoc: ['error', { require: { MethodDefinition: false }}] */
-
 import {
   PureComponent,
   PropTypes,
@@ -7,7 +5,7 @@ import {
 
 import themeSchema from './theme-schema';
 import defaultTheme from './default-theme';
-import merge from 'utils/object/merge';
+import merge from 'lodash.merge';
 import Stylesheet from 'styles/stylesheet';
 
 /**

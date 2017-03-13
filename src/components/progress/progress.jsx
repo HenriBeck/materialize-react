@@ -20,7 +20,6 @@ export default class Progress extends PureComponent {
     progress: PropTypes.number,
     className: PropTypes.string,
     style: PropTypes.object,
-    disabled: PropTypes.bool,
     active: PropTypes.bool,
   };
 
@@ -29,7 +28,6 @@ export default class Progress extends PureComponent {
     progress: 0,
     className: '',
     style: {},
-    disabled: false,
     active: false,
   };
 
@@ -120,7 +118,7 @@ export default class Progress extends PureComponent {
         display: 'block',
         position: 'relative',
         size: ['100%', this.theme.barHeight],
-        backgroundColor: this.theme.backgroundColor,
+        backgroundColor: this.theme.bgColor,
         overflow: 'hidden',
         ...this.props.style,
       },
@@ -128,9 +126,7 @@ export default class Progress extends PureComponent {
       bar: {
         position: ['absolute', 0],
         size: ['100%', this.theme.barHeight],
-        backgroundColor: this.props.disabled
-          ? this.theme.disabledBarColor
-          : this.theme.barColor,
+        backgroundColor: this.theme.barColor,
         transform: 'scaleX(0.5)',
         transformOrigin: this.isIndeterminate ? 'right center' : 'left center',
       },
@@ -223,7 +219,6 @@ export default class Progress extends PureComponent {
       props['aria-valuenow'] = Progress.clamp(this.props.progress);
       props['aria-valuemin'] = 0;
       props['aria-valuemax'] = 100;
-      props['aria-disabled'] = this.props.disabled;
     }
 
     if (this.isIndeterminate) {
@@ -232,7 +227,7 @@ export default class Progress extends PureComponent {
 
     return (
       <span
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, Progress)}
         role="progressbar"
         data-mode={this.props.mode}
         className={`progress ${this.props.className}`}

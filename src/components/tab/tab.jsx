@@ -49,8 +49,8 @@ export default class Tab extends PureComponent {
     }
   }
 
-  focus = this.toggleFocus;
-  blur = this.toggleFocus;
+  focus = () => this.setState({ isFocused: true });
+  blur = () => this.setState({ isFocused: false });
 
   get theme() {
     return this.context.theme.tab;
@@ -86,12 +86,6 @@ export default class Tab extends PureComponent {
 
   get position() {
     return this.root.getBoundingClientRect();
-  }
-
-  toggleFocus() {
-    this.setState(({ isFocused }) => {
-      return { isFocused: !isFocused };
-    });
   }
 
   getColor(active) {
@@ -134,6 +128,7 @@ export default class Tab extends PureComponent {
         <Ripple
           className="tab--ripple"
           nowaves={this.props.noink}
+          color={this.theme.rippleColor}
           ref={(element) => { this.ripple = element; }}
         />
       </div>

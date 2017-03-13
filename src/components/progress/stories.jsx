@@ -26,11 +26,4 @@ storiesOf('Progress', module)
       active={boolean('Active', true)}
       style={style}
     />
-  ))
-  .add('Disabled Style', () => (
-    <Progress
-      progress={55}
-      style={style}
-      disabled
-    />
   ));

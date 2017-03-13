@@ -6,10 +6,7 @@ export const schema = PropTypes.shape({
   arcsize: PropTypes.number,
   arctime: PropTypes.number,
   arcStartRotate: PropTypes.number,
-  layer1: PropTypes.string,
-  layer2: PropTypes.string,
-  layer3: PropTypes.string,
-  layer4: PropTypes.string,
+  color: PropTypes.string,
 });
 
 export const defaultTheme = {
@@ -18,8 +15,5 @@ export const defaultTheme = {
   arcsize: 270,
   arctime: 1333,
   arcStartRotate: 216,
-  layer1: 'var(primaryBase)',
-  layer2: 'var(primaryBase)',
-  layer3: 'var(primaryBase)',
-  layer4: 'var(primaryBase)',
+  color: 'var(primaryBase)',
 };

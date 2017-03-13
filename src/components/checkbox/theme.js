@@ -32,20 +32,14 @@ export const defaultTheme = {
   checkmarkColor: 'white',
 
   checkedBorderColor: 'var(primaryBase)',
-  checkedBackgroundColor: 'var(primaryBase)',
+  checkedBgColor: 'var(primaryBase)',
 
-  uncheckedBorderColor: 'var(secondaryTextColor)',
-  uncheckedBackgroundColor: 'transparent',
+  uncheckedBorderColor: 'rgba(0, 0, 0, 0.55)',
+  uncheckedBgColor: 'transparent',
 
-  disabledBorderColor: 'var(disabledColor)',
-  disabledBackgroundColor: 'transparent',
-  disabledCheckedBackgroundColor: 'var(disabledColor)',
-
-  checkedRippleColor: 'var(primaryBase)',
-  uncheckedRippleColor: 'var(secondaryTextColor)',
-
-  checkedRippleFocusColor: 'var(primaryBase)',
-  uncheckedRippleFocusColor: 'var(secondaryTextColor)',
+  disabledBorderColor: 'rgba(0, 0, 0, 0.26)',
+  disabledBgColor: 'transparent',
+  disabledCheckedBgColor: 'rgba(0, 0, 0, 0.26)',
 
   labelColor: 'var(textColor)',
   disabledLabelColor: 'var(disabledColor)',

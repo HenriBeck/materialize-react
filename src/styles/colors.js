@@ -297,8 +297,8 @@ export const black500 = '#000000';
 export const blackText = 'rgba(0, 0, 0, 0.87)';
 export const blackSecondaryText = 'rgba(0, 0, 0, 0.54)';
 export const blackIcons = 'rgba(0, 0, 0, 0.54)';
-export const blackDisabled = 'rgba(0, 0, 0, 0.26)';
-export const blackHint = 'rgba(0, 0, 0, 0.26)';
+export const blackDisabled = 'rgba(0, 0, 0, 0.38)';
+export const blackHint = 'rgba(0, 0, 0, 0.38)';
 export const blackDivider = 'rgba(0, 0, 0, 0.12)';
 
 // White

@@ -51,6 +51,7 @@ export default class RadioButtonGroup extends PureComponent {
   buttons = {};
   selectedButton = this.props.defaultSelected;
   focusedButton = null;
+  isFocused = false;
   id = new Chance().string();
   keyDown = false;
 
@@ -63,6 +64,8 @@ export default class RadioButtonGroup extends PureComponent {
         },
         padding: 8,
         outline: 0,
+        border: 0,
+        backgroundColor: 'transparent',
         ...this.props.style,
       },
 
@@ -73,8 +76,12 @@ export default class RadioButtonGroup extends PureComponent {
   handleChange = (name, state) => {
     if (state) {
       this.buttons[this.selectedButton].on = false;
+      this.buttons[this.selectedButton].blur();
 
       this.selectedButton = name;
+
+      this.buttons[this.selectedButton].focus();
+      this.focusedButton = this.selectedButton;
 
       this.props.onChange(this.props.name, name);
     }
@@ -115,15 +122,19 @@ export default class RadioButtonGroup extends PureComponent {
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.focusedButton = this.selectedButton;
+    if (ev.target.id === this.id) {
+      this.focusedButton = this.selectedButton;
 
-    this.buttons[this.focusedButton].focus();
+      this.buttons[this.focusedButton].focus();
+    }
   };
 
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.buttons[this.focusedButton].blur();
+    if (ev.target.id === this.id) {
+      this.buttons[this.focusedButton].blur();
+    }
   };
 
   renderChildren() {
@@ -150,9 +161,8 @@ export default class RadioButtonGroup extends PureComponent {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, RadioButtonGroup)}
         role="radiogroup"
-        tabIndex="0"
         id={this.id}
         style={styles.root}
         onKeyDown={this.handleKeyDown}

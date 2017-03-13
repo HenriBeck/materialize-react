@@ -171,14 +171,8 @@ test('should handle mouse events and call the specific handlers', (t) => {
 test('should work then no handlers are passed', (t) => {
   const wrapper = mount(<Button />);
 
-  wrapper.simulate('mouseDown');
-  wrapper.simulate('mouseUp');
-
   wrapper.simulate('touchStart');
   wrapper.simulate('touchEnd');
-
-  wrapper.simulate('keyDown');
-  wrapper.simulate('keyUp');
 
   wrapper.simulate('focus');
   wrapper.simulate('blur');

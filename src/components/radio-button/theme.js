@@ -20,6 +20,6 @@ export const defaultTheme = {
   padding: 4,
 
   onColor: 'var(primaryBase)',
-  offColor: 'var(secondaryTextColor)',
-  disabledColor: 'var(disabledColor)',
+  offColor: 'rgba(0, 0, 0, 0.54)',
+  disabledColor: 'rgba(0, 0, 0, 0.26)',
 };

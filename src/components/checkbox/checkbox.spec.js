@@ -40,35 +40,45 @@ test('should compute the colors of the checkbox based on the state', (t) => {
   const instance = wrapper.instance();
   const theme = instance.theme;
 
-  // Check if the colors are correct when the checkbox is disabled but not checked
   t.deepEqual(instance.colors, {
-    bgColor: theme.disabledBackgroundColor,
+    bgColor: theme.disabledBgColor,
     borderColor: theme.disabledBorderColor,
   });
 
-  // Make the checkbox checked
   wrapper.setProps({ checked: true });
 
-  // Check if the colors are correct when the checkbox is checked and disabled
   t.deepEqual(instance.colors, {
-    bgColor: theme.disabledCheckedBackgroundColor,
+    bgColor: theme.disabledCheckedBgColor,
     borderColor: theme.disabledBorderColor,
   });
 
   wrapper.setProps({ disabled: false });
 
-  // Check if the colors are correct when the checkbox is checked but not disabled
   t.deepEqual(instance.colors, {
-    bgColor: theme.checkedBackgroundColor,
+    bgColor: theme.checkedBgColor,
     borderColor: theme.checkedBorderColor,
   });
 
-  // Make the checkbox unchecked
   wrapper.setProps({ checked: false });
 
-  // Check if the colors are correct when the checkbox isn't checked and disabled
   t.deepEqual(instance.colors, {
-    bgColor: theme.uncheckedBackgroundColor,
+    bgColor: theme.uncheckedBgColor,
     borderColor: theme.uncheckedBorderColor,
   });
+});
+
+test('should update the checkmark color to the parent color when the checkbox is disabled', (t) => {
+  const wrapper = mount(
+    <Checkbox
+      disabled
+      checked={false}
+    />,
+  );
+  const instance = wrapper.instance();
+  const checkmark = wrapper.find('.checkbox--checkmark').first();
+
+  instance.parentBgColor = '#ffffff';
+  instance.updateCheckmarkColor();
+
+  t.deepEqual(checkmark.node.style['border-color'], instance.parentBgColor);
 });

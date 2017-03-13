@@ -103,6 +103,7 @@ export default class RadioButton extends PureComponent {
         padding: this.theme.padding,
         backgroundColor: 'inherit',
         border: 0,
+        pointerEvents: this.props.disabled && 'none',
         ...this.props.style,
       },
 
@@ -175,10 +176,10 @@ export default class RadioButton extends PureComponent {
       'scale(1)',
     ];
 
-    this.circle.animate(
-      { transform: this.state.on ? transform : transform.reverse() },
-      this.animationOptions,
-    );
+    this.circle.animate({ transform }, {
+      ...this.animationOptions,
+      direction: this.state.on ? 'normal' : 'reverse',
+    });
   }
 
   focus = () => {
@@ -204,7 +205,8 @@ export default class RadioButton extends PureComponent {
 
     return (
       <button
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, RadioButton)}
+        tabIndex="-1"
         role="radio"
         id={this.id}
         aria-checked={on}
@@ -244,6 +246,7 @@ export default class RadioButton extends PureComponent {
           className="radio-button--label"
           style={styles.label}
           onClick={this.handleToggle}
+          disabled={this.props.disabled}
         >
           {this.props.children}
         </Label>

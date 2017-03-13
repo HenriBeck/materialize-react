@@ -4,7 +4,6 @@ import React, {
 } from 'react';
 
 import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import { easeInOutQuad } from 'styles/timings';
 import Stylesheet from 'styles/stylesheet';
 import Ripple from 'components/ripple';
 
@@ -17,7 +16,6 @@ export default class Button extends PureComponent {
     noink: PropTypes.bool,
     className: PropTypes.string,
     onPress: PropTypes.func,
-    onRelease: PropTypes.func,
     onKeyDown: PropTypes.func,
     onKeyUp: PropTypes.func,
     onMouseDown: PropTypes.func,
@@ -36,7 +34,6 @@ export default class Button extends PureComponent {
     className: '',
     style: {},
     onPress: () => {},
-    onRelease: () => {},
     onMouseDown: () => {},
     onMouseUp: () => {},
     onKeyDown: () => {},
@@ -49,15 +46,9 @@ export default class Button extends PureComponent {
 
   static contextTypes = { theme: PropTypes.object };
 
-  static animationOptions = {
-    duration: 140,
-    easing: easeInOutQuad,
-    fill: 'forwards',
-  };
-
   static normalRippleProps = {
-    color: '#cccccc',
-    focusOpacity: 0.2,
+    color: '#999999',
+    initialOpacity: 0.4,
   };
 
   static raisedRippleProps = {
@@ -97,7 +88,7 @@ export default class Button extends PureComponent {
     return Stylesheet.compile({
       typo: this.theme.typo,
       userSelect: 'none',
-      elevation: [this.elevation, true],
+      elevation: this.elevation,
       display: 'inline-block',
       position: 'relative',
       backgroundColor: this.backgroundColor,
@@ -116,23 +107,22 @@ export default class Button extends PureComponent {
         return `${(styles.height - styles.lineHeight * styles.fontSize) / 2}px 8px`;
       },
       ...this.props.style,
-    }, { variables: this.context.theme.variables });
+    });
   }
 
   get rippleProps() {
     return this.props.raised ? Button.raisedRippleProps : Button.normalRippleProps;
   }
 
+  toggleState(updatedStateCallback = () => {}) {
+    this.setState(({ pressed }) => {
+      return { pressed: !pressed };
+    }, updatedStateCallback);
+  }
+
   handlePress = () => {
     if (this.props.raised) {
-      this.root.animate({
-        backgroundColor: [
-          this.theme.raisedBgColor,
-          this.theme.raisedAndPressedBgColor,
-        ],
-      }, Button.animationOptions);
-
-      this.setState({ pressed: true }, this.props.onPress);
+      this.toggleState(this.props.onPress);
     } else {
       this.props.onPress();
     }
@@ -140,16 +130,7 @@ export default class Button extends PureComponent {
 
   handleRelease = () => {
     if (this.props.raised) {
-      this.root.animate({
-        backgroundColor: [
-          this.theme.raisedAndPressedBgColor,
-          this.theme.raisedBgColor,
-        ],
-      }, Button.animationOptions);
-
-      this.setState({ pressed: false }, this.props.onRelease);
-    } else {
-      this.props.onRelease();
+      this.toggleState();
     }
   };
 
@@ -157,30 +138,22 @@ export default class Button extends PureComponent {
     this.props.onKeyDown(ev);
 
     if (Button.keyCodes.includes(ev.keyCode) && !this.keyDown) {
-      this.ripple.downAction();
-
       this.keyDown = true;
 
-      this.handlePress();
+      this.props.onPress();
     }
   };
 
   handleKeyUp = (ev) => {
     this.props.onKeyUp(ev);
 
-    if (this.keyDown) {
-      this.ripple.upAction();
-
-      this.keyDown = false;
-
-      this.handleRelease();
-    }
+    this.keyDown = false;
   };
 
   handleMouseDown = (ev) => {
     this.props.onMouseDown(ev);
 
-    this.handlePress(ev);
+    this.handlePress();
   };
 
   handleMouseUp = (ev) => {
@@ -192,7 +165,7 @@ export default class Button extends PureComponent {
   handleTouchStart = (ev) => {
     this.props.onTouchStart(ev);
 
-    this.handlePress(ev);
+    this.handlePress();
   };
 
   handleTouchEnd = (ev) => {
@@ -218,7 +191,7 @@ export default class Button extends PureComponent {
 
     return (
       <button
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, Button)}
         className={`button ${this.props.className}`}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}

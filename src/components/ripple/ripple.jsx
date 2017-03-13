@@ -42,12 +42,9 @@ export default class Ripple extends PureComponent {
     onTouchEnd: () => {},
   };
 
-  static MAX_RADIUS = 300;
+  static contextTypes = { theme: PropTypes.object };
 
-  static focusAnimationOptions = {
-    fill: 'forwards',
-    duration: 140,
-  };
+  static MAX_RADIUS = 300;
 
   state = { waves: [] };
 
@@ -62,6 +59,10 @@ export default class Ripple extends PureComponent {
   wavesCount = 0;
   waves = {};
   isFocused = false;
+  focusAnimationOptions = {
+    fill: 'forwards',
+    duration: this.context.theme.variables.transitionTime,
+  };
 
   /**
    * Get the computed color of the root node.
@@ -87,12 +88,16 @@ export default class Ripple extends PureComponent {
    * @param {String} color - The new focus color.
    */
   set focusColor(color) {
-    this.focus.animate({
-      backgroundColor: [
-        window.getComputedStyle(this.focus).backgroundColor,
-        color,
-      ],
-    }, Ripple.focusAnimationOptions);
+    if (this.isFocused) {
+      this.focus.animate({
+        backgroundColor: [
+          window.getComputedStyle(this.focus).backgroundColor,
+          color,
+        ],
+      }, this.focusAnimationOptions);
+    } else {
+      this.focus.style.backgroundColor = color;
+    }
   }
 
   get styles() {
@@ -169,15 +174,22 @@ export default class Ripple extends PureComponent {
     });
   }
 
+  toggleFocus(options) {
+    const animation = { opacity: [0, this.props.focusOpacity] };
+
+    if (this.props.round) {
+      animation.transform = ['scale(0)', 'scale(1)'];
+    }
+
+    this.focus.animate(animation, {
+      ...this.focusAnimationOptions,
+      ...options,
+    });
+  }
+
   addFocus = () => {
     if (!this.isFocused) {
-      const animation = { opacity: [0, this.props.focusOpacity] };
-
-      if (this.props.round) {
-        animation.transform = ['scale(0)', 'scale(1)'];
-      }
-
-      this.focus.animate(animation, Ripple.focusAnimationOptions);
+      this.toggleFocus({});
 
       this.isFocused = true;
     }
@@ -185,13 +197,7 @@ export default class Ripple extends PureComponent {
 
   removeFocus = () => {
     if (this.isFocused) {
-      const animation = { opacity: [this.props.focusOpacity, 0] };
-
-      if (this.props.round) {
-        animation.transform = ['scale(1)', 'scale(0)'];
-      }
-
-      this.focus.animate(animation, Ripple.focusAnimationOptions);
+      this.toggleFocus({ direction: 'reverse' });
 
       this.isFocused = false;
     }
@@ -246,7 +252,7 @@ export default class Ripple extends PureComponent {
 
     return (
       <span
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, Ripple)}
         className={`ripple ${this.props.className}`}
         style={styles.root}
         ref={(element) => { this.root = element; }}

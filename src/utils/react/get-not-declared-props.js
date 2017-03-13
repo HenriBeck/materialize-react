@@ -1,22 +1,14 @@
-import is from 'is_js';
-
-import omit from '../object/omit';
+import omit from 'lodash.omit';
 
 /**
  * A function to get the the not declared props of a React Component.
  *
- * @param {React.Component} instance - An instance of an React Component.
+ * @param {Object} instance - An instance of an React Component.
+ * @param {Object} component - The prop types.
  * @returns {Object} - Returns the props that aren't declared
  * but are passed to the component.
  */
-export default function getNotDeclaredProps(instance) {
-  if (!instance || is.not.object(instance)) {
-    return {};
-  }
-
+export default function getNotDeclaredProps(instance, component) {
   // eslint-disable-next-line react/forbid-foreign-prop-types
-  const { propTypes } = instance._reactInternalInstance._currentElement.type;
-  const props = instance.props;
-
-  return omit(props, Object.keys(propTypes));
+  return omit(instance.props, Object.keys(component.propTypes));
 }

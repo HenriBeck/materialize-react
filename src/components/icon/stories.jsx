@@ -12,25 +12,4 @@ storiesOf('Icon', module)
       disabled
       icon="github-circle"
     />
-  ))
-  .add('Logo', () => (
-    <Icon
-      icon="logo"
-      style={{ height: 100 }}
-    />
-  ))
-  .add('Class Icons', () => (
-    <div>
-      <Icon icon="scout" />
-      <Icon icon="soldier" />
-      <Icon icon="pyro" />
-
-      <Icon icon="demoman" />
-      <Icon icon="heavy" />
-      <Icon icon="engineer" />
-
-      <Icon icon="medic" />
-      <Icon icon="sniper" />
-      <Icon icon="spy" />
-    </div>
   ));

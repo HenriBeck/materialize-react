@@ -87,7 +87,7 @@ export default class Parallax extends PureComponent {
 
     return (
       <div
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, Parallax)}
         className={`parallax ${this.props.className}`}
         style={styles.root}
         ref={(element) => { this.root = element; }}

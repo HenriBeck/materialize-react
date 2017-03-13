@@ -116,7 +116,7 @@ export default class IconButton extends PureComponent {
 
     return (
       <button
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, IconButton)}
         className={`icon-button ${this.props.className}`}
         style={styles.root}
         aria-disabled={disabled}

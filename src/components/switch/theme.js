@@ -1,9 +1,7 @@
 import { PropTypes } from 'react';
 import {
+  grey50,
   grey400,
-  grey800,
-  whiteDisabled,
-  whiteDivider,
 } from 'styles/colors';
 
 export const schema = PropTypes.shape({
@@ -34,10 +32,10 @@ export const defaultTheme = {
   activeTrackColor: 'var(primaryBase)',
   activeRippleColor: 'var(primaryBase)',
 
-  inactiveThumbColor: grey400,
-  inactiveTrackColor: whiteDisabled,
-  inactiveRippleColor: grey400,
+  inactiveThumbColor: grey50,
+  inactiveTrackColor: 'rgba(0, 0, 0, 0.38)',
+  inactiveRippleColor: '#000000',
 
-  disabledThumbColor: grey800,
-  disabledTrackColor: whiteDivider,
+  disabledThumbColor: grey400,
+  disabledTrackColor: 'rgba(0, 0, 0, 0.12)',
 };

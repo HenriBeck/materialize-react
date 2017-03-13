@@ -15,7 +15,7 @@ test('should render a button', (t) => {
 });
 
 test('should have a ripple inside', (t) => {
-  const wrapper = shallow(<Fab icon="build" />);
+  const wrapper = mount(<Fab icon="build" />);
 
   t.deepEqual(wrapper.find('Ripple').length, 1);
 });
@@ -55,30 +55,6 @@ test('should set the aria-disabled prop to true', (t) => {
   const button = wrapper.find('button').first();
 
   t.deepEqual(button.prop('aria-disabled'), true);
-});
-
-test('should compute the elevation based on the props and the state', (t) => {
-  const wrapper = mount(<Fab icon="build" />);
-  const instance = wrapper.instance();
-
-  t.deepEqual(instance.elevation, 1);
-
-  wrapper.setState({ pressed: true });
-
-  const pressedElevation = instance.elevation;
-
-  t.deepEqual(pressedElevation, 4);
-
-  wrapper.setState({
-    pressed: false,
-    focused: true,
-  });
-
-  t.deepEqual(instance.elevation, pressedElevation);
-
-  wrapper.setProps({ disabled: true });
-
-  t.deepEqual(instance.elevation, 0);
 });
 
 test('should handle focus events correctly', (t) => {

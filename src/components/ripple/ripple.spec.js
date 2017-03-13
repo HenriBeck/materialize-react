@@ -1,8 +1,8 @@
 import test from 'ava';
 import React from 'react';
-import { mount } from 'enzyme';
 import sinon from 'sinon';
 
+import { mount } from 'tests/enzyme';
 import Ripple from './ripple.jsx';
 
 test('should render 3 spans', (t) => {
@@ -13,14 +13,14 @@ test('should render 3 spans', (t) => {
 
 test('should increment the zIndex of the parent with 1 so the ripple is always on top', (t) => {
   const wrapper = mount(<Ripple style={{ zIndex: 5 }} />);
-  const root = wrapper.find('span').first();
+  const root = wrapper.find('.ripple');
 
   t.deepEqual(root.node.style['z-index'], '6');
 });
 
 test('should add pointerEvents none to the root when the nowaves prop is passed', (t) => {
   const wrapper = mount(<Ripple nowaves />);
-  const root = wrapper.find('span').first();
+  const root = wrapper.find('.ripple');
 
   t.deepEqual(root.prop('style').pointerEvents, 'none');
 });
@@ -31,10 +31,7 @@ test('should be able to add focus to the ripple', (t) => {
 
   instance.addFocus();
 
-  const span = wrapper
-    .children()
-    .find('span')
-    .first();
+  const span = wrapper.find('.ripple--focus');
 
   t.deepEqual(instance.isFocused, true);
   t.deepEqual(span.node.style.opacity, String(instance.props.focusOpacity));
@@ -46,10 +43,7 @@ test('should scale the ripple in when the ripple is round', (t) => {
 
   instance.addFocus();
 
-  const span = wrapper
-    .children()
-    .find('span')
-    .first();
+  const span = wrapper.find('.ripple--focus');
 
   t.deepEqual(span.node.style.transform, 'scale(1)');
 
@@ -66,10 +60,7 @@ test('should be able to remove the focus', (t) => {
 
   instance.removeFocus();
 
-  const span = wrapper
-    .children()
-    .find('span')
-    .first();
+  const span = wrapper.find('.ripple--focus');
 
   t.deepEqual(instance.isFocused, false);
   t.deepEqual(span.node.style.opacity, '0');
@@ -83,7 +74,7 @@ test('should not fade the focus element in when the element is already in focus 
 
   instance.addFocus();
 
-  t.pass();
+  t.deepEqual(instance.isFocused, true);
 });
 
 test('should only fade out the focus element when the element is already in focus state', (t) => {
@@ -92,7 +83,7 @@ test('should only fade out the focus element when the element is already in focu
 
   instance.removeFocus();
 
-  t.pass();
+  t.deepEqual(instance.isFocused, false);
 });
 
 test('should be able to change the focus color', (t) => {
@@ -101,12 +92,15 @@ test('should be able to change the focus color', (t) => {
 
   instance.focusColor = 'black';
 
-  const focusElement = wrapper
-    .children()
-    .find('span')
-    .first();
+  const span = wrapper.find('.ripple--focus');
 
-  t.deepEqual(focusElement.node.style['background-color'], 'black');
+  t.deepEqual(span.node.style['background-color'], 'black');
+
+  instance.addFocus();
+
+  instance.focusColor = 'white';
+
+  t.deepEqual(span.node.style['background-color'], 'white');
 });
 
 test('should add the ripple where the user clicked', (t) => {

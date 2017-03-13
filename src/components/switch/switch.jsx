@@ -226,7 +226,7 @@ export default class Switch extends PureComponent {
 
     return (
       <button
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, Switch)}
         aria-pressed={toggled}
         aria-disabled={disabled}
         id={this.id}
@@ -271,6 +271,7 @@ export default class Switch extends PureComponent {
         <Label
           style={styles.label}
           for={this.id}
+          disabled={this.props.disabled}
           className="switch--label"
         >
           {this.props.children}

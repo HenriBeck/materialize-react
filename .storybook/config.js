@@ -6,7 +6,6 @@ import {
 import { withKnobs } from '@kadira/storybook-addon-knobs';
 import { setOptions } from '@kadira/storybook-addon-options';
 import 'web-animations-js';
-import 'babel-polyfill';
 import 'mdi/css/materialdesignicons.min.css';
 import 'normalize.css';
 

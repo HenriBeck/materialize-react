@@ -19,6 +19,7 @@ export default class CheckboxContainer extends PureComponent {
     children: PropTypes.node,
     noink: PropTypes.bool,
     labelPosition: PropTypes.oneOf(['left', 'right']),
+    className: PropTypes.string,
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
     onKeyUp: PropTypes.func,
@@ -33,6 +34,7 @@ export default class CheckboxContainer extends PureComponent {
     disabled: false,
     noink: false,
     labelPosition: 'right',
+    className: '',
     children: '',
     onChange: () => {},
     onKeyDown: () => {},
@@ -47,7 +49,19 @@ export default class CheckboxContainer extends PureComponent {
 
   state = { checked: this.props.defaultChecked };
 
-  componentId = new Chance().string();
+  componentDidMount() {
+    this.checkbox.setBgColor(window.getComputedStyle(this.root).backgroundColor);
+  }
+
+  componentDidUpdate(props, { checked }) {
+    if (checked !== this.state.checked) {
+      this.ripple.focusColor = this.state.checked
+        ? this.theme.checkedBorderColor
+        : this.theme.uncheckedBorderColor;
+    }
+  }
+
+  id = new Chance().string();
 
   get theme() {
     return this.context.theme.checkbox;
@@ -55,10 +69,10 @@ export default class CheckboxContainer extends PureComponent {
 
   get rippleColors() {
     return {
-      color: this.state.checked ? this.theme.checkedRippleColor : this.theme.uncheckedRippleColor,
+      color: this.state.checked ? this.theme.checkedBorderColor : this.theme.uncheckedBorderColor,
       focusColor: this.props.defaultChecked
-        ? this.theme.checkedRippleFocusColor
-        : this.theme.uncheckedRippleFocusColor,
+        ? this.theme.checkedBorderColor
+        : this.theme.uncheckedBorderColor,
     };
   }
 
@@ -109,13 +123,12 @@ export default class CheckboxContainer extends PureComponent {
   }
 
   handleToggle = () => {
-    this.setState(
-      (prevState) => { return { checked: !prevState.checked }; },
-      () => this.props.onChange(this.props.name, this.state.checked),
-    );
+    this.setState((prevState) => {
+      return { checked: !prevState.checked };
+    }, () => this.props.onChange(this.props.name, this.state.checked));
   };
 
-  handleKeyDown = (ev = {}) => {
+  handleKeyDown = (ev) => {
     this.props.onKeyDown(ev);
 
     if (CheckboxContainer.keyCodes.includes(ev.keyCode) && !this.keyDown) {
@@ -150,13 +163,14 @@ export default class CheckboxContainer extends PureComponent {
 
     return (
       <button
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, CheckboxContainer)}
         tabIndex={disabled ? -1 : 0}
         aria-checked={checked}
         aria-disabled={disabled}
         role="checkbox"
+        className={`checkbox ${this.props.className}`}
         style={styles.root}
-        id={this.componentId}
+        id={this.id}
         onKeyDown={this.handleKeyDown}
         onKeyUp={this.handleKeyUp}
         onFocus={this.handleFocus}
@@ -164,19 +178,22 @@ export default class CheckboxContainer extends PureComponent {
         ref={(element) => { this.root = element; }}
       >
         <span
+          style={styles.container}
+          className="checkbox--container"
           onMouseDown={this.handleToggle}
           onTouchStart={this.handleToggle}
-          style={styles.container}
         >
           <Checkbox
             checked={this.state.checked}
             disabled={this.props.disabled}
+            ref={(element) => { this.checkbox = element; }}
           />
 
           <Ripple
             round
             center
             nowaves={this.props.noink}
+            className="checkbox--ripple"
             ref={(element) => { this.ripple = element; }}
             {...this.rippleColors}
           />
@@ -184,7 +201,8 @@ export default class CheckboxContainer extends PureComponent {
 
         <Label
           style={styles.label}
-          for={this.componentId}
+          for={this.id}
+          className="checkbox--label"
           onMouseDown={this.handleToggle}
           onTouchStart={this.handleToggle}
         >

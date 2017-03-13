@@ -15,14 +15,25 @@ test('should render a button', (t) => {
 });
 
 test('should get and set the state with the checked property', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="test" />);
+  const wrapper = mount(<CheckboxContainer name="test" />);
   const instance = wrapper.instance();
 
-  t.deepEqual(instance.checked, wrapper.state('checked'));
+  instance.checked = true;
 
-  instance.checked = !wrapper.state('checked');
+  t.deepEqual(wrapper.state('checked'), true);
 
-  t.deepEqual(instance.checked, wrapper.state('checked'));
+  instance.checked = false;
+
+  t.deepEqual(wrapper.state('checked'), false);
+
+  wrapper.setProps({ disabled: true });
+});
+
+test('should get the current state with the checked property', (t) => {
+  const wrapper = mount(<CheckboxContainer name="test" />);
+  const instance = wrapper.instance();
+
+  t.deepEqual(instance.checked, false);
 });
 
 test('should have a negative tabIndex and aria-disabled set to true when it\'s disabled', (t) => {
@@ -32,9 +43,10 @@ test('should have a negative tabIndex and aria-disabled set to true when it\'s d
       name="test"
     />,
   );
+  const checkbox = wrapper.find('.checkbox').first();
 
-  t.deepEqual(wrapper.find({ 'aria-disabled': true }).length, 1);
-  t.deepEqual(wrapper.find({ tabIndex: -1 }).length, 1);
+  t.deepEqual(checkbox.prop('aria-disabled'), true);
+  t.deepEqual(checkbox.prop('tabIndex'), -1);
 });
 
 test('should have the checked state set to true when the defaultChecked prop is passed', (t) => {
@@ -48,28 +60,24 @@ test('should have the checked state set to true when the defaultChecked prop is 
   t.deepEqual(wrapper.state('checked'), true);
 });
 
-test('should call the focus event handler passed to the element', (t) => {
-  const onFocus = sinon.spy();
-  const onBlur = sinon.spy();
-  const wrapper = mount(
-    <CheckboxContainer
-      name="test"
-      onFocus={onFocus}
-      onBlur={onBlur}
-    />,
-  );
+test('should add focus the the ripple and remove it', (t) => {
+  const addFocus = sinon.spy();
+  const removeFocus = sinon.spy();
+  const wrapper = mount(<CheckboxContainer name="test" />);
+  const instance = wrapper.instance();
+
+  instance.ripple.addFocus = addFocus;
+  instance.ripple.removeFocus = removeFocus;
 
   wrapper.simulate('focus');
-
-  t.deepEqual(onFocus.callCount, 1);
-
   wrapper.simulate('blur');
 
-  t.deepEqual(onBlur.callCount, 1);
+  t.deepEqual(addFocus.callCount, 1);
+  t.deepEqual(removeFocus.callCount, 1);
 });
 
 test('should not update the state when there is no keyCode in a key event', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="test" />);
+  const wrapper = mount(<CheckboxContainer name="test" />);
 
   wrapper.simulate('keyDown');
 
@@ -78,21 +86,20 @@ test('should not update the state when there is no keyCode in a key event', (t) 
 
 test('should only update the state when the key is a valid keyCode', (t) => {
   const onKeyDown = sinon.spy();
-  const wrapper = shallow(
+  const wrapper = mount(
     <CheckboxContainer
       name="test"
       onKeyDown={onKeyDown}
     />,
   );
 
-  t.plan(CheckboxContainer.keyCodes.length * 3);
+  t.plan(CheckboxContainer.keyCodes.length * 2);
 
   CheckboxContainer.keyCodes.forEach((keyCode, index) => {
     wrapper.simulate('keyDown', { keyCode });
 
     t.deepEqual(onKeyDown.callCount, index + 1);
     t.deepEqual(wrapper.state('checked'), true);
-    t.deepEqual(wrapper.instance().keyDown, true);
 
     wrapper.simulate('keyUp');
   });
@@ -100,7 +107,7 @@ test('should only update the state when the key is a valid keyCode', (t) => {
 
 test('should not update the state when the keyUp event hasn\'t fired yet', (t) => {
   const onChange = sinon.spy();
-  const wrapper = shallow(
+  const wrapper = mount(
     <CheckboxContainer
       name="test"
       onChange={onChange}
@@ -114,16 +121,4 @@ test('should not update the state when the keyUp event hasn\'t fired yet', (t) =
   wrapper.simulate('keyDown', { keyCode: CheckboxContainer.keyCodes[0] });
 
   t.deepEqual(onChange.callCount, 1);
-});
-
-test('events should work when no event handlers have been passed', (t) => {
-  const wrapper = mount(<CheckboxContainer name="test" />);
-
-  wrapper.simulate('focus');
-  wrapper.simulate('blur');
-
-  wrapper.simulate('keyDown');
-  wrapper.simulate('keyUp');
-
-  t.pass();
 });

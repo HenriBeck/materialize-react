@@ -1,21 +1,22 @@
 import React, { PropTypes } from 'react';
 
 import Stylesheet from 'styles/stylesheet';
-import omit from 'utils/object/omit';
+import omit from 'object.omit';
 
 export default function Label({
   children,
   style,
   className,
+  disabled,
   ...otherProps
 }, { theme }) {
   const compiledStyle = Stylesheet.compile({
     typo: theme.label.typo,
     userSelect: 'none',
     padding: '0 8px',
-    color: 'var(textColor)',
+    color: disabled ? theme.label.disabledColor : theme.label.color,
     ...style,
-  }, { variables: theme.variables });
+  });
 
   return (
     <label
@@ -34,11 +35,13 @@ Label.propTypes = {
   for: PropTypes.string.isRequired,
   style: PropTypes.object,
   className: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 Label.defaultProps = {
   style: {},
   className: '',
+  disabled: false,
 };
 
 Label.contextTypes = { theme: PropTypes.object };

@@ -5,13 +5,7 @@
     "stage-2"
   ],
   "plugins": [
-    "transform-export-extensions"
-  ],
-  "env": {
-    "test": {
-      "plugins": [
-        [ "babel-plugin-webpack-alias", { "config": "./webpack.config.js" } ]
-      ]
-    }
-  }
+    "transform-export-extensions",
+    [ "babel-plugin-webpack-alias", { "config": "./webpack.config.js" } ]
+  ]
 }

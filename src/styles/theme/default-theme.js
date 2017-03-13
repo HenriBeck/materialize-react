@@ -5,12 +5,16 @@ import {
   yellowA200,
   yellowA100,
   yellowA400,
-  whiteText,
-  whiteSecondaryText,
-  whiteDivider,
-  whiteDisabled,
-  whiteIcons,
-  whiteHint,
+  blackText,
+  blackSecondaryText,
+  blackDisabled,
+  blackDivider,
+  blackIcons,
+  blackHint,
+  grey300,
+  grey100,
+  grey50,
+  white500,
   orangeA700,
 } from '../colors';
 import { defaultTheme as button } from 'components/button/theme';
@@ -27,6 +31,7 @@ import { defaultTheme as iconButton } from 'components/icon-button/theme';
 import { defaultTheme as tabs } from 'components/tabs/theme';
 import { defaultTheme as tab } from 'components/tab/theme';
 import { defaultTheme as chip } from 'components/chip/theme';
+import { defaultTheme as expansionPanel } from 'components/expansion-panel/theme';
 
 export default {
   variables: {
@@ -38,14 +43,17 @@ export default {
     accentLight: yellowA100,
     accentDark: yellowA400,
 
-    backgroundColor: '#303030',
+    statusBarColor: grey300,
+    appBar: grey100,
+    backgroundColor: grey50,
+    cards: white500,
 
-    textColor: whiteText,
-    secondaryTextColor: whiteSecondaryText,
-    dividerColor: whiteDivider,
-    disabledColor: whiteDisabled,
-    iconColor: whiteIcons,
-    hintColor: whiteHint,
+    textColor: blackText,
+    secondaryTextColor: blackSecondaryText,
+    disabledColor: blackDisabled,
+    iconColor: blackIcons,
+    hintColor: blackHint,
+    dividerColor: blackDivider,
 
     // Other
     errorColor: orangeA700,
@@ -67,4 +75,5 @@ export default {
   tabs,
   tab,
   chip,
+  expansionPanel,
 };

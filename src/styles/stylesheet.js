@@ -1,6 +1,5 @@
 import is from 'is_js';
 
-import merge from 'utils/object/merge';
 import Prefixer from './prefixer';
 import size from './plugins/size';
 import position from './plugins/position';
@@ -46,14 +45,14 @@ export default class Stylesheet {
         if (plugins.includes(key) && Stylesheet.plugins[key]) {
           const args = is.array(value) ? value : [value];
 
-          return merge({}, current, Stylesheet.plugins[key](...args));
+          return Object.assign({}, current, Stylesheet.plugins[key](...args));
         } else if (is.json(value)) {
           value = Stylesheet.compilePlugins(value, plugins);
         } else if (is.function(value)) {
           value = value(current);
         }
 
-        return merge({}, current, { [key]: value });
+        return Object.assign({}, current, { [key]: value });
       }, {});
   }
 
@@ -71,7 +70,11 @@ export default class Stylesheet {
         const value = object[key];
 
         if (is.json(value)) {
-          return merge({}, current, { [key]: Stylesheet.compileTransforms(value, transforms) });
+          return Object.assign(
+            {},
+            current,
+            { [key]: Stylesheet.compileTransforms(value, transforms) },
+          );
         }
 
         const prefix = Stylesheet.prefixer.prefix(key);
@@ -79,7 +82,7 @@ export default class Stylesheet {
           ? transforms.reduce((val, func) => func(val), value)
           : value;
 
-        return merge({}, current, { [prefix]: newValue });
+        return Object.assign({}, current, { [prefix]: newValue });
       }, {});
   }
 

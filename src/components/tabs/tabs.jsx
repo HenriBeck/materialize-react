@@ -80,6 +80,12 @@ export default class Tabs extends PureComponent {
     }
 
     this.props.onTabChange(this.state.selectedTab);
+
+    this.tabs[selectedTab].blur();
+
+    this.focusedTab = this.state.selectedTab;
+
+    this.tabs[this.focusedTab].focus();
   }
 
   tabs = {};

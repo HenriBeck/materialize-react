@@ -19,7 +19,6 @@ export default class FAB extends PureComponent {
     mini: PropTypes.bool,
     animateIn: PropTypes.bool,
     onPress: PropTypes.func,
-    onRelease: PropTypes.func,
     onMouseDown: PropTypes.func,
     onMouseUp: PropTypes.func,
     onTouchStart: PropTypes.func,
@@ -38,7 +37,6 @@ export default class FAB extends PureComponent {
     mini: false,
     animateIn: false,
     onPress: () => {},
-    onRelease: () => {},
     onMouseDown: () => {},
     onMouseUp: () => {},
     onTouchStart: () => {},
@@ -72,25 +70,24 @@ export default class FAB extends PureComponent {
     const {
       mini,
       disabled,
-      style,
     } = this.props;
     const size = mini ? this.theme.miniSize : this.theme.normalSize;
 
     return Stylesheet.compile({
       root: {
-        shadow: [this.elevation, true],
+        elevation: disabled ? this.theme.disabledElevation : this.theme.elevation,
         size,
         zIndex: 16,
         position: 'relative',
         boxSizing: 'border-box',
         padding: (size - this.theme.iconSize) / 2,
-        backgroundColor: disabled ? this.theme.disabledBackgroundColor : this.theme.backgroundColor,
+        backgroundColor: disabled ? this.theme.disabledBgColor : this.theme.bgColor,
         borderRadius: '50%',
         border: 0,
         outline: 'none',
-        pointerEvents: disabled ? 'none' : 'auto',
+        pointerEvents: disabled && 'none',
         color: this.theme.iconColor,
-        ...style,
+        ...this.props.style,
       },
 
       icon: {
@@ -98,15 +95,15 @@ export default class FAB extends PureComponent {
         size: 24,
         color: disabled ? this.theme.disabledIconColor : this.theme.iconColor,
       },
+
+      shadow: {
+        position: ['absolute', 0],
+        borderRadius: 'inherit',
+        elevation: this.theme.focusedElevation,
+        opacity: this.state.pressed || this.state.focused ? 1 : 0,
+        transition: `opacity ${this.context.theme.variables.transitionTime}ms linear`,
+      },
     });
-  }
-
-  get elevation() {
-    if (!this.props.disabled) {
-      return this.state.pressed || this.state.focused ? 4 : 1;
-    }
-
-    return 0;
   }
 
   animateIn = () => {
@@ -116,19 +113,26 @@ export default class FAB extends PureComponent {
         'scale(1) rotate(0deg)',
       ],
     }, {
-      duration: this.context.theme.variables.defaultTransitionTime * 2,
+      duration: this.context.theme.variables.transitionTime * 2,
       easing: easeInOutCubic,
       fill: 'forwards',
     });
   };
 
-  handlePress = () => {
-    this.setState({ pressed: true }, this.props.onPress);
-  };
+  togglePress(stateUpdatedCallback = () => {}) {
+    return () => this.setState(({ pressed }) => {
+      return { pressed: !pressed };
+    }, stateUpdatedCallback);
+  }
 
-  handleRelease = () => {
-    this.setState({ pressed: false }, this.props.onRelease);
-  };
+  toggleFocus() {
+    this.setState(({ focused }) => {
+      return { focused: !focused };
+    });
+  }
+
+  handlePress = this.togglePress(this.props.onPress);
+  handleRelease = this.togglePress();
 
   handleKeyDown = (ev = {}) => {
     this.props.onKeyDown(ev);
@@ -147,13 +151,13 @@ export default class FAB extends PureComponent {
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.setState({ focused: true });
+    this.toggleFocus();
   };
 
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.setState({ focused: false });
+    this.toggleFocus();
   };
 
   handleMouseDown = (ev) => {
@@ -186,7 +190,7 @@ export default class FAB extends PureComponent {
 
     return (
       <button
-        {...getNotDeclaredProps(this)}
+        {...getNotDeclaredProps(this, FAB)}
         className={`fab ${this.props.className}`}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
@@ -201,6 +205,11 @@ export default class FAB extends PureComponent {
         onTouchStart={this.handleTouchStart}
         onTouchEnd={this.handleTouchEnd}
       >
+        <span
+          className="fab--shadow"
+          style={styles.shadow}
+        />
+
         <Ripple
           round
           center

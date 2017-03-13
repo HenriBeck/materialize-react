@@ -145,6 +145,17 @@ test('should move the focus up and down the buttons', (t) => {
   wrapper.simulate('blur');
 });
 
+test('should not update the focusedButton if the target element is the button group', (t) => {
+  const wrapper = render();
+  const instance = wrapper.instance();
+
+  wrapper.simulate('focus', { target: { id: 'id' } });
+
+  t.deepEqual(instance.focusedButton, null);
+
+  wrapper.simulate('blur', { target: { id: 'id' } });
+});
+
 test('should not update the buttons if the key up event hasn\'t happened yet', (t) => {
   const wrapper = render();
   const instance = wrapper.instance();

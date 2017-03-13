@@ -73,3 +73,40 @@ test('should have a span with a className of chip--img if the img prop is an obj
 
   t.deepEqual(wrapper.find('span.chip--image').length, 1);
 });
+
+test('should update the state when the button get\'s focused and blurred', (t) => {
+  const wrapper = shallow(<Chip id="test">Content</Chip>);
+
+  wrapper.simulate('focus');
+
+  t.deepEqual(wrapper.state('focused'), true);
+
+  wrapper.simulate('blur');
+
+  t.deepEqual(wrapper.state('focused'), false);
+});
+
+test('should call the onDelete prop if the delete key is pressed', (t) => {
+  const onDelete = sinon.spy();
+  const wrapper = shallow(
+    <Chip
+      id="test"
+      onDelete={onDelete}
+    >
+      Content
+    </Chip>,
+  );
+  const instance = wrapper.instance();
+
+  wrapper.simulate('keyDown', { keyCode: 46 });
+
+  t.deepEqual(onDelete.callCount, 1);
+  t.deepEqual(instance.keyDown, true);
+
+  wrapper.simulate('keyDown', { keyCode: 46 });
+
+  t.deepEqual(onDelete.callCount, 1);
+
+  wrapper.simulate('keyUp');
+  t.deepEqual(instance.keyDown, false);
+});

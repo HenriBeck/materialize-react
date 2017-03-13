@@ -48,9 +48,13 @@ test('should update the state when the toggleFocus function is called', (t) => {
   );
   const instance = wrapper.instance();
 
-  instance.toggleFocus();
+  instance.focus();
 
   t.deepEqual(wrapper.state('isFocused'), true);
+
+  instance.blur();
+
+  t.deepEqual(wrapper.state('isFocused'), false);
 });
 
 test('should update the color of the content if the active prop changes', (t) => {

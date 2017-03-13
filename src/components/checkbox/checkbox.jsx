@@ -20,10 +20,6 @@ export default class Checkbox extends PureComponent {
     this.lastBorderColor = borderColor;
     this.checkbox.style.borderColor = borderColor;
 
-    if (this.props.disabled) {
-      this.updateCheckmarkColor();
-    }
-
     if (this.props.checked) {
       this.animateCheckmark();
     }
@@ -47,9 +43,10 @@ export default class Checkbox extends PureComponent {
 
   lastBgColor = 'transparent';
   lastBorderColor = null;
+  parentBgColor = null;
   animationOptions = {
     easing: easeInOutCubic,
-    duration: this.context.theme.variables.defaultTransitionTime,
+    duration: this.context.theme.variables.transitionTime,
     fill: 'forwards',
   };
 
@@ -63,14 +60,14 @@ export default class Checkbox extends PureComponent {
     if (this.props.disabled) {
       return {
         bgColor: checked
-          ? this.theme.disabledCheckedBackgroundColor
-          : this.theme.disabledBackgroundColor,
+          ? this.theme.disabledCheckedBgColor
+          : this.theme.disabledBgColor,
         borderColor: this.theme.disabledBorderColor,
       };
     }
 
     return {
-      bgColor: checked ? this.theme.checkedBackgroundColor : this.theme.uncheckedBackgroundColor,
+      bgColor: checked ? this.theme.checkedBgColor : this.theme.uncheckedBgColor,
       borderColor: checked ? this.theme.checkedBorderColor : this.theme.uncheckedBorderColor,
     };
   }
@@ -102,9 +99,15 @@ export default class Checkbox extends PureComponent {
     });
   }
 
+  setBgColor(bgColor) {
+    this.parentBgColor = bgColor;
+
+    this.updateCheckmarkColor();
+  }
+
   updateCheckmarkColor() {
     this.checkmark.style.borderColor = this.props.disabled
-      ? window.getComputedStyle(this.checkbox).backgroundColor
+      ? this.parentBgColor
       : this.theme.checkmarkColor;
   }
 
@@ -137,10 +140,12 @@ export default class Checkbox extends PureComponent {
     return (
       <span
         style={styles.checkbox}
+        className="checkbox--checkbox"
         ref={(element) => { this.checkbox = element; }}
       >
         <span
           style={styles.checkmark}
+          className="checkbox--checkmark"
           ref={(element) => { this.checkmark = element; }}
         />
       </span>

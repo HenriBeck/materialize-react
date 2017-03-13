@@ -23,13 +23,6 @@ test('should have aria-valuemin and aria-valuemax on the root node', (t) => {
   t.deepEqual(root.prop('aria-valuemax'), 100);
 });
 
-test('should have aria-disabled on the root node when the progress bar is disabled', (t) => {
-  const wrapper = shallow(<Progress disabled />);
-  const root = wrapper.find({ role: 'progressbar' });
-
-  t.deepEqual(root.prop('aria-disabled'), true);
-});
-
 test('should set the aria-valuenow to the value of the progress prop', (t) => {
   const wrapper = mount(<Progress progress={40} />);
   const root = wrapper.find({ role: 'progressbar' });
