@@ -2,11 +2,11 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import CheckboxContainer from './checkbox-container.jsx';
+import CheckboxContainer from './checkbox-container';
 import {
   shallow,
   mount,
-} from 'tests/enzyme';
+} from '/tests/helpers/enzyme';
 
 test('should render a button', (t) => {
   const wrapper = shallow(<CheckboxContainer name="test" />);

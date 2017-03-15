@@ -3,7 +3,7 @@ import React, {
   PropTypes,
 } from 'react';
 
-import Stylesheet from 'styles/stylesheet';
+import Stylesheet from '/src/styles/stylesheet';
 import Ripple from '../ripple';
 
 export default class Tab extends PureComponent {

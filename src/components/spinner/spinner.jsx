@@ -3,13 +3,10 @@ import React, {
   PropTypes,
 } from 'react';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import Stylesheet from 'styles/stylesheet';
-import { easeInOutCubic } from 'styles/timings';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import Stylesheet from '/src/styles/stylesheet';
+import { easeInOutCubic } from '/src/styles/timings';
 
-/**
- * A spinner that follows the material guidelines.
- */
 export default class Spinner extends PureComponent {
   static propTypes = {
     active: PropTypes.bool,

@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import Button from './button.jsx';
+import Button from './button';
 
 storiesOf('Button', module)
   .add('Flat Button', () => (

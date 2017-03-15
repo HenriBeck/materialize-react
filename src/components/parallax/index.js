@@ -1,1 +1,1 @@
-export default from './parallax.jsx';
+export default from './parallax';

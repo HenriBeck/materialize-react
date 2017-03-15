@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import RadioButtonGroup from './radio-button-group.jsx';
+import RadioButtonGroup from './radio-button-group';
 import RadioButton from '../radio-button';
 
 storiesOf('RadioButtonGroup', module)

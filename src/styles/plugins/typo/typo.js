@@ -1,5 +1,5 @@
 import typos from './typography';
-import warning from 'utils/warning';
+import warning from '/src/utils/warning';
 
 /**
  * A function to get the typography based on a name.

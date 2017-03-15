@@ -2,8 +2,8 @@ import test from 'ava';
 import React from 'react';
 import sinon from 'sinon';
 
-import { mount } from 'tests/enzyme';
-import Ripple from './ripple.jsx';
+import { mount } from '/tests/helpers/enzyme';
+import Ripple from './ripple';
 
 test('should render 3 spans', (t) => {
   const wrapper = mount(<Ripple />);

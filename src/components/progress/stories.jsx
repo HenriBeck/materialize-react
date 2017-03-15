@@ -5,7 +5,7 @@ import {
   boolean,
 } from '@kadira/storybook-addon-knobs';
 
-import Progress from './progress.jsx';
+import Progress from './progress';
 
 const style = { width: 400 };
 

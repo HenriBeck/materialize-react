@@ -2,8 +2,8 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import Chip from './chip.jsx';
-import { shallow } from 'tests/enzyme';
+import Chip from './chip';
+import { shallow } from '/tests/helpers/enzyme';
 
 test('should render a span with the class of chip', (t) => {
   const wrapper = shallow(<Chip id="test">Content</Chip>);

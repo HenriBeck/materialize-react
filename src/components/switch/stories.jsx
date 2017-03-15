@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import Switch from './switch.jsx';
+import Switch from './switch';
 
 storiesOf('Switch', module)
   .add('Default styles', () => (

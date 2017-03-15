@@ -5,10 +5,10 @@ import React, {
 } from 'react';
 import Chance from 'chance';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import Stylesheet from 'styles/stylesheet';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import Stylesheet from '/src/styles/stylesheet';
 import Label from '../label';
-import getNextIndex from 'utils/get-next-index';
+import getNextIndex from '/src/utils/get-next-index';
 import RadioButton from '../radio-button';
 
 export default class RadioButtonGroup extends PureComponent {

@@ -3,8 +3,8 @@ import React, {
   PropTypes,
 } from 'react';
 
-import { easeInOutCubic } from 'styles/timings';
-import Stylesheet from 'styles/stylesheet';
+import { easeInOutCubic } from '/src/styles/timings';
+import Stylesheet from '/src/styles/stylesheet';
 
 export default class Checkbox extends PureComponent {
   static propTypes = {

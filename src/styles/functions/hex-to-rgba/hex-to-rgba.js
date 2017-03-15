@@ -1,4 +1,4 @@
-import warning from 'utils/warning';
+import warning from '/src/utils/warning';
 
 /**
  * Convert a hex color to rgba with an alpha value.

@@ -2,7 +2,7 @@ import { PropTypes } from 'react';
 import {
   grey50,
   grey400,
-} from 'styles/colors';
+} from '/src/styles/colors';
 
 export const schema = PropTypes.shape({
   thumbSize: PropTypes.number,

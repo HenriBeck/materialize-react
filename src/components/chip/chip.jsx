@@ -4,9 +4,9 @@ import React, {
 } from 'react';
 import is from 'is_js';
 
-import Stylesheet from 'styles/stylesheet';
+import Stylesheet from '/src/styles/stylesheet';
 import Icon from '../icon';
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
 
 export default class Chip extends PureComponent {
   static propTypes = {

@@ -5,8 +5,8 @@ import React, {
 
 import Ripple from '../ripple';
 import Icon from '../icon';
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import Stylesheet from 'styles/stylesheet';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import Stylesheet from '/src/styles/stylesheet';
 
 export default class IconButton extends PureComponent {
   static propTypes = {

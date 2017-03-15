@@ -3,7 +3,7 @@ import test from 'ava';
 import is from 'is_js';
 import { shallow } from 'enzyme';
 
-import Theme from './theme.jsx';
+import Theme from './theme';
 
 test('should just render the children passed to theme', (t) => {
   const wrapper = shallow(

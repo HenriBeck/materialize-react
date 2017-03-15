@@ -4,11 +4,11 @@ import React, {
 } from 'react';
 import Chance from 'chance';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import Ripple from 'components/ripple';
-import Label from 'components/label';
-import Stylesheet from 'styles/stylesheet';
-import Checkbox from './checkbox.jsx';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import Ripple from '../ripple';
+import Label from '../label';
+import Stylesheet from '/src/styles/stylesheet';
+import Checkbox from './checkbox';
 
 export default class CheckboxContainer extends PureComponent {
   static propTypes = {

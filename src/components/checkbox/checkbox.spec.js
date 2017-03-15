@@ -1,8 +1,8 @@
 import React from 'react';
 import test from 'ava';
 
-import Checkbox from './checkbox.jsx';
-import { mount } from 'tests/enzyme';
+import Checkbox from './checkbox';
+import { mount } from '/tests/helpers/enzyme';
 
 test('should render a span with a span inside', (t) => {
   const wrapper = mount(

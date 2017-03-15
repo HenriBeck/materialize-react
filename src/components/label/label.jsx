@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
+import omit from 'lodash.omit';
 
-import Stylesheet from 'styles/stylesheet';
-import omit from 'object.omit';
+import Stylesheet from '/src/styles/stylesheet';
 
 export default function Label({
   children,

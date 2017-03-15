@@ -1,1 +1,1 @@
-export default from './divider.jsx';
+export default from './divider';

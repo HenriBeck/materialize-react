@@ -2,8 +2,8 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import { mount } from 'tests/enzyme';
-import RadioButtonGroup from './radio-button-group.jsx';
+import { mount } from '/tests/helpers/enzyme';
+import RadioButtonGroup from './radio-button-group';
 import RadioButton from '../radio-button';
 
 function render(props = {}) {

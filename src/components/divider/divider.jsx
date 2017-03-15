@@ -1,5 +1,3 @@
-/* eslint-disable require-jsdoc */
-
 import React, { PropTypes } from 'react';
 
 export default function Divider({

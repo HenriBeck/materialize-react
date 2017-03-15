@@ -3,9 +3,6 @@ import React, {
   PureComponent,
 } from 'react';
 
-/**
- * A React Component that will render a wave and scale in until the upAction method get's called.
- */
 export default class Wave extends PureComponent {
   static propTypes = {
     id: PropTypes.number.isRequired,

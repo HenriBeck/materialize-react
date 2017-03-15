@@ -3,9 +3,9 @@ import React, {
   PropTypes,
 } from 'react';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import Stylesheet from 'styles/stylesheet';
-import Ripple from 'components/ripple';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import Stylesheet from '/src/styles/stylesheet';
+import Ripple from '../ripple';
 
 export default class Button extends PureComponent {
   static propTypes = {

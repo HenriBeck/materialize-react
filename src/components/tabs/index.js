@@ -1,1 +1,1 @@
-export default from './tabs.jsx';
+export default from './tabs';

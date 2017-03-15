@@ -3,10 +3,10 @@ import React from 'react';
 import {
   shallow,
   mount,
-} from 'tests/enzyme';
+} from '/tests/helpers/enzyme';
 import sinon from 'sinon';
 
-import Button from './button.jsx';
+import Button from './button';
 
 test('should render the button', (t) => {
   const wrapper = shallow(<Button />);

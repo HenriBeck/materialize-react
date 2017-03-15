@@ -3,7 +3,7 @@ import {
   shallow as eShallow,
 } from 'enzyme';
 
-import { compileTheme } from 'styles/theme/theme.jsx';
+import { compileTheme } from '../../src/styles/theme/theme';
 
 /**
  * Get the context for the components and compile the variables.

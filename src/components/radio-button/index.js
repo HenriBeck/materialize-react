@@ -1,1 +1,1 @@
-export default from './radio-button.jsx';
+export default from './radio-button';

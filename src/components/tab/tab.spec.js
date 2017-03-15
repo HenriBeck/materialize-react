@@ -3,8 +3,8 @@ import test from 'ava';
 import sinon from 'sinon';
 import is from 'is_js';
 
-import Tab from './tab.jsx';
-import { mount } from 'tests/enzyme';
+import Tab from './tab';
+import { mount } from '/tests/helpers/enzyme';
 
 test('should render a div with a span inside and the children inside', (t) => {
   const wrapper = mount(

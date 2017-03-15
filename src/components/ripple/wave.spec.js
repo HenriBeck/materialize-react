@@ -2,8 +2,8 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import Wave from './wave.jsx';
-import { mount } from 'tests/enzyme';
+import Wave from './wave';
+import { mount } from '/tests/helpers/enzyme';
 
 function renderWave(onFinish = () => {}) {
   return mount(

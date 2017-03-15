@@ -1,11 +1,11 @@
 import test from 'ava';
 import React from 'react';
 
-import Progress from './progress.jsx';
+import Progress from './progress';
 import {
   shallow,
   mount,
-} from 'tests/enzyme';
+} from '/tests/helpers/enzyme';
 
 test('should have a root node with the role of progressbar', (t) => {
   const wrapper = shallow(<Progress />);

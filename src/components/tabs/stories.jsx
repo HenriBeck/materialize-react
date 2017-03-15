@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import Tabs from './tabs.jsx';
+import Tabs from './tabs';
 import Tab from '../tab';
 
 storiesOf('Tabs', module)

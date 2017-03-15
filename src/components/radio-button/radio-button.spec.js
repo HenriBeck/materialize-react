@@ -2,9 +2,9 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import RadioButton from './radio-button.jsx';
-import { mount } from 'tests/enzyme';
-import hexToRgba from 'styles/functions/hex-to-rgba';
+import RadioButton from './radio-button';
+import { mount } from '/tests/helpers/enzyme';
+import hexToRgba from '/src/styles/functions/hex-to-rgba';
 
 test('should render a button', (t) => {
   const wrapper = mount(<RadioButton name="test" />);

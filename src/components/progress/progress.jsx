@@ -3,14 +3,11 @@ import React, {
   PropTypes,
 } from 'react';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
-import Stylesheet from 'styles/stylesheet';
-import { easeInOutCubic } from 'styles/timings';
-import warning from 'utils/warning';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import Stylesheet from '/src/styles/stylesheet';
+import { easeInOutCubic } from '/src/styles/timings';
+import warning from '/src/utils/warning';
 
-/**
- * A progress bar which follows the material design guidelines.
- */
 export default class Progress extends PureComponent {
   static propTypes = {
     mode: PropTypes.oneOf([

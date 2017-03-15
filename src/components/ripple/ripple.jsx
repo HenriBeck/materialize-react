@@ -3,11 +3,11 @@ import React, {
   PureComponent,
 } from 'react';
 
-import Wave from './wave.jsx';
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
+import Wave from './wave';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
 import ElementRect from './element-rect';
-import Stylesheet from 'styles/stylesheet';
-import Event from 'utils/event';
+import Stylesheet from '/src/styles/stylesheet';
+import Event from '/src/utils/event';
 
 export default class Ripple extends PureComponent {
   static propTypes = {

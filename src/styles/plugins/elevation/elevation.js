@@ -2,7 +2,7 @@ import {
   shadow1,
   shadow2,
   shadow3,
-} from 'styles/colors';
+} from '/src/styles/colors';
 
 /**
  * A function to generate shadows.

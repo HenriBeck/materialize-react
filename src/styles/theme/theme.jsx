@@ -1,37 +1,34 @@
-import {
+import React, {
   PureComponent,
   PropTypes,
 } from 'react';
+import merge from 'lodash.merge';
 
 import themeSchema from './theme-schema';
 import defaultTheme from './default-theme';
-import merge from 'lodash.merge';
-import Stylesheet from 'styles/stylesheet';
+import Stylesheet from '../stylesheet';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
 
-/**
- * A function to compile and merge a theme with the default one.
- *
- * @param {Object} theme - The theme to merge.
- * @returns {Object} - Returns the compiled merged theme.
- */
 export function compileTheme(theme) {
   const mergedTheme = merge({}, defaultTheme, theme);
 
   return Stylesheet.compile(mergedTheme, { variables: mergedTheme.variables }, []);
 }
 
-/**
- * A component to provide the theme as a context.
- */
 export default class Theme extends PureComponent {
   static propTypes = {
     theme: themeSchema,
     children: PropTypes.node,
+    component: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string,
+    ]),
   };
 
   static defaultProps = {
     theme: {},
     children: '',
+    component: 'div',
   };
 
   static childContextTypes = { theme: PropTypes.object };
@@ -41,6 +38,12 @@ export default class Theme extends PureComponent {
   }
 
   render() {
-    return this.props.children;
+    const { component: Component } = this.props;
+
+    return (
+      <Component {...getNotDeclaredProps(this, Theme)}>
+        {this.props.children}
+      </Component>
+    );
   }
 }

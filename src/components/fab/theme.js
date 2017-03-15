@@ -3,7 +3,7 @@ import {
   grey500,
   grey300,
   whiteIcons,
-} from 'styles/colors';
+} from '/src/styles/colors';
 
 export const schema = PropTypes.shape({
   miniSize: PropTypes.number,

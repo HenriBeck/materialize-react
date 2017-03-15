@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import Checkbox from './checkbox-container.jsx';
+import Checkbox from './checkbox-container';
 
 storiesOf('Checkbox', module)
   .add('Default styles', () => (

@@ -1,1 +1,1 @@
-export default from './checkbox-container.jsx';
+export default from './checkbox-container';

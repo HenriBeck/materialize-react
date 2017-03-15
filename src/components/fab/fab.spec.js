@@ -2,11 +2,11 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import Fab from './fab.jsx';
+import Fab from './fab';
 import {
   shallow,
   mount,
-} from 'tests/enzyme';
+} from '/tests/helpers/enzyme';
 
 test('should render a button', (t) => {
   const wrapper = shallow(<Fab icon="build" />);

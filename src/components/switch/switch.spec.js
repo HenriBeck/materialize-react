@@ -2,8 +2,8 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import { mount } from 'tests/enzyme';
-import Switch from './switch.jsx';
+import { mount } from '/tests/helpers/enzyme';
+import Switch from './switch';
 
 test('should render a button', (t) => {
   const wrapper = mount(<Switch name="test" />);

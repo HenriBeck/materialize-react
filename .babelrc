@@ -6,6 +6,6 @@
   ],
   "plugins": [
     "transform-export-extensions",
-    [ "babel-plugin-webpack-alias", { "config": "./webpack.config.js" } ]
+    "root-import"
   ]
 }

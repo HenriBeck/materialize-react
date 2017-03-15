@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import IconButton from './icon-button.jsx';
+import IconButton from './icon-button';
 
 storiesOf('IconButton', module)
   .add('Default styles', () => (

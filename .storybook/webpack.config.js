@@ -1,7 +1,5 @@
 /* eslint-disable import/no-commonjs */
 
-const config = require('../webpack.config');
-
 module.exports = {
   module: {
     loaders: [{
@@ -15,6 +13,4 @@ module.exports = {
       ],
     }],
   },
-
-  resolve: config.resolve,
 };

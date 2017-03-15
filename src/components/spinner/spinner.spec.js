@@ -1,8 +1,8 @@
 import test from 'ava';
 import React from 'react';
-import { mount } from 'tests/enzyme';
 
-import Spinner from './spinner.jsx';
+import { mount } from '/tests/helpers/enzyme';
+import Spinner from './spinner';
 
 test('should render a div with an svg inside', (t) => {
   const wrapper = mount(<Spinner />);

@@ -9,25 +9,23 @@ import 'web-animations-js';
 import 'mdi/css/materialdesignicons.min.css';
 import 'normalize.css';
 
-import Theme from '../src/styles/theme/theme.jsx';
-import defaultTheme from '../src/styles/theme/default-theme';
+import Theme from '../src/styles/theme/theme';
+import Background from '../src/components/background';
 
 const req = require.context('../src/components', true, /stories\.jsx$/);
 
 addDecorator((...args) => (
   <Theme>
-    <div
+    <Background
       style={{
-        backgroundColor: defaultTheme.variables.backgroundColor,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: defaultTheme.variables.textColor,
         minHeight: '100vh',
       }}
     >
       {withKnobs(...args)}
-    </div>
+    </Background>
   </Theme>
 ));
 

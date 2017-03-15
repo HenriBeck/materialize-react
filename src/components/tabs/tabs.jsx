@@ -4,9 +4,9 @@ import React, {
   Children,
 } from 'react';
 
-import Stylesheet from 'styles/stylesheet';
-import { easeInOutQuad } from 'styles/timings';
-import getNextIndex from 'utils/get-next-index';
+import Stylesheet from '/src/styles/stylesheet';
+import { easeInOutQuad } from '/src/styles/timings';
+import getNextIndex from '/src/utils/get-next-index';
 import Tab from '../tab';
 
 export default class Tabs extends PureComponent {

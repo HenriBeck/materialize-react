@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import Icon from './icon.jsx';
+import Icon from './icon';
 
 storiesOf('Icon', module)
   .add('MDI Icon', () => (

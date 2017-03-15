@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import Ripple from './ripple.jsx';
+import Ripple from './ripple';
 
 storiesOf('Ripple', module)
   .addDecorator(story => (

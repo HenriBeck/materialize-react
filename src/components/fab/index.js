@@ -1,1 +1,1 @@
-export default from './fab.jsx';
+export default from './fab';

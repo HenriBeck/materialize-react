@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import Chip from './chip.jsx';
+import Chip from './chip';
 
 storiesOf('Chip', module)
   .add('Default styles', () => (

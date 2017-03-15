@@ -3,11 +3,11 @@ import React, {
   PropTypes,
 } from 'react';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
 import Ripple from '../ripple';
 import Icon from '../icon';
-import Stylesheet from 'styles/stylesheet';
-import { easeInOutCubic } from 'styles/timings';
+import Stylesheet from '/src/styles/stylesheet';
+import { easeInOutCubic } from '/src/styles/timings';
 
 export default class FAB extends PureComponent {
   static propTypes = {

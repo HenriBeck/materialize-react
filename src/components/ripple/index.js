@@ -1,1 +1,1 @@
-export default from './ripple.jsx';
+export default from './ripple';

@@ -4,9 +4,9 @@ import React, {
 } from 'react';
 import Chance from 'chance';
 
-import getNotDeclaredProps from 'utils/react/get-not-declared-props';
+import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
 import Ripple from '../ripple';
-import Stylesheet from 'styles/stylesheet';
+import Stylesheet from '/src/styles/stylesheet';
 import Label from '../label';
 
 export default class RadioButton extends PureComponent {

@@ -2,11 +2,11 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import IconButton from './icon-button.jsx';
+import IconButton from './icon-button';
 import {
   shallow,
   mount,
-} from 'tests/enzyme';
+} from '/tests/helpers/enzyme';
 
 test('should render a button and should have an Icon inside', (t) => {
   const wrapper = shallow(<IconButton icon="github" />);

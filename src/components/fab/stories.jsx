@@ -4,7 +4,7 @@ import {
   action,
 } from '@kadira/storybook';
 
-import Fab from './fab.jsx';
+import Fab from './fab';
 
 storiesOf('FAB', module)
   .add('Default styles', () => (

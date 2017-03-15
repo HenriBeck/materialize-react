@@ -2,9 +2,9 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import Tabs from './tabs.jsx';
+import Tabs from './tabs';
 import Tab from '../tab';
-import { mount } from 'tests/enzyme';
+import { mount } from '/tests/helpers/enzyme';
 
 function render(props) {
   return mount(
