@@ -1,20 +1,16 @@
 {
-  "name": "tf2pickup-components",
+  "name": "@tf2-pickup/components",
   "version": "0.2.0",
   "description": "React Components for TF2Pickup Website and other stuff",
-  "main": "dist",
-  "directories": {
-    "dist": "lib/index.js"
-  },
+  "main": "lib/index.js",
   "options": {
     "eslint": "--ext .jsx,.js src/ .storybook/ tests/",
     "storybook": "-p 9001"
   },
   "scripts": {
-    "update": "yarn upgrade",
     "start-storybook": "start-storybook $npm_package_options_storybook",
     "build-storybook": "build-storybook -o ./.storybook-build",
-    "test": "cross-env NODE_ENV=\"test\" ava",
+    "test": "NODE_ENV=\"test\" ava",
     "test:watch": "yarn run test -- --watch",
     "test:coverage": "nyc yarn run test",
     "build": "babel src --out-dir lib",
@@ -49,31 +45,30 @@
     "@kadira/storybook": "2.35.3",
     "@kadira/storybook-addon-comments": "1.9.1",
     "@kadira/storybook-addon-knobs": "1.7.1",
-    "@kadira/storybook-addon-options": "1.0.1",
+    "@kadira/storybook-addon-options": "1.0.2",
     "@kadira/storybook-database-cloud": "2.3.2",
     "ava": "0.18.2",
     "babel-cli": "6.24.0",
     "babel-plugin-root-import": "git+https://github.com/TF2PickupNET/babel-plugin-root-import#1.0.0",
     "babel-plugin-transform-export-extensions": "6.22.0",
     "babel-polyfill": "6.23.0",
-    "babel-preset-latest": "6.22.0",
+    "babel-preset-latest": "6.24.0",
     "babel-preset-react": "6.23.0",
     "babel-preset-stage-2": "6.22.0",
-    "babel-register": "6.23.0",
-    "browser-env": "2.0.25",
+    "babel-register": "6.24.0",
+    "browser-env": "2.0.26",
     "coveralls": "2.12.0",
-    "cross-env": "3.2.3",
-    "css-loader": "0.27.1",
-    "enzyme": "2.7.1",
-    "eslint": "3.17.1",
+    "css-loader": "0.27.3",
+    "enzyme": "2.8.0",
+    "eslint": "3.18.0",
     "eslint-config-tf2pickup": "git+https://github.com/TF2PickupNET/eslint-config-tf2pickup#4.16.1",
-    "normalize.css": "5.0.0",
+    "normalize.css": "6.0.0",
     "nyc": "10.1.2",
     "pre-commit": "1.2.2",
     "react-addons-test-utils": "15.4.2",
     "react-dom": "15.4.2",
-    "sinon": "1.17.7",
-    "style-loader": "0.13.2"
+    "sinon": "2.1.0",
+    "style-loader": "0.16.0"
   },
   "ava": {
     "files": [
@@ -108,7 +103,6 @@
     "report-dir": "./.coverage"
   },
   "pre-commit": [
-    "update",
     "test",
     "lint"
   ]

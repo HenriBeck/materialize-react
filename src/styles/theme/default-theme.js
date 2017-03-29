@@ -31,7 +31,8 @@ import { defaultTheme as iconButton } from '/src/components/icon-button/theme';
 import { defaultTheme as tabs } from '/src/components/tabs/theme';
 import { defaultTheme as tab } from '/src/components/tab/theme';
 import { defaultTheme as chip } from '/src/components/chip/theme';
-import { defaultTheme as expansionPanel } from '/src/components/expansion-panel/theme';
+import { defaultTheme as toolbar } from '/src/components/toolbar/theme';
+import { defaultTheme as drawer } from '/src/components/drawer/theme';
 
 export default {
   variables: {
@@ -75,5 +76,6 @@ export default {
   tabs,
   tab,
   chip,
-  expansionPanel,
+  toolbar,
+  drawer,
 };

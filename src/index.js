@@ -17,6 +17,8 @@ export Switch from './components/switch';
 export Tab from './components/tab';
 export Tabs from './components/tabs';
 export Background from './components/background';
+export Toolbar from './components/toolbar';
+export Drawer from './components/drawer';
 
 // Styles
 export * as colors from './styles/colors';

@@ -14,7 +14,8 @@ import { schema as iconButton } from '/src/components/icon-button/theme';
 import { schema as tabs } from '/src/components/tabs/theme';
 import { schema as tab } from '/src/components/tab/theme';
 import { schema as chip } from '/src/components/chip/theme';
-import { schema as expansionPanel } from '/src/components/expansion-panel/theme';
+import { schema as toolbar } from '/src/components/toolbar/theme';
+import { schema as drawer } from '/src/components/drawer/theme';
 
 export default PropTypes.shape({
   variables: PropTypes.shape({
@@ -55,5 +56,6 @@ export default PropTypes.shape({
   tabs,
   tab,
   chip,
-  expansionPanel,
+  toolbar,
+  drawer,
 });
