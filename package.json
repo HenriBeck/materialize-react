@@ -19,7 +19,8 @@
     "report-coverage": "yarn run generate-report:lcov | coveralls",
     "lint": "eslint $npm_package_options_eslint",
     "lint:fix": "yarn run lint -- --fix",
-    "prepublish": "yarn run build"
+    "prepublish": "yarn run build",
+    "precommit": "yarn upgrade && yarn run lint && yarn run test"
   },
   "repository": {
     "type": "git",
@@ -62,9 +63,9 @@
     "enzyme": "2.8.0",
     "eslint": "3.18.0",
     "eslint-config-tf2pickup": "git+https://github.com/TF2PickupNET/eslint-config-tf2pickup#4.16.1",
+    "husky": "^0.13.3",
     "normalize.css": "6.0.0",
     "nyc": "10.1.2",
-    "pre-commit": "1.2.2",
     "react-addons-test-utils": "15.4.2",
     "react-dom": "15.4.2",
     "sinon": "2.1.0",
@@ -101,9 +102,5 @@
     "functions": 75,
     "branches": 75,
     "report-dir": "./.coverage"
-  },
-  "pre-commit": [
-    "test",
-    "lint"
-  ]
+  }
 }
