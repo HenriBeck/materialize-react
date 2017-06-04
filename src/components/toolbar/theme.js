@@ -1,6 +1,6 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
-import { grey100 } from '/src/styles/colors';
+import { grey100 } from '../../styles/colors';
 
 export const schema = PropTypes.shape({
   height: PropTypes.number,

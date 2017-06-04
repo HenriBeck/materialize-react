@@ -27,7 +27,7 @@ export default {
     fontSize: 112,
     fontWeight: 300,
     letterSpacing: '-.044em',
-    lineHeight: 120 / 112,
+    lineHeight: 120,
   },
 
   display3: {
@@ -36,7 +36,7 @@ export default {
     fontSize: 56,
     fontWeight: 400,
     letterSpacing: '-.026em',
-    lineHeight: 60 / 56,
+    lineHeight: 60,
   },
 
   display2: {
@@ -44,7 +44,7 @@ export default {
     fontSize: 45,
     fontWeight: 400,
     letterSpacing: '-.018em',
-    lineHeight: 48 / 45,
+    lineHeight: 48,
   },
 
   display1: {
@@ -52,7 +52,7 @@ export default {
     fontSize: 34,
     fontWeight: 400,
     letterSpacing: '-.01em',
-    lineHeight: 40 / 34,
+    lineHeight: 40,
   },
 
   headline: {
@@ -60,7 +60,7 @@ export default {
     fontSize: 24,
     fontWeight: 400,
     letterSpacing: '-.012em',
-    lineHeight: 32 / 24,
+    lineHeight: 32,
   },
 
   title: {
@@ -68,28 +68,28 @@ export default {
     ...noWrap,
     fontSize: 20,
     fontWeight: 400,
-    lineHeight: 28 / 20,
+    lineHeight: 28,
   },
 
   subhead: {
     ...commonBase,
     fontSize: 16,
     fontWeight: 400,
-    lineHeight: 24 / 16,
+    lineHeight: 24,
   },
 
   body1: {
     ...commonBase,
     fontSize: 14,
     fontWeight: 400,
-    lineHeight: 20 / 14,
+    lineHeight: 20,
   },
 
   body2: {
     ...commonBase,
     fontSize: 14,
     fontWeight: 500,
-    lineHeight: 24 / 14,
+    lineHeight: 24,
   },
 
   caption: {
@@ -98,7 +98,7 @@ export default {
     fontSize: 12,
     fontWeight: 400,
     letterSpacing: '0.011em',
-    lineHeight: 20 / 12,
+    lineHeight: 20,
   },
 
   menu: {
@@ -106,7 +106,7 @@ export default {
     ...noWrap,
     fontSize: 13,
     fontWeight: 500,
-    lineHeight: 24 / 13,
+    lineHeight: 24,
   },
 
   button: {
@@ -115,7 +115,7 @@ export default {
     fontSize: 14,
     fontWeight: 500,
     letterSpacing: '0.018em',
-    lineHeight: 24 / 14,
+    lineHeight: 24,
     textTransform: 'uppercase',
     textAlign: 'center',
   },
@@ -124,13 +124,13 @@ export default {
     ...commonCode,
     fontSize: 14,
     fontWeight: 500,
-    lineHeight: 20 / 14,
+    lineHeight: 20,
   },
 
   code2: {
     fontSize: 14,
     fontWeight: 700,
-    lineHeight: 20 / 14,
+    lineHeight: 20,
   },
 
   label: {
@@ -138,6 +138,6 @@ export default {
     ...noWrap,
     fontSize: 12,
     fontWeight: 400,
-    lineHeight: 1,
+    lineHeight: 16,
   },
 };

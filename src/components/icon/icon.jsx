@@ -1,36 +1,38 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function Icon({
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+
+function Icon({
   icon,
   className,
-  disabled,
-  style,
+  classes,
   ...props
-}, { theme }) {
+}) {
   return (
     <i
-      className={`icon mdi mdi-24px mdi-${icon} ${className}`}
-      style={{
-        color: disabled ? theme.icon.disabledColor : theme.icon.color,
-        lineHeight: 1,
-        ...style,
-      }}
-      {...props}
+      className={`mdi-${icon} ${className} ${classes.icon}`}
+      {...getNotDeclaredProps({ props }, Icon)}
     />
   );
 }
 
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
   className: PropTypes.string,
-  disabled: PropTypes.bool,
-  style: PropTypes.object,
 };
 
-Icon.defaultProps = {
-  className: '',
-  disabled: false,
-  style: {},
+Icon.defaultProps = { className: '' };
+
+const styles = {
+  icon: {
+    composes: 'icon mdi mdi-24px',
+    color: props => (props.disabled ? props.theme.disabledColor : props.theme.color),
+    lineHeight: 24,
+  },
 };
 
-Icon.contextTypes = { theme: PropTypes.object };
+export default connectWithTheme(injectSheet(styles)(Icon), 'icon');

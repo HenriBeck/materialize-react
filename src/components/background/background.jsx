@@ -1,18 +1,29 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import injectSheet from 'react-jss';
+import omit from 'lodash.omit';
 
+import connectWithTheme from '../../styles/theme/connect-with-theme';
+
+/**
+ * A function to inherit some global styling like color and backgroundColor.
+ *
+ * @param {Object} props - Props object.
+ * @param {JSX} props.children - The children to render inside.
+ * @param {Object} props.classes - The object with the classNames inside.
+ * @param {String} [props.className] - Additional className to be added.
+ * @returns {JSX} - Returns the JSX.
+ */
 function Background({
-  style,
   children,
+  classes,
+  className,
   ...props
-}, { theme }) {
+}) {
   return (
     <div
-      style={{
-        color: theme.variables.textColor,
-        backgroundColor: theme.variables.backgroundColor,
-        ...style,
-      }}
-      {...props}
+      className={`background ${classes.root} ${className}`}
+      {...omit(props, 'theme', 'sheet')}
     >
       {children}
     </div>
@@ -21,11 +32,17 @@ function Background({
 
 Background.propTypes = {
   children: PropTypes.node.isRequired,
-  style: PropTypes.object,
+  classes: PropTypes.object.isRequired,
+  className: PropTypes.string,
 };
 
-Background.defaultProps = { style: {} };
+Background.defaultProps = { className: '' };
 
-Background.contextTypes = { theme: PropTypes.object };
+const styles = {
+  root: {
+    color: props => props.theme.variables.textColor,
+    backgroundColor: props => props.theme.variables.backgroundColor,
+  },
+};
 
-export default Background;
+export default connectWithTheme(injectSheet(styles)(Background));

@@ -1,23 +1,35 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
-import merge from 'lodash.merge';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import themeSchema from './theme-schema';
-import defaultTheme from './default-theme';
-import Stylesheet from '../stylesheet';
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import {
+  defaultTheme,
+  defaultVars,
+} from './default-theme';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
-export function compileTheme(theme) {
-  const mergedTheme = merge({}, defaultTheme, theme);
+export function compileTheme(variables, theme) {
+  return Object
+    .keys(defaultTheme)
+    .reduce((current, component) => {
+      const userTheme = theme[component] ? theme[component](variables) : {};
 
-  return Stylesheet.compile(mergedTheme, { variables: mergedTheme.variables }, []);
+      return {
+        ...current,
+        [component]: Object.assign({}, defaultTheme[component](variables), userTheme),
+      };
+    }, {});
 }
 
+/**
+ * A React Component to supply the theme for the elements via the context.
+ *
+ * @class
+ */
 export default class Theme extends PureComponent {
   static propTypes = {
-    theme: themeSchema,
+    theme: PropTypes.object,
+    variables: PropTypes.object,
     children: PropTypes.node,
     component: PropTypes.oneOfType([
       PropTypes.func,
@@ -27,14 +39,22 @@ export default class Theme extends PureComponent {
 
   static defaultProps = {
     theme: {},
+    variables: {},
     children: '',
     component: 'div',
   };
 
-  static childContextTypes = { theme: PropTypes.object };
+  static childContextTypes = { theme: themeSchema };
 
+  /**
+   * Merge the passed in theme with the default one.
+   */
   getChildContext() {
-    return { theme: compileTheme(this.props.theme) };
+    return { theme: compileTheme(this.variables, this.props.theme) };
+  }
+
+  get variables() {
+    return Object.assign({}, defaultVars, this.props.variables);
   }
 
   render() {

@@ -2,54 +2,44 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
+import { mount } from '../../../tests/helpers/enzyme';
 import Wave from './wave';
-import { mount } from '/tests/helpers/enzyme';
 
-function renderWave(onFinish = () => {}) {
-  return mount(
-    <Wave
-      id={1}
-      style={{}}
-      radius={2}
-      initialOpacity={0.6}
-      onFinish={onFinish}
-    />,
-  );
-}
+const defaultProps = {
+  classes: { wave: 'wave' },
+  id: 1,
+  style: {},
+  radius: 2,
+  initialOpacity: 0.25,
+  onFinish: () => {},
+};
 
 test('should render a span', (t) => {
-  const wrapper = renderWave();
+  const wrapper = mount(<Wave {...defaultProps} />);
 
   t.deepEqual(wrapper.find('span').length, 1);
 });
 
-test('should animate the span to scale 1', (t) => {
-  const wrapper = renderWave();
-  const span = wrapper.find('span').first();
-
-  t.deepEqual(span.node.style.transform, 'scale(1)');
-});
-
-test('should fade the wave out when the upAction get\'s called', (t) => {
-  const wrapper = renderWave();
+test('animate the wave out', (t) => {
+  const wrapper = mount(<Wave {...defaultProps} />);
   const instance = wrapper.instance();
 
-  instance.upAction();
+  instance.startFadeOutAnimation();
 
-  const span = wrapper.find('span').first();
-
-  t.deepEqual(span.node.style.opacity, '0');
+  t.true(Boolean(instance.animation));
 });
 
-test('should call the onFinish function when the wave faded out', (t) => {
-  const onFinish = sinon.spy();
-  const wrapper = renderWave(onFinish);
+test('should call the onFinish handler', (t) => {
+  const props = {
+    ...defaultProps,
+    onFinish: sinon.spy(),
+  };
+  const wrapper = mount(<Wave {...props} />);
   const instance = wrapper.instance();
 
-  instance.upAction();
+  instance.startFadeOutAnimation();
 
   instance.animation.onfinish();
 
-  t.deepEqual(onFinish.callCount, 1);
+  t.deepEqual(props.onFinish.callCount, 1);
 });
-

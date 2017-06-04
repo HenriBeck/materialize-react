@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  storiesOf,
-  action,
-} from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import Chip from './chip';
 
@@ -34,20 +32,6 @@ storiesOf('Chip', module)
     <Chip
       deletable
       id="test"
-      onDelete={action('Delete')}
-    >
-      Hello
-    </Chip>
-  ))
-  .add('With delete option', () => (
-    <Chip
-      deletable
-      id="test"
-      img={{
-        color: 'blue',
-        text: 'ab',
-        textColor: 'white',
-      }}
       onDelete={action('Delete')}
     >
       Hello

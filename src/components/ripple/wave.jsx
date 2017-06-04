@@ -1,10 +1,14 @@
-import React, {
-  PropTypes,
-  PureComponent,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
+/**
+ * A React Component to render a wave.
+ *
+ * @class
+ */
 export default class Wave extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     id: PropTypes.number.isRequired,
     style: PropTypes.object.isRequired,
     radius: PropTypes.number.isRequired,
@@ -12,39 +16,30 @@ export default class Wave extends PureComponent {
     onFinish: PropTypes.func.isRequired,
   };
 
+  /**
+   * Start the scale animation.
+   */
   componentDidMount() {
     this.wave.animate([
       { transform: 'scale(0)' },
       { transform: 'scale(1)' },
     ], {
-      duration: 250 + this.props.radius * 0.1,
+      duration: 180 + this.props.radius * 0.11,
       fill: 'forwards',
     });
   }
 
-  get style() {
-    return {
-      position: 'absolute',
-      pointerEvents: 'none',
-      opacity: this.props.initialOpacity,
-      overflow: 'hidden',
-      borderRadius: '50%',
-      transform: 'scale(0)',
-      willChange: 'opacity, transform',
-      zIndex: 1,
-      ...this.props.style,
-    };
-  }
-
-  upAction() {
-    this.animation = this.wave.animate({
-      opacity: [
-        this.props.initialOpacity,
-        0,
-      ],
-    }, {
+  /**
+   * Start the fade out animation and call the onFinish prop when the animation has finished
+   * so we can remove the element from the dom.
+   */
+  startFadeOutAnimation() {
+    this.animation = this.wave.animate([
+      { opacity: this.props.initialOpacity },
+      { opacity: 0 },
+    ], {
       fill: 'forwards',
-      duration: 250,
+      duration: 180,
     });
 
     this.animation.onfinish = () => this.props.onFinish(this.props.id);
@@ -53,8 +48,8 @@ export default class Wave extends PureComponent {
   render() {
     return (
       <span
-        className="ripple--wave"
-        style={this.style}
+        className={this.props.classes.wave}
+        style={this.props.style}
         ref={(element) => { this.wave = element; }}
       />
     );

@@ -1,35 +1,39 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
-  elevation: PropTypes.number,
-  pressedElevation: PropTypes.number,
-  typo: PropTypes.string,
+  elevation: PropTypes.number.isRequired,
+  pressedElevation: PropTypes.number.isRequired,
 
-  height: PropTypes.number,
-  minWidth: PropTypes.number,
-  margin: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
+  height: PropTypes.number.isRequired,
+  minWidth: PropTypes.number.isRequired,
+  margin: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 
-  bgColor: PropTypes.string,
-  raisedBgColor: PropTypes.string,
-  raisedAndPressedBgColor: PropTypes.string,
-  disabledBgColor: PropTypes.string,
-  raisedAndDisabledBgColor: PropTypes.string,
+  bgColor: PropTypes.string.isRequired,
+  raisedBgColor: PropTypes.string.isRequired,
+  raisedAndPressedBgColor: PropTypes.string.isRequired,
+  disabledBgColor: PropTypes.string.isRequired,
+  raisedAndDisabledBgColor: PropTypes.string.isRequired,
 
-  color: PropTypes.string,
-  disabledColor: PropTypes.string,
+  color: PropTypes.string.isRequired,
+  disabledColor: PropTypes.string.isRequired,
 });
 
-export const defaultTheme = {
-  elevation: 2,
-  pressedElevation: 4,
-  typo: 'button',
-  height: 36,
-  minWidth: 88,
-  margin: '0 8px',
-  bgColor: '#ffffff',
-  raisedBgColor: '#ffffff',
-  disabledBgColor: 'transparent',
-  raisedAndDisabledBgColor: 'rgba(0, 0, 0, 0.12)',
-  color: 'var(textColor)',
-  disabledColor: 'rgba(0, 0, 0, 0.26)',
-};
+export function defaultTheme(vars) {
+  return {
+    elevation: 2,
+    pressedElevation: 4,
+
+    height: 36,
+    minWidth: 88,
+    margin: '0 8px',
+
+    bgColor: 'transparent',
+    raisedBgColor: vars.primaryBase,
+    disabledBgColor: 'transparent',
+    raisedAndDisabledBgColor: 'rgba(0, 0, 0, 0.12)',
+    raisedAndPressedBgColor: vars.primaryDark,
+
+    color: vars.textColor,
+    disabledColor: 'rgba(0, 0, 0, 0.30)',
+  };
+}

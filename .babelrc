@@ -1,11 +1,8 @@
 {
   "presets": [
     "react",
-    "latest",
+    "env",
     "stage-2"
   ],
-  "plugins": [
-    "transform-export-extensions",
-    "root-import"
-  ]
+  "plugins": ["transform-export-extensions"]
 }

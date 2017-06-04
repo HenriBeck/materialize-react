@@ -1,27 +1,25 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
 import is from 'is_js';
+import PropTypes from 'prop-types';
 
-import Stylesheet from '/src/styles/stylesheet';
 import Icon from '../icon';
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import layout from '../../styles/plugins/layout';
+import typo from '../../styles/plugins/typo';
+import elevation from '../../styles/plugins/elevation';
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
 
-export default class Chip extends PureComponent {
+export class Chip extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     img: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.shape({
-        color: PropTypes.string,
-        text: PropTypes.string,
-        textColor: PropTypes.string,
-      }),
+      PropTypes.object,
     ]),
     className: PropTypes.string,
-    style: PropTypes.object,
     deletable: PropTypes.bool,
     onDelete: PropTypes.func,
     onFocus: PropTypes.func,
@@ -42,75 +40,9 @@ export default class Chip extends PureComponent {
     onKeyUp: () => {},
   };
 
-  static contextTypes = { theme: PropTypes.object };
-
-  state = { focused: false };
+  state = { isFocused: false };
 
   keyDown = false;
-
-  get theme() {
-    return this.context.theme.chip;
-  }
-
-  get styles() {
-    return Stylesheet.compile({
-      root: {
-        position: 'relative',
-        backgroundColor: this.theme.bgColor,
-        borderRadius: '16px',
-        height: 32,
-        outline: 0,
-        border: 0,
-        padding: `0 ${this.props.deletable ? 0 : 12}px 0 ${this.props.img ? 0 : 12}px`,
-        layout: {
-          direction: 'horizontal',
-          inline: true,
-          crossAlign: 'center',
-        },
-        ...this.props.style,
-      },
-
-      img: {
-        rightPadding: 8,
-        size: 32,
-        borderRadius: '50%',
-        textTransform: 'uppercase',
-        backgroundColor: is.json(this.props.img) ? this.props.img.color : 'transparent',
-        lineHeight: '32px',
-        textAlign: 'center',
-        margin: '0 8px 0 0',
-        color: is.json(this.props.img) ? this.props.img.textColor : 'inherit',
-      },
-
-      delete: {
-        size: 24,
-        lineHeight: '24px',
-        fontSize: '12px',
-        margin: '0 4px',
-        cursor: 'pointer',
-      },
-
-      label: {
-        typo: 'body1',
-        color: this.theme.color,
-        userSelect: 'none',
-      },
-
-      shadow: {
-        position: ['absolute', 0],
-        elevation: this.theme.focusedElevation,
-        opacity: this.state.focused ? 1 : 0,
-        transition: `opacity ${this.context.theme.variables.transitionTime}ms linear`,
-        borderRadius: 'inherit',
-      },
-    });
-  }
-
-  toggleFocus() {
-    this.setState(({ focused }) => {
-      return { focused: !focused };
-    });
-  }
 
   handleDelete = () => {
     this.props.onDelete(this.props.id);
@@ -119,13 +51,13 @@ export default class Chip extends PureComponent {
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.toggleFocus();
+    this.setState({ isFocused: true });
   };
 
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.toggleFocus();
+    this.setState({ isFocused: false });
   };
 
   handleKeyDown = (ev) => {
@@ -144,11 +76,8 @@ export default class Chip extends PureComponent {
     this.keyDown = false;
   };
 
-  renderImage(style) {
-    const props = {
-      style,
-      className: 'chip--image',
-    };
+  renderImage() {
+    const props = { className: this.props.classes.img };
 
     if (is.json(this.props.img)) {
       return (
@@ -168,38 +97,36 @@ export default class Chip extends PureComponent {
   }
 
   render() {
-    const styles = this.styles;
+    const {
+      classes,
+      deletable
+    } = this.props;
+    const eventHandlers = {
+      onKeyDown: deletable ? this.handleKeyDown : this.props.onKeyDown,
+      onKeyUp: deletable ? this.handleKeyUp : this.props.onKeyUp,
+      onFocus: deletable ? this.handleFocus : this.props.onFocus,
+      onBlur: deletable ? this.handleBlur : this.props.onBlur,
+    };
 
     return (
       <button
         {...getNotDeclaredProps(this, Chip)}
-        className={`chip ${this.props.className}`}
-        tabIndex="0"
-        style={styles.root}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
+        className={`${classes.chip} ${this.props.className}`}
+        tabIndex={this.props.deletable ? 0 : -1}
+        {...eventHandlers}
       >
-        <span
-          className="chip--shadow"
-          style={styles.shadow}
-        />
+        <span className={`${classes.shadow} ${this.state.isFocused && classes.shadowActive}`} />
 
-        {this.props.img && this.renderImage(styles.img)}
+        {this.props.img && this.renderImage()}
 
-        <span
-          className="chip--label"
-          style={styles.label}
-        >
+        <span className={classes.label}>
           {this.props.children}
         </span>
 
         {this.props.deletable && (
           <Icon
             icon="close-circle"
-            className="chip--icon"
-            style={styles.delete}
+            className={classes.delete}
             onTouchStart={this.handleDelete}
             onMouseDown={this.handleDelete}
           />
@@ -208,3 +135,69 @@ export default class Chip extends PureComponent {
     );
   }
 }
+
+const styles = {
+  chip: {
+    composes: 'chip',
+    position: 'relative',
+    backgroundColor: props => props.theme.bgColor,
+    borderRadius: props => props.theme.height / 2,
+    height: props => props.theme.height,
+    outline: 0,
+    border: 0,
+    padding: props => `0 ${props.deletable ? 0 : 12}px 0 ${props.img ? 0 : 12}px`,
+    ...layout({
+      direction: 'horizontal',
+      inline: true,
+      crossAlign: 'center',
+    }),
+  },
+
+  img: {
+    composes: 'chip--img',
+    height: props => props.theme.height,
+    width: props => props.theme.height,
+    borderRadius: '50%',
+    textTransform: 'uppercase',
+    backgroundColor: props => (is.json(props.img) ? props.img.color : 'transparent'),
+    lineHeight: props => props.theme.height,
+    textAlign: 'center',
+    margin: '0 8px 0 0',
+    color: props => (is.json(props.img) ? props.img.textColor : 'inherit'),
+  },
+
+  delete: {
+    composes: 'chip--delete',
+    height: props => props.theme.deleteIconSize,
+    width: props => props.theme.deleteIconSize,
+    lineHeight: props => props.theme.deleteIconSize,
+    fontSize: props => props.theme.deleteIconFontSize,
+    margin: '0 4px',
+    cursor: 'pointer',
+    zIndex: 1,
+  },
+
+  label: {
+    composes: 'chip--label',
+    ...typo('body1'),
+    color: props => props.theme.color,
+    userSelect: 'none',
+  },
+
+  shadow: {
+    composes: 'chip--shadow',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    boxShadow: props => elevation(props.theme.focusedElevation),
+    opacity: 0,
+    transition: props => `opacity ${props.theme.transitionTime}ms linear`,
+    borderRadius: 'inherit',
+  },
+
+  shadowActive: { opacity: 1 },
+};
+
+export default connectWithTheme(injectSheet(styles)(Chip), 'chip');

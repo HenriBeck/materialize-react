@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
   checkmarkColor: PropTypes.string,
@@ -28,24 +28,26 @@ export const schema = PropTypes.shape({
   checkboxBorderWidth: PropTypes.number,
 });
 
-export const defaultTheme = {
-  checkmarkColor: 'white',
+export function defaultTheme(vars) {
+  return {
+    checkmarkColor: 'white',
 
-  checkedBorderColor: 'var(primaryBase)',
-  checkedBgColor: 'var(primaryBase)',
+    checkedBorderColor: vars.primaryBase,
+    checkedBgColor: vars.primaryBase,
 
-  uncheckedBorderColor: 'rgba(0, 0, 0, 0.55)',
-  uncheckedBgColor: 'transparent',
+    uncheckedBorderColor: 'rgba(0, 0, 0, 0.55)',
+    uncheckedBgColor: 'transparent',
 
-  disabledBorderColor: 'rgba(0, 0, 0, 0.26)',
-  disabledBgColor: 'transparent',
-  disabledCheckedBgColor: 'rgba(0, 0, 0, 0.26)',
+    disabledBorderColor: 'rgba(0, 0, 0, 0.26)',
+    disabledBgColor: 'transparent',
+    disabledCheckedBgColor: 'rgba(0, 0, 0, 0.26)',
 
-  labelColor: 'var(textColor)',
-  disabledLabelColor: 'var(disabledColor)',
+    labelColor: vars.textColor,
+    disabledLabelColor: vars.disabledColor,
 
-  padding: 4,
-  height: 48,
-  checkboxSize: 20,
-  checkboxBorderWidth: 2,
-};
+    padding: 4,
+    height: 48,
+    checkboxSize: 20,
+    checkboxBorderWidth: 2,
+  };
+}

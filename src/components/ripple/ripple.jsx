@@ -1,276 +1,118 @@
-import React, {
-  PropTypes,
-  PureComponent,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import Wave from './wave';
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
-import ElementRect from './element-rect';
-import Stylesheet from '/src/styles/stylesheet';
-import Event from '/src/utils/event';
+import FocusContainer from './focus-container';
 
+/**
+ * The presentation container for the ripple.
+ *
+ * @class
+ */
 export default class Ripple extends PureComponent {
   static propTypes = {
-    style: PropTypes.object,
-    className: PropTypes.string,
-    round: PropTypes.bool,
-    center: PropTypes.bool,
-    initialOpacity: PropTypes.number,
-    color: PropTypes.string,
-    focusColor: PropTypes.string,
-    focusOpacity: PropTypes.number,
-    nowaves: PropTypes.bool,
-    onMouseDown: PropTypes.func,
-    onMouseUp: PropTypes.func,
-    onTouchStart: PropTypes.func,
-    onTouchEnd: PropTypes.func,
+    waves: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    initialOpacity: PropTypes.number.isRequired,
+    classes: PropTypes.object.isRequired,
+    className: PropTypes.string.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    focusOpacity: PropTypes.number.isRequired,
+    focusColor: PropTypes.string.isRequired,
+    round: PropTypes.bool.isRequired,
+    onDownAction: PropTypes.func.isRequired,
+    onAnimationFinish: PropTypes.func.isRequired,
+    onMouseDown: PropTypes.func.isRequired,
+    onMouseUp: PropTypes.func.isRequired,
+    onTouchStart: PropTypes.func.isRequired,
+    onTouchEnd: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    style: {},
-    className: '',
-    round: false,
-    center: false,
-    initialOpacity: 0.25,
-    color: '',
-    focusColor: null,
-    focusOpacity: 0.2,
-    nowaves: false,
-    onMouseDown: () => {},
-    onMouseUp: () => {},
-    onTouchStart: () => {},
-    onTouchEnd: () => {},
-  };
-
-  static contextTypes = { theme: PropTypes.object };
-
-  static MAX_RADIUS = 300;
-
-  state = { waves: [] };
-
-  componentDidMount() {
-    const { zIndex } = window.getComputedStyle(this.root);
-
-    this.root.style.zIndex = isNaN(parseInt(zIndex, 10)) ? 1 : parseInt(zIndex, 10) + 1;
-
-    this.focus.style.backgroundColor = this.props.focusColor || this.focusColor;
-  }
-
-  wavesCount = 0;
   waves = {};
-  isFocused = false;
-  focusAnimationOptions = {
-    fill: 'forwards',
-    duration: this.context.theme.variables.transitionTime,
-  };
 
   /**
-   * Get the computed color of the root node.
-   *
-   * @returns {String} - Returns the color.
+   * Emit an event to all of the current active ripples.
    */
-  get color() {
-    return window.getComputedStyle(this.root).color;
+  emitUpAction() {
+    this.props.waves.forEach((wave) => {
+      this.waves[wave.id].startFadeOutAnimation();
+    });
   }
 
   /**
-   * Get the focus color. Either the color passed as a prop or the inherited color.
-   *
-   * @returns {String} - Returns the focus color.
+   * Add a wave when the user clicks inside.
    */
-  get focusColor() {
-    return this.props.focusColor || this.color;
-  }
-
-  /**
-   * Set the current focus color and animate to it.
-   *
-   * @param {String} color - The new focus color.
-   */
-  set focusColor(color) {
-    if (this.isFocused) {
-      this.focus.animate({
-        backgroundColor: [
-          window.getComputedStyle(this.focus).backgroundColor,
-          color,
-        ],
-      }, this.focusAnimationOptions);
-    } else {
-      this.focus.style.backgroundColor = color;
-    }
-  }
-
-  get styles() {
-    const { round } = this.props;
-
-    return Stylesheet.compile({
-      root: {
-        position: ['absolute', 0],
-        display: 'block',
-        borderRadius: 'inherit',
-        overflow: 'hidden',
-        cursor: 'pointer',
-        zIndex: 'inherit',
-        pointerEvents: this.props.nowaves ? 'none' : 'inherit',
-        ...this.props.style,
-      },
-
-      focus: {
-        position: ['absolute', 0],
-        borderRadius: round ? '50%' : 'inherit',
-        opacity: 0,
-      },
-
-      waveContainer: {
-        position: ['absolute', 0, 'auto', 'auto', 0],
-        size: '100%',
-        pointerEvents: 'none',
-        borderRadius: round ? '50%' : 'inherit',
-        overflow: 'hidden',
-      },
-    });
-  }
-
-  downAction = (ev) => {
-    this.addWave(ev);
-  };
-
-  upAction = () => {
-    this.state.waves.forEach((wave) => {
-      this.waves[wave.id].upAction();
-    });
-  };
-
-  addWave(ev) {
-    const containerRect = new ElementRect(this.root);
-    const center = containerRect.center;
-    const currentCords = new Event(ev).getCords();
-    const isCentered = this.props.center || !currentCords;
-    const startPosition = isCentered ? center : {
-      x: currentCords.x - containerRect.boundingRect.left,
-      y: currentCords.y - containerRect.boundingRect.top,
-    };
-    const distanceToCorner = isCentered
-      ? (center.x ** 2 + center.y ** 2) ** 0.5
-      : containerRect.distanceToFarthestCorner(startPosition);
-    const radius = Math.min(distanceToCorner, Ripple.MAX_RADIUS);
-
-    this.wavesCount += 1;
-
-    const newWave = {
-      id: this.wavesCount,
-      radius,
-      style: {
-        height: radius * 2,
-        width: radius * 2,
-        left: startPosition.x - radius,
-        top: startPosition.y - radius,
-        backgroundColor: this.props.color || this.color,
-      },
-    };
-
-    this.setState((state) => {
-      return { waves: state.waves.concat([newWave]) };
-    });
-  }
-
-  toggleFocus(options) {
-    const animation = { opacity: [0, this.props.focusOpacity] };
-
-    if (this.props.round) {
-      animation.transform = ['scale(0)', 'scale(1)'];
-    }
-
-    this.focus.animate(animation, {
-      ...this.focusAnimationOptions,
-      ...options,
-    });
-  }
-
-  addFocus = () => {
-    if (!this.isFocused) {
-      this.toggleFocus({});
-
-      this.isFocused = true;
-    }
-  };
-
-  removeFocus = () => {
-    if (this.isFocused) {
-      this.toggleFocus({ direction: 'reverse' });
-
-      this.isFocused = false;
-    }
-  };
-
-  handleRemoveWave = (waveId) => {
-    this.setState(({ waves }) => {
-      return { waves: waves.filter(wave => wave.id !== waveId) };
-    });
-  };
-
   handleMouseDown = (ev) => {
     this.props.onMouseDown(ev);
 
-    this.downAction(ev);
+    this.props.onDownAction(ev);
   };
 
+  /**
+   * Emit up actions to all of the waves.
+   */
   handleMouseUp = (ev) => {
     this.props.onMouseUp(ev);
 
-    this.upAction();
+    this.emitUpAction();
   };
 
+  /**
+   * Create a new wave when the user touches the element.
+   */
   handleTouchStart = (ev) => {
     this.props.onTouchStart(ev);
 
-    this.downAction(ev);
+    this.props.onDownAction(ev);
   };
 
+  /**
+   * Emit up actions to all of the waves when the user removes the finger.
+   */
   handleTouchEnd = (ev) => {
     this.props.onTouchEnd(ev);
 
-    this.upAction();
+    this.emitUpAction();
   };
 
+  /**
+   * Render the waves with all of the required props.
+   *
+   * @private
+   * @returns {JSX[]} - Returns the waves as an array.
+   */
   renderWaves() {
-    return this.state.waves.map(wave => (
+    return this.props.waves.map(wave => (
       <Wave
         initialOpacity={this.props.initialOpacity}
-        style={wave.style}
-        radius={wave.radius}
-        id={wave.id}
-        onFinish={this.handleRemoveWave}
         key={wave.id}
+        classes={this.props.classes}
+        onFinish={this.props.onAnimationFinish}
         ref={(element) => { this.waves[wave.id] = element; }}
+        {...wave}
       />
     ));
   }
 
   render() {
-    const styles = this.styles;
-
     return (
       <span
-        {...getNotDeclaredProps(this, Ripple)}
-        className={`ripple ${this.props.className}`}
-        style={styles.root}
+        role="presentation"
+        className={`${this.props.className} ${this.props.classes.ripple}`}
         ref={(element) => { this.root = element; }}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onTouchStart={this.handleTouchStart}
         onTouchEnd={this.handleTouchEnd}
       >
-        <span
-          className="ripple--focus"
-          style={styles.focus}
-          ref={(element) => { this.focus = element; }}
+        <FocusContainer
+          classes={this.props.classes}
+          round={this.props.round}
+          opacity={this.props.focusOpacity}
+          isFocused={this.props.isFocused}
+          color={this.props.focusColor}
         />
 
-        <span
-          className="ripple--wave-container"
-          style={styles.waveContainer}
-        >
+        <span className={this.props.classes.waveContainer}>
           {this.renderWaves()}
         </span>
       </span>

@@ -1,5 +1,11 @@
 import omit from 'lodash.omit';
 
+const jssProps = [
+  'theme',
+  'sheet',
+  'classes',
+];
+
 /**
  * A function to get the the not declared props of a React Component.
  *
@@ -9,6 +15,8 @@ import omit from 'lodash.omit';
  * but are passed to the component.
  */
 export default function getNotDeclaredProps(instance, component) {
+  console.log(instance);
+
   // eslint-disable-next-line react/forbid-foreign-prop-types
-  return omit(instance.props, Object.keys(component.propTypes));
+  return omit(instance.props, Object.keys(component.propTypes).concat(jssProps));
 }

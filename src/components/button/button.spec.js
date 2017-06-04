@@ -3,54 +3,30 @@ import React from 'react';
 import {
   shallow,
   mount,
-} from '/tests/helpers/enzyme';
+} from '../../../tests/helpers/enzyme';
 import sinon from 'sinon';
 
-import Button from './button';
+import ButtonContainer, { Button } from './button';
+
+const classes = {
+  button: 'button',
+  buttonPressed: 'button--pressed',
+};
 
 test('should render the button', (t) => {
-  const wrapper = shallow(<Button />);
+  const wrapper = shallow(<ButtonContainer />);
 
+  t.deepEqual(wrapper.find('Jss(Button)').length, 1);
   t.deepEqual(wrapper.find('button').length, 1);
 });
 
-test('check if the elevation is computed correctly', (t) => {
-  const wrapper = mount(<Button />);
-  const instance = wrapper.instance();
-
-  t.deepEqual(instance.elevation, 0);
-
-  wrapper.setProps({ raised: true });
-
-  t.deepEqual(instance.elevation, instance.theme.elevation);
-
-  wrapper.simulate('mouseDown');
-
-  t.deepEqual(instance.elevation, instance.theme.pressedElevation);
-});
-
-test('should compute the background color correctly', (t) => {
-  const wrapper = shallow(<Button />);
-  const instance = wrapper.instance();
-  const theme = instance.theme;
-
-  t.deepEqual(instance.backgroundColor, theme.bgColor);
-
-  wrapper.setProps({ raised: true });
-
-  t.deepEqual(instance.backgroundColor, theme.raisedBgColor);
-
-  wrapper.setProps({ disabled: true });
-
-  t.deepEqual(instance.backgroundColor, theme.raisedAndDisabledBgColor);
-
-  wrapper.setProps({ raised: false });
-
-  t.deepEqual(instance.backgroundColor, theme.disabledBgColor);
-});
-
 test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t disabled', (t) => {
-  const wrapper = shallow(<Button disabled />);
+  const wrapper = shallow(
+    <Button
+      disabled
+      classes={classes}
+    />,
+  );
   const button = wrapper.find('button');
 
   t.deepEqual(button.prop('tabIndex'), -1);
@@ -58,7 +34,12 @@ test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t 
 });
 
 test('should change the state when an interaction happens', (t) => {
-  const wrapper = mount(<Button raised />);
+  const wrapper = mount(
+    <Button
+      raised
+      classes={classes}
+    />,
+  );
 
   wrapper.simulate('mouseDown');
 
@@ -70,7 +51,7 @@ test('should change the state when an interaction happens', (t) => {
 });
 
 test('should have a Ripple inside the button', (t) => {
-  const wrapper = shallow(<Button>Test</Button>);
+  const wrapper = shallow(<Button classes={classes} />);
 
   t.deepEqual(wrapper.find('Ripple').length, 1);
 });
@@ -80,6 +61,7 @@ test('should handle onFocus and onBlur events and add focus to the element', (t)
   const onBlur = sinon.spy();
   const wrapper = mount(
     <Button
+      classes={classes}
       onFocus={onFocus}
       onBlur={onBlur}
     />,
@@ -99,6 +81,7 @@ test('should handle touch events and call the specific handlers', (t) => {
   const onTouchEnd = sinon.spy();
   const wrapper = mount(
     <Button
+      classes={classes}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     />,
@@ -114,7 +97,7 @@ test('should handle touch events and call the specific handlers', (t) => {
 });
 
 test('should not handle key events if the keyCode doesn\'t match', (t) => {
-  const wrapper = shallow(<Button />);
+  const wrapper = shallow(<Button classes={classes} />);
 
   wrapper.simulate('keyDown');
 
@@ -168,14 +151,15 @@ test('should handle mouse events and call the specific handlers', (t) => {
   t.deepEqual(onMouseUp.callCount, 1);
 });
 
-test('should work then no handlers are passed', (t) => {
-  const wrapper = mount(<Button />);
+test('All default event handlers can be called', (t) => {
+  Button.defaultProps.onBlur();
+  Button.defaultProps.onFocus();
 
-  wrapper.simulate('touchStart');
-  wrapper.simulate('touchEnd');
+  Button.defaultProps.onMouseDown();
+  Button.defaultProps.onMouseUp();
 
-  wrapper.simulate('focus');
-  wrapper.simulate('blur');
+  Button.defaultProps.onTouchStart();
+  Button.defaultProps.onTouchEnd();
 
   t.pass();
 });

@@ -1,37 +1,37 @@
-import React from 'react';
 import {
   configure,
   addDecorator,
-} from '@kadira/storybook';
-import { withKnobs } from '@kadira/storybook-addon-knobs';
-import { setOptions } from '@kadira/storybook-addon-options';
-import 'web-animations-js';
-import 'mdi/css/materialdesignicons.min.css';
-import 'normalize.css';
+} from '@storybook/react';
+import React from 'react';
+import whyDidYouUpdate from 'why-did-you-update';
 
-import Theme from '../src/styles/theme/theme';
+import 'normalize.css';
+import 'mdi/css/materialdesignicons.css';
+
+import Theme from '../src/styles/theme';
 import Background from '../src/components/background';
 
-const req = require.context('../src/components', true, /stories\.jsx$/);
-
-addDecorator((...args) => (
+addDecorator((story) => (
   <Theme>
     <Background
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
+        height: '100vh'
       }}
     >
-      {withKnobs(...args)}
+      {story()}
     </Background>
   </Theme>
 ));
 
-setOptions({
-  name: 'TF2Pickup Components',
-  url: 'https://github.com/TF2PickupNET',
-});
+function loadStories() {
+  whyDidYouUpdate(React, { include: /^pure/, exclude: /^Connect/ });
 
-configure(() => req.keys().forEach(req), module);
+  require('../src/components/ripple/stories');
+  require('../src/components/button/stories');
+  require('../src/components/chip/stories');
+}
+
+configure(loadStories, module);

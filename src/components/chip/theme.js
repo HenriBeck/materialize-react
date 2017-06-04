@@ -1,6 +1,6 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
-import { grey300 } from '/src/styles/colors';
+import { grey300 } from '../../styles/colors';
 
 export const schema = PropTypes.shape({
   bgColor: PropTypes.string,
@@ -8,9 +8,17 @@ export const schema = PropTypes.shape({
   focusedElevation: PropTypes.number,
 });
 
-export const defaultTheme = {
-  bgColor: grey300,
-  color: 'var(textColor)',
-  focusedElevation: 2,
-  imgColor: 'var(textColor)',
-};
+export function defaultTheme(vars) {
+  return {
+    bgColor: grey300,
+    height: 32,
+    color: vars.textColor,
+    focusedElevation: 2,
+    imgColor: vars.textColor,
+
+    transitionTime: vars.transitionTime,
+
+    deleteIconSize: 24,
+    deleteIconFontSize: 12,
+  };
+}

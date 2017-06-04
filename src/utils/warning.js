@@ -3,7 +3,7 @@
  * and the condition is met.
  *
  * @param {Boolean} condition - The condition to check.
- * @param {String[]} args - An array of strings
+ * @param {...String} args - An array of strings
  * which will be concatenated and passed to the error.
  * @returns {Boolean} - Returns whether the warning got thrown.
  */

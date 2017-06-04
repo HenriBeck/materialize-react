@@ -1,16 +1,19 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
-import Stylesheet from '/src/styles/stylesheet';
+import injectSheet from '../../styles/jss';
+
+import connectWithTheme from '../../styles/theme/connect-with-theme';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Ripple from '../ripple';
+import typo from '../../styles/plugins/typo';
+import elevation from '../../styles/plugins/elevation';
 
-export default class Button extends PureComponent {
+export class Button extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     children: PropTypes.node,
-    style: PropTypes.object,
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
     noink: PropTypes.bool,
@@ -44,8 +47,6 @@ export default class Button extends PureComponent {
     onBlur: () => {},
   };
 
-  static contextTypes = { theme: PropTypes.object };
-
   static normalRippleProps = {
     color: '#999999',
     initialOpacity: 0.4,
@@ -58,79 +59,28 @@ export default class Button extends PureComponent {
 
   static keyCodes = [13, 32];
 
-  state = { pressed: false };
+  state = {
+    pressed: false,
+    isFocused: false,
+  };
 
   keyDown = false;
-
-  get theme() {
-    return this.context.theme.button;
-  }
-
-  get elevation() {
-    if (this.props.raised && !this.props.disabled) {
-      return this.state.pressed ? this.theme.pressedElevation : this.theme.elevation;
-    }
-
-    return 0;
-  }
-
-  get backgroundColor() {
-    if (this.props.disabled) {
-      return this.props.raised ? this.theme.raisedAndDisabledBgColor : this.theme.disabledBgColor;
-    }
-
-    return this.props.raised ? this.theme.raisedBgColor : this.theme.bgColor;
-  }
-
-  get styles() {
-    const { disabled } = this.props;
-
-    return Stylesheet.compile({
-      typo: this.theme.typo,
-      userSelect: 'none',
-      elevation: this.elevation,
-      display: 'inline-block',
-      position: 'relative',
-      backgroundColor: this.backgroundColor,
-      cursor: disabled ? 'auto' : 'pointer',
-      zIndex: 0,
-      boxSizing: 'border-box',
-      outline: 0,
-      border: 0,
-      borderRadius: 2,
-      height: this.theme.height,
-      minWidth: this.theme.minWidth,
-      margin: '0 8px',
-      color: disabled ? this.theme.disabledColor : this.theme.color,
-      pointerEvents: disabled ? 'none' : 'auto',
-      padding(styles) {
-        return `${(styles.height - styles.lineHeight * styles.fontSize) / 2}px 8px`;
-      },
-      ...this.props.style,
-    });
-  }
 
   get rippleProps() {
     return this.props.raised ? Button.raisedRippleProps : Button.normalRippleProps;
   }
 
-  toggleState(updatedStateCallback = () => {}) {
-    this.setState(({ pressed }) => {
-      return { pressed: !pressed };
-    }, updatedStateCallback);
-  }
-
   handlePress = () => {
     if (this.props.raised) {
-      this.toggleState(this.props.onPress);
-    } else {
-      this.props.onPress();
+      this.setState({ pressed: true });
     }
+
+    this.props.onPress();
   };
 
   handleRelease = () => {
     if (this.props.raised) {
-      this.toggleState();
+      this.setState({ pressed: false });
     }
   };
 
@@ -177,25 +127,32 @@ export default class Button extends PureComponent {
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.ripple.addFocus(ev);
+    this.setState({ isFocused: true });
   };
 
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.ripple.removeFocus(ev);
+    this.setState({ isFocused: false });
   };
 
   render() {
-    const { disabled } = this.props;
+    const {
+      disabled,
+      classes,
+    } = this.props;
+    const className = classNames(
+      classes.button,
+      { [classes.buttonPressed]: this.state.pressed && !this.props.disabled },
+      this.props.className,
+    );
 
     return (
       <button
         {...getNotDeclaredProps(this, Button)}
-        className={`button ${this.props.className}`}
+        className={className}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
-        style={this.styles}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onKeyDown={this.handleKeyDown}
@@ -204,11 +161,10 @@ export default class Button extends PureComponent {
         onTouchEnd={this.handleTouchEnd}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
-        ref={(element) => { this.root = element; }}
       >
         <Ripple
           className="button--ripple"
-          ref={(element) => { this.ripple = element; }}
+          isFocused={this.state.isFocused}
           nowaves={this.props.noink}
           {...this.rippleProps}
         />
@@ -218,3 +174,41 @@ export default class Button extends PureComponent {
     );
   }
 }
+
+const buttonTypo = typo('button');
+
+const styles = {
+  button: {
+    ...buttonTypo,
+    composes: 'button',
+    userSelect: 'none',
+    display: 'inline-block',
+    position: 'relative',
+    zIndex: 0,
+    boxSizing: 'border-box',
+    outline: 0,
+    border: 0,
+    borderRadius: 2,
+    margin: '0 8px',
+    cursor: props => (props.disabled ? 'auto' : 'pointer'),
+    height: props => props.theme.height,
+    minWidth: props => props.theme.minWidth,
+    color: props => (props.disabled ? props.theme.disabledColor : props.theme.color),
+    pointerEvents: props => (props.disabled ? 'none' : 'auto'),
+    padding: props => `${(props.theme.height - buttonTypo.lineHeight) / 2}px 8px`,
+    boxShadow(props) {
+      return props.raised && !props.disabled ? elevation(props.theme.elevation) : 'none';
+    },
+    backgroundColor(props) {
+      if (props.disabled) {
+        return props.raised ? props.theme.raisedAndDisabledBgColor : props.theme.disabledBgColor;
+      }
+
+      return props.raised ? props.theme.raisedBgColor : props.theme.bgColor;
+    },
+  },
+
+  buttonPressed: { boxShadow: props => elevation(props.theme.pressedElevation) },
+};
+
+export default connectWithTheme(injectSheet(styles)(Button), 'button');
