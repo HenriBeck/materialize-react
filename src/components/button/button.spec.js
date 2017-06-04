@@ -14,7 +14,7 @@ const classes = {
 };
 
 test('should render the button', (t) => {
-  const wrapper = shallow(<ButtonContainer />);
+  const wrapper = mount(<ButtonContainer />);
 
   t.deepEqual(wrapper.find('Jss(Button)').length, 1);
   t.deepEqual(wrapper.find('button').length, 1);
@@ -51,9 +51,9 @@ test('should change the state when an interaction happens', (t) => {
 });
 
 test('should have a Ripple inside the button', (t) => {
-  const wrapper = shallow(<Button classes={classes} />);
+  const wrapper = mount(<Button classes={classes} />);
 
-  t.deepEqual(wrapper.find('Ripple').length, 1);
+  t.deepEqual(wrapper.find('RippleContainer').length, 1);
 });
 
 test('should handle onFocus and onBlur events and add focus to the element', (t) => {
@@ -106,7 +106,12 @@ test('should not handle key events if the keyCode doesn\'t match', (t) => {
 
 test('should only handle key events where the key codes match', (t) => {
   const onPress = sinon.spy();
-  const wrapper = mount(<Button onPress={onPress} />);
+  const wrapper = mount(
+    <Button
+      classes={classes  }
+      onPress={onPress}
+    />,
+  );
 
   t.plan(Button.keyCodes.length);
 
@@ -121,7 +126,12 @@ test('should only handle key events where the key codes match', (t) => {
 
 test('should only update the state when a key is not already pressed', (t) => {
   const onPress = sinon.spy();
-  const wrapper = mount(<Button onPress={onPress} />);
+  const wrapper = mount(
+    <Button
+      classes={classes  }
+      onPress={onPress}
+    />,
+  );
 
   wrapper.simulate('keyDown', { keyCode: Button.keyCodes[0] });
 
@@ -137,6 +147,7 @@ test('should handle mouse events and call the specific handlers', (t) => {
   const onMouseUp = sinon.spy();
   const wrapper = mount(
     <Button
+      classes={classes}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     />,
