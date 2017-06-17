@@ -1,214 +1,175 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
-import Chance from 'chance';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import randomstring from 'randomstring';
 
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
-import Ripple from '../ripple';
-import Label from '../label';
-import Stylesheet from '/src/styles/stylesheet';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Checkbox from './checkbox';
 
+/**
+ * A component to render a checkbox.
+ *
+ * @class
+ * @extends PureComponent
+ */
 export default class CheckboxContainer extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    defaultChecked: PropTypes.bool,
-    style: PropTypes.object,
     disabled: PropTypes.bool,
-    children: PropTypes.node,
-    noink: PropTypes.bool,
-    labelPosition: PropTypes.oneOf(['left', 'right']),
-    className: PropTypes.string,
+    defaultChecked: PropTypes.bool,
     onChange: PropTypes.func,
-    onKeyDown: PropTypes.func,
     onKeyUp: PropTypes.func,
+    onKeyDown: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    className: PropTypes.string,
+    children: PropTypes.node,
   };
 
   static defaultProps = {
-    name: '',
     defaultChecked: false,
-    style: {},
     disabled: false,
-    noink: false,
-    labelPosition: 'right',
-    className: '',
-    children: '',
     onChange: () => {},
-    onKeyDown: () => {},
     onKeyUp: () => {},
+    onKeyDown: () => {},
     onFocus: () => {},
     onBlur: () => {},
+    className: '',
+    children: '',
   };
-
-  static contextTypes = { theme: PropTypes.object };
 
   static keyCodes = [32];
 
-  state = { checked: this.props.defaultChecked };
+  state = {
+    checked: this.props.defaultChecked,
+    isFocused: false,
+  };
 
-  componentDidMount() {
-    this.checkbox.setBgColor(window.getComputedStyle(this.root).backgroundColor);
-  }
+  id = randomstring.generate();
+  isTouchEvent = false;
+  isPressingKey = false;
 
-  componentDidUpdate(props, { checked }) {
-    if (checked !== this.state.checked) {
-      this.ripple.focusColor = this.state.checked
-        ? this.theme.checkedBorderColor
-        : this.theme.uncheckedBorderColor;
-    }
-  }
-
-  id = new Chance().string();
-
-  get theme() {
-    return this.context.theme.checkbox;
-  }
-
-  get rippleColors() {
-    return {
-      color: this.state.checked ? this.theme.checkedBorderColor : this.theme.uncheckedBorderColor,
-      focusColor: this.props.defaultChecked
-        ? this.theme.checkedBorderColor
-        : this.theme.uncheckedBorderColor,
-    };
-  }
-
+  /**
+   * Get the current checked state.
+   *
+   * @returns {Boolean} - Returns whether the checkbox is checked.
+   */
   get checked() {
     return this.state.checked;
   }
 
+  /**
+   * Update the checked state only if a new state is passed.
+   *
+   * @param {Boolean} checked - The new checked state.
+   */
   set checked(checked) {
-    this.setState({ checked });
+    if (checked !== this.state.checked) {
+      this.setState({ checked });
+    }
   }
 
-  get styles() {
-    const { disabled } = this.props;
-
-    return Stylesheet.compile({
-      root: {
-        layout: {
-          direction: 'horizontal',
-          inline: true,
-          crossAlign: 'center',
-          reverse: this.props.labelPosition === 'left',
-        },
-        pointerEvents: disabled && 'none',
-        boxSizing: 'border-box',
-        outline: 'none',
-        border: 0,
-        padding: this.theme.padding,
-        height: this.theme.height + (this.theme.padding * 2),
-        backgroundColor: 'inherit',
-        ...this.props.style,
-      },
-
-      container: {
-        size: this.theme.height,
-        display: 'inline-block',
-        position: 'relative',
-        cursor: 'pointer',
-        borderRadius: '50%',
-        boxSizing: 'border-box',
-        pointerEvents: disabled && 'none',
-      },
-
-      label: {
-        cursor: !disabled && 'pointer',
-        color: disabled ? this.theme.disabledLabelColor : this.theme.labelColor,
-      },
-    });
+  /**
+   * Toggle the checked state.
+   */
+  toggle() {
+    this.setState(({ checked }) => {
+      return { checked: !checked };
+    }, () => this.props.onChange(this.props.name));
   }
 
-  handleToggle = () => {
-    this.setState((prevState) => {
-      return { checked: !prevState.checked };
-    }, () => this.props.onChange(this.props.name, this.state.checked));
-  };
-
+  /**
+   * Check if we should toggle the checkbox based on the keyCode and if it's the first key event.
+   *
+   * @private
+   */
   handleKeyDown = (ev) => {
     this.props.onKeyDown(ev);
 
-    if (CheckboxContainer.keyCodes.includes(ev.keyCode) && !this.keyDown) {
-      this.handleToggle();
+    if (!this.isPressingKey && CheckboxContainer.keyCodes.includes(ev.keyCode)) {
+      this.isPressingKey = true;
 
-      this.keyDown = true;
+      this.toggle();
     }
   };
 
+  /**
+   * Reset the isPressingKey attribute.
+   *
+   * @private
+   */
   handleKeyUp = (ev) => {
     this.props.onKeyUp(ev);
 
-    this.keyDown = false;
+    this.isPressingKey = false;
   };
 
+  /**
+   * Update the isFocused state to true when the elements receives focus.
+   *
+   * @private
+   */
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.ripple.addFocus();
+    this.setState({ isFocused: true });
   };
 
+  /**
+   * Update the isFocused state to false when the user removes the focus.
+   *
+   * @private
+   */
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.ripple.removeFocus();
+    this.setState({ isFocused: false });
+  };
+
+  /**
+   * This will be called when the actual checkbox got clicked.
+   * The mousedown event will also fire after a touch event.
+   * We have to ignore the event because else wise we are toggling the checkbox
+   * twice which results in quickly resetting the state.
+   */
+  handlePress = (ev) => {
+    switch (ev.type) {
+      case 'mousedown': {
+        if (this.isTouchEvent) {
+          this.isTouchEvent = false;
+
+          return;
+        }
+
+        this.toggle();
+        break;
+      }
+      case 'touchstart': {
+        this.isTouchEvent = true;
+
+        this.toggle();
+        break;
+      }
+      default: break;
+    }
   };
 
   render() {
-    const { disabled } = this.props;
-    const { checked } = this.state;
-    const styles = this.styles;
-
     return (
-      <button
-        {...getNotDeclaredProps(this, CheckboxContainer)}
-        tabIndex={disabled ? -1 : 0}
-        aria-checked={checked}
-        aria-disabled={disabled}
-        role="checkbox"
-        className={`checkbox ${this.props.className}`}
-        style={styles.root}
-        id={this.id}
-        onKeyDown={this.handleKeyDown}
+      <Checkbox
+        disabled={this.props.disabled}
+        checked={this.state.checked}
+        onPress={this.handlePress}
         onKeyUp={this.handleKeyUp}
+        onKeyDown={this.handleKeyDown}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
-        ref={(element) => { this.root = element; }}
+        id={this.id}
+        className={this.props.className}
+        isFocused={this.state.isFocused}
+        {...getNotDeclaredProps(this, CheckboxContainer)}
       >
-        <span
-          style={styles.container}
-          className="checkbox--container"
-          onMouseDown={this.handleToggle}
-          onTouchStart={this.handleToggle}
-        >
-          <Checkbox
-            checked={this.state.checked}
-            disabled={this.props.disabled}
-            ref={(element) => { this.checkbox = element; }}
-          />
-
-          <Ripple
-            round
-            center
-            nowaves={this.props.noink}
-            className="checkbox--ripple"
-            ref={(element) => { this.ripple = element; }}
-            {...this.rippleColors}
-          />
-        </span>
-
-        <Label
-          style={styles.label}
-          for={this.id}
-          className="checkbox--label"
-          onMouseDown={this.handleToggle}
-          onTouchStart={this.handleToggle}
-        >
-          {this.props.children}
-        </Label>
-      </button>
+        {this.props.children}
+      </Checkbox>
     );
   }
 }

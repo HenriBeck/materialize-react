@@ -7,12 +7,13 @@ import FocusContainer from './focus-container';
 /**
  * The presentation container for the ripple.
  *
+ * @private
  * @class
+ * @extends PureComponent
  */
 export default class Ripple extends PureComponent {
   static propTypes = {
     waves: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-    initialOpacity: PropTypes.number.isRequired,
     classes: PropTypes.object.isRequired,
     className: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
@@ -22,15 +23,19 @@ export default class Ripple extends PureComponent {
     onDownAction: PropTypes.func.isRequired,
     onAnimationFinish: PropTypes.func.isRequired,
     onMouseDown: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func.isRequired,
     onMouseUp: PropTypes.func.isRequired,
     onTouchStart: PropTypes.func.isRequired,
     onTouchEnd: PropTypes.func.isRequired,
   };
 
   waves = {};
+  isTouchEvent = false;
 
   /**
    * Emit an event to all of the current active ripples.
+   *
+   * @private
    */
   emitUpAction() {
     this.props.waves.forEach((wave) => {
@@ -40,15 +45,25 @@ export default class Ripple extends PureComponent {
 
   /**
    * Add a wave when the user clicks inside.
+   *
+   * @private
    */
   handleMouseDown = (ev) => {
     this.props.onMouseDown(ev);
+
+    if (this.isTouchEvent) {
+      this.isTouchEvent = false;
+
+      return;
+    }
 
     this.props.onDownAction(ev);
   };
 
   /**
    * Emit up actions to all of the waves.
+   *
+   * @private
    */
   handleMouseUp = (ev) => {
     this.props.onMouseUp(ev);
@@ -58,8 +73,12 @@ export default class Ripple extends PureComponent {
 
   /**
    * Create a new wave when the user touches the element.
+   *
+   * @private
    */
   handleTouchStart = (ev) => {
+    this.isTouchEvent = true;
+
     this.props.onTouchStart(ev);
 
     this.props.onDownAction(ev);
@@ -67,9 +86,23 @@ export default class Ripple extends PureComponent {
 
   /**
    * Emit up actions to all of the waves when the user removes the finger.
+   *
+   * @private
    */
   handleTouchEnd = (ev) => {
     this.props.onTouchEnd(ev);
+
+    this.emitUpAction();
+  };
+
+  /**
+   * Emit up actions to all of the waves when the user moves the mouse away from the ripple.
+   * This solves a bug where you click the ripple and move the mouse while still pressed down
+   * and then release the mouse. This won't remove the ripple so we remove them when to user
+   * moves the mouse away.
+   */
+  handleMouseLeave = (ev) => {
+    this.props.onMouseLeave(ev);
 
     this.emitUpAction();
   };
@@ -83,7 +116,6 @@ export default class Ripple extends PureComponent {
   renderWaves() {
     return this.props.waves.map(wave => (
       <Wave
-        initialOpacity={this.props.initialOpacity}
         key={wave.id}
         classes={this.props.classes}
         onFinish={this.props.onAnimationFinish}
@@ -103,6 +135,7 @@ export default class Ripple extends PureComponent {
         onMouseUp={this.handleMouseUp}
         onTouchStart={this.handleTouchStart}
         onTouchEnd={this.handleTouchEnd}
+        onMouseLeave={this.handleMouseLeave}
       >
         <FocusContainer
           classes={this.props.classes}

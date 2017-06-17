@@ -1,19 +1,24 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import Ripple from '../ripple';
 import Icon from '../icon';
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
-import Stylesheet from '/src/styles/stylesheet';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
 
-export default class IconButton extends PureComponent {
+/**
+ * A component to render an icon button.
+ *
+ * @class
+ * @extends PureComponent
+ */
+export class IconButton extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     icon: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
-    style: PropTypes.object,
     className: PropTypes.string,
     onPress: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -42,34 +47,16 @@ export default class IconButton extends PureComponent {
 
   static keyCodes = [13, 32];
 
+  state = { isFocused: false };
+
   keyDown = false;
 
-  get theme() {
-    return this.context.theme.iconButton;
-  }
-
-  get styles() {
-    return Stylesheet.compile({
-      root: {
-        position: 'relative',
-        size: this.theme.size,
-        margin: this.theme.margin,
-        backgroundColor: 'inherit',
-        borderRadius: '50%',
-        outline: 0,
-        border: 0,
-        pointerEvents: this.props.disabled && 'none',
-        padding: (this.theme.size - this.theme.iconSize) / 2,
-        ...this.props.style,
-      },
-
-      icon: {
-        fontSize: this.theme.iconSize,
-        display: 'inline-flex',
-      },
-    });
-  }
-
+  /**
+   * Handle the keyDown event.
+   * Check if the button is either the space bar or the enter key.
+   *
+   * @private
+   */
   handleKeyDown = (ev) => {
     this.props.onKeyDown(ev);
 
@@ -80,47 +67,71 @@ export default class IconButton extends PureComponent {
     }
   };
 
+  /**
+   * Reset the keyDown property to false.
+   *
+   * @private
+   */
   handleKeyUp = (ev) => {
     this.props.onKeyUp(ev);
 
     this.keyDown = false;
   };
 
+  /**
+   * Call the onPress function.
+   *
+   * @private
+   */
   handleMouseDown = (ev) => {
     this.props.onMouseDown(ev);
 
     this.props.onPress();
   };
 
+  /**
+   * Call the onPress function.
+   *
+   * @private
+   */
   handleTouchStart = (ev) => {
     this.props.onTouchStart(ev);
 
     this.props.onPress();
   };
 
+  /**
+   * Set the isFocused state to true.
+   *
+   * @private
+   */
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.ripple.addFocus();
+    this.setState({ isFocused: true });
   };
 
+  /**
+   * Set the isFocused state to false.
+   *
+   * @private
+   */
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.ripple.removeFocus();
+    this.setState({ isFocused: false });
   };
 
   render() {
     const { disabled } = this.props;
-    const styles = this.styles;
 
     return (
-      <button
+      <span
         {...getNotDeclaredProps(this, IconButton)}
-        className={`icon-button ${this.props.className}`}
-        style={styles.root}
+        role="button"
+        className={`${this.props.classes.iconButton} ${this.props.className}`}
         aria-disabled={disabled}
-        tabIndex={this.props.disabled ? -1 : 0}
+        tabIndex={disabled ? -1 : 0}
         onTouchStart={this.handleTouchStart}
         onMouseDown={this.handleMouseDown}
         onKeyDown={this.handleKeyDown}
@@ -136,16 +147,39 @@ export default class IconButton extends PureComponent {
           focusColor={this.context.theme.icon.color}
           focusOpacity={0.12}
           nowaves={this.props.noink}
-          ref={(element) => { this.ripple = element; }}
+          isFocused={this.state.isFocused}
         />
 
         <Icon
-          className="icon-button--icon"
+          className={this.props.classes.icon}
           icon={this.props.icon}
           disabled={disabled}
-          style={styles.icon}
         />
-      </button>
+      </span>
     );
   }
 }
+
+const styles = {
+  iconButton: {
+    composes: 'icon-button',
+    position: 'relative',
+    backgroundColor: 'inherit',
+    borderRadius: '50%',
+    outline: 0,
+    border: 0,
+    height: props => props.theme.size,
+    width: props => props.theme.size,
+    margin: props => props.theme.margin,
+    pointerEvents: props => props.disabled && 'none',
+    padding: props => (props.theme.size - props.theme.iconSize) / 2,
+  },
+
+  icon: {
+    composes: 'icon-button--icon',
+    display: 'inline-flex',
+    fontSize: props => props.theme.iconSize,
+  },
+};
+
+export default connectWithTheme(injectSheet(styles)(IconButton), 'iconButton');

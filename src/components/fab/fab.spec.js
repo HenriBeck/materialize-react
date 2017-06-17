@@ -1,172 +1,100 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
-import Fab from './fab';
-import {
-  shallow,
-  mount,
-} from '/tests/helpers/enzyme';
+import FabWrapper, { Fab } from './fab';
+import { mount } from '../../../tests/helpers/enzyme';
 
 test('should render a button', (t) => {
-  const wrapper = shallow(<Fab icon="build" />);
+  const wrapper = mount(<FabWrapper icon="build" />);
 
-  t.deepEqual(wrapper.find('button').length, 1);
+  t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
+  t.deepEqual(wrapper.find('Jss(Fab)').length, 1);
 });
 
 test('should have a ripple inside', (t) => {
-  const wrapper = mount(<Fab icon="build" />);
+  const wrapper = mount(<FabWrapper icon="build" />);
 
   t.deepEqual(wrapper.find('Ripple').length, 1);
 });
 
 test('should animate the fab in', (t) => {
-  mount(
-    <Fab
+  const wrapper = mount(
+    <FabWrapper
       animateIn
       icon="build"
     />,
   );
+  const transform = wrapper.find({ role: 'button' }).node.style.transform;
 
-  t.pass();
+  t.deepEqual(transform, 'scale(1) rotate(0deg)');
 });
 
-test('should have a different size if the fab is in mini mode', (t) => {
-  const wrapper = shallow(
-    <Fab
-      mini
-      icon="build"
-    />,
-  );
-  const button = wrapper.find('button').first();
-  const instance = wrapper.instance();
-
-  t.deepEqual(button.prop('style').height, instance.theme.miniSize);
-  t.deepEqual(button.prop('style').width, instance.theme.miniSize);
-});
-
-test('should set the aria-disabled prop to true', (t) => {
-  const wrapper = shallow(
-    <Fab
+test('should set the aria-disabled attribute on the root node', (t) => {
+  const wrapper = mount(
+    <FabWrapper
       disabled
       icon="build"
     />,
   );
-  const button = wrapper.find('button').first();
+  const root = wrapper.find({ role: 'button' });
 
-  t.deepEqual(button.prop('aria-disabled'), true);
+  t.deepEqual(root.prop('aria-disabled'), true);
 });
 
-test('should handle focus events correctly', (t) => {
-  const onFocus = sinon.spy();
-  const onBlur = sinon.spy();
-  const wrapper = shallow(
-    <Fab
-      icon="build"
-      onFocus={onFocus}
-      onBlur={onBlur}
-    />,
-  );
+test('should update the shadow when the fab receives / loses focus', (t) => {
+  const wrapper = mount(<FabWrapper icon="build" />);
+  const shadow = wrapper.find('.fab--shadow');
 
   wrapper.simulate('focus');
 
-  t.deepEqual(onFocus.callCount, 1);
-  t.deepEqual(wrapper.state('focused'), true);
+  t.deepEqual(shadow.node.style.opacity, '1');
 
   wrapper.simulate('blur');
 
-  t.deepEqual(onBlur.callCount, 1);
-  t.deepEqual(wrapper.state('focused'), false);
+  t.deepEqual(shadow.node.style.opacity, '0');
 });
 
-test('should handle touch events correctly', (t) => {
-  const onTouchStart = sinon.spy();
-  const onTouchEnd = sinon.spy();
-  const wrapper = shallow(
-    <Fab
+test('should set the isTouchEvent property', (t) => {
+  const onPress = sinon.spy();
+  const wrapper = mount(
+    <FabWrapper
       icon="build"
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
+      onPress={onPress}
     />,
   );
 
   wrapper.simulate('touchStart');
 
-  t.deepEqual(onTouchStart.callCount, 1);
-  t.deepEqual(wrapper.state('pressed'), true);
-
-  wrapper.simulate('touchEnd');
-
-  t.deepEqual(onTouchEnd.callCount, 1);
-  t.deepEqual(wrapper.state('pressed'), false);
+  t.deepEqual(onPress.callCount, 1);
 });
 
-test('should handle mouse events correctly', (t) => {
-  const onMouseDown = sinon.spy();
-  const onMouseUp = sinon.spy();
-  const wrapper = shallow(
-    <Fab
+test('should not call onPress twice when a touch event happened before a mouse event', (t) => {
+  const onPress = sinon.spy();
+  const wrapper = mount(
+    <FabWrapper
       icon="build"
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
+      onPress={onPress}
     />,
   );
+
+  wrapper.simulate('touchStart');
+
+  // Should not call onPress again because isTouchEvent should be true
+  wrapper.simulate('mouseDown');
+
+  t.deepEqual(onPress.callCount, 1);
 
   wrapper.simulate('mouseDown');
 
-  t.deepEqual(onMouseDown.callCount, 1);
-  t.deepEqual(wrapper.state('pressed'), true);
-
-  wrapper.simulate('mouseUp');
-
-  t.deepEqual(onMouseUp.callCount, 1);
-  t.deepEqual(wrapper.state('pressed'), false);
+  t.deepEqual(onPress.callCount, 2);
 });
 
-test('should not handle key events where the key codes don\'t match', (t) => {
-  const onKeyDown = sinon.spy();
-  const onKeyUp = sinon.spy();
-  const wrapper = shallow(
-    <Fab
-      icon="build"
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-    />,
-  );
-
-  wrapper.simulate('keyDown');
-
-  t.deepEqual(onKeyDown.callCount, 1);
-  t.deepEqual(wrapper.state('pressed'), false);
-});
-
-test('should only handle key events where the key codes match', (t) => {
-  const onKeyDown = sinon.spy();
-  const onKeyUp = sinon.spy();
-  const wrapper = shallow(
-    <Fab
-      icon="build"
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-    />,
-  );
-
-  t.plan(Fab.keyCodes.length * 2);
-
-  Fab.keyCodes.forEach((keyCode, index) => {
-    wrapper.simulate('keyDown', { keyCode });
-
-    t.deepEqual(onKeyDown.callCount, index + 1);
-    t.deepEqual(wrapper.state('pressed'), true);
-
-    wrapper.simulate('keyUp');
-  });
-});
-
-test('should only update the state when a key is not already pressed', (t) => {
+test('should call the onPress handler when the user presses a key', (t) => {
   const onPress = sinon.spy();
-  const wrapper = shallow(
-    <Fab
+  const wrapper = mount(
+    <FabWrapper
       icon="build"
       onPress={onPress}
     />,
@@ -175,26 +103,48 @@ test('should only update the state when a key is not already pressed', (t) => {
   wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
 
   t.deepEqual(onPress.callCount, 1);
+});
+
+test('should not call onPress twice when no keyUp event has happened', (t) => {
+  const wrapper = shallow(
+    <Fab
+      classes={{}}
+      theme={{}}
+      icon="build"
+    />,
+  );
+  const instance = wrapper.instance();
 
   wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
 
-  t.deepEqual(onPress.callCount, 1);
+  t.deepEqual(instance.isPressingKey, true);
+
+  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
 });
 
-test('all events should work when no handlers are passed', (t) => {
-  const wrapper = shallow(<Fab icon="build" />);
+test('should only call onPress twice when a keyUp event has happened', (t) => {
+  const onPress = sinon.spy();
+  const wrapper = mount(
+    <FabWrapper
+      icon="build"
+      onPress={onPress}
+    />,
+  );
 
-  wrapper.simulate('keyDown');
+  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
   wrapper.simulate('keyUp');
+  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
 
-  wrapper.simulate('mouseDown');
-  wrapper.simulate('mouseUp');
+  t.deepEqual(onPress.callCount, 2);
+});
 
-  wrapper.simulate('touchStart');
-  wrapper.simulate('touchEnd');
-
-  wrapper.simulate('focus');
-  wrapper.simulate('blur');
+test('should render different styles with the mini prop', (t) => {
+  mount(
+    <FabWrapper
+      icon="build"
+      mini
+    />,
+  );
 
   t.pass();
 });

@@ -18,6 +18,13 @@ export const schema = PropTypes.shape({
   disabledColor: PropTypes.string.isRequired,
 });
 
+/**
+ * The default theme for the button component.
+ *
+ * @private
+ * @param {Object} vars - Variables passed by the theme compiler.
+ * @returns {Object} - Returns the theme.
+ */
 export function defaultTheme(vars) {
   return {
     elevation: 2,

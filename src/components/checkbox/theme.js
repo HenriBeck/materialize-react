@@ -1,53 +1,48 @@
 import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
-  checkmarkColor: PropTypes.string,
+  checkedBorderColor: PropTypes.string.isRequired,
+  checkedBackgroundColor: PropTypes.string.isRequired,
 
-  checkedBorderColor: PropTypes.string,
-  checkedBackgroundColor: PropTypes.string,
+  uncheckedBorderColor: PropTypes.string.isRequired,
+  uncheckedBackgroundColor: PropTypes.string.isRequired,
 
-  uncheckedBorderColor: PropTypes.string,
-  uncheckedBackgroundColor: PropTypes.string,
+  disabledBorderColor: PropTypes.string.isRequired,
+  disabledBackgroundColor: PropTypes.string.isRequired,
+  disabledCheckedBackgroundColor: PropTypes.string.isRequired,
 
-  disabledBorderColor: PropTypes.string,
-  disabledBackgroundColor: PropTypes.string,
-  disabledCheckedBackgroundColor: PropTypes.string,
+  padding: PropTypes.number.isRequired,
+  rippleSize: PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
+  borderWidth: PropTypes.number.isRequired,
 
-  checkedRippleColor: PropTypes.string,
-  uncheckedRippleColor: PropTypes.string,
-
-  checkedRippleFocusColor: PropTypes.string,
-  uncheckedRippleFocusColor: PropTypes.string,
-
-  labelColor: PropTypes.string,
-  disabledLabelColor: PropTypes.string,
-
-  padding: PropTypes.number,
-  height: PropTypes.number,
-  checkboxSize: PropTypes.number,
-  checkboxBorderWidth: PropTypes.number,
+  animationDuration: PropTypes.number.isRequired,
 });
 
+/**
+ * The default theme for the checkbox component.
+ *
+ * @private
+ * @param {Object} vars - Variables passed by the theme compiler.
+ * @returns {Object} - Returns the theme.
+ */
 export function defaultTheme(vars) {
   return {
-    checkmarkColor: 'white',
-
     checkedBorderColor: vars.primaryBase,
     checkedBgColor: vars.primaryBase,
 
-    uncheckedBorderColor: 'rgba(0, 0, 0, 0.55)',
+    uncheckedBorderColor: 'rgba(255, 255, 255, 0.7)',
     uncheckedBgColor: 'transparent',
 
-    disabledBorderColor: 'rgba(0, 0, 0, 0.26)',
+    disabledBorderColor: 'rgba(255, 255, 255, 0.3)',
     disabledBgColor: 'transparent',
-    disabledCheckedBgColor: 'rgba(0, 0, 0, 0.26)',
-
-    labelColor: vars.textColor,
-    disabledLabelColor: vars.disabledColor,
+    disabledCheckedBgColor: 'rgba(255, 255, 255, 0.3)',
 
     padding: 4,
-    height: 48,
-    checkboxSize: 20,
-    checkboxBorderWidth: 2,
+    rippleSize: 48,
+    size: 20,
+    borderWidth: 2,
+
+    animationDuration: vars.transitionTime,
   };
 }

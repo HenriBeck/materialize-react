@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import injectSheet from '../jss';
 import themeSchema from './theme-schema';
 import {
   defaultTheme,
@@ -8,6 +9,14 @@ import {
 } from './default-theme';
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
+/**
+ * Compile the theme and merge it with the default theme.
+ *
+ * @private
+ * @param {Object} variables - The variables that will be passed to the theme functions.
+ * @param {Object} [theme] - The theme provided by the user.
+ * @returns {Object} - Returns the compiled theme.
+ */
 export function compileTheme(variables, theme) {
   return Object
     .keys(defaultTheme)
@@ -26,7 +35,7 @@ export function compileTheme(variables, theme) {
  *
  * @class
  */
-export default class Theme extends PureComponent {
+export class Theme extends PureComponent {
   static propTypes = {
     theme: PropTypes.object,
     variables: PropTypes.object,
@@ -53,6 +62,11 @@ export default class Theme extends PureComponent {
     return { theme: compileTheme(this.variables, this.props.theme) };
   }
 
+  /**
+   * Merge the default variables with the from the user.
+   *
+   * @returns {Object} - Returns the merged variables.
+   */
   get variables() {
     return Object.assign({}, defaultVars, this.props.variables);
   }
@@ -67,3 +81,8 @@ export default class Theme extends PureComponent {
     );
   }
 }
+
+// Turn off the highlight when the user is using a touch device
+const styles = { '@global': { '*': { WebkitTapHighlightColor: 'transparent' } } };
+
+export default injectSheet(styles)(Theme);

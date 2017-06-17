@@ -1,29 +1,35 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 
-import Stylesheet from '/src/styles/stylesheet';
+import typo from '../../styles/plugins/typo';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
 
-export default function Label({
+/**
+ * A function to render a label tag with special material design stylings.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.classes - The classes object provided by jss.
+ * @param {String} props.children - Text for the label.
+ * @param {String} props.className - Additional className to apply.
+ * @param {Boolean} props.disabled - If the label is disabled.
+ * @returns {JSX} - Returns the label component.
+ */
+export function Label({
+  classes,
   children,
-  style,
   className,
   disabled,
-  ...otherProps
-}, { theme }) {
-  const compiledStyle = Stylesheet.compile({
-    typo: theme.label.typo,
-    userSelect: 'none',
-    padding: '0 8px',
-    color: disabled ? theme.label.disabledColor : theme.label.color,
-    ...style,
-  });
-
+  ...props
+}) {
   return (
     <label
-      htmlFor={otherProps.for}
-      className={`label ${className}`}
-      style={compiledStyle}
-      {...omit(otherProps, 'for')}
+      aria-disabled={disabled}
+      htmlFor={props.for}
+      className={`${classes.label} ${className}`}
+      {...omit(getNotDeclaredProps({ props }, Label), 'for')}
     >
       {children}
     </label>
@@ -31,17 +37,27 @@ export default function Label({
 }
 
 Label.propTypes = {
+  classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
   for: PropTypes.string.isRequired,
-  style: PropTypes.object,
   className: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
 Label.defaultProps = {
-  style: {},
   className: '',
   disabled: false,
 };
 
-Label.contextTypes = { theme: PropTypes.object };
+const styles = {
+  label: {
+    ...typo('body1'),
+    composes: 'label',
+    userSelect: 'none',
+    padding: '0 8px',
+    color: props => (props.disabled ? props.theme.disabledColor : props.theme.color),
+  },
+};
+
+export default connectWithTheme(injectSheet(styles)(Label), 'label');
+

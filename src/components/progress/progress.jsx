@@ -1,34 +1,40 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
-import Stylesheet from '/src/styles/stylesheet';
-import { easeInOutCubic } from '/src/styles/timings';
-import warning from '/src/utils/warning';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import { easeInOutCubic } from '../../styles/timings';
+import warning from '../../utils/warning';
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
 
-export default class Progress extends PureComponent {
+/**
+ * A component to render a material design progress bar.
+ *
+ * @class
+ * @extends PureComponent
+ */
+export class Progress extends PureComponent {
   static propTypes = {
-    mode: PropTypes.oneOf([
-      'normal',
-      'indeterminate',
-    ]),
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+    indeterminate: PropTypes.bool,
+    disabled: PropTypes.bool,
     progress: PropTypes.number,
+    secondaryProgress: PropTypes.number,
     className: PropTypes.string,
-    style: PropTypes.object,
     active: PropTypes.bool,
   };
 
   static defaultProps = {
-    mode: 'normal',
+    indeterminate: false,
     progress: 0,
     className: '',
     style: {},
     active: false,
+    secondaryProgress: 0,
+    disabled: false,
   };
-
-  static contextTypes = { theme: PropTypes.object };
 
   /**
    * Make sure the value that the user passed in is valid and is between 0 and 100.
@@ -41,210 +47,199 @@ export default class Progress extends PureComponent {
     return Math.max(0, Math.min(value, 100));
   }
 
+  /**
+   * Animate the bars to initial values.
+   */
   componentDidMount() {
-    // Check if the component is in normal mode and if the progress is not 0
-    // elsewise check if the component is in indeterminate mode and active
-    // to start the indeterminate animation
-    if (this.isNormal && Progress.clamp(this.props.progress) !== 0) {
-      this.animateBar(0, this.props.progress);
-    } else if (this.isIndeterminate && this.props.active) {
-      this.startIndeterminate();
-    }
-  }
+    if (!this.props.indeterminate) {
+      if (this.props.progress !== 0) {
+        this.animateBar(this.primaryBar, 0, this.props.progress);
+      }
 
-  shouldComponentUpdate(nextProps) {
-    const modeChanged = nextProps.mode !== this.props.mode;
-
-    warning(modeChanged, 'You should not change the mode of the progress bar!');
-
-    return !modeChanged;
-  }
-
-  componentDidUpdate(prevProps) {
-    const animOptions = {
-      duration: this.context.theme.variables.defaultTransitionTime,
-      fill: 'forwards',
-    };
-
-    if (this.isNormal && prevProps.progress !== this.props.progress) {
-      this.animateBar(prevProps.progress, this.props.progress);
-    }
-
-    if (this.isIndeterminate && prevProps.active !== this.props.active) {
-      if (!this.barAnimation && !this.indeterminateAnimation) {
-        this.startIndeterminate();
-      } else {
-        this.bar.animate({ opacity: this.props.active ? [0, 1] : [1, 0] }, animOptions);
+      if (this.props.secondaryProgress !== 0) {
+        this.animateBar(this.secondaryBar, 0, this.props.secondaryProgress);
       }
     }
   }
 
-  barAnimation = null;
-  indeterminateAnimation = null;
-
-  get theme() {
-    return this.context.theme.progress;
-  }
-
   /**
-   * Check if the component is in normal mode.
-   *
-   * @returns {Boolean} - Returns whether the component is in the normal mode.
+   * Warn if the user changes the mode prop.
    */
-  get isNormal() {
-    return this.props.mode === 'normal';
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.indeterminate !== this.props.indeterminate,
+      'You should not change the mode of the progress bar!',
+    );
   }
 
   /**
-   * Check if the component is in indeterminate mode.
-   *
-   * @returns {Boolean} - Returns whether the component is in the indeterminate mode.
+   * Animate the bars when the props changed.
    */
-  get isIndeterminate() {
-    return this.props.mode === 'indeterminate';
+  componentDidUpdate(prevProps) {
+    if (!this.props.indeterminate) {
+      const { secondaryProgress } = this.props;
+
+      if (this.props.progress !== prevProps.progress) {
+        this.animateBar(this.primaryBar, prevProps.progress, this.props.progress);
+      }
+
+      if (secondaryProgress !== prevProps.secondaryProgress) {
+        this.animateBar(this.secondaryBar, prevProps.secondaryProgress, secondaryProgress);
+      }
+    }
   }
 
   /**
-   * Compile the styles for the component.
+   * Animate one of the bars.
    *
-   * @returns {Object} - Returns the styles.
-   */
-  get styles() {
-    return Stylesheet.compile({
-      root: {
-        display: 'block',
-        position: 'relative',
-        size: ['100%', this.theme.barHeight],
-        backgroundColor: this.theme.bgColor,
-        overflow: 'hidden',
-        ...this.props.style,
-      },
-
-      bar: {
-        position: ['absolute', 0],
-        size: ['100%', this.theme.barHeight],
-        backgroundColor: this.theme.barColor,
-        transform: 'scaleX(0.5)',
-        transformOrigin: this.isIndeterminate ? 'right center' : 'left center',
-      },
-
-      indeterminate: {
-        backgroundColor: this.theme.backgroundColor,
-        height: this.theme.barHeight,
-        position: ['absolute', 0],
-        transformOrigin: 'center center',
-      },
-    }, { variables: this.context.theme.variables });
-  }
-
-  /**
-   * Animate the progress bar to the new value.
-   *
+   * @private
+   * @param {Object} elem - The element to animate.
    * @param {Number} prevProgress - The previous progress.
-   * We need it to compute the animation duration.
-   * @param {Number} progress - The progress to animate to.
-   * @returns {Object} - Returns the animation object.
+   * @param {Number} newProgress - The new progress to animate too.
    */
-  animateBar(prevProgress, progress) {
-    // Get the current progress
-    // We get it in a matrix form so we have to
-    const transform = window.getComputedStyle(this.bar).transform;
-    const clampNew = Progress.clamp(progress);
-    const clampPrev = Progress.clamp(prevProgress);
+  animateBar(elem, prevProgress, newProgress) {
+    const transform = window.getComputedStyle(elem).transform;
+    const clampNewValue = Progress.clamp(newProgress);
+    const clampPrevValue = Progress.clamp(prevProgress);
+    const { fullAnimationDuration } = this.props.theme;
 
-    // Animate the bar
-    this.bar.animate({
+    elem.animate({
       transform: [
         transform,
-        `matrix(${clampNew / 100}, 0, 0, 1, 0, 0)`,
+        `matrix(${clampNewValue / 100}, 0, 0, 1, 0, 0)`,
       ],
     }, {
       fill: 'forwards',
-      // Compute the duration based on the difference
-      duration: Math.abs((clampNew - clampPrev) / 100) * 800,
+      duration: Math.abs((clampPrevValue - clampNewValue) / 100) * fullAnimationDuration,
       easing: easeInOutCubic,
     });
   }
 
-  /**
-   * Start the indeterminate animation.
-   *
-   * @returns {undefined} - Returns nothing.
-   */
-  startIndeterminate() {
-    const animationOptions = {
-      duration: 2 * 1000,
-      iterations: Infinity,
-    };
-
-    this.barAnimation = this.bar.animate([{
-      offset: 0,
-      transform: 'scaleX(1) translateX(-100%)',
-    }, {
-      offset: 0.5,
-      transform: 'scaleX(1) translateX(0%)',
-    }, {
-      offset: 0.75,
-      transform: 'scaleX(1) translateX(0%)',
-      easing: 'cubic-bezier(.28,.62,.37,.91)',
-    }, {
-      offset: 1,
-      transform: 'scaleX(0) translateX(0%)',
-    }], animationOptions);
-
-    this.indeterminateAnimation = this.indeterminate.animate([{
-      offset: 0,
-      transform: 'scaleX(.75) translateX(-125%)',
-    }, {
-      offset: 0.3,
-      transform: 'scaleX(.75) translateX(-125%)',
-      easing: 'cubic-bezier(.42,0,.6,.8)',
-    }, {
-      offset: 0.9,
-      transform: 'scaleX(.75) translateX(125%)',
-    }, {
-      offset: 1,
-      transform: 'scaleX(.75) translateX(125%)',
-    }], animationOptions);
-  }
-
   render() {
-    const styles = this.styles;
+    const { classes } = this.props;
     const props = {};
+    const isIndeterminate = this.props.indeterminate;
+    const className = classnames(this.props.className, classes.progress, {
+      active: isIndeterminate && this.props.active,
+      indeterminate: isIndeterminate,
+    });
 
-    if (this.isNormal) {
+    if (isIndeterminate) {
+      props['data-active'] = this.props.active;
+    } else {
       props['aria-valuenow'] = Progress.clamp(this.props.progress);
       props['aria-valuemin'] = 0;
       props['aria-valuemax'] = 100;
-    }
-
-    if (this.isIndeterminate) {
-      props['data-active'] = this.props.active;
     }
 
     return (
       <span
         {...getNotDeclaredProps(this, Progress)}
         role="progressbar"
-        data-mode={this.props.mode}
-        className={`progress ${this.props.className}`}
-        style={styles.root}
+        aria-disabled={this.props.disabled}
+        className={className}
+        ref={(element) => { this.root = element; }}
         {...props}
       >
-        <span
-          style={styles.bar}
-          className="progress--bar"
-          ref={(element) => { this.bar = element; }}
-        />
-
-        {this.isIndeterminate && (
-          <span
-            style={styles.indeterminate}
-            className="progress--indeterminate"
-            ref={(element) => { this.indeterminate = element; }}
+        <div className={classes.container}>
+          <div
+            className={classes.secondaryBar}
+            ref={(element) => { this.secondaryBar = element; }}
           />
-        )}
+
+          <div
+            className={classes.primaryBar}
+            ref={(element) => { this.primaryBar = element; }}
+          />
+        </div>
       </span>
     );
   }
 }
+
+const layoutFit = {
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+};
+
+const styles = {
+  '@keyframes progress--bar': {
+    '0%': { transform: 'scaleX(1) translateX(-100%)' },
+    '50%': { transform: 'scaleX(1) translateX(0%)' },
+    '75%': {
+      transform: 'scaleX(1) translateX(0%)',
+      animationTimingFunction: 'cubic-bezier(.28, .62, .37, .91)',
+    },
+    '100%': { transform: 'scaleX(0) translateX(0%)' },
+  },
+
+  '@keyframes progress--splitter': {
+    '0%': { transform: 'scaleX(.75) translateX(-125%)' },
+    '30%': {
+      transform: 'scaleX(.75) translateX(-125%)',
+      animationTimingFunction: 'cubic-bezier(.42, 0, .6, .8)',
+    },
+    '90%': { transform: 'scaleX(.75) translateX(125%)' },
+    '100%': { transform: 'scaleX(.75) translateX(125%)' },
+  },
+
+  progress: {
+    composes: 'progress',
+    display: 'block',
+    position: 'relative',
+    width: '100%',
+    overflow: 'hidden',
+
+    '&.indeterminate $primaryBar': {
+      transformOrigin: 'right center',
+      animationIterationCount: 'infinite',
+      animationDuration: props => props.theme.indeterminateDuration,
+    },
+
+    '&.indeterminate $primaryBar::after': {
+      ...layoutFit,
+      content: '""',
+      transformOrigin: 'center center',
+      animationIterationCount: 'infinite',
+      height: props => props.theme.barHeight,
+      backgroundColor: props => props.theme.backgroundColor,
+      animationDuration: props => props.theme.indeterminateDuration,
+    },
+
+    '&.indeterminate.active $primaryBar': { animationName: 'progress--bar' },
+
+    '&.indeterminate.active $primaryBar::after': { animationName: 'progress--splitter' },
+  },
+
+  container: {
+    position: 'relative',
+    width: '100%',
+    height: props => props.theme.barHeight,
+    backgroundColor: props => props.theme.backgroundColor,
+  },
+
+  primaryBar: {
+    ...layoutFit,
+    transformOrigin: 'left center',
+    willChange: 'transform',
+    transform: 'scaleX(0)',
+    backgroundColor(props) {
+      return props.disabled ? props.theme.disabledPrimaryBarColor : props.theme.primaryBarColor;
+    },
+  },
+
+  secondaryBar: {
+    ...layoutFit,
+    transformOrigin: 'left center',
+    willChange: 'transform',
+    transform: 'scaleX(0)',
+    backgroundColor(props) {
+      return props.disabled ? props.theme.disabledSecondaryBarColor : props.theme.secondaryBarColor;
+    },
+  },
+};
+
+export default connectWithTheme(injectSheet(styles)(Progress), 'progress');

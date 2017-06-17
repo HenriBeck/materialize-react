@@ -6,7 +6,7 @@ import {
 } from '../../../tests/helpers/enzyme';
 import sinon from 'sinon';
 
-import ButtonContainer, { Button } from './button';
+import ButtonWrapper, { Button } from './button';
 
 const classes = {
   button: 'button',
@@ -14,10 +14,27 @@ const classes = {
 };
 
 test('should render the button', (t) => {
-  const wrapper = mount(<ButtonContainer />);
+  const wrapper = mount(<ButtonWrapper />);
 
   t.deepEqual(wrapper.find('Jss(Button)').length, 1);
-  t.deepEqual(wrapper.find('button').length, 1);
+  t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
+});
+
+test('should render the button with different styles', (t) => {
+  const wrapper = mount(<ButtonWrapper raised />);
+  const button = wrapper.find('Button');
+  const bgColor = () => button.prop('sheet').rules.map.button.renderable.style['background-color'];
+  const theme = wrapper.context('theme').button;
+
+  t.deepEqual(bgColor(), theme.raisedBgColor);
+
+  wrapper.setProps({ disabled: true });
+
+  t.deepEqual(bgColor(), theme.raisedAndDisabledBgColor);
+
+  wrapper.setProps({ raised: false });
+
+  t.deepEqual(bgColor(), theme.disabledBgColor);
 });
 
 test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t disabled', (t) => {
@@ -27,7 +44,7 @@ test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t 
       classes={classes}
     />,
   );
-  const button = wrapper.find('button');
+  const button = wrapper.find({ role: 'button' });
 
   t.deepEqual(button.prop('tabIndex'), -1);
   t.deepEqual(button.prop('aria-disabled'), true);
@@ -108,7 +125,7 @@ test('should only handle key events where the key codes match', (t) => {
   const onPress = sinon.spy();
   const wrapper = mount(
     <Button
-      classes={classes  }
+      classes={classes}
       onPress={onPress}
     />,
   );
@@ -128,7 +145,7 @@ test('should only update the state when a key is not already pressed', (t) => {
   const onPress = sinon.spy();
   const wrapper = mount(
     <Button
-      classes={classes  }
+      classes={classes}
       onPress={onPress}
     />,
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import hoistNonReactStatics from 'hoist-non-react-statics';
 
 /**
  * A Wrapper function to inject the theme passed in by the context as a prop into the JSS HOC.
@@ -30,8 +29,6 @@ export default function connectWithTheme(Component, componentName = null) {
   }
 
   Wrapper.contextTypes = { theme: PropTypes.object };
-
-  hoistNonReactStatics(Wrapper, Component);
 
   return Wrapper;
 }

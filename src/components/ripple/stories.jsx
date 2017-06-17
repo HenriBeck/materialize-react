@@ -4,5 +4,5 @@ import Ripple from './ripple-container';
 
 storiesOf('Ripple', module)
   .add('with text', () => (
-    <Ripple></Ripple>
+    <Ripple />
   ));

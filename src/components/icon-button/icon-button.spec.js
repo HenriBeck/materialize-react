@@ -2,33 +2,26 @@ import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
 
-import IconButton from './icon-button';
-import {
-  shallow,
-  mount,
-} from '/tests/helpers/enzyme';
+import IconButtonWrapper, { IconButton } from './icon-button';
+import { mount } from '../../../tests/helpers/enzyme';
 
-test('should render a button and should have an Icon inside', (t) => {
-  const wrapper = shallow(<IconButton icon="github" />);
+test('should render various elements and components', (t) => {
+  const wrapper = mount(<IconButtonWrapper icon="github" />);
 
-  t.deepEqual(wrapper.find('button').length, 1);
+  t.deepEqual(wrapper.find('Jss(IconButton)').length, 1);
+  t.deepEqual(wrapper.find('Ripple').length, 1);
+  t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
   t.deepEqual(wrapper.find('Icon').length, 1);
 });
 
-test('should have a ripple inside', (t) => {
-  const wrapper = shallow(<IconButton icon="github" />);
-
-  t.deepEqual(wrapper.find('Ripple').length, 1);
-});
-
 test('should have aria-disabled and tabIndex of -1 when disabled', (t) => {
-  const wrapper = shallow(
-    <IconButton
+  const wrapper = mount(
+    <IconButtonWrapper
       disabled
       icon="github"
     />,
   );
-  const button = wrapper.find('button').first();
+  const button = wrapper.find({ role: 'button' }).first();
 
   t.deepEqual(button.prop('aria-disabled'), true);
   t.deepEqual(button.prop('tabIndex'), -1);
@@ -37,8 +30,8 @@ test('should have aria-disabled and tabIndex of -1 when disabled', (t) => {
 test('should call the event handlers when the mouse or a touch event happens', (t) => {
   const onMouseDown = sinon.spy();
   const onTouchStart = sinon.spy();
-  const wrapper = shallow(
-    <IconButton
+  const wrapper = mount(
+    <IconButtonWrapper
       icon="github"
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
@@ -54,8 +47,8 @@ test('should call the event handlers when the mouse or a touch event happens', (
 
 test('should call the onPress handler when a mouse or touch event happens', (t) => {
   const onPress = sinon.spy();
-  const wrapper = shallow(
-    <IconButton
+  const wrapper = mount(
+    <IconButtonWrapper
       icon="github"
       onPress={onPress}
     />,
@@ -74,7 +67,7 @@ test('should add and remove the focus from the ripple', (t) => {
   const onFocus = sinon.spy();
   const onBlur = sinon.spy();
   const wrapper = mount(
-    <IconButton
+    <IconButtonWrapper
       icon="github"
       onFocus={onFocus}
       onBlur={onBlur}
@@ -90,26 +83,10 @@ test('should add and remove the focus from the ripple', (t) => {
   t.deepEqual(onBlur.callCount, 1);
 });
 
-test('should add focus to the ripple when the component get\'s focused', (t) => {
-  const wrapper = mount(<IconButton icon="github" />);
-  const instance = wrapper.instance();
-
-  instance.ripple.addFocus = sinon.spy();
-  instance.ripple.removeFocus = sinon.spy();
-
-  wrapper.simulate('focus');
-
-  t.deepEqual(instance.ripple.addFocus.callCount, 1);
-
-  wrapper.simulate('blur');
-
-  t.deepEqual(instance.ripple.removeFocus.callCount, 1);
-});
-
 test('should not call the onPress handler when the keyCode isn\'t specified', (t) => {
   const onPress = sinon.spy();
   const wrapper = mount(
-    <IconButton
+    <IconButtonWrapper
       icon="github"
       onPress={onPress}
     />,
@@ -123,7 +100,7 @@ test('should not call the onPress handler when the keyCode isn\'t specified', (t
 test('should only call the onPress handler when the keyCode is specified and valid', (t) => {
   const onPress = sinon.spy();
   const wrapper = mount(
-    <IconButton
+    <IconButtonWrapper
       icon="github"
       onPress={onPress}
     />,
@@ -143,7 +120,7 @@ test('should only call the onPress handler when the keyCode is specified and val
 test('should not call the onPress handler again if the keyUp handler hasn\'t been called', (t) => {
   const onPress = sinon.spy();
   const wrapper = mount(
-    <IconButton
+    <IconButtonWrapper
       icon="github"
       onPress={onPress}
     />,
@@ -157,4 +134,16 @@ test('should not call the onPress handler again if the keyUp handler hasn\'t bee
   wrapper.simulate('keyDown', { keyCode });
 
   t.deepEqual(onPress.callCount, 1);
+});
+
+test('should be able to call the default event handlers', (t) => {
+  IconButton.defaultProps.onFocus();
+  IconButton.defaultProps.onBlur();
+  IconButton.defaultProps.onPress();
+  IconButton.defaultProps.onKeyDown();
+  IconButton.defaultProps.onKeyUp();
+  IconButton.defaultProps.onTouchStart();
+  IconButton.defaultProps.onMouseDown();
+
+  t.pass();
 });

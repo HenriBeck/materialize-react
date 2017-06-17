@@ -17,7 +17,7 @@ const defaultProps = {
 test('should render a span', (t) => {
   const wrapper = mount(<Wave {...defaultProps} />);
 
-  t.deepEqual(wrapper.find('span').length, 1);
+  t.deepEqual(wrapper.find('span.wave').length, 1);
 });
 
 test('animate the wave out', (t) => {
@@ -26,7 +26,7 @@ test('animate the wave out', (t) => {
 
   instance.startFadeOutAnimation();
 
-  t.true(Boolean(instance.animation));
+  t.deepEqual(wrapper.find('.wave').node.style.opacity, '0');
 });
 
 test('should call the onFinish handler', (t) => {
@@ -35,11 +35,8 @@ test('should call the onFinish handler', (t) => {
     onFinish: sinon.spy(),
   };
   const wrapper = mount(<Wave {...props} />);
-  const instance = wrapper.instance();
 
-  instance.startFadeOutAnimation();
-
-  instance.animation.onfinish();
+  wrapper.simulate('transitionEnd');
 
   t.deepEqual(props.onFinish.callCount, 1);
 });

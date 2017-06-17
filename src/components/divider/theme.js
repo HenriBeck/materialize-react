@@ -1,11 +1,20 @@
 import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
-  height: PropTypes.number,
-  backgroundColor: PropTypes.string,
+  height: PropTypes.number.isRequired,
+  backgroundColor: PropTypes.string.isRequired,
 });
 
-export const defaultTheme = {
-  height: 1,
-  backgroundColor: 'var(dividerColor)',
-};
+/**
+ * The default theme for the divider component.
+ *
+ * @private
+ * @param {Object} vars - Variables passed by the theme compiler.
+ * @returns {Object} - Returns the theme.
+ */
+export function defaultTheme(vars) {
+  return {
+    height: 1,
+    backgroundColor: vars.dividerColor,
+  };
+}

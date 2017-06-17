@@ -1,29 +1,41 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import {
+  withKnobs,
   number,
   boolean,
-} from '@kadira/storybook-addon-knobs';
+} from '@storybook/addon-knobs';
 
 import Progress from './progress';
 
 const style = { width: 400 };
 
 storiesOf('Progress', module)
+  .addDecorator(withKnobs)
   .add('Default Styles', () => (
-    <Progress
-      progress={number('Progress', 75, {
-        min: 0,
-        max: 100,
-        step: 1,
-      })}
-      style={style}
-    />
+    <div style={style}>
+      <Progress
+        progress={number('Progress', 75, {
+          range: true,
+          min: 0,
+          max: 100,
+          step: 1,
+        })}
+
+        secondaryProgress={number('Secondary Progress', 0, {
+          range: true,
+          min: 0,
+          max: 100,
+          step: 1,
+        })}
+      />
+    </div>
   ))
   .add('Indeterminate Style', () => (
-    <Progress
-      mode="indeterminate"
-      active={boolean('Active', true)}
-      style={style}
-    />
+    <div style={style}>
+      <Progress
+        indeterminate
+        active={boolean('Active', true)}
+      />
+    </div>
   ));

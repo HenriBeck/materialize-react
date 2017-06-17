@@ -11,7 +11,7 @@ test('should return a function', (t) => {
 
 test('should render the passed in component', (t) => {
   const WrappedComponent = connectWithTheme('div');
-  const wrapper = shallow(<WrappedComponent/>);
+  const wrapper = shallow(<WrappedComponent />);
 
   t.deepEqual(wrapper.find('div').length, 1);
 

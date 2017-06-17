@@ -13,6 +13,7 @@ import {
  * The container for the ripple.
  *
  * @class
+ * @extends PureComponent
  */
 export class RippleContainer extends PureComponent {
   static propTypes = {
@@ -27,6 +28,7 @@ export class RippleContainer extends PureComponent {
     round: PropTypes.bool,
     nowaves: PropTypes.bool,
     onMouseDown: PropTypes.func,
+    onMouseLeave: PropTypes.func,
     onMouseUp: PropTypes.func,
     onTouchStart: PropTypes.func,
     onTouchEnd: PropTypes.func,
@@ -43,6 +45,7 @@ export class RippleContainer extends PureComponent {
     round: false,
     nowaves: false,
     onMouseDown: () => {},
+    onMouseLeave: () => {},
     onMouseUp: () => {},
     onTouchStart: () => {},
     onTouchEnd: () => {},
@@ -57,6 +60,7 @@ export class RippleContainer extends PureComponent {
   /**
    * Compute the inherited color of the root element.
    *
+   * @private
    * @returns {String} - Returns the color.
    */
   get color() {
@@ -66,6 +70,7 @@ export class RippleContainer extends PureComponent {
   /**
    * Create a new wave.
    *
+   * @private
    * @param {Object} ev - The event the wave is created from.
    */
   addWave = (ev) => {
@@ -103,6 +108,7 @@ export class RippleContainer extends PureComponent {
   /**
    * Remove a wave when the wave is animated out.
    *
+   * @private
    * @param {Number} waveId - The id of the wave.
    */
   removeWave(waveId) {
@@ -137,6 +143,7 @@ export class RippleContainer extends PureComponent {
         onAnimationFinish={this.handleAnimationFinish}
         onDownAction={this.handleDownAction}
         onMouseDown={this.props.onMouseDown}
+        onMouseLeave={this.props.onMouseLeave}
         onMouseUp={this.props.onMouseUp}
         onTouchStart={this.props.onTouchStart}
         onTouchEnd={this.props.onTouchEnd}
@@ -148,6 +155,11 @@ export class RippleContainer extends PureComponent {
 }
 
 const styles = {
+  '@keyframes ripple--scale-in': {
+    from: { transform: 'scale(0)' },
+    to: { transform: 'scale(1)' },
+  },
+
   ripple: {
     composes: 'ripple',
     position: 'absolute',
@@ -196,6 +208,8 @@ const styles = {
     transform: 'scale(0)',
     willChange: 'opacity, transform',
     zIndex: 1,
+    animationFillMode: 'forwards',
+    transition: 'opacity 140ms linear',
   },
 };
 

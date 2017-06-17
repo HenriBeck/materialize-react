@@ -21,6 +21,7 @@ const defaultProps = {
   onMouseUp: () => {},
   onTouchStart: () => {},
   onTouchEnd: () => {},
+  onMouseLeave: () => {},
 };
 
 test('should render a span with the riplpe class', (t) => {
@@ -75,11 +76,13 @@ test('should render a Wave component', (t) => {
   const wrapper = mount(
     <Ripple
       {...defaultProps}
-      waves={[{
-        id: 1,
-        style: {},
-        radius: 5,
-      }]}
+      waves={[
+        {
+          id: 1,
+          style: {},
+          radius: 5,
+        },
+      ]}
     />,
   );
   const rootNode = wrapper.find('.ripple').first();
@@ -87,4 +90,32 @@ test('should render a Wave component', (t) => {
   rootNode.simulate('touchEnd');
 
   t.deepEqual(wrapper.find(Wave).length, 1);
+});
+
+test('should emit an up action when the mouse leaves the element', (t) => {
+  const onMouseLeave = sinon.spy();
+  const wrapper = mount(
+    <Ripple
+      {...defaultProps}
+      onMouseLeave={onMouseLeave}
+    />,
+  );
+
+  wrapper.simulate('mouseLeave');
+
+  t.deepEqual(onMouseLeave.callCount, 1);
+});
+
+test('should not add a wave when a touch event has happened before', (t) => {
+  const wrapper = mount(<Ripple {...defaultProps} />);
+  const rootNode = wrapper.find('.ripple').first();
+  const instance = wrapper.instance();
+
+  rootNode.simulate('touchStart');
+
+  t.deepEqual(instance.isTouchEvent, true);
+
+  rootNode.simulate('mouseDown');
+
+  t.deepEqual(instance.isTouchEvent, false);
 });

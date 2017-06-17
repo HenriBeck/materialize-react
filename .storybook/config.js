@@ -1,9 +1,12 @@
+/* eslint-disable global-require */
+
 import {
   configure,
   addDecorator,
 } from '@storybook/react';
+import { setOptions } from '@storybook/addon-options';
+import { withKnobs } from '@storybook/addon-knobs';
 import React from 'react';
-import whyDidYouUpdate from 'why-did-you-update';
 
 import 'normalize.css';
 import 'mdi/css/materialdesignicons.css';
@@ -11,27 +14,32 @@ import 'mdi/css/materialdesignicons.css';
 import Theme from '../src/styles/theme';
 import Background from '../src/components/background';
 
-addDecorator((story) => (
+addDecorator((...args) => (
   <Theme>
     <Background
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh'
+        height: '100vh',
       }}
     >
-      {story()}
+      {withKnobs(...args)}
     </Background>
   </Theme>
 ));
 
-function loadStories() {
-  whyDidYouUpdate(React, { include: /^pure/, exclude: /^Connect/ });
+setOptions({
+  name: 'Materialize React',
+  url: 'https://github.com/HenriBeck/materialize-react',
+});
 
+configure(() => {
   require('../src/components/ripple/stories');
   require('../src/components/button/stories');
-  require('../src/components/chip/stories');
-}
-
-configure(loadStories, module);
+  require('../src/components/spinner/stories');
+  require('../src/components/switch/stories');
+  require('../src/components/progress/stories');
+  require('../src/components/fab/stories');
+  require('../src/components/checkbox/stories');
+}, module);

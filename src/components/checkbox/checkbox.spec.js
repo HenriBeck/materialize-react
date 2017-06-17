@@ -2,83 +2,67 @@ import React from 'react';
 import test from 'ava';
 
 import Checkbox from './checkbox';
-import { mount } from '/tests/helpers/enzyme';
+import { mount } from '../../../tests/helpers/enzyme';
 
-test('should render a span with a span inside', (t) => {
-  const wrapper = mount(
-    <Checkbox
-      checked={false}
-      disabled={false}
-    />,
-  );
-  const spans = wrapper.find('span');
-  const children = spans.first().children();
+const props = {
+  classes: {},
+  theme: {},
+  checked: false,
+  disabled: false,
+  className: '',
+  isFocused: false,
+  onPress: () => {},
+  id: 'id',
+  children: '',
+  onKeyUp: () => {},
+  onKeyDown: () => {},
+  onFocus: () => {},
+  onBlur: () => {},
+};
 
-  t.deepEqual(spans.length, 2);
-  t.deepEqual(children.find('span').length, 1);
+test('should render a span with a role of checkbox and a Jss HoC', (t) => {
+  const wrapper = mount(<Checkbox {...props} />);
+
+  t.deepEqual(wrapper.find('Jss(Checkbox)').length, 1);
+  t.deepEqual(wrapper.find({ role: 'checkbox' }).length, 1);
 });
 
-test('should set the initial border color on mount', (t) => {
+test('should set the aria-checked attribute on the root element', (t) => {
   const wrapper = mount(
     <Checkbox
+      {...props}
       checked
-      disabled
     />,
   );
-  const instance = wrapper.instance();
+  const root = wrapper.find({ role: 'checkbox' });
 
-  t.deepEqual(instance.lastBorderColor, instance.colors.borderColor);
-});
-
-test('should compute the colors of the checkbox based on the state', (t) => {
-  const wrapper = mount(
-    <Checkbox
-      checked={false}
-      disabled
-    />,
-  );
-  const instance = wrapper.instance();
-  const theme = instance.theme;
-
-  t.deepEqual(instance.colors, {
-    bgColor: theme.disabledBgColor,
-    borderColor: theme.disabledBorderColor,
-  });
-
-  wrapper.setProps({ checked: true });
-
-  t.deepEqual(instance.colors, {
-    bgColor: theme.disabledCheckedBgColor,
-    borderColor: theme.disabledBorderColor,
-  });
-
-  wrapper.setProps({ disabled: false });
-
-  t.deepEqual(instance.colors, {
-    bgColor: theme.checkedBgColor,
-    borderColor: theme.checkedBorderColor,
-  });
+  t.deepEqual(root.prop('aria-checked'), true);
 
   wrapper.setProps({ checked: false });
 
-  t.deepEqual(instance.colors, {
-    bgColor: theme.uncheckedBgColor,
-    borderColor: theme.uncheckedBorderColor,
-  });
+  t.deepEqual(root.prop('aria-checked'), false);
 });
 
-test('should update the checkmark color to the parent color when the checkbox is disabled', (t) => {
-  const wrapper = mount(
+test('should set the aria-disabled attribute on the root element', (t) => {
+  const wrapper = mount(<Checkbox{...props} />);
+  const root = wrapper.find({ role: 'checkbox' });
+
+  t.deepEqual(root.prop('aria-disabled'), false);
+
+  wrapper.setProps({ disabled: true });
+
+  t.deepEqual(root.prop('aria-disabled'), true);
+});
+
+test('should render different styles with different props', (t) => {
+  mount(
     <Checkbox
+      {...props}
       disabled
-      checked={false}
+      checked
+      labelPosition="left"
     />,
   );
-  const instance = wrapper.instance();
-  const checkmark = wrapper.find('.checkbox--checkmark').first();
 
-  instance.parentBgColor = '#ffffff';
-  instance.updateCheckmarkColor();
-
-  t.deepEqual(checkmark.node.style['border-color'], instance.parentBgColor);
+  t.pass();
 });

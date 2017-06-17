@@ -10,6 +10,12 @@ import Ripple from '../ripple';
 import typo from '../../styles/plugins/typo';
 import elevation from '../../styles/plugins/elevation';
 
+/**
+ * A material design button.
+ *
+ * @class
+ * @extends PureComponent
+ */
 export class Button extends PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
@@ -48,8 +54,8 @@ export class Button extends PureComponent {
   };
 
   static normalRippleProps = {
-    color: '#999999',
-    initialOpacity: 0.4,
+    color: '#cccccc',
+    initialOpacity: 0.25,
   };
 
   static raisedRippleProps = {
@@ -64,12 +70,23 @@ export class Button extends PureComponent {
     isFocused: false,
   };
 
-  keyDown = false;
+  isPressingKey = false;
 
+  /**
+   * Get the ripple props based on the props the user passed.
+   *
+   * @private
+   * @returns {Object} - Returns the props.
+   */
   get rippleProps() {
     return this.props.raised ? Button.raisedRippleProps : Button.normalRippleProps;
   }
 
+  /**
+   * Call the onPress handler and set the pressed state to true.
+   *
+   * @private
+   */
   handlePress = () => {
     if (this.props.raised) {
       this.setState({ pressed: true });
@@ -78,58 +95,103 @@ export class Button extends PureComponent {
     this.props.onPress();
   };
 
+  /**
+   * Toggle the pressed state when the user releases the button.
+   *
+   * @private
+   */
   handleRelease = () => {
     if (this.props.raised) {
       this.setState({ pressed: false });
     }
   };
 
+  /**
+   * Check if the user pressed a key that where we should emit an action.
+   *
+   * @private
+   */
   handleKeyDown = (ev = {}) => {
     this.props.onKeyDown(ev);
 
-    if (Button.keyCodes.includes(ev.keyCode) && !this.keyDown) {
-      this.keyDown = true;
+    if (Button.keyCodes.includes(ev.keyCode) && !this.isPressingKey) {
+      this.isPressingKey = true;
 
       this.props.onPress();
     }
   };
 
+  /**
+   * Set the isPressingKey attribute to false when the user releases the key.
+   *
+   * @private
+   */
   handleKeyUp = (ev) => {
     this.props.onKeyUp(ev);
 
-    this.keyDown = false;
+    this.isPressingKey = false;
   };
 
+  /**
+   * Call the press handler for the button.
+   *
+   * @private
+   */
   handleMouseDown = (ev) => {
     this.props.onMouseDown(ev);
 
     this.handlePress();
   };
 
+  /**
+   * Call the release handler for the button.
+   *
+   * @private
+   */
   handleMouseUp = (ev) => {
     this.props.onMouseUp(ev);
 
     this.handleRelease();
   };
 
+  /**
+   * Call the press handler for the button.
+   *
+   * @private
+   */
   handleTouchStart = (ev) => {
     this.props.onTouchStart(ev);
 
     this.handlePress();
   };
 
+  /**
+   * Call the release handler for the button.
+   *
+   * @private
+   */
   handleTouchEnd = (ev) => {
     this.props.onTouchEnd(ev);
 
     this.handleRelease();
   };
 
+  /**
+   * When the button get's focused, we tell the ripple to visibly indicate that.
+   *
+   * @private
+   */
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
     this.setState({ isFocused: true });
   };
 
+  /**
+   * When the button loses focus we want to remove the visible focus from the button.
+   *
+   * @private
+   */
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
@@ -148,8 +210,9 @@ export class Button extends PureComponent {
     );
 
     return (
-      <button
+      <span
         {...getNotDeclaredProps(this, Button)}
+        role="button"
         className={className}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
@@ -170,7 +233,7 @@ export class Button extends PureComponent {
         />
 
         {this.props.children}
-      </button>
+      </span>
     );
   }
 }
@@ -205,6 +268,12 @@ const styles = {
       }
 
       return props.raised ? props.theme.raisedBgColor : props.theme.bgColor;
+    },
+
+    '&:hover': {
+      boxShadow(props) {
+        return props.raised && !props.disabled ? elevation(props.theme.pressedElevation) : 'none';
+      },
     },
   },
 

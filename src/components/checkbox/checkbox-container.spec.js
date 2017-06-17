@@ -1,124 +1,96 @@
 import React from 'react';
 import test from 'ava';
-import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
 import CheckboxContainer from './checkbox-container';
-import {
-  shallow,
-  mount,
-} from '/tests/helpers/enzyme';
 
-test('should render a button', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="test" />);
-
-  t.deepEqual(wrapper.find('button').length, 1);
-});
-
-test('should get and set the state with the checked property', (t) => {
-  const wrapper = mount(<CheckboxContainer name="test" />);
-  const instance = wrapper.instance();
-
-  instance.checked = true;
-
-  t.deepEqual(wrapper.state('checked'), true);
-
-  instance.checked = false;
-
-  t.deepEqual(wrapper.state('checked'), false);
-
-  wrapper.setProps({ disabled: true });
-});
-
-test('should get the current state with the checked property', (t) => {
-  const wrapper = mount(<CheckboxContainer name="test" />);
+test('should be able to change the current state by the checked get and setter', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
   const instance = wrapper.instance();
 
   t.deepEqual(instance.checked, false);
+
+  instance.checked = true;
+
+  t.deepEqual(instance.checked, true);
+
+  instance.checked = true;
 });
 
-test('should have a negative tabIndex and aria-disabled set to true when it\'s disabled', (t) => {
-  const wrapper = shallow(
-    <CheckboxContainer
-      disabled
-      name="test"
-    />,
-  );
-  const checkbox = wrapper.find('.checkbox').first();
-
-  t.deepEqual(checkbox.prop('aria-disabled'), true);
-  t.deepEqual(checkbox.prop('tabIndex'), -1);
-});
-
-test('should have the checked state set to true when the defaultChecked prop is passed', (t) => {
-  const wrapper = shallow(
-    <CheckboxContainer
-      defaultChecked
-      name="test"
-    />,
-  );
-
-  t.deepEqual(wrapper.state('checked'), true);
-});
-
-test('should add focus the the ripple and remove it', (t) => {
-  const addFocus = sinon.spy();
-  const removeFocus = sinon.spy();
-  const wrapper = mount(<CheckboxContainer name="test" />);
-  const instance = wrapper.instance();
-
-  instance.ripple.addFocus = addFocus;
-  instance.ripple.removeFocus = removeFocus;
+test('should update the state when the component receives / loses focus', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
 
   wrapper.simulate('focus');
+
+  t.deepEqual(wrapper.state('isFocused'), true);
+
   wrapper.simulate('blur');
 
-  t.deepEqual(addFocus.callCount, 1);
-  t.deepEqual(removeFocus.callCount, 1);
+  t.deepEqual(wrapper.state('isFocused'), false);
 });
 
-test('should not update the state when there is no keyCode in a key event', (t) => {
-  const wrapper = mount(<CheckboxContainer name="test" />);
+test('should not toggle the state if no keyCode to onKeyDown is passed', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
 
-  wrapper.simulate('keyDown');
+  wrapper.simulate('keyDown', {});
 
   t.deepEqual(wrapper.state('checked'), false);
 });
 
-test('should only update the state when the key is a valid keyCode', (t) => {
-  const onKeyDown = sinon.spy();
-  const wrapper = mount(
-    <CheckboxContainer
-      name="test"
-      onKeyDown={onKeyDown}
-    />,
-  );
+test('should not update the checkbox if the keyDown handler is called twice', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
 
-  t.plan(CheckboxContainer.keyCodes.length * 2);
+  wrapper.simulate('keyDown', { keyCode: CheckboxContainer.keyCodes[0] });
 
-  CheckboxContainer.keyCodes.forEach((keyCode, index) => {
-    wrapper.simulate('keyDown', { keyCode });
+  t.deepEqual(wrapper.state('checked'), true);
 
-    t.deepEqual(onKeyDown.callCount, index + 1);
-    t.deepEqual(wrapper.state('checked'), true);
+  wrapper.simulate('keyDown', { keyCode: CheckboxContainer.keyCodes[0] });
 
-    wrapper.simulate('keyUp');
-  });
+  t.deepEqual(wrapper.state('checked'), true);
 });
 
-test('should not update the state when the keyUp event hasn\'t fired yet', (t) => {
-  const onChange = sinon.spy();
-  const wrapper = mount(
-    <CheckboxContainer
-      name="test"
-      onChange={onChange}
-    />,
-  );
+test('should reset the isPressingKey property on a key up event', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const instance = wrapper.instance();
 
   wrapper.simulate('keyDown', { keyCode: CheckboxContainer.keyCodes[0] });
 
-  t.deepEqual(onChange.callCount, 1);
+  t.deepEqual(instance.isPressingKey, true);
 
-  wrapper.simulate('keyDown', { keyCode: CheckboxContainer.keyCodes[0] });
+  wrapper.simulate('keyUp');
 
-  t.deepEqual(onChange.callCount, 1);
+  t.deepEqual(instance.isPressingKey, false);
+});
+
+test('should toggle the checkbox when a touch event happens', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const instance = wrapper.instance();
+
+  instance.handlePress({ type: 'touchstart' });
+
+  t.deepEqual(wrapper.state('checked'), true);
+});
+
+test('should toggle the checkbox when a mouse event happens', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const instance = wrapper.instance();
+
+  instance.handlePress({ type: 'mousedown' });
+
+  t.deepEqual(wrapper.state('checked'), true);
+});
+
+test('should not toggle the checkbox when a mouse event happens after a touch event', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const instance = wrapper.instance();
+
+  instance.handlePress({ type: 'touchstart' });
+
+  t.deepEqual(wrapper.state('checked'), true);
+
+  instance.handlePress({ type: 'mousedown' });
+
+  t.deepEqual(wrapper.state('checked'), true);
+
+  instance.handlePress({});
 });

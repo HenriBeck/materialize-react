@@ -15,8 +15,6 @@ const jssProps = [
  * but are passed to the component.
  */
 export default function getNotDeclaredProps(instance, component) {
-  console.log(instance);
-
   // eslint-disable-next-line react/forbid-foreign-prop-types
   return omit(instance.props, Object.keys(component.propTypes).concat(jssProps));
 }

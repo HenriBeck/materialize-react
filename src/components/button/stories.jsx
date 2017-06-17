@@ -1,10 +1,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import {
+  withKnobs,
+  text,
+  boolean,
+} from '@storybook/addon-knobs';
 
 import Button from './button';
 
 storiesOf('Button', module)
+  .addDecorator(withKnobs)
   .add('Flat Button', () => (
     <Button>
       Test
@@ -39,5 +45,14 @@ storiesOf('Button', module)
       onRelease={action('Released the button')}
     >
       Click me!
+    </Button>
+  ))
+  .add('Interactive', () => (
+    <Button
+      noink={boolean('No Ink', false)}
+      disabled={boolean('Disabled', false)}
+      raised={boolean('Raised', false)}
+    >
+      {text('Button text', 'Text')}
     </Button>
   ));

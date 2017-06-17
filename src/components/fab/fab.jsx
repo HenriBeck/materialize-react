@@ -1,28 +1,33 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Ripple from '../ripple';
 import Icon from '../icon';
-import Stylesheet from '/src/styles/stylesheet';
-import { easeInOutCubic } from '/src/styles/timings';
+import { easeInOutCubic } from '../../styles/timings';
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
+import elevation from '../../styles/plugins/elevation';
 
-export default class FAB extends PureComponent {
+/**
+ * A component to render a floating action button.
+ *
+ * @class
+ * @extends PureComponent
+ */
+export class Fab extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     icon: PropTypes.string.isRequired,
     className: PropTypes.string,
-    style: PropTypes.object,
+    mini: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
     noink: PropTypes.bool,
     disabled: PropTypes.bool,
-    mini: PropTypes.bool,
     animateIn: PropTypes.bool,
     onPress: PropTypes.func,
     onMouseDown: PropTypes.func,
-    onMouseUp: PropTypes.func,
     onTouchStart: PropTypes.func,
-    onTouchEnd: PropTypes.func,
     onKeyDown: PropTypes.func,
     onKeyUp: PropTypes.func,
     onFocus: PropTypes.func,
@@ -38,176 +43,138 @@ export default class FAB extends PureComponent {
     animateIn: false,
     onPress: () => {},
     onMouseDown: () => {},
-    onMouseUp: () => {},
     onTouchStart: () => {},
-    onTouchEnd: () => {},
     onKeyDown: () => {},
     onKeyUp: () => {},
     onFocus: () => {},
     onBlur: () => {},
   };
 
-  static contextTypes = { theme: PropTypes.object };
-
   static keyCodes = [13, 32];
 
-  state = {
-    pressed: false,
-    focused: false,
-  };
-
+  /**
+   * Scale and rotate the fab in if necessary.
+   */
   componentDidMount() {
     if (this.props.animateIn) {
-      this.animateIn();
+      this.root.animate({
+        transform: [
+          'scale(0) rotate(-45deg)',
+          'scale(1) rotate(0deg)',
+        ],
+      }, {
+        duration: this.props.theme.transitionTime * 2,
+        easing: easeInOutCubic,
+        fill: 'forwards',
+      });
     }
   }
 
-  get theme() {
-    return this.context.theme.fab;
-  }
+  isPressingKey = false;
+  isTouchEvent = false;
 
-  get styles() {
-    const {
-      mini,
-      disabled,
-    } = this.props;
-    const size = mini ? this.theme.miniSize : this.theme.normalSize;
-
-    return Stylesheet.compile({
-      root: {
-        elevation: disabled ? this.theme.disabledElevation : this.theme.elevation,
-        size,
-        zIndex: 16,
-        position: 'relative',
-        boxSizing: 'border-box',
-        padding: (size - this.theme.iconSize) / 2,
-        backgroundColor: disabled ? this.theme.disabledBgColor : this.theme.bgColor,
-        borderRadius: '50%',
-        border: 0,
-        outline: 'none',
-        pointerEvents: disabled && 'none',
-        color: this.theme.iconColor,
-        ...this.props.style,
-      },
-
-      icon: {
-        userSelect: 'none',
-        size: 24,
-        color: disabled ? this.theme.disabledIconColor : this.theme.iconColor,
-      },
-
-      shadow: {
-        position: ['absolute', 0],
-        borderRadius: 'inherit',
-        elevation: this.theme.focusedElevation,
-        opacity: this.state.pressed || this.state.focused ? 1 : 0,
-        transition: `opacity ${this.context.theme.variables.transitionTime}ms linear`,
-      },
-    });
-  }
-
-  animateIn = () => {
-    this.root.animate({
-      transform: [
-        'scale(0) rotate(-45deg)',
-        'scale(1) rotate(0deg)',
-      ],
-    }, {
-      duration: this.context.theme.variables.transitionTime * 2,
-      easing: easeInOutCubic,
-      fill: 'forwards',
-    });
-  };
-
-  togglePress(stateUpdatedCallback = () => {}) {
-    return () => this.setState(({ pressed }) => {
-      return { pressed: !pressed };
-    }, stateUpdatedCallback);
-  }
-
-  toggleFocus() {
-    this.setState(({ focused }) => {
-      return { focused: !focused };
-    });
-  }
-
-  handlePress = this.togglePress(this.props.onPress);
-  handleRelease = this.togglePress();
-
-  handleKeyDown = (ev = {}) => {
+  /**
+   * Check if a key was pressed that we should handle.
+   *
+   * @private
+   */
+  handleKeyDown = (ev) => {
     this.props.onKeyDown(ev);
 
-    if (FAB.keyCodes.includes(ev.keyCode) && !this.state.pressed) {
-      this.handlePress();
+    if (Fab.keyCodes.includes(ev.keyCode) && !this.isPressingKey) {
+      this.props.onPress();
+
+      this.isPressingKey = true;
     }
   };
 
+  /**
+   * Set the isPressingKey property to false when the user releases the key.
+   *
+   * @private
+   */
   handleKeyUp = (ev) => {
     this.props.onKeyUp(ev);
 
-    this.handleRelease();
+    this.isPressingKey = false;
   };
 
+  /**
+   * Add the shadow for the FAB when it's focused.
+   *
+   * @private
+   */
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    this.toggleFocus();
+    this.shadow.style.opacity = 1;
   };
 
+  /**
+   * Remove the shadow for the FAB when it's focused.
+   *
+   * @private
+   */
   handleBlur = (ev) => {
     this.props.onBlur(ev);
 
-    this.toggleFocus();
+    this.shadow.style.opacity = 0;
   };
 
+  /**
+   * Call the onPress handler.
+   *
+   * @private
+   */
   handleMouseDown = (ev) => {
     this.props.onMouseDown(ev);
 
-    this.handlePress();
+    if (this.isTouchEvent) {
+      this.isTouchEvent = false;
+
+      return;
+    }
+
+    this.props.onPress();
   };
 
-  handleMouseUp = (ev) => {
-    this.props.onMouseUp(ev);
-
-    this.handleRelease();
-  };
-
+  /**
+   * Call the onPress handler.
+   *
+   * @private
+   */
   handleTouchStart = (ev) => {
     this.props.onTouchStart(ev);
 
-    this.handlePress();
-  };
+    this.isTouchEvent = true;
 
-  handleTouchEnd = (ev) => {
-    this.props.onTouchEnd(ev);
-
-    this.handleRelease();
+    this.props.onPress();
   };
 
   render() {
-    const { disabled } = this.props;
-    const styles = this.styles;
+    const {
+      disabled,
+      classes,
+    } = this.props;
 
     return (
-      <button
-        {...getNotDeclaredProps(this, FAB)}
-        className={`fab ${this.props.className}`}
+      <span
+        {...getNotDeclaredProps(this, Fab)}
+        role="button"
+        className={`${this.props.className} ${classes.fab}`}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         ref={(element) => { this.root = element; }}
-        style={styles.root}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyDown={this.handleKeyDown}
         onKeyUp={this.handleKeyUp}
         onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}
         onTouchStart={this.handleTouchStart}
-        onTouchEnd={this.handleTouchEnd}
       >
         <span
-          className="fab--shadow"
-          style={styles.shadow}
+          className={classes.shadow}
+          ref={(element) => { this.shadow = element; }}
         />
 
         <Ripple
@@ -215,16 +182,63 @@ export default class FAB extends PureComponent {
           center
           className="fab--ripple"
           nowaves={this.props.noink}
-          ref={(element) => { this.ripple = element; }}
         />
 
         <Icon
-          className="fab--icon"
+          className={classes.icon}
           icon={this.props.icon}
           disabled={disabled}
-          style={styles.icon}
         />
-      </button>
+      </span>
     );
   }
 }
+
+const styles = {
+  fab: {
+    composes: 'fab',
+    zIndex: 16,
+    position: 'relative',
+    boxSizing: 'border-box',
+    borderRadius: '50%',
+    border: 0,
+    outline: 'none',
+    width: props => (props.mini ? props.theme.miniSize : props.theme.normalSize),
+    height: props => (props.mini ? props.theme.miniSize : props.theme.normalSize),
+    pointerEvents: props => props.disabled && 'none',
+    color: props => props.theme.iconColor,
+    boxShadow(props) {
+      return props.disabled ? props.theme.disabledElevation : props.theme.elevation;
+    },
+    padding(props) {
+      const size = props.mini ? props.theme.miniSize : props.theme.normalSize;
+
+      return (size - props.theme.iconSize) / 2;
+    },
+    backgroundColor(props) {
+      return props.disabled ? props.theme.disabledBackgroundColor : props.theme.backgroundColor;
+    },
+  },
+
+  icon: {
+    composes: 'fab--icon',
+    userSelect: 'none',
+    height: props => props.theme.iconSize,
+    width: props => props.theme.iconSize,
+  },
+
+  shadow: {
+    composes: 'fab--shadow',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    borderRadius: 'inherit',
+    opacity: 0,
+    boxShadow: props => elevation(props.theme.focusedElevation),
+    transition: props => `opacity ${props.theme.transitionTime}ms linear`,
+  },
+};
+
+export default connectWithTheme(injectSheet(styles)(Fab), 'fab');

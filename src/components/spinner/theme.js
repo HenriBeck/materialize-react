@@ -1,19 +1,27 @@
 import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
-  radius: PropTypes.number,
-  strokeWidth: PropTypes.number,
-  arcsize: PropTypes.number,
-  arctime: PropTypes.number,
-  arcStartRotate: PropTypes.number,
-  color: PropTypes.string,
+  containerRotationDuration: PropTypes.number.isRequired,
+  fullCycleDuration: PropTypes.number.isRequired,
+  expandContractDuration: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
+  strokeWidth: PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
 });
 
-export const defaultTheme = {
-  radius: 12.5,
-  strokeWidth: 3,
-  arcsize: 270,
-  arctime: 1333,
-  arcStartRotate: 216,
-  color: 'var(primaryBase)',
-};
+/**
+ * Default theme for the spinner.
+ *
+ * @param {Object} vars - Variables passed by the theme compiler.
+ * @returns {Object} - Returns the theme.
+ */
+export function defaultTheme(vars) {
+  return {
+    containerRotationDuration: 1568,
+    fullCycleDuration: 5332,
+    expandContractDuration: 1333,
+    color: vars.primaryBase,
+    strokeWidth: 4,
+    size: 56,
+  };
+}

@@ -1,31 +1,44 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function Divider({
-  style,
+import injectSheet from '../../styles/jss';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+
+/**
+ * A component that renders a horizontal line.
+ *
+ * @param {Object} props - Props of the component.
+ * @param {Object} props.classes - The classes provided by jss.
+ * @param {String} props.className - Additional class names.
+ * @returns {JSX} - Returns the element.
+ */
+export function Divider({
+  classes,
   className,
   ...props
-}, { theme }) {
+}) {
   return (
     <div
-      className={`divider ${className}`}
-      style={{
-        height: theme.divider.height,
-        backgroundColor: theme.divider.backgroundColor,
-        ...style,
-      }}
-      {...props}
+      className={`${classes.divider} ${className}`}
+      {...getNotDeclaredProps({ props }, Divider)}
     />
   );
 }
 
 Divider.propTypes = {
-  style: PropTypes.object,
+  classes: PropTypes.object.isRequired,
   className: PropTypes.string,
 };
 
-Divider.defaultProps = {
-  style: {},
-  className: '',
+Divider.defaultProps = { className: '' };
+
+const styles = {
+  divider: {
+    composes: 'divider',
+    height: props => props.theme.height,
+    backgroundColor: props => props.theme.backgroundColor,
+  },
 };
 
-Divider.contextTypes = { theme: PropTypes.object };
+export default connectWithTheme(injectSheet(styles)(Divider), 'divider');

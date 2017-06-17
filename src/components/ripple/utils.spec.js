@@ -22,10 +22,12 @@ test('should return null if no event was passed', (t) => {
 
 test('should get the coordinates from a touch event', (t) => {
   t.deepEqual(getCoords({
-    touches: [{
-      clientX: 10,
-      clientY: 10,
-    }],
+    touches: [
+      {
+        clientX: 10,
+        clientY: 10,
+      },
+    ],
   }), {
     x: 10,
     y: 10,

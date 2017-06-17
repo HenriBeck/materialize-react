@@ -40,9 +40,9 @@ Background.defaultProps = { className: '' };
 
 const styles = {
   root: {
-    color: props => props.theme.variables.textColor,
-    backgroundColor: props => props.theme.variables.backgroundColor,
+    color: props => props.theme.color,
+    backgroundColor: props => props.theme.backgroundColor,
   },
 };
 
-export default connectWithTheme(injectSheet(styles)(Background));
+export default connectWithTheme(injectSheet(styles)(Background), 'background');

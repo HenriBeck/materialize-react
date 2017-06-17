@@ -1,56 +1,51 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import getNotDeclaredProps from '/src/utils/react/get-not-declared-props';
-import { easeInOutCubic } from '/src/styles/timings';
-import Stylesheet from '/src/styles/stylesheet';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import { easeInOutCubic } from '../../styles/timings';
+import injectSheet from '../../styles/jss';
 
-export default class Parallax extends PureComponent {
+/**
+ * A component to render a parallax effect.
+ *
+ * @class
+ * @extends PureComponent
+ */
+export class Parallax extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     img: PropTypes.string.isRequired,
     imgStyle: PropTypes.object,
     children: PropTypes.node,
-    style: PropTypes.object,
     className: PropTypes.string,
   };
 
   static defaultProps = {
     imgStyle: {},
     children: '',
-    style: {},
     className: '',
   };
 
+  /**
+   * Add the event listener for when the user scrolls.
+   */
   componentDidMount() {
     window.addEventListener('scroll', this.onScroll);
   }
 
+  /**
+   * Remove the event listener again.
+   */
   componentWillUnmount() {
     window.removeEventListener('scroll', this.onScroll);
   }
 
-  get styles() {
-    return Stylesheet.compile({
-      root: {
-        position: 'relative',
-        overflow: 'hidden',
-        ...this.props.style,
-      },
-
-      image: {
-        position: ['absolute', 0, 0, 0, 'auto'],
-        transition: `transform 10ms ${easeInOutCubic}`,
-        zIndex: 0,
-        willChange: 'transform',
-        ...this.props.imgStyle,
-      },
-
-      content: { zIndex: 1 },
-    });
-  }
-
+  /**
+   * Check if the root element is currently completely visible.
+   *
+   * @private
+   * @returns {Boolean} - Returns whether the component is visible.
+   */
   get isVisible() {
     const {
       top,
@@ -60,6 +55,12 @@ export default class Parallax extends PureComponent {
     return top >= 0 && bottom <= window.innerHeight;
   }
 
+  /**
+   * Update the image position on a scroll event.
+   * Only update it when the root element is completely visible.
+   *
+   * @private
+   */
   onScroll = () => {
     if (this.isVisible) {
       const {
@@ -73,36 +74,57 @@ export default class Parallax extends PureComponent {
       const transform = Math.min(scrollPos * overflowImageHeight, overflowImageHeight);
 
       this.image.style.transform = `translate3D(0, ${-transform}px, 0)`;
-      this.image.style.webkitTransform = `translate(0, ${-transform}px)`;
     }
   };
 
   render() {
-    const styles = this.styles;
-
     return (
       <div
         {...getNotDeclaredProps(this, Parallax)}
-        className={`parallax ${this.props.className}`}
-        style={styles.root}
+        role="presentation"
+        className={`${this.props.classes.root} ${this.props.className}`}
         ref={(element) => { this.root = element; }}
       >
         <img
           width="100%"
           src={this.props.img}
-          className="parallax--image"
+          className={this.props.classes.image}
           alt="parallax"
           ref={(element) => { this.image = element; }}
-          style={styles.image}
+          style={this.props.imgStyle}
         />
 
-        <div
-          className="parallax--content"
-          style={styles.content}
-        >
+        <div className={this.props.classes.content}>
           {this.props.children}
         </div>
       </div>
     );
   }
 }
+
+const styles = {
+  root: {
+    composes: 'parallax',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+
+  image: {
+    composes: 'parallax--image',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 'auto',
+    left: 0,
+    transition: `transform 8ms ${easeInOutCubic}`,
+    zIndex: 0,
+    willChange: 'transform',
+  },
+
+  content: {
+    composes: 'parallax--content',
+    zIndex: 1,
+  },
+};
+
+export default injectSheet(styles)(Parallax);

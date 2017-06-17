@@ -20,8 +20,7 @@
     "lint": "eslint $npm_package_options_eslint",
     "lint:fix": "yarn run lint -- --fix",
     "prepublish": "yarn run build",
-    "precommit": "yarn upgrade && yarn run lint && yarn run test",
-    "storybook": "start-storybook -p 6006"
+    "precommit": "yarn upgrade && yarn run lint && yarn run test"
   },
   "repository": {
     "type": "git",
@@ -34,10 +33,9 @@
   },
   "homepage": "https://github.com/HenriBeck/materialize-react#readme",
   "dependencies": {
-    "chance": "1.0.9",
     "classnames": "2.2.5",
+    "color": "1.0.3",
     "emojione": "3.0.3",
-    "hoist-non-react-statics": "^1.2.0",
     "is_js": "0.9.0",
     "jss": "7.1.5",
     "jss-cache": "1.0.0",
@@ -45,6 +43,7 @@
     "jss-compose": "3.0.1",
     "jss-default-unit": "6.1.2",
     "jss-expand": "3.0.1",
+    "jss-global": "^1.0.1",
     "jss-nested": "4.0.1",
     "jss-props-sort": "4.0.0",
     "jss-vendor-prefixer": "5.1.0",
@@ -52,9 +51,9 @@
     "lodash.omit": "4.5.0",
     "mdi": "1.9.33",
     "prop-types": "15.5.10",
+    "randomstring": "1.1.5",
     "react": "15.5.4",
     "react-jss": "6.1.1",
-    "styled-jss": "1.1.2",
     "web-animations-js": "2.2.5"
   },
   "devDependencies": {
@@ -64,7 +63,7 @@
     "@storybook/addon-knobs": "3.0.0",
     "@storybook/addon-options": "3.0.0",
     "@storybook/react": "3.0.0",
-    "@tf2-pickup/eslint-config": "2.6.2",
+    "@tf2-pickup/eslint-config": "^2.6.2",
     "ava": "0.19.1",
     "babel-cli": "6.24.1",
     "babel-plugin-transform-export-extensions": "6.22.0",
@@ -77,7 +76,7 @@
     "coveralls": "2.13.1",
     "css-loader": "0.28.3",
     "enzyme": "2.8.2",
-    "eslint": "3.19.0",
+    "eslint": "4.0.0",
     "husky": "0.13.4",
     "normalize.css": "7.0.0",
     "nyc": "10.3.2",
@@ -85,8 +84,7 @@
     "react-dom": "15.5.4",
     "react-test-renderer": "15.5.4",
     "sinon": "2.3.2",
-    "style-loader": "0.18.1",
-    "why-did-you-update": "0.0.8"
+    "style-loader": "0.18.1"
   },
   "ava": {
     "files": [

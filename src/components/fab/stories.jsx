@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  storiesOf,
-  action,
-} from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import Fab from './fab';
 
@@ -25,7 +23,7 @@ storiesOf('FAB', module)
   .add('With Action', () => (
     <Fab
       icon="pencil"
-      onClick={action('Clicked!')}
+      onPress={action('Clicked!')}
     />
   ))
   .add('Mini', () => (

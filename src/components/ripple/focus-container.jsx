@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * The element that displays if the element that hosts the ripple has focus.
+ *
+ * @private
+ * @class
+ * @extends PureComponent
+ */
 export default class FocusContainer extends React.PureComponent {
   static propTypes = {
     isFocused: PropTypes.bool.isRequired,
@@ -11,10 +18,13 @@ export default class FocusContainer extends React.PureComponent {
   };
 
   static animationOptions = {
-    duration: 180,
+    duration: 140,
     fill: 'forwards',
   };
 
+  /**
+   * Calculate the initial background color.
+   */
   componentDidMount() {
     this.calculateBackgroundColor();
 
@@ -23,6 +33,9 @@ export default class FocusContainer extends React.PureComponent {
     }
   }
 
+  /**
+   * Recalculate the background color and add or remove the focus.
+   */
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       if (this.props.isFocused) {
@@ -44,12 +57,22 @@ export default class FocusContainer extends React.PureComponent {
     }
   }
 
+  /**
+   * Calculate and change the background color.
+   *
+   * @private
+   */
   calculateBackgroundColor() {
     const color = window.getComputedStyle(this.element).color;
 
     this.element.style.backgroundColor = this.props.color || color;
   }
 
+  /**
+   * Animate the element in.
+   *
+   * @private
+   */
   addFocus() {
     const animations = { opacity: [0, this.props.opacity] };
 
@@ -60,6 +83,11 @@ export default class FocusContainer extends React.PureComponent {
     this.element.animate(animations, FocusContainer.animationOptions);
   }
 
+  /**
+   * Animation the element out.
+   *
+   * @private
+   */
   removeFocus() {
     const animations = { opacity: [this.props.opacity, 0] };
 

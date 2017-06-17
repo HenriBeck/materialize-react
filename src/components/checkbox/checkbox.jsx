@@ -1,154 +1,219 @@
-import React, {
-  PureComponent,
-  PropTypes,
-} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import { easeInOutCubic } from '/src/styles/timings';
-import Stylesheet from '/src/styles/stylesheet';
+import { easeInOutCubic } from '../../styles/timings';
+import Label from '../label';
+import Ripple from '../ripple';
+import connectWithTheme from '../../styles/theme/connect-with-theme';
+import injectSheet from '../../styles/jss';
 
-export default class Checkbox extends PureComponent {
+/**
+ * The actual visual component of the checkbox.
+ *
+ * @private
+ * @class
+ * @extends PureComponent
+ */
+export class Checkbox extends PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     checked: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    className: PropTypes.string.isRequired,
+    onPress: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    children: PropTypes.string.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
+    onKeyDown: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/require-default-props, react/no-unused-prop-types
+    labelPosition: PropTypes.string,
   };
 
-  static contextTypes = { theme: PropTypes.object };
-
+  /**
+   * Set the border color of the checkmark to the background-color from the root element.
+   * If the checked props is initially true we want to animate the checkmark in.
+   */
   componentDidMount() {
-    const { borderColor } = this.colors;
+    const bgColor = window.getComputedStyle(this.root)['background-color'];
 
-    this.lastBorderColor = borderColor;
-    this.checkbox.style.borderColor = borderColor;
+    this.checkmark.style.borderColor = bgColor;
 
     if (this.props.checked) {
       this.animateCheckmark();
     }
-
-    if (this.props.checked || this.props.disabled) {
-      this.animateCheckbox();
-    }
   }
 
+  /**
+   * Animate the checkmark when the checked prop changes.
+   */
   componentDidUpdate(prevProps) {
-    this.animateCheckbox();
-
-    if (prevProps.disabled !== this.props.disabled) {
-      this.updateCheckmarkColor();
-    }
-
     if (prevProps.checked !== this.props.checked) {
       this.animateCheckmark();
     }
   }
 
-  lastBgColor = 'transparent';
-  lastBorderColor = null;
-  parentBgColor = null;
-  animationOptions = {
-    easing: easeInOutCubic,
-    duration: this.context.theme.variables.transitionTime,
-    fill: 'forwards',
-  };
-
-  get theme() {
-    return this.context.theme.checkbox;
-  }
-
-  get colors() {
-    const { checked } = this.props;
-
-    if (this.props.disabled) {
-      return {
-        bgColor: checked
-          ? this.theme.disabledCheckedBgColor
-          : this.theme.disabledBgColor,
-        borderColor: this.theme.disabledBorderColor,
-      };
-    }
+  /**
+   * Compute the color for the ripple and the focusColor based on the props.
+   *
+   * @returns {{ color: String, focusColor: String }} - Returns an object with the colors.
+   */
+  getRippleProps() {
+    const {
+      theme,
+      checked,
+    } = this.props;
 
     return {
-      bgColor: checked ? this.theme.checkedBgColor : this.theme.uncheckedBgColor,
-      borderColor: checked ? this.theme.checkedBorderColor : this.theme.uncheckedBorderColor,
+      color: checked ? theme.uncheckedBorderColor : theme.checkedBorderColor,
+      focusColor: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
     };
   }
 
-  get styles() {
-    return Stylesheet.compile({
-      checkbox: {
-        display: 'inline-block',
-        position: 'relative',
-        margin: (this.theme.height - this.theme.checkboxSize) / 2,
-        size: this.theme.checkboxSize - this.theme.checkboxBorderWidth * 2,
-        border: `solid ${this.theme.checkboxBorderWidth}px`,
-        borderRadius: this.theme.checkboxBorderWidth,
-        willChange: 'background-color, border-color',
-      },
+  /**
+   * Animate the checkmark either in or out.
+   */
+  animateCheckmark() {
+    const animations = this.props.checked ? {
+      opacity: [1, 1],
+      transform: ['scale(0, 0) rotate(-45deg)', 'scale(1, 1) rotate(45deg)'],
+    } : { opacity: [1, 0] };
 
-      checkmark: {
-        size: ['36%', '70%'],
-        position: ['absolute', 0],
-        border: `${40 / 15}px solid`,
-        borderTop: 0,
-        borderLeft: 0,
-        transformOrigin: '97% 86%',
-        boxSizing: 'content-box',
-        willChange: 'opacity, transform',
-        borderColor: this.theme.checkmarkColor,
-        opacity: 0,
-      },
+    this.checkmark.animate(animations, {
+      easing: easeInOutCubic,
+      fill: 'forwards',
+      duration: this.props.theme.animationDuration,
     });
   }
 
-  setBgColor(bgColor) {
-    this.parentBgColor = bgColor;
-
-    this.updateCheckmarkColor();
-  }
-
-  updateCheckmarkColor() {
-    this.checkmark.style.borderColor = this.props.disabled
-      ? this.parentBgColor
-      : this.theme.checkmarkColor;
-  }
-
-  animateCheckmark() {
-    const { checked } = this.props;
-    const animations = { opacity: [1, checked ? 1 : 0] };
-
-    if (checked) {
-      animations.transform = ['scale(0, 0) rotate(-45deg)', 'scale(1, 1) rotate(45deg)'];
-    }
-
-    this.checkmark.animate(animations, this.animationOptions);
-  }
-
-  animateCheckbox() {
-    const colors = this.colors;
-
-    this.checkbox.animate({
-      backgroundColor: [this.lastBgColor, colors.bgColor],
-      borderColor: [this.lastBorderColor, colors.borderColor],
-    }, this.animationOptions);
-
-    this.lastBgColor = colors.bgColor;
-    this.lastBorderColor = colors.borderColor;
-  }
-
   render() {
-    const styles = this.styles;
+    const {
+      disabled,
+      classes,
+    } = this.props;
 
     return (
       <span
-        style={styles.checkbox}
-        className="checkbox--checkbox"
-        ref={(element) => { this.checkbox = element; }}
+        role="checkbox"
+        tabIndex={disabled ? -1 : 0}
+        aria-disabled={disabled}
+        aria-checked={this.props.checked}
+        className={`${this.props.className} ${classes.checkbox}`}
+        ref={(element) => { this.root = element; }}
+        onKeyDown={this.props.onKeyDown}
+        onKeyUp={this.props.onKeyUp}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
       >
         <span
-          style={styles.checkmark}
-          className="checkbox--checkmark"
-          ref={(element) => { this.checkmark = element; }}
-        />
+          role="presentation"
+          onTouchStart={this.props.onPress}
+          onMouseDown={this.props.onPress}
+          className={classes.container}
+        >
+          <span
+            className={classes.checkboxContainer}
+            ref={(element) => { this.checkbox = element; }}
+          >
+            <span
+              className={classes.checkmark}
+              ref={(element) => { this.checkmark = element; }}
+            />
+          </span>
+
+          <Ripple
+            round
+            center
+            className={classes.ripple}
+            isFocused={this.props.isFocused}
+            {...this.getRippleProps()}
+          />
+        </span>
+
+        <Label
+          for={this.props.id}
+          disabled={disabled}
+        >
+          {this.props.children}
+        </Label>
       </span>
     );
   }
 }
+
+const styles = {
+  checkbox: {
+    boxSizing: 'border-box',
+    outline: 'none',
+    border: 0,
+    backgroundColor: 'inherit',
+    display: 'inline-flex',
+    justifyContent: 'center',
+    flexDirection: props => `row${props.labelPosition === 'left' ? '-reverse' : ''}`,
+    padding: props => props.theme.padding,
+    height: props => props.theme.rippleSize + (props.theme.padding * 2),
+    pointerEvents: props => props.disabled && 'none',
+  },
+
+  container: {
+    display: 'inline-block',
+    position: 'relative',
+    cursor: 'pointer',
+    borderRadius: '50%',
+    boxSizing: 'border-box',
+    zIndex: 1,
+    height: props => props.theme.rippleSize,
+    width: props => props.theme.rippleSize,
+  },
+
+  label: { cursor: props => !props.disabled && 'pointer' },
+
+  checkboxContainer: {
+    display: 'inline-block',
+    position: 'relative',
+    margin: props => (props.theme.rippleSize - props.theme.size) / 2,
+    height: props => props.theme.size - props.theme.borderWidth * 2,
+    width: props => props.theme.size - props.theme.borderWidth * 2,
+    borderStyle: 'solid',
+    borderWidth: props => props.theme.borderWidth,
+    borderRadius: props => props.theme.borderWidth,
+    borderColor(props) {
+      if (props.disabled) {
+        return props.theme.disabledBorderColor;
+      }
+
+      return props.checked ? props.theme.checkedBorderColor : props.theme.uncheckedBorderColor;
+    },
+    backgroundColor(props) {
+      if (props.disabled) {
+        return props.checked ? props.theme.disabledCheckedBgColor : props.theme.disabledBgColor;
+      }
+
+      return props.checked ? props.theme.checkedBgColor : props.theme.uncheckedBgColor;
+    },
+    transition(props) {
+      const { animationDuration } = props.theme;
+
+      return `background-color ${animationDuration}, border-color ${animationDuration}`;
+    },
+  },
+
+  checkmark: {
+    width: '36%',
+    height: '70%',
+    left: -1,
+    position: 'absolute',
+    border: `${8 / 3}px solid`,
+    borderTop: 0,
+    borderLeft: 0,
+    transformOrigin: '97% 86%',
+    boxSizing: 'content-box',
+    willChange: 'opacity, transform',
+    opacity: 0,
+  },
+};
+
+export default connectWithTheme(injectSheet(styles)(Checkbox), 'checkbox');

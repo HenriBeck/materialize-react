@@ -9,9 +9,11 @@ import expand from 'jss-expand';
 import nested from 'jss-nested';
 import propsSort from 'jss-props-sort';
 import vendorPrefixer from 'jss-vendor-prefixer';
+import global from 'jss-global';
 
 const jss = createJss();
 
+jss.use(global());
 jss.use(cache());
 jss.use(nested());
 jss.use(compose());

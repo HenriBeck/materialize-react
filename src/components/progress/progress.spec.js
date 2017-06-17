@@ -2,21 +2,18 @@ import test from 'ava';
 import React from 'react';
 
 import Progress from './progress';
-import {
-  shallow,
-  mount,
-} from '/tests/helpers/enzyme';
+import { mount } from '../../../tests/helpers/enzyme';
 
 test('should have a root node with the role of progressbar', (t) => {
-  const wrapper = shallow(<Progress />);
+  const wrapper = mount(<Progress />);
 
-  // Check if we have a element with the role of progressbar
-  t.deepEqual(wrapper.find({ role: 'progressbar' }).length, 1);
+  // Check if we render a JSS HoC
+  t.deepEqual(wrapper.find('Jss(Progress)').length, 1);
 });
 
 test('should have aria-valuemin and aria-valuemax on the root node', (t) => {
-  const wrapper = shallow(<Progress mode="normal" />);
-  const root = wrapper.find({ role: 'progressbar' });
+  const wrapper = mount(<Progress />);
+  const root = wrapper.find('.progress').first();
 
   // Check if the valuemin and valuemax props are set
   t.deepEqual(root.prop('aria-valuemin'), 0);
@@ -25,59 +22,47 @@ test('should have aria-valuemin and aria-valuemax on the root node', (t) => {
 
 test('should set the aria-valuenow to the value of the progress prop', (t) => {
   const wrapper = mount(<Progress progress={40} />);
-  const root = wrapper.find({ role: 'progressbar' });
+  const root = wrapper.find('span.progress').first();
 
   t.deepEqual(root.prop('aria-valuenow'), 40);
 });
 
 test('should change the aria-valuenow when the progress prop changes', (t) => {
   const wrapper = mount(<Progress progress={40} />);
+  const root = wrapper.find('span.progress').first();
 
   wrapper.setProps({ progress: 80 });
 
-  const root = wrapper.find({ role: 'progressbar' });
-
+  // Check if the aria-valuenow prop has changed
   t.deepEqual(root.prop('aria-valuenow'), 80);
 });
 
-test('should have two children when the mode is set to indeterminate', (t) => {
-  const wrapper = mount(<Progress mode="indeterminate" />);
+test('should animate the secondary progress bar', (t) => {
+  const wrapper = mount(<Progress secondaryProgress={40} />);
 
-  t.deepEqual(wrapper.find({ role: 'progressbar' }).children().length, 2);
+  wrapper.setProps({ secondaryProgress: 80 });
+
+  // There is no way of exactly checking if the secondary progress has been animated
+  t.pass();
 });
 
-test('should animate the bar in if the active state changes to true', (t) => {
-  const wrapper = mount(
-    <Progress
-      active
-      mode="indeterminate"
-    />,
-  );
-  const bar = wrapper
-    .find({ role: 'progressbar' })
-    .children()
-    .find('span')
-    .first();
+test('should add the indeterminate class', (t) => {
+  const wrapper = mount(<Progress indeterminate />);
 
-  wrapper.setProps({ active: false });
+  // Check if the correct class has been applied
+  t.deepEqual(wrapper.find('.indeterminate').length, 1);
 
-  t.deepEqual(bar.node.style.opacity, '0');
-
+  // Start the progress animation
   wrapper.setProps({ active: true });
 
-  t.deepEqual(bar.node.style.opacity, '1');
+  // Check if the element got updated
+  t.deepEqual(wrapper.find('.indeterminate.active').length, 1);
 });
 
-test('should not start the animations on mount if the progress isn\'t active', (t) => {
-  const wrapper = mount(<Progress mode="indeterminate" />);
-  const instance = wrapper.instance();
+test('should have aria-disabled set to true', (t) => {
+  const wrapper = mount(<Progress disabled />);
+  const root = wrapper.find('.progress').first();
 
-  t.deepEqual(instance.barAnimation, null);
-  t.deepEqual(instance.indeterminateAnimation, null);
-
-  wrapper.setProps({ active: true });
-
-  t.notDeepEqual(instance.barAnimation, null);
-  t.notDeepEqual(instance.indeterminateAnimation, null);
+  // Check if the aria-disabled props is set
+  t.deepEqual(root.prop('aria-disabled'), true);
 });
-

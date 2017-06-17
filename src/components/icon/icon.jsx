@@ -5,7 +5,17 @@ import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
-function Icon({
+/**
+ * A function to render a material design icon.
+ * You will need to import the material design icons stylesheet.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {String} props.icon - The icon name.
+ * @param {String} props.className - An additional className that will be added to the icon.
+ * @param {String} props.classes - The classes provided by jss.
+ * @returns {JSX} - Returns the element.
+ */
+export function Icon({
   icon,
   className,
   classes,

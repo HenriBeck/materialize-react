@@ -91,6 +91,7 @@ test('functions from default props can be called', (t) => {
   Ripple.defaultProps.onMouseDown();
   Ripple.defaultProps.onTouchStart();
   Ripple.defaultProps.onTouchEnd();
+  Ripple.defaultProps.onMouseLeave();
 
   t.pass();
 });
