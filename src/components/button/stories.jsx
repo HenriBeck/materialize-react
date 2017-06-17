@@ -40,10 +40,7 @@ storiesOf('Button', module)
     </Button>
   ))
   .add('Button with callbacks', () => (
-    <Button
-      onPress={action('Pressed the button')}
-      onRelease={action('Released the button')}
-    >
+    <Button onPress={action('Pressed the button')}>
       Click me!
     </Button>
   ))
