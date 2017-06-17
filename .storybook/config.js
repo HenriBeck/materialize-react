@@ -38,7 +38,6 @@ configure(() => {
   require('../src/components/ripple/stories');
   require('../src/components/button/stories');
   require('../src/components/spinner/stories');
-  require('../src/components/switch/stories');
   require('../src/components/progress/stories');
   require('../src/components/fab/stories');
   require('../src/components/checkbox/stories');
