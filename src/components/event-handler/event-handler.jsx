@@ -14,7 +14,7 @@ export default class EventHandler extends PureComponent {
   static propTypes = {
     component: PropTypes.string.isRequired,
     children: PropTypes.node,
-    createRef: PropTypes.bool,
+    createRef: PropTypes.func, // eslint-disable-line react/require-default-props
     onPress: PropTypes.func, // eslint-disable-line react/require-default-props
     onRelease: PropTypes.func, // eslint-disable-line react/require-default-props
     onKeyPress: PropTypes.func, // eslint-disable-line react/require-default-props
@@ -26,10 +26,7 @@ export default class EventHandler extends PureComponent {
     onMouseUp: PropTypes.func, // eslint-disable-line react/require-default-props
   };
 
-  static defaultProps = {
-    children: '',
-    createRef: false,
-  };
+  static defaultProps = { children: '' };
 
   isPressingKey = false;
   isTouchStartEvent = false;
@@ -148,9 +145,7 @@ export default class EventHandler extends PureComponent {
     }
 
     if (this.props.createRef) {
-      additionalProps.ref = (element) => {
-        this.element = element;
-      };
+      additionalProps.ref = this.props.createRef;
     }
 
     return (
