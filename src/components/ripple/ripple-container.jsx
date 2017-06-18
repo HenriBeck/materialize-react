@@ -64,7 +64,7 @@ export class RippleContainer extends PureComponent {
    * @returns {String} - Returns the color.
    */
   get color() {
-    return window.getComputedStyle(this.ripple.root).color;
+    return window.getComputedStyle(this.ripple.root.element).color;
   }
 
   /**
@@ -74,7 +74,7 @@ export class RippleContainer extends PureComponent {
    * @param {Object} ev - The event the wave is created from.
    */
   addWave = (ev) => {
-    const rect = this.ripple.root.getBoundingClientRect();
+    const rect = this.ripple.root.element.getBoundingClientRect();
     const coords = getCoords(ev);
     const isCentered = this.props.center || !coords;
     const startPos = isCentered ? getCenter(rect) : {
