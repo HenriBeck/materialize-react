@@ -27,8 +27,6 @@ export default class CheckboxContainer extends PureComponent {
     defaultChecked: false,
     disabled: false,
     onChange: () => {},
-    onKeyUp: () => {},
-    onKeyDown: () => {},
     onFocus: () => {},
     onBlur: () => {},
     className: '',
