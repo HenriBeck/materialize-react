@@ -40,6 +40,15 @@ export default class Ripple extends PureComponent {
   }
 
   /**
+   * A function which will be called with the element from EventHandler.
+   *
+   * @param {Object} element - The root element from EventHandler.
+   */
+  createRef = (element) => {
+    this.root = element;
+  };
+
+  /**
    * Emit up actions to all of the waves when the user removes the finger.
    *
    * @private
@@ -81,11 +90,10 @@ export default class Ripple extends PureComponent {
   render() {
     return (
       <EventHandler
-        createRef
         component="span"
         role="presentation"
         className={`${this.props.className} ${this.props.classes.ripple}`}
-        ref={(element) => { this.root = element; }}
+        createRef={this.createRef}
         onPress={this.props.onDownAction}
         onRelease={this.handleRelease}
         onMouseLeave={this.handleMouseLeave}
