@@ -8,6 +8,7 @@ import { easeInOutCubic } from '../../styles/timings';
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import elevation from '../../styles/plugins/elevation';
+import EventHandler from '../event-handler';
 
 /**
  * A component to render a floating action button.
@@ -18,7 +19,6 @@ import elevation from '../../styles/plugins/elevation';
 export class Fab extends PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
     icon: PropTypes.string.isRequired,
     className: PropTypes.string,
     mini: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
@@ -26,10 +26,6 @@ export class Fab extends PureComponent {
     disabled: PropTypes.bool,
     animateIn: PropTypes.bool,
     onPress: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    onTouchStart: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyUp: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
   };
@@ -42,10 +38,6 @@ export class Fab extends PureComponent {
     mini: false,
     animateIn: false,
     onPress: () => {},
-    onMouseDown: () => {},
-    onTouchStart: () => {},
-    onKeyDown: () => {},
-    onKeyUp: () => {},
     onFocus: () => {},
     onBlur: () => {},
   };
@@ -53,50 +45,14 @@ export class Fab extends PureComponent {
   static keyCodes = [13, 32];
 
   /**
-   * Scale and rotate the fab in if necessary.
-   */
-  componentDidMount() {
-    if (this.props.animateIn) {
-      this.root.animate({
-        transform: [
-          'scale(0) rotate(-45deg)',
-          'scale(1) rotate(0deg)',
-        ],
-      }, {
-        duration: this.props.theme.transitionTime * 2,
-        easing: easeInOutCubic,
-        fill: 'forwards',
-      });
-    }
-  }
-
-  isPressingKey = false;
-  isTouchEvent = false;
-
-  /**
    * Check if a key was pressed that we should handle.
    *
    * @private
    */
-  handleKeyDown = (ev) => {
-    this.props.onKeyDown(ev);
-
-    if (Fab.keyCodes.includes(ev.keyCode) && !this.isPressingKey) {
+  handleKeyPress = (ev) => {
+    if (Fab.keyCodes.includes(ev.keyCode)) {
       this.props.onPress();
-
-      this.isPressingKey = true;
     }
-  };
-
-  /**
-   * Set the isPressingKey property to false when the user releases the key.
-   *
-   * @private
-   */
-  handleKeyUp = (ev) => {
-    this.props.onKeyUp(ev);
-
-    this.isPressingKey = false;
   };
 
   /**
@@ -121,56 +77,26 @@ export class Fab extends PureComponent {
     this.shadow.style.opacity = 0;
   };
 
-  /**
-   * Call the onPress handler.
-   *
-   * @private
-   */
-  handleMouseDown = (ev) => {
-    this.props.onMouseDown(ev);
-
-    if (this.isTouchEvent) {
-      this.isTouchEvent = false;
-
-      return;
-    }
-
-    this.props.onPress();
-  };
-
-  /**
-   * Call the onPress handler.
-   *
-   * @private
-   */
-  handleTouchStart = (ev) => {
-    this.props.onTouchStart(ev);
-
-    this.isTouchEvent = true;
-
-    this.props.onPress();
-  };
-
   render() {
     const {
       disabled,
       classes,
+      className,
+      animateIn,
     } = this.props;
 
     return (
-      <span
+      <EventHandler
         {...getNotDeclaredProps(this, Fab)}
+        component="span"
         role="button"
-        className={`${this.props.className} ${classes.fab}`}
+        className={`${className} ${classes.fab} ${animateIn && '.animate-in'}`}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
-        ref={(element) => { this.root = element; }}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
-        onMouseDown={this.handleMouseDown}
-        onTouchStart={this.handleTouchStart}
+        onKeyPress={this.handleKeyPress}
+        onPress={this.props.onPress}
       >
         <span
           className={classes.shadow}
@@ -189,12 +115,17 @@ export class Fab extends PureComponent {
           icon={this.props.icon}
           disabled={disabled}
         />
-      </span>
+      </EventHandler>
     );
   }
 }
 
 const styles = {
+  '@keyframes fab--scale-rotate-in': {
+    from: { transform: 'scale(0) rotate(-45deg)' },
+    to: { transform: 'scale(1) rotate(0deg)' },
+  },
+
   fab: {
     composes: 'fab',
     zIndex: 16,
@@ -217,6 +148,13 @@ const styles = {
     },
     backgroundColor(props) {
       return props.disabled ? props.theme.disabledBackgroundColor : props.theme.backgroundColor;
+    },
+
+    '&.animate-in': {
+      animationName: 'fab--scale-rotate-in',
+      animationDuration: props => props.theme.animationDuration,
+      animationFillMode: 'forwards',
+      animationTimingFunction: easeInOutCubic,
     },
   },
 

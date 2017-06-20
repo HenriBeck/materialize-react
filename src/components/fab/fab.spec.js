@@ -20,20 +20,22 @@ test('should have a ripple inside', (t) => {
 });
 
 test('should animate the fab in', (t) => {
-  const wrapper = mount(
-    <FabWrapper
+  const wrapper = shallow(
+    <Fab
+      classes={{}}
       animateIn
       icon="build"
     />,
   );
-  const transform = wrapper.find({ role: 'button' }).node.style.transform;
+  const root = wrapper.find({ role: 'button' });
 
-  t.deepEqual(transform, 'scale(1) rotate(0deg)');
+  t.true(root.prop('className').includes('animate-in'));
 });
 
 test('should set the aria-disabled attribute on the root node', (t) => {
   const wrapper = mount(
     <FabWrapper
+      classes={{}}
       disabled
       icon="build"
     />,
@@ -56,86 +58,36 @@ test('should update the shadow when the fab receives / loses focus', (t) => {
   t.deepEqual(shadow.node.style.opacity, '0');
 });
 
-test('should set the isTouchEvent property', (t) => {
+test('should only call onPress when a key event happens with a valid keyCode', (t) => {
   const onPress = sinon.spy();
-  const wrapper = mount(
-    <FabWrapper
-      icon="build"
-      onPress={onPress}
-    />,
-  );
-
-  wrapper.simulate('touchStart');
-
-  t.deepEqual(onPress.callCount, 1);
-});
-
-test('should not call onPress twice when a touch event happened before a mouse event', (t) => {
-  const onPress = sinon.spy();
-  const wrapper = mount(
-    <FabWrapper
-      icon="build"
-      onPress={onPress}
-    />,
-  );
-
-  wrapper.simulate('touchStart');
-
-  // Should not call onPress again because isTouchEvent should be true
-  wrapper.simulate('mouseDown');
-
-  t.deepEqual(onPress.callCount, 1);
-
-  wrapper.simulate('mouseDown');
-
-  t.deepEqual(onPress.callCount, 2);
-});
-
-test('should call the onPress handler when the user presses a key', (t) => {
-  const onPress = sinon.spy();
-  const wrapper = mount(
-    <FabWrapper
-      icon="build"
-      onPress={onPress}
-    />,
-  );
-
-  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
-
-  t.deepEqual(onPress.callCount, 1);
-});
-
-test('should not call onPress twice when no keyUp event has happened', (t) => {
   const wrapper = shallow(
     <Fab
       classes={{}}
-      theme={{}}
+      onPress={onPress}
       icon="build"
     />,
   );
   const instance = wrapper.instance();
 
-  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
+  instance.handleKeyPress({ keyCode: Fab.keyCodes[0] });
 
-  t.deepEqual(instance.isPressingKey, true);
-
-  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
+  t.deepEqual(onPress.callCount, 1);
 });
 
-test('should only call onPress twice when a keyUp event has happened', (t) => {
+test('should not call onPress when a key event happens with an invalid keyCode', (t) => {
   const onPress = sinon.spy();
-  const wrapper = mount(
-    <FabWrapper
-      icon="build"
+  const wrapper = shallow(
+    <Fab
+      classes={{}}
       onPress={onPress}
+      icon="build"
     />,
   );
+  const instance = wrapper.instance();
 
-  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
-  wrapper.simulate('keyUp');
-  wrapper.simulate('keyDown', { keyCode: Fab.keyCodes[0] });
+  instance.handleKeyPress({ keyCode: 0 });
 
-  t.deepEqual(onPress.callCount, 2);
+  t.deepEqual(onPress.callCount, 0);
 });
 
 test('should render different styles with the mini prop', (t) => {
@@ -145,6 +97,15 @@ test('should render different styles with the mini prop', (t) => {
       mini
     />,
   );
+
+  t.pass();
+});
+
+test('should be able to call the default event handlers', (t) => {
+  Fab.defaultProps.onPress();
+
+  Fab.defaultProps.onFocus();
+  Fab.defaultProps.onBlur();
 
   t.pass();
 });
