@@ -6,6 +6,7 @@ import Icon from '../icon';
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
+import EventHandler from '../event-handler';
 
 /**
  * A component to render an icon button.
@@ -16,15 +17,12 @@ import connectWithTheme from '../../styles/theme/connect-with-theme';
 export class IconButton extends PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     icon: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
     className: PropTypes.string,
     onPress: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onTouchStart: PropTypes.func,
-    onMouseDown: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
   };
@@ -35,21 +33,13 @@ export class IconButton extends PureComponent {
     style: {},
     className: '',
     onPress: () => {},
-    onKeyDown: () => {},
-    onKeyUp: () => {},
-    onTouchStart: () => {},
-    onMouseDown: () => {},
     onFocus: () => {},
     onBlur: () => {},
   };
 
-  static contextTypes = { theme: PropTypes.object };
-
   static keyCodes = [13, 32];
 
   state = { isFocused: false };
-
-  keyDown = false;
 
   /**
    * Handle the keyDown event.
@@ -57,47 +47,10 @@ export class IconButton extends PureComponent {
    *
    * @private
    */
-  handleKeyDown = (ev) => {
-    this.props.onKeyDown(ev);
-
-    if (IconButton.keyCodes.includes(ev.keyCode) && !this.keyDown) {
-      this.keyDown = true;
-
+  handleKeyPress = (ev) => {
+    if (IconButton.keyCodes.includes(ev.keyCode)) {
       this.props.onPress();
     }
-  };
-
-  /**
-   * Reset the keyDown property to false.
-   *
-   * @private
-   */
-  handleKeyUp = (ev) => {
-    this.props.onKeyUp(ev);
-
-    this.keyDown = false;
-  };
-
-  /**
-   * Call the onPress function.
-   *
-   * @private
-   */
-  handleMouseDown = (ev) => {
-    this.props.onMouseDown(ev);
-
-    this.props.onPress();
-  };
-
-  /**
-   * Call the onPress function.
-   *
-   * @private
-   */
-  handleTouchStart = (ev) => {
-    this.props.onTouchStart(ev);
-
-    this.props.onPress();
   };
 
   /**
@@ -123,19 +76,22 @@ export class IconButton extends PureComponent {
   };
 
   render() {
-    const { disabled } = this.props;
+    const {
+      disabled,
+      classes,
+      theme,
+    } = this.props;
 
     return (
-      <span
+      <EventHandler
         {...getNotDeclaredProps(this, IconButton)}
+        component="span"
         role="button"
-        className={`${this.props.classes.iconButton} ${this.props.className}`}
+        className={`${classes.iconButton} ${this.props.className}`}
         aria-disabled={disabled}
         tabIndex={disabled ? -1 : 0}
-        onTouchStart={this.handleTouchStart}
-        onMouseDown={this.handleMouseDown}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
+        onPress={this.props.onPress}
+        onKeyPress={this.handleKeyPress}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
       >
@@ -143,19 +99,19 @@ export class IconButton extends PureComponent {
           round
           center
           className="icon-button--ripple"
-          color={this.context.theme.icon.color}
-          focusColor={this.context.theme.icon.color}
+          color={theme.rippleColor}
+          focusColor={theme.rippleColor}
           focusOpacity={0.12}
           nowaves={this.props.noink}
           isFocused={this.state.isFocused}
         />
 
         <Icon
-          className={this.props.classes.icon}
+          className={classes.icon}
           icon={this.props.icon}
           disabled={disabled}
         />
-      </span>
+      </EventHandler>
     );
   }
 }
