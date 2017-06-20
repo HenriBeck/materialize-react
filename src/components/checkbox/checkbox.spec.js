@@ -14,8 +14,7 @@ const props = {
   onPress: () => {},
   id: 'id',
   children: '',
-  onKeyUp: () => {},
-  onKeyDown: () => {},
+  onKeyPress: () => {},
   onFocus: () => {},
   onBlur: () => {},
 };

@@ -12,7 +12,7 @@ export const schema = PropTypes.shape({
   backgroundColor: PropTypes.string.isRequired,
   disabledBackgroundColor: PropTypes.string.isRequired,
 
-  transitionTime: PropTypes.number.isRequired,
+  animationDuration: PropTypes.number.isRequired,
 });
 
 /**
@@ -35,6 +35,6 @@ export function defaultTheme(vars) {
     backgroundColor: vars.primaryBase,
     disabledBackgroundColor: 'rgba(255, 255, 255, 0.1)',
 
-    transitionTime: vars.transitionTime,
+    animationDuration: vars.transitionTime * 2,
   };
 }

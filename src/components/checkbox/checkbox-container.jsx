@@ -17,8 +17,6 @@ export default class CheckboxContainer extends PureComponent {
     disabled: PropTypes.bool,
     defaultChecked: PropTypes.bool,
     onChange: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onKeyDown: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     className: PropTypes.string,
@@ -29,8 +27,6 @@ export default class CheckboxContainer extends PureComponent {
     defaultChecked: false,
     disabled: false,
     onChange: () => {},
-    onKeyUp: () => {},
-    onKeyDown: () => {},
     onFocus: () => {},
     onBlur: () => {},
     className: '',
@@ -45,8 +41,6 @@ export default class CheckboxContainer extends PureComponent {
   };
 
   id = randomstring.generate();
-  isTouchEvent = false;
-  isPressingKey = false;
 
   /**
    * Get the current checked state.
@@ -82,25 +76,10 @@ export default class CheckboxContainer extends PureComponent {
    *
    * @private
    */
-  handleKeyDown = (ev) => {
-    this.props.onKeyDown(ev);
-
-    if (!this.isPressingKey && CheckboxContainer.keyCodes.includes(ev.keyCode)) {
-      this.isPressingKey = true;
-
+  handleKeyPress = (ev) => {
+    if (CheckboxContainer.keyCodes.includes(ev.keyCode)) {
       this.toggle();
     }
-  };
-
-  /**
-   * Reset the isPressingKey attribute.
-   *
-   * @private
-   */
-  handleKeyUp = (ev) => {
-    this.props.onKeyUp(ev);
-
-    this.isPressingKey = false;
   };
 
   /**
@@ -131,26 +110,8 @@ export default class CheckboxContainer extends PureComponent {
    * We have to ignore the event because else wise we are toggling the checkbox
    * twice which results in quickly resetting the state.
    */
-  handlePress = (ev) => {
-    switch (ev.type) {
-      case 'mousedown': {
-        if (this.isTouchEvent) {
-          this.isTouchEvent = false;
-
-          return;
-        }
-
-        this.toggle();
-        break;
-      }
-      case 'touchstart': {
-        this.isTouchEvent = true;
-
-        this.toggle();
-        break;
-      }
-      default: break;
-    }
+  handlePress = () => {
+    this.toggle();
   };
 
   render() {
@@ -159,8 +120,7 @@ export default class CheckboxContainer extends PureComponent {
         disabled={this.props.disabled}
         checked={this.state.checked}
         onPress={this.handlePress}
-        onKeyUp={this.handleKeyUp}
-        onKeyDown={this.handleKeyDown}
+        onKeyPress={this.handleKeyPress}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         id={this.id}

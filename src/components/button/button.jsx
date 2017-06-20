@@ -9,6 +9,7 @@ import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Ripple from '../ripple';
 import typo from '../../styles/plugins/typo';
 import elevation from '../../styles/plugins/elevation';
+import EventHandler from '../event-handler';
 
 /**
  * A material design button.
@@ -25,12 +26,6 @@ export class Button extends PureComponent {
     noink: PropTypes.bool,
     className: PropTypes.string,
     onPress: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    onMouseUp: PropTypes.func,
-    onTouchStart: PropTypes.func,
-    onTouchEnd: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
   };
@@ -43,12 +38,6 @@ export class Button extends PureComponent {
     className: '',
     style: {},
     onPress: () => {},
-    onMouseDown: () => {},
-    onMouseUp: () => {},
-    onKeyDown: () => {},
-    onKeyUp: () => {},
-    onTouchStart: () => {},
-    onTouchEnd: () => {},
     onFocus: () => {},
     onBlur: () => {},
   };
@@ -70,8 +59,6 @@ export class Button extends PureComponent {
     isFocused: false,
   };
 
-  isPressingKey = false;
-
   /**
    * Get the ripple props based on the props the user passed.
    *
@@ -88,9 +75,7 @@ export class Button extends PureComponent {
    * @private
    */
   handlePress = () => {
-    if (this.props.raised) {
-      this.setState({ pressed: true });
-    }
+    this.setState({ pressed: true });
 
     this.props.onPress();
   };
@@ -101,9 +86,7 @@ export class Button extends PureComponent {
    * @private
    */
   handleRelease = () => {
-    if (this.props.raised) {
-      this.setState({ pressed: false });
-    }
+    this.setState({ pressed: false });
   };
 
   /**
@@ -111,69 +94,10 @@ export class Button extends PureComponent {
    *
    * @private
    */
-  handleKeyDown = (ev = {}) => {
-    this.props.onKeyDown(ev);
-
-    if (Button.keyCodes.includes(ev.keyCode) && !this.isPressingKey) {
-      this.isPressingKey = true;
-
+  handleKeyPress = (ev) => {
+    if (Button.keyCodes.includes(ev.keyCode)) {
       this.props.onPress();
     }
-  };
-
-  /**
-   * Set the isPressingKey attribute to false when the user releases the key.
-   *
-   * @private
-   */
-  handleKeyUp = (ev) => {
-    this.props.onKeyUp(ev);
-
-    this.isPressingKey = false;
-  };
-
-  /**
-   * Call the press handler for the button.
-   *
-   * @private
-   */
-  handleMouseDown = (ev) => {
-    this.props.onMouseDown(ev);
-
-    this.handlePress();
-  };
-
-  /**
-   * Call the release handler for the button.
-   *
-   * @private
-   */
-  handleMouseUp = (ev) => {
-    this.props.onMouseUp(ev);
-
-    this.handleRelease();
-  };
-
-  /**
-   * Call the press handler for the button.
-   *
-   * @private
-   */
-  handleTouchStart = (ev) => {
-    this.props.onTouchStart(ev);
-
-    this.handlePress();
-  };
-
-  /**
-   * Call the release handler for the button.
-   *
-   * @private
-   */
-  handleTouchEnd = (ev) => {
-    this.props.onTouchEnd(ev);
-
-    this.handleRelease();
   };
 
   /**
@@ -205,23 +129,26 @@ export class Button extends PureComponent {
     } = this.props;
     const className = classNames(
       classes.button,
-      { [classes.buttonPressed]: this.state.pressed && !this.props.disabled },
       this.props.className,
+      { [classes.buttonPressed]: this.state.pressed && !this.props.disabled },
     );
+    const events = { onPress: this.props.raised ? this.handlePress : this.props.onPress };
+
+    if (this.props.raised) {
+      events.onRelease = this.handleRelease;
+    }
 
     return (
-      <span
+      <EventHandler
+        component="span"
         {...getNotDeclaredProps(this, Button)}
         role="button"
         className={className}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
-        onTouchStart={this.handleTouchStart}
-        onTouchEnd={this.handleTouchEnd}
+        onKeyPress={this.handleKeyPress}
+        onPress={this.handlePress}
+        onRelease={this.handleRelease}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
       >
@@ -233,7 +160,7 @@ export class Button extends PureComponent {
         />
 
         {this.props.children}
-      </span>
+      </EventHandler>
     );
   }
 }

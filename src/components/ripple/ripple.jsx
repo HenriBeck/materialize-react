@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Wave from './wave';
 import FocusContainer from './focus-container';
+import EventHandler from '../event-handler';
 
 /**
  * The presentation container for the ripple.
@@ -22,15 +23,10 @@ export default class Ripple extends PureComponent {
     round: PropTypes.bool.isRequired,
     onDownAction: PropTypes.func.isRequired,
     onAnimationFinish: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func.isRequired,
     onMouseLeave: PropTypes.func.isRequired,
-    onMouseUp: PropTypes.func.isRequired,
-    onTouchStart: PropTypes.func.isRequired,
-    onTouchEnd: PropTypes.func.isRequired,
   };
 
   waves = {};
-  isTouchEvent = false;
 
   /**
    * Emit an event to all of the current active ripples.
@@ -44,44 +40,12 @@ export default class Ripple extends PureComponent {
   }
 
   /**
-   * Add a wave when the user clicks inside.
+   * A function which will be called with the element from EventHandler.
    *
-   * @private
+   * @param {Object} element - The root element from EventHandler.
    */
-  handleMouseDown = (ev) => {
-    this.props.onMouseDown(ev);
-
-    if (this.isTouchEvent) {
-      this.isTouchEvent = false;
-
-      return;
-    }
-
-    this.props.onDownAction(ev);
-  };
-
-  /**
-   * Emit up actions to all of the waves.
-   *
-   * @private
-   */
-  handleMouseUp = (ev) => {
-    this.props.onMouseUp(ev);
-
-    this.emitUpAction();
-  };
-
-  /**
-   * Create a new wave when the user touches the element.
-   *
-   * @private
-   */
-  handleTouchStart = (ev) => {
-    this.isTouchEvent = true;
-
-    this.props.onTouchStart(ev);
-
-    this.props.onDownAction(ev);
+  createRef = (element) => {
+    this.root = element;
   };
 
   /**
@@ -89,9 +53,7 @@ export default class Ripple extends PureComponent {
    *
    * @private
    */
-  handleTouchEnd = (ev) => {
-    this.props.onTouchEnd(ev);
-
+  handleRelease = () => {
     this.emitUpAction();
   };
 
@@ -127,14 +89,13 @@ export default class Ripple extends PureComponent {
 
   render() {
     return (
-      <span
+      <EventHandler
+        component="span"
         role="presentation"
         className={`${this.props.className} ${this.props.classes.ripple}`}
-        ref={(element) => { this.root = element; }}
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}
-        onTouchStart={this.handleTouchStart}
-        onTouchEnd={this.handleTouchEnd}
+        createRef={this.createRef}
+        onPress={this.props.onDownAction}
+        onRelease={this.handleRelease}
         onMouseLeave={this.handleMouseLeave}
       >
         <FocusContainer
@@ -148,7 +109,7 @@ export default class Ripple extends PureComponent {
         <span className={this.props.classes.waveContainer}>
           {this.renderWaves()}
         </span>
-      </span>
+      </EventHandler>
     );
   }
 }

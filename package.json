@@ -49,6 +49,7 @@
     "jss-vendor-prefixer": "5.1.0",
     "lodash.merge": "4.6.0",
     "lodash.omit": "4.5.0",
+    "lodash.pick": "4.4.0",
     "mdi": "1.9.33",
     "prop-types": "15.5.10",
     "randomstring": "1.1.5",

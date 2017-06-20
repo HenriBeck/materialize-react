@@ -73,121 +73,42 @@ test('should have a Ripple inside the button', (t) => {
   t.deepEqual(wrapper.find('RippleContainer').length, 1);
 });
 
-test('should handle onFocus and onBlur events and add focus to the element', (t) => {
-  const onFocus = sinon.spy();
-  const onBlur = sinon.spy();
+test('should not call the onPress prop when no key code was passed to the handler', (t) => {
+  const onPress = sinon.spy();
   const wrapper = mount(
     <Button
+      onPress={onPress}
       classes={classes}
-      onFocus={onFocus}
-      onBlur={onBlur}
     />,
   );
-
-  wrapper.simulate('focus');
-
-  t.deepEqual(onFocus.callCount, 1);
-
-  wrapper.simulate('blur');
-
-  t.deepEqual(onBlur.callCount, 1);
-});
-
-test('should handle touch events and call the specific handlers', (t) => {
-  const onTouchStart = sinon.spy();
-  const onTouchEnd = sinon.spy();
-  const wrapper = mount(
-    <Button
-      classes={classes}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-    />,
-  );
-
-  wrapper.simulate('touchStart');
-
-  t.deepEqual(onTouchStart.callCount, 1);
-
-  wrapper.simulate('touchEnd');
-
-  t.deepEqual(onTouchEnd.callCount, 1);
-});
-
-test('should not handle key events if the keyCode doesn\'t match', (t) => {
-  const wrapper = shallow(<Button classes={classes} />);
 
   wrapper.simulate('keyDown');
 
-  t.deepEqual(wrapper.state('pressed'), false);
+  t.deepEqual(onPress.callCount, 0);
 });
 
-test('should only handle key events where the key codes match', (t) => {
+test('should call the onPress prop when a valid key code was passed to the handler', (t) => {
   const onPress = sinon.spy();
   const wrapper = mount(
     <Button
-      classes={classes}
       onPress={onPress}
-    />,
-  );
-
-  t.plan(Button.keyCodes.length);
-
-  Button.keyCodes.forEach((keyCode, index) => {
-    wrapper.simulate('keyDown', { keyCode });
-
-    t.deepEqual(onPress.callCount, index + 1);
-
-    wrapper.simulate('keyUp');
-  });
-});
-
-test('should only update the state when a key is not already pressed', (t) => {
-  const onPress = sinon.spy();
-  const wrapper = mount(
-    <Button
       classes={classes}
-      onPress={onPress}
     />,
   );
 
   wrapper.simulate('keyDown', { keyCode: Button.keyCodes[0] });
 
   t.deepEqual(onPress.callCount, 1);
-
-  wrapper.simulate('keyDown', { keyCode: Button.keyCodes[0] });
-
-  t.deepEqual(onPress.callCount, 1);
 });
 
-test('should handle mouse events and call the specific handlers', (t) => {
-  const onMouseDown = sinon.spy();
-  const onMouseUp = sinon.spy();
-  const wrapper = mount(
-    <Button
-      classes={classes}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-    />,
-  );
+test('should handle onFocus and onBlur events and add focus to the element', (t) => {
+  const wrapper = mount(<Button classes={classes} />);
 
-  wrapper.simulate('mouseDown');
+  wrapper.simulate('focus');
 
-  t.deepEqual(onMouseDown.callCount, 1);
+  t.deepEqual(wrapper.state('isFocused'), true);
 
-  wrapper.simulate('mouseUp');
+  wrapper.simulate('blur');
 
-  t.deepEqual(onMouseUp.callCount, 1);
-});
-
-test('All default event handlers can be called', (t) => {
-  Button.defaultProps.onBlur();
-  Button.defaultProps.onFocus();
-
-  Button.defaultProps.onMouseDown();
-  Button.defaultProps.onMouseUp();
-
-  Button.defaultProps.onTouchStart();
-  Button.defaultProps.onTouchEnd();
-
-  t.pass();
+  t.deepEqual(wrapper.state('isFocused'), false);
 });

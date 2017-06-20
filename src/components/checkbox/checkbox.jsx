@@ -6,6 +6,7 @@ import Label from '../label';
 import Ripple from '../ripple';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import injectSheet from '../../styles/jss';
+import EventHandler from '../event-handler';
 
 /**
  * The actual visual component of the checkbox.
@@ -25,8 +26,7 @@ export class Checkbox extends PureComponent {
     onPress: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
     children: PropTypes.string.isRequired,
-    onKeyUp: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func.isRequired,
+    onKeyPress: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
     // eslint-disable-next-line react/require-default-props, react/no-unused-prop-types
@@ -89,6 +89,15 @@ export class Checkbox extends PureComponent {
     });
   }
 
+  /**
+   * A function which will be called with the element from EventHandler.
+   *
+   * @param {Object} element - The root element from EventHandler.
+   */
+  createRef = (element) => {
+    this.root = element;
+  };
+
   render() {
     const {
       disabled,
@@ -96,22 +105,22 @@ export class Checkbox extends PureComponent {
     } = this.props;
 
     return (
-      <span
+      <EventHandler
+        component="span"
         role="checkbox"
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         aria-checked={this.props.checked}
         className={`${this.props.className} ${classes.checkbox}`}
-        ref={(element) => { this.root = element; }}
-        onKeyDown={this.props.onKeyDown}
-        onKeyUp={this.props.onKeyUp}
+        onKeyPress={this.props.onKeyPress}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
+        createRef={this.createRef}
       >
-        <span
+        <EventHandler
+          component="span"
           role="presentation"
-          onTouchStart={this.props.onPress}
-          onMouseDown={this.props.onPress}
+          onPress={this.props.onPress}
           className={classes.container}
         >
           <span
@@ -131,7 +140,7 @@ export class Checkbox extends PureComponent {
             isFocused={this.props.isFocused}
             {...this.getRippleProps()}
           />
-        </span>
+        </EventHandler>
 
         <Label
           for={this.props.id}
@@ -139,7 +148,7 @@ export class Checkbox extends PureComponent {
         >
           {this.props.children}
         </Label>
-      </span>
+      </EventHandler>
     );
   }
 }
