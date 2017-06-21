@@ -36,7 +36,6 @@ export class Button extends PureComponent {
     raised: false,
     noink: false,
     className: '',
-    style: {},
     onPress: () => {},
     onFocus: () => {},
     onBlur: () => {},

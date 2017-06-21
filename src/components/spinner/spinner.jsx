@@ -22,7 +22,6 @@ export class Spinner extends PureComponent {
 
   static defaultProps = {
     active: false,
-    style: {},
     className: '',
   };
 

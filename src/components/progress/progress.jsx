@@ -30,7 +30,6 @@ export class Progress extends PureComponent {
     indeterminate: false,
     progress: 0,
     className: '',
-    style: {},
     active: false,
     secondaryProgress: 0,
     disabled: false,

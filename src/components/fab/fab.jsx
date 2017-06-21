@@ -32,7 +32,6 @@ export class Fab extends PureComponent {
 
   static defaultProps = {
     className: '',
-    style: {},
     noink: false,
     disabled: false,
     mini: false,

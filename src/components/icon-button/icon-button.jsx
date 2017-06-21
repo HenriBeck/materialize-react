@@ -30,7 +30,6 @@ export class IconButton extends PureComponent {
   static defaultProps = {
     disabled: false,
     noink: false,
-    style: {},
     className: '',
     onPress: () => {},
     onFocus: () => {},
