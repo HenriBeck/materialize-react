@@ -203,9 +203,9 @@
     react-split-pane "^0.1.63"
     redux "^3.6.0"
 
-"@tf2-pickup/eslint-config@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@tf2-pickup/eslint-config/-/eslint-config-2.7.1.tgz#86e4542d49e63c9e0b8ee79965b48c60ef2bdc5a"
+"@tf2-pickup/eslint-config@2.7.3":
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/@tf2-pickup/eslint-config/-/eslint-config-2.7.3.tgz#2fc589679c3108d0b505d7e7a7fdf9a9d0b0c170"
   dependencies:
     babel-eslint "7.2.3"
     eslint "4.0.0"
@@ -216,7 +216,7 @@
     eslint-plugin-jsx-a11y "5.0.3"
     eslint-plugin-promise "3.5.0"
     eslint-plugin-react "7.1.0"
-    eslint-plugin-react-jsdoc "0.8.0"
+    eslint-plugin-react-jsdoc "0.8.1"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -2740,9 +2740,9 @@ eslint-plugin-promise@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-3.5.0.tgz#78fbb6ffe047201627569e85a6c5373af2a68fca"
 
-eslint-plugin-react-jsdoc@0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-jsdoc/-/eslint-plugin-react-jsdoc-0.8.0.tgz#ea7ec74c0938c66875b5b3bf24d712fdca9a9c7c"
+eslint-plugin-react-jsdoc@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-jsdoc/-/eslint-plugin-react-jsdoc-0.8.1.tgz#b64a820296cc0e94b9a2f20db158f8533f5ee3ce"
   dependencies:
     array-includes "3.0.3"
     comment-parser "0.4.0"
