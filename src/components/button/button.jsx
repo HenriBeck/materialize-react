@@ -20,7 +20,7 @@ import EventHandler from '../event-handler';
 export class Button extends PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
     noink: PropTypes.bool,
