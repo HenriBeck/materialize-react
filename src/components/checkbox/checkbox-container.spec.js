@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import CheckboxContainer from './checkbox-container';
 
 test('should be able to change the current state by the checked get and setter', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
   const instance = wrapper.instance();
 
   t.deepEqual(instance.checked, false);
@@ -19,7 +19,7 @@ test('should be able to change the current state by the checked get and setter',
 });
 
 test('should update the state when the component receives / loses focus', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
 
   wrapper.simulate('focus');
 
@@ -31,7 +31,7 @@ test('should update the state when the component receives / loses focus', (t) =>
 });
 
 test('should toggle the state when the toggle method is called', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
   const instance = wrapper.instance();
 
   instance.toggle();
@@ -45,7 +45,9 @@ test('should call the onChange prop when the toggle method is called', (t) => {
     <CheckboxContainer
       name="name"
       onChange={onChange}
-    />,
+    >
+      Test
+    </CheckboxContainer>,
   ).instance();
 
   instance.toggle();
@@ -54,7 +56,7 @@ test('should call the onChange prop when the toggle method is called', (t) => {
 });
 
 test('should toggle the state when the handlePress method get\'s called', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
   const instance = wrapper.instance();
 
   instance.handlePress();
@@ -63,7 +65,7 @@ test('should toggle the state when the handlePress method get\'s called', (t) =>
 });
 
 test('should not toggle the state when the handleKeyPress receives an invalid keyCode', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
   const instance = wrapper.instance();
 
   instance.handleKeyPress({ keyCode: 0 });
@@ -72,7 +74,7 @@ test('should not toggle the state when the handleKeyPress receives an invalid ke
 });
 
 test('should toggle the state when the handleKeyPres receives a valid keyCode', (t) => {
-  const wrapper = shallow(<CheckboxContainer name="name" />);
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
   const instance = wrapper.instance();
 
   instance.handleKeyPress({ keyCode: CheckboxContainer.keyCodes[0] });

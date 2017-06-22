@@ -14,13 +14,13 @@ import Checkbox from './checkbox';
 export default class CheckboxContainer extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
     disabled: PropTypes.bool,
     defaultChecked: PropTypes.bool,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     className: PropTypes.string,
-    children: PropTypes.node,
   };
 
   static defaultProps = {
@@ -30,7 +30,6 @@ export default class CheckboxContainer extends PureComponent {
     onFocus: () => {},
     onBlur: () => {},
     className: '',
-    children: '',
   };
 
   static keyCodes = [32];
