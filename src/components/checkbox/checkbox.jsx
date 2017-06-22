@@ -155,6 +155,7 @@ export class Checkbox extends PureComponent {
 
 const styles = {
   checkbox: {
+    composes: 'checkbox',
     boxSizing: 'border-box',
     outline: 'none',
     border: 0,
@@ -168,6 +169,7 @@ const styles = {
   },
 
   container: {
+    composes: 'checkbox--container',
     display: 'inline-block',
     position: 'relative',
     cursor: 'pointer',
@@ -178,9 +180,13 @@ const styles = {
     width: props => props.theme.rippleSize,
   },
 
-  label: { cursor: props => !props.disabled && 'pointer' },
+  label: {
+    composes: 'checkbox--label',
+    cursor: props => !props.disabled && 'pointer',
+  },
 
   checkboxContainer: {
+    composes: 'checkbox--checkbox-container',
     display: 'inline-block',
     position: 'relative',
     margin: props => (props.theme.rippleSize - props.theme.size) / 2,
@@ -211,6 +217,7 @@ const styles = {
   },
 
   checkmark: {
+    composes: 'checkbox--checkmark',
     width: '36%',
     height: '70%',
     left: -1,
