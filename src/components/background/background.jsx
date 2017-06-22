@@ -22,7 +22,7 @@ function Background({
 }) {
   return (
     <div
-      className={`background ${classes.root} ${className}`}
+      className={`${classes.root} ${className}`}
       {...omit(props, 'theme', 'sheet')}
     >
       {children}
@@ -40,6 +40,7 @@ Background.defaultProps = { className: '' };
 
 const styles = {
   root: {
+    composes: 'background',
     color: props => props.theme.color,
     backgroundColor: props => props.theme.backgroundColor,
   },

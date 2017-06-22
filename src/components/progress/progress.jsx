@@ -214,6 +214,7 @@ const styles = {
   },
 
   container: {
+    composes: 'progress--container',
     position: 'relative',
     width: '100%',
     height: props => props.theme.barHeight,
@@ -221,6 +222,7 @@ const styles = {
   },
 
   primaryBar: {
+    composes: 'progress--primary-bar',
     ...layoutFit,
     transformOrigin: 'left center',
     willChange: 'transform',
@@ -231,6 +233,7 @@ const styles = {
   },
 
   secondaryBar: {
+    composes: 'progress--secondary-bar',
     ...layoutFit,
     transformOrigin: 'left center',
     willChange: 'transform',
