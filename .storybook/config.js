@@ -41,4 +41,5 @@ configure(() => {
   require('../src/components/progress/stories');
   require('../src/components/fab/stories');
   require('../src/components/checkbox/stories');
+  require('../src/components/switch/stories');
 }, module);

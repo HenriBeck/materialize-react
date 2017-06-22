@@ -9,6 +9,7 @@ import { schema as icon } from '../../components/icon/theme';
 import { schema as iconButton } from '../../components/icon-button/theme';
 import { schema as progress } from '../../components/progress/theme';
 import { schema as fab } from '../../components/fab/theme';
+import { schema as switchSchema } from '../../components/switch/theme';
 
 export default PropTypes.shape({
   variables: PropTypes.object,
@@ -21,4 +22,5 @@ export default PropTypes.shape({
   iconButton,
   progress,
   fab,
+  switch: switchSchema,
 });
