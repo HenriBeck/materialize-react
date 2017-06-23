@@ -12,13 +12,24 @@ import Switch from './switch';
 export default class SwitchContainer extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
     defaultToggled: PropTypes.bool,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+    noink: PropTypes.bool,
     onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
     defaultToggled: false,
+    className: '',
+    disabled: false,
+    noink: false,
     onChange: () => {},
+    onFocus: () => {},
+    onBlur: () => {},
   };
 
   static keyCodes = [13, 32];
@@ -81,6 +92,28 @@ export default class SwitchContainer extends PureComponent {
     }
   };
 
+  /**
+   * Change the isFocused state to true.
+   *
+   * @private
+   */
+  handleFocus = (ev) => {
+    this.props.onFocus(ev);
+
+    this.setState({ isFocused: true });
+  };
+
+  /**
+   * Set the isFocused state to false.
+   *
+   * @private
+   */
+  handleBlur = (ev) => {
+    this.props.onBlur(ev);
+
+    this.setState({ isFocused: false });
+  };
+
   render() {
     return (
       <Switch
@@ -88,7 +121,15 @@ export default class SwitchContainer extends PureComponent {
         toggled={this.state.toggled}
         onPress={this.handlePress}
         onKeyPress={this.handleKeyPress}
-      />
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+        isFocused={this.state.isFocused}
+        disabled={this.props.disabled}
+        className={this.props.className}
+        noink={this.props.noink}
+      >
+        {this.props.children}
+      </Switch>
     );
   }
 }

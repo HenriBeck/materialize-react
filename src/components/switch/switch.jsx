@@ -17,12 +17,16 @@ export function Switch(props) {
   const {
     classes,
     className,
+    noink,
     onKeyPress,
     onPress,
     toggled,
     disabled,
     id,
     children,
+    onFocus,
+    onBlur,
+    isFocused,
     ...otherProps
   } = props;
 
@@ -34,6 +38,8 @@ export function Switch(props) {
       aria-checked={toggled}
       aria-disabled={disabled}
       onKeyPress={onKeyPress}
+      onFocus={onFocus}
+      onBlur={onBlur}
       tabIndex={disabled ? -1 : 0}
       id={id}
       {...otherProps}
@@ -47,6 +53,8 @@ export function Switch(props) {
           onPress={onPress}
         >
           <Ripple
+            nowaves={noink}
+            isFocused={isFocused}
             className={classes.ripple}
           />
         </EventHandler>
@@ -69,13 +77,12 @@ Switch.propTypes = {
   onKeyPress: PropTypes.func.isRequired,
   onPress: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-  disabled: PropTypes.bool,
-  className: PropTypes.string,
-};
-
-Switch.defaultProps = {
-  className: '',
-  disabled: false,
+  isFocused: PropTypes.bool.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  className: PropTypes.string.isRequired,
+  noink: PropTypes.bool.isRequired,
 };
 
 const styles = {
