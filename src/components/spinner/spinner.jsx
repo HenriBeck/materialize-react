@@ -82,7 +82,7 @@ export class Spinner extends PureComponent {
 
     return (
       <div
-        {...getNotDeclaredProps(this, Spinner)}
+        {...getNotDeclaredProps(this.props, Spinner)}
         className={`${classes.spinner} ${this.props.className}`}
         ref={(element) => { this.root = element; }}
       >

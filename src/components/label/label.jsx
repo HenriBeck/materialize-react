@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash.omit';
 
 import typo from '../../styles/plugins/typo';
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
@@ -29,7 +28,7 @@ export function Label({
       aria-disabled={disabled}
       htmlFor={props.for}
       className={`${classes.label} ${className}`}
-      {...omit(getNotDeclaredProps({ props }, Label), 'for')}
+      {...getNotDeclaredProps(props, Label, 'for')}
     >
       {children}
     </label>

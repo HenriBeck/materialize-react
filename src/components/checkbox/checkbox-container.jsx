@@ -116,6 +116,7 @@ export default class CheckboxContainer extends PureComponent {
   render() {
     return (
       <Checkbox
+        {...getNotDeclaredProps(this.props, CheckboxContainer)}
         disabled={this.props.disabled}
         checked={this.state.checked}
         onPress={this.handlePress}
@@ -125,7 +126,6 @@ export default class CheckboxContainer extends PureComponent {
         id={this.id}
         className={this.props.className}
         isFocused={this.state.isFocused}
-        {...getNotDeclaredProps(this, CheckboxContainer)}
       >
         {this.props.children}
       </Checkbox>

@@ -7,6 +7,7 @@ import Ripple from '../ripple';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
 /**
  * The actual visual component of the checkbox.
@@ -29,8 +30,6 @@ export class Checkbox extends PureComponent {
     onKeyPress: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
-    // eslint-disable-next-line react/require-default-props, react/no-unused-prop-types
-    labelPosition: PropTypes.string,
   };
 
   /**
@@ -106,6 +105,7 @@ export class Checkbox extends PureComponent {
 
     return (
       <EventHandler
+        {...getNotDeclaredProps(this.props, Checkbox, 'labelPosition')}
         component="span"
         role="checkbox"
         tabIndex={disabled ? -1 : 0}

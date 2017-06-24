@@ -75,7 +75,7 @@ export class Theme extends PureComponent {
     const { component: Component } = this.props;
 
     return (
-      <Component {...getNotDeclaredProps(this, Theme)}>
+      <Component {...getNotDeclaredProps(this.props, Theme)}>
         {this.props.children}
       </Component>
     );
