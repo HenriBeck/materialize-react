@@ -9,7 +9,6 @@ const defaultProps = {
   classes: { focus: '' },
   round: false,
   opacity: 0.2,
-  color: '',
 };
 
 test('should render a span', (t) => {
@@ -69,33 +68,4 @@ test('should not animate something if the isFocused prop hasn\'t changed', (t) =
   wrapper.setProps({ round: true });
 
   t.deepEqual(span.node.style.opacity, oldOpacity);
-});
-
-test('should animate the background color when the prop changes and the element has focus', (t) => {
-  const wrapper = mount(
-    <FocusContainer
-      {...defaultProps}
-      isFocused
-    />,
-  );
-  const span = wrapper.find('span').first();
-
-  wrapper.setProps({ color: 'black' });
-
-  t.deepEqual(span.node.style.backgroundColor, 'black');
-
-  wrapper.setProps({ isFocused: false });
-  wrapper.setProps({ color: 'white' });
-
-  t.deepEqual(span.node.style.backgroundColor, 'black');
-});
-
-test('should not change the bg when the element isn\'t focused', (t) => {
-  const wrapper = mount(<FocusContainer {...defaultProps} />);
-  const span = wrapper.find('span').first();
-  const bgColor = span.node.style.backgroundColor;
-
-  wrapper.setProps({ color: 'black' });
-
-  t.deepEqual(span.node.style.backgroundColor, bgColor);
 });
