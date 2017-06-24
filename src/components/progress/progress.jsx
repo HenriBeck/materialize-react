@@ -133,7 +133,7 @@ export class Progress extends PureComponent {
 
     return (
       <span
-        {...getNotDeclaredProps(this, Progress)}
+        {...getNotDeclaredProps(this.props, Progress)}
         role="progressbar"
         aria-disabled={this.props.disabled}
         className={className}

@@ -86,7 +86,7 @@ export class Fab extends PureComponent {
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this, Fab)}
+        {...getNotDeclaredProps(this.props, Fab)}
         component="span"
         role="button"
         className={`${className} ${classes.fab} ${animateIn && '.animate-in'}`}

@@ -21,7 +21,7 @@ export function Divider({
   return (
     <div
       className={`${classes.divider} ${className}`}
-      {...getNotDeclaredProps({ props }, Divider)}
+      {...getNotDeclaredProps(props, Divider)}
     />
   );
 }

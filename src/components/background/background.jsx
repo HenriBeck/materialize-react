@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
-import omit from 'lodash.omit';
 
 import connectWithTheme from '../../styles/theme/connect-with-theme';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
 /**
  * A function to inherit some global styling like color and backgroundColor.
@@ -23,7 +23,7 @@ function Background({
   return (
     <div
       className={`${classes.root} ${className}`}
-      {...omit(props, 'theme', 'sheet')}
+      {...getNotDeclaredProps(props, Background)}
     >
       {children}
     </div>
