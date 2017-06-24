@@ -14,7 +14,6 @@ export default class FocusContainer extends React.PureComponent {
     classes: PropTypes.object.isRequired,
     round: PropTypes.bool.isRequired,
     opacity: PropTypes.number.isRequired,
-    color: PropTypes.string.isRequired,
   };
 
   static animationOptions = {
@@ -26,8 +25,6 @@ export default class FocusContainer extends React.PureComponent {
    * Calculate the initial background color.
    */
   componentDidMount() {
-    this.calculateBackgroundColor();
-
     if (this.props.isFocused) {
       this.addFocus();
     }
@@ -39,33 +36,11 @@ export default class FocusContainer extends React.PureComponent {
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       if (this.props.isFocused) {
-        this.calculateBackgroundColor();
-
         this.addFocus();
       } else {
         this.removeFocus();
       }
     }
-
-    if (prevProps.color !== this.props.color) {
-      if (this.props.isFocused) {
-        this.element.animate(
-          { backgroundColor: [prevProps.color, this.props.color] },
-          FocusContainer.animationOptions,
-        );
-      }
-    }
-  }
-
-  /**
-   * Calculate and change the background color.
-   *
-   * @private
-   */
-  calculateBackgroundColor() {
-    const color = window.getComputedStyle(this.element).color;
-
-    this.element.style.backgroundColor = this.props.color || color;
   }
 
   /**

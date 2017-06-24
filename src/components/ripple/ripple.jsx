@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Wave from './wave';
 import FocusContainer from './focus-container';
 import EventHandler from '../event-handler';
+import injectSheet from '../../styles/jss';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
 /**
  * The presentation container for the ripple.
@@ -12,19 +14,25 @@ import EventHandler from '../event-handler';
  * @class
  * @extends PureComponent
  */
-export default class Ripple extends PureComponent {
+export class Ripple extends PureComponent {
   static propTypes = {
     waves: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     classes: PropTypes.object.isRequired,
     className: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
     focusOpacity: PropTypes.number.isRequired,
-    focusColor: PropTypes.string.isRequired,
     round: PropTypes.bool.isRequired,
     onDownAction: PropTypes.func.isRequired,
     onAnimationFinish: PropTypes.func.isRequired,
     onMouseLeave: PropTypes.func.isRequired,
+    createRef: PropTypes.func.isRequired,
   };
+
+  static extraProps = [
+    'initialOpacity',
+    'nowaves',
+    'focusColor',
+  ];
 
   waves = {};
 
@@ -38,15 +46,6 @@ export default class Ripple extends PureComponent {
       this.waves[wave.id].startFadeOutAnimation();
     });
   }
-
-  /**
-   * A function which will be called with the element from EventHandler.
-   *
-   * @param {Object} element - The root element from EventHandler.
-   */
-  createRef = (element) => {
-    this.root = element;
-  };
 
   /**
    * Emit up actions to all of the waves when the user removes the finger.
@@ -90,10 +89,11 @@ export default class Ripple extends PureComponent {
   render() {
     return (
       <EventHandler
+        {...getNotDeclaredProps(this.props, Ripple, ...Ripple.extraProps)}
         component="span"
         role="presentation"
         className={`${this.props.className} ${this.props.classes.ripple}`}
-        createRef={this.createRef}
+        createRef={this.props.createRef}
         onPress={this.props.onDownAction}
         onRelease={this.handleRelease}
         onMouseLeave={this.handleMouseLeave}
@@ -103,7 +103,6 @@ export default class Ripple extends PureComponent {
           round={this.props.round}
           opacity={this.props.focusOpacity}
           isFocused={this.props.isFocused}
-          color={this.props.focusColor}
         />
 
         <span className={this.props.classes.waveContainer}>
@@ -113,3 +112,67 @@ export default class Ripple extends PureComponent {
     );
   }
 }
+
+const styles = {
+  '@keyframes ripple--scale-in': {
+    from: { transform: 'scale(0)' },
+    to: { transform: 'scale(1)' },
+  },
+
+  ripple: {
+    composes: 'ripple',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: 'block',
+    borderRadius: 'inherit',
+    overflow: 'hidden',
+    cursor: 'pointer',
+    zIndex: 'inherit',
+    pointerEvents: props => (props.nowaves ? 'none' : 'inherit'),
+  },
+
+  focus: {
+    composes: 'ripple--focus',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    borderRadius: props => (props.round ? '50%' : 'inherit'),
+    opacity: 0,
+    backgroundColor: props => props.focusColor,
+    transition: 'backgroundColor 140ms linear',
+  },
+
+  waveContainer: {
+    composes: 'ripple--wave-container',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '100%',
+    pointerEvents: 'none',
+    borderRadius: props => (props.round ? '50%' : 'inherit'),
+    overflow: 'hidden',
+  },
+
+  wave: {
+    composes: 'ripple--wave',
+    position: 'absolute',
+    pointerEvents: 'none',
+    opacity: props => props.initialOpacity,
+    overflow: 'hidden',
+    borderRadius: '50%',
+    transform: 'scale(0)',
+    willChange: 'opacity, transform',
+    zIndex: 1,
+    animationFillMode: 'forwards',
+    transition: 'opacity 140ms linear',
+    backgroundColor: props => props.color,
+  },
+};
+
+export default injectSheet(styles)(Ripple);

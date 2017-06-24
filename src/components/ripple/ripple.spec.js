@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 import Ripple from './ripple';
 import Wave from './wave';
-import { mount } from '../../../tests/helpers/enzyme';
+import { mount } from 'enzyme';
 
 const defaultProps = {
   waves: [],
@@ -17,16 +17,14 @@ const defaultProps = {
   round: false,
   onDownAction: () => {},
   onAnimationFinish: () => {},
-  onMouseDown: () => {},
-  onMouseUp: () => {},
-  onTouchStart: () => {},
-  onTouchEnd: () => {},
   onMouseLeave: () => {},
+  createRef: () => {},
 };
 
 test('should render a span with the riplpe class', (t) => {
   const wrapper = mount(<Ripple {...defaultProps} />);
 
+  t.deepEqual(wrapper.find('Jss(Ripple)').length, 1);
   t.deepEqual(wrapper.find('span.ripple').length, 1);
 });
 
@@ -41,6 +39,7 @@ test('should render a Wave component', (t) => {
           radius: 5,
         },
       ]}
+      nowaves
     />,
   );
   const rootNode = wrapper.find('.ripple').first();
