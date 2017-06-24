@@ -1,15 +1,8 @@
 import React from 'react';
 import test from 'ava';
 
-import Ripple, { RippleContainer } from './ripple-container';
+import RippleContainer from './ripple-container';
 import { mount } from 'enzyme';
-
-test('should render a jss hoc component and a RippleContainer component', (t) => {
-  const wrapper = mount(<Ripple />);
-
-  t.deepEqual(wrapper.find('Jss(RippleContainer)').length, 1);
-  t.deepEqual(wrapper.find('RippleContainer').length, 1);
-});
 
 test('should add a wave when the addWave method get\'s called', (t) => {
   const wrapper = mount(<RippleContainer classes={{}} />);
@@ -57,20 +50,6 @@ test('should center a ripple when the center prop is passed', (t) => {
   t.pass();
 });
 
-test('should render different styles when the nowaves and round props is passed', (t) => {
-  const wrapper = mount(
-    <Ripple
-      round
-      nowaves
-    />,
-  );
-  const styles = wrapper.find('RippleContainer').first().node.props.sheet.rules.map;
-
-  t.deepEqual(styles.ripple.renderable.style['pointer-events'], 'none');
-  t.deepEqual(styles.focus.renderable.style['border-radius'], '50%');
-  t.deepEqual(styles.waveContainer.renderable.style['border-radius'], '50%');
-});
-
 test('should emit the ripple there where the user clicked', (t) => {
   const wrapper = mount(<RippleContainer classes={{}} />);
   const instance = wrapper.instance();
@@ -87,11 +66,7 @@ test('should emit the ripple there where the user clicked', (t) => {
 });
 
 test('functions from default props can be called', (t) => {
-  Ripple.defaultProps.onMouseUp();
-  Ripple.defaultProps.onMouseDown();
-  Ripple.defaultProps.onTouchStart();
-  Ripple.defaultProps.onTouchEnd();
-  Ripple.defaultProps.onMouseLeave();
+  RippleContainer.defaultProps.onMouseLeave();
 
   t.pass();
 });
