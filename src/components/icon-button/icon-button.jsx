@@ -83,7 +83,7 @@ export class IconButton extends PureComponent {
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this, IconButton)}
+        {...getNotDeclaredProps(this.props, IconButton)}
         component="span"
         role="button"
         className={`${classes.iconButton} ${this.props.className}`}

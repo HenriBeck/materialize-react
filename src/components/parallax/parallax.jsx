@@ -80,7 +80,7 @@ export class Parallax extends PureComponent {
   render() {
     return (
       <div
-        {...getNotDeclaredProps(this, Parallax)}
+        {...getNotDeclaredProps(this.props, Parallax)}
         role="presentation"
         className={`${this.props.classes.root} ${this.props.className}`}
         ref={(element) => { this.root = element; }}

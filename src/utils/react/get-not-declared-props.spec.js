@@ -5,11 +5,9 @@ import getNotDeclaredProps from './get-not-declared-props';
 test('should return not declared props when an instance is passed', (t) => {
   t.deepEqual(
     getNotDeclaredProps({
-      props: {
-        prop: 'value',
-        declaredProp: 'valid value',
-        name: 'test',
-      },
+      prop: 'value',
+      declaredProp: 'valid value',
+      name: 'test',
     }, {
       propTypes: {
         declaredProp: Number,

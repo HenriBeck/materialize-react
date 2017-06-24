@@ -150,7 +150,7 @@ export default class EventHandler extends PureComponent {
 
     return (
       <Component
-        {...getNotDeclaredProps(this, EventHandler)}
+        {...getNotDeclaredProps(this.props, EventHandler)}
         {...additionalProps}
       >
         {this.props.children}

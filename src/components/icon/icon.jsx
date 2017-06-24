@@ -24,7 +24,7 @@ export function Icon({
   return (
     <i
       className={`mdi-${icon} ${className} ${classes.icon}`}
-      {...getNotDeclaredProps({ props }, Icon)}
+      {...getNotDeclaredProps(props, Icon)}
     />
   );
 }

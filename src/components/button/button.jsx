@@ -140,7 +140,7 @@ export class Button extends PureComponent {
     return (
       <EventHandler
         component="span"
-        {...getNotDeclaredProps(this, Button)}
+        {...getNotDeclaredProps(this.props, Button)}
         role="button"
         className={className}
         tabIndex={disabled ? -1 : 0}
