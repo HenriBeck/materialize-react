@@ -16,6 +16,7 @@ import Label from '../label';
 export function Switch(props) {
   const {
     classes,
+    theme,
     className,
     noink,
     onKeyPress,
@@ -29,6 +30,9 @@ export function Switch(props) {
     isFocused,
     ...otherProps
   } = props;
+
+  const rippleColor = toggled ? theme.uncheckedRippleColor : theme.checkedRippleColor;
+  const rippleFocusColor = toggled ? theme.checkedRippleColor : theme.uncheckedRippleColor;
 
   return (
     <EventHandler
@@ -54,6 +58,8 @@ export function Switch(props) {
         >
           <Ripple
             nowaves={noink}
+            focusColor={rippleFocusColor}
+            color={rippleColor}
             isFocused={isFocused}
             className={classes.ripple}
           />
@@ -72,6 +78,7 @@ export function Switch(props) {
 
 Switch.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   toggled: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
   onKeyPress: PropTypes.func.isRequired,
@@ -156,6 +163,9 @@ const styles = {
     right: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
     bottom: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
     left: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
+    color(props) {
+      return props.toggled ? props.theme.checkedRippleColor : props.theme.uncheckedRippleColor;
+    },
   },
 
   label: {

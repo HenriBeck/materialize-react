@@ -11,6 +11,18 @@ export const schema = PropTypes.shape({
   barWidth: PropTypes.number.isRequired,
   barHeight: PropTypes.number.isRequired,
   rippleSize: PropTypes.number.isRequired,
+  transitionDuration: PropTypes.number.isRequired,
+
+  checkedThumbColor: PropTypes.string.isRequired,
+  checkedBarColor: PropTypes.string.isRequired,
+  checkedRippleColor: PropTypes.string.isRequired,
+
+  uncheckedThumbColor: PropTypes.string.isRequired,
+  uncheckedBarColor: PropTypes.string.isRequired,
+  uncheckedRippleColor: PropTypes.string.isRequired,
+
+  disabledThumbColor: PropTypes.string.isRequired,
+  disabledBarColor: PropTypes.string.isRequired,
 });
 
 /**
@@ -33,9 +45,11 @@ export function defaultTheme(vars) {
 
     checkedThumbColor: vars.primaryBase,
     checkedBarColor: `rgba(${primaryBaseRGB.join(',')}, 0.5)`,
+    checkedRippleColor: vars.primaryBase,
 
     uncheckedThumbColor: grey400,
     uncheckedBarColor: 'rgba(255, 255, 255, 0.3)',
+    uncheckedRippleColor: grey400,
 
     disabledThumbColor: grey800,
     disabledBarColor: 'rgba(255, 255, 255, 0.1)',
