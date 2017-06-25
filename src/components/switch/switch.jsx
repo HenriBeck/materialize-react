@@ -69,6 +69,7 @@ export function Switch(props) {
       <Label
         for={id}
         disabled={disabled}
+        className={classes.label}
       >
         {children}
       </Label>
@@ -96,7 +97,7 @@ const styles = {
   switch: {
     composes: 'switch',
     display: 'inline-flex',
-    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: props => (props.labelPosition === 'left' ? 'row-reverse' : 'row'),
     pointerEvents: props => props.disabled && 'none',
 
@@ -115,7 +116,7 @@ const styles = {
     position: 'relative',
     height: props => props.theme.barHeight,
     width: props => props.theme.barWidth,
-    margin: props => (props.theme.thumbSize - props.theme.barHeight) / 2 + 1,
+    margin: props => (props.theme.rippleSize - props.theme.barHeight) / 2 + 4,
   },
 
   thumb: {
@@ -170,7 +171,7 @@ const styles = {
 
   label: {
     composes: 'switch--label',
-    padding: 5,
+    padding: 0,
     cursor: 'pointer',
   },
 };

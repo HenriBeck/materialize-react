@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 
 import Switch from './switch';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
 /**
  * A component to render a switch component.
@@ -16,6 +17,7 @@ export default class SwitchContainer extends PureComponent {
     defaultToggled: PropTypes.bool,
     className: PropTypes.string,
     disabled: PropTypes.bool,
+    labelPosition: PropTypes.string,
     noink: PropTypes.bool,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
@@ -25,6 +27,7 @@ export default class SwitchContainer extends PureComponent {
   static defaultProps = {
     defaultToggled: false,
     className: '',
+    labelPosition: 'right',
     disabled: false,
     noink: false,
     onChange: () => {},
@@ -127,6 +130,8 @@ export default class SwitchContainer extends PureComponent {
         disabled={this.props.disabled}
         className={this.props.className}
         noink={this.props.noink}
+        labelPosition={this.props.labelPosition}
+        {...getNotDeclaredProps(this.props, SwitchContainer)}
       >
         {this.props.children}
       </Switch>
