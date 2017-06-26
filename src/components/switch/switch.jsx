@@ -126,6 +126,7 @@ const styles = {
     borderRadius: '50%',
     transitionProperty: 'transform, background-color',
     willChange: 'transform',
+    boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.6)',
     transitionDuration: props => props.theme.transitionDuration,
     top: props => (props.theme.barHeight - props.theme.thumbSize) / 2,
     height: props => props.theme.thumbSize,
