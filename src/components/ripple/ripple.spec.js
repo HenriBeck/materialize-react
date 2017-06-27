@@ -15,6 +15,7 @@ const defaultProps = {
   focusOpacity: 0.2,
   focusColor: '',
   round: false,
+  nowaves: false,
   onDownAction: () => {},
   onAnimationFinish: () => {},
   onMouseLeave: () => {},
@@ -32,17 +33,14 @@ test('should render a Wave component', (t) => {
   const wrapper = mount(
     <Ripple
       {...defaultProps}
-      waves={[
-        {
-          id: 1,
-          style: {},
-          radius: 5,
-        },
-      ]}
-      nowaves
+      waves={[{
+        id: 1,
+        style: {},
+        radius: 5,
+      }]}
     />,
   );
-  const rootNode = wrapper.find('.ripple').first();
+  const rootNode = wrapper.find('.ripple');
 
   rootNode.simulate('touchEnd');
 

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import Wave from './wave';
 import FocusContainer from './focus-container';
@@ -26,11 +27,11 @@ export class Ripple extends PureComponent {
     onAnimationFinish: PropTypes.func.isRequired,
     onMouseLeave: PropTypes.func.isRequired,
     createRef: PropTypes.func.isRequired,
+    nowaves: PropTypes.bool.isRequired,
   };
 
   static extraProps = [
     'initialOpacity',
-    'nowaves',
     'focusColor',
   ];
 
@@ -87,12 +88,17 @@ export class Ripple extends PureComponent {
   }
 
   render() {
+    const className = classnames(this.props.className, this.props.classes.ripple, {
+      'ripple--round': this.props.round,
+      'ripple--no-waves': this.props.nowaves,
+    });
+
     return (
       <EventHandler
         {...getNotDeclaredProps(this.props, Ripple, ...Ripple.extraProps)}
         component="span"
         role="presentation"
-        className={`${this.props.className} ${this.props.classes.ripple}`}
+        className={className}
         createRef={this.props.createRef}
         onPress={this.props.onDownAction}
         onRelease={this.handleRelease}
@@ -131,7 +137,12 @@ const styles = {
     overflow: 'hidden',
     cursor: 'pointer',
     zIndex: 'inherit',
-    pointerEvents: props => (props.nowaves ? 'none' : 'inherit'),
+
+    '&.ripple--no-waves': { pointerEvents: 'none' },
+
+    '&.ripple--round $focus': { borderRadius: '50%' },
+
+    '&.ripple--round $waveContainer': { borderRadius: '50%' },
   },
 
   focus: {
@@ -141,7 +152,6 @@ const styles = {
     right: 0,
     bottom: 0,
     left: 0,
-    borderRadius: props => (props.round ? '50%' : 'inherit'),
     opacity: 0,
     backgroundColor: props => props.focusColor,
     transition: 'backgroundColor 140ms linear',
@@ -155,7 +165,6 @@ const styles = {
     height: '100%',
     width: '100%',
     pointerEvents: 'none',
-    borderRadius: props => (props.round ? '50%' : 'inherit'),
     overflow: 'hidden',
   },
 
