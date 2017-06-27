@@ -61,7 +61,7 @@ export class Spinner extends PureComponent {
    * @private
    */
   fadeIn() {
-    this.root.classList.add('active');
+    this.root.classList.add('spinner--active');
 
     this.root.animate({ opacity: [0, 1] }, this.animationOptions);
   }
@@ -74,7 +74,7 @@ export class Spinner extends PureComponent {
   fadeOut() {
     this.anim = this.root.animate({ opacity: [1, 0] }, this.animationOptions);
 
-    this.anim.onfinish = () => this.root.classList.remove('active');
+    this.anim.onfinish = () => this.root.classList.remove('spinner--active');
   }
 
   render() {
@@ -135,13 +135,13 @@ const styles = {
     padding: 8,
     boxSizing: 'border-box',
 
-    '&.active $container': { animationName: 'spinner--container-rotate' },
+    '&.spinner--active $container': { animationName: 'spinner--container-rotate' },
 
-    '&.active $layer': { animationName: 'spinner--fill-unfill-rotate' },
+    '&.spinner--active $layer': { animationName: 'spinner--fill-unfill-rotate' },
 
-    '&.active $clipperLeft::after': { animationName: 'spinner--left-spin' },
+    '&.spinner--active $clipperLeft::after': { animationName: 'spinner--left-spin' },
 
-    '&.active $clipperRight::after': { animationName: 'spinner--right-spin' },
+    '&.spinner--active $clipperRight::after': { animationName: 'spinner--right-spin' },
   },
 
   container: {

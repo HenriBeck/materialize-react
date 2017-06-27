@@ -59,5 +59,5 @@ test('should remove and add the active class if necessary', (t) => {
 
   wrapper.instance().anim.onfinish();
 
-  t.deepEqual(root.prop('className').includes('active'), false);
+  t.deepEqual(root.prop('className').includes('.spinner--active'), false);
 });
