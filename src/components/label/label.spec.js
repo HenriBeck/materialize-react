@@ -11,18 +11,3 @@ test('should render a label tag with the children inside', (t) => {
   t.deepEqual(wrapper.find('label').length, 1);
   t.deepEqual(wrapper.find('label').text(), 'Content');
 });
-
-test('should render different styles when disabled', (t) => {
-  const wrapper = mount(
-    <Label
-      for="some"
-      disabled
-    >
-      Content
-    </Label>,
-  );
-  const color = wrapper.find('Label').prop('sheet').rules.map.label.renderable.style.color;
-  const theme = wrapper.context('theme').label;
-
-  t.deepEqual(color, theme.disabledColor);
-});

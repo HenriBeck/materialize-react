@@ -54,7 +54,9 @@ const styles = {
     composes: 'label',
     userSelect: 'none',
     padding: '0 8px',
-    color: props => (props.disabled ? props.theme.disabledColor : props.theme.color),
+    color: props => props.theme.color,
+
+    '&[aria-disabled]': { color: props => props.theme.disabledColor },
   },
 };
 
