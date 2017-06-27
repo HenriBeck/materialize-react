@@ -8,10 +8,7 @@ import sinon from 'sinon';
 
 import ButtonWrapper, { Button } from './button';
 
-const classes = {
-  button: 'button',
-  buttonPressed: 'button--pressed',
-};
+const classes = { button: 'button' };
 
 test('should render the button', (t) => {
   const wrapper = mount(<ButtonWrapper />);
@@ -20,21 +17,10 @@ test('should render the button', (t) => {
   t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
 });
 
-test('should render the button with different styles', (t) => {
-  const wrapper = mount(<ButtonWrapper raised />);
-  const button = wrapper.find('Button');
-  const bgColor = () => button.prop('sheet').rules.map.button.renderable.style['background-color'];
-  const theme = wrapper.context('theme').button;
+test('should warn when the user changes the raised prop', (t) => {
+  const wrapper = mount(<ButtonWrapper />);
 
-  t.deepEqual(bgColor(), theme.raisedBgColor);
-
-  wrapper.setProps({ disabled: true });
-
-  t.deepEqual(bgColor(), theme.raisedAndDisabledBgColor);
-
-  wrapper.setProps({ raised: false });
-
-  t.deepEqual(bgColor(), theme.disabledBgColor);
+  t.throws(() => wrapper.setProps({ raised: true }));
 });
 
 test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t disabled', (t) => {

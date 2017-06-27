@@ -48,7 +48,6 @@ storiesOf('Button', module)
     <Button
       noink={boolean('No Ink', false)}
       disabled={boolean('Disabled', false)}
-      raised={boolean('Raised', false)}
     >
       {text('Button text', 'Text')}
     </Button>

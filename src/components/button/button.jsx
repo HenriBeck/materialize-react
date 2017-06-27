@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import injectSheet from '../../styles/jss';
-
+import warning from '../../utils/warning';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Ripple from '../ripple';
@@ -57,6 +57,17 @@ export class Button extends PureComponent {
     pressed: false,
     isFocused: false,
   };
+
+  /**
+   * We should warn against changing the raised prop
+   * because a button should be either raised or not raised from the beginning.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.raised !== this.props.raised,
+      'You should not change the raised prop of a button!',
+    );
+  }
 
   /**
    * Get the ripple props based on the props the user passed.
@@ -126,11 +137,11 @@ export class Button extends PureComponent {
       disabled,
       classes,
     } = this.props;
-    const className = classNames(
-      classes.button,
-      this.props.className,
-      { [classes.buttonPressed]: this.state.pressed && !this.props.disabled },
-    );
+    const className = classNames(classes.button, this.props.className, {
+      'button--pressed': this.state.pressed && !disabled,
+      'button--disabled': disabled,
+      'button--raised': this.props.raised,
+    });
     const events = { onPress: this.props.raised ? this.handlePress : this.props.onPress };
 
     if (this.props.raised) {
@@ -146,10 +157,9 @@ export class Button extends PureComponent {
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         onKeyPress={this.handleKeyPress}
-        onPress={this.handlePress}
-        onRelease={this.handleRelease}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
+        {...events}
       >
         <Ripple
           className="button--ripple"
@@ -179,31 +189,34 @@ const styles = {
     border: 0,
     borderRadius: 2,
     margin: '0 8px',
-    cursor: props => (props.disabled ? 'auto' : 'pointer'),
+    cursor: 'pointer',
     height: props => props.theme.height,
     minWidth: props => props.theme.minWidth,
-    color: props => (props.disabled ? props.theme.disabledColor : props.theme.color),
-    pointerEvents: props => (props.disabled ? 'none' : 'auto'),
+    color: props => props.theme.color,
     padding: props => `${(props.theme.height - buttonTypo.lineHeight) / 2}px 8px`,
-    boxShadow(props) {
-      return props.raised && !props.disabled ? elevation(props.theme.elevation) : 'none';
-    },
-    backgroundColor(props) {
-      if (props.disabled) {
-        return props.raised ? props.theme.raisedAndDisabledBgColor : props.theme.disabledBgColor;
-      }
+    backgroundColor: props => props.theme.bgColor,
 
-      return props.raised ? props.theme.raisedBgColor : props.theme.bgColor;
+    '&.button--disabled': {
+      cursor: 'auto',
+      pointerEvents: 'none',
+      color: props => props.theme.disabledColor,
+      backgroundColor: props => props.theme.disabledBgColor,
+
+      '&.button--raised': { backgroundColor: props => props.theme.raisedAndDisabledBgColor },
     },
 
-    '&:hover': {
-      boxShadow(props) {
-        return props.raised && !props.disabled ? elevation(props.theme.pressedElevation) : 'none';
+    '&.button--raised': {
+      backgroundColor: props => props.theme.raisedBgColor,
+
+      '&:not(.button--disabled)': {
+        boxShadow: props => elevation(props.theme.elevation),
+
+        '&:hover': { boxShadow: props => elevation(props.theme.pressedElevation) },
       },
+
+      '&.button--pressed': { boxShadow: props => elevation(props.theme.pressedElevation) },
     },
   },
-
-  buttonPressed: { boxShadow: props => elevation(props.theme.pressedElevation) },
 };
 
 export default connectWithTheme(injectSheet(styles)(Button), 'button');
