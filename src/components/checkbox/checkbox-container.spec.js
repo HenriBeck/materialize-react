@@ -18,6 +18,12 @@ test('should be able to change the current state by the checked get and setter',
   instance.checked = true;
 });
 
+test('should throw an error if we try to change the defaultChecked prop', (t) => {
+  const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
+
+  t.throws(() => wrapper.setProps({ defaultChecked: true }));
+});
+
 test('should update the state when the component receives / loses focus', (t) => {
   const wrapper = shallow(<CheckboxContainer name="name">Test</CheckboxContainer>);
 

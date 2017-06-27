@@ -14,6 +14,7 @@ const props = {
   onPress: () => {},
   id: 'id',
   children: '',
+  labelPosition: 'right',
   onKeyPress: () => {},
   onFocus: () => {},
   onBlur: () => {},
@@ -43,25 +44,10 @@ test('should set the aria-checked attribute on the root element', (t) => {
 });
 
 test('should set the aria-disabled attribute on the root element', (t) => {
-  const wrapper = mount(<Checkbox{...props} />);
+  const wrapper = mount(<Checkbox {...props} />);
   const root = wrapper.find({ role: 'checkbox' });
-
-  t.deepEqual(root.prop('aria-disabled'), false);
 
   wrapper.setProps({ disabled: true });
 
   t.deepEqual(root.prop('aria-disabled'), true);
-});
-
-test('should render different styles with different props', (t) => {
-  mount(
-    <Checkbox
-      {...props}
-      disabled
-      checked
-      labelPosition="left"
-    />,
-  );
-
-  t.pass();
 });

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { easeInOutCubic } from '../../styles/timings';
 import Label from '../label';
@@ -30,6 +31,7 @@ export class Checkbox extends PureComponent {
     onKeyPress: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
+    labelPosition: PropTypes.string.isRequired,
   };
 
   /**
@@ -67,7 +69,7 @@ export class Checkbox extends PureComponent {
     } = this.props;
 
     return {
-      color: checked ? theme.uncheckedBorderColor : theme.checkedBorderColor,
+      color: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
       focusColor: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
     };
   }
@@ -101,17 +103,24 @@ export class Checkbox extends PureComponent {
     const {
       disabled,
       classes,
+      checked,
     } = this.props;
+
+    const className = classnames(this.props.className, classes.checkbox, {
+      'checkbox--disabled': disabled,
+      'checkbox--checked': checked,
+      'checkbox--label-left': this.props.labelPosition === 'left',
+    });
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this.props, Checkbox, 'labelPosition')}
+        {...getNotDeclaredProps(this.props, Checkbox)}
         component="span"
         role="checkbox"
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
-        aria-checked={this.props.checked}
-        className={`${this.props.className} ${classes.checkbox}`}
+        aria-checked={checked}
+        className={className}
         onKeyPress={this.props.onKeyPress}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
@@ -143,6 +152,7 @@ export class Checkbox extends PureComponent {
         </EventHandler>
 
         <Label
+          className={classes.label}
           for={this.props.id}
           disabled={disabled}
         >
@@ -161,11 +171,31 @@ const styles = {
     border: 0,
     backgroundColor: 'inherit',
     display: 'inline-flex',
-    justifyContent: 'center',
-    flexDirection: props => `row${props.labelPosition === 'left' ? '-reverse' : ''}`,
+    alignItems: 'center',
     padding: props => props.theme.padding,
     height: props => props.theme.rippleSize + (props.theme.padding * 2),
-    pointerEvents: props => props.disabled && 'none',
+
+    '&:not(.checkbox--disabled) $label': { cursor: 'pointer' },
+
+    '&.checkbox--disabled': { pointerEvents: 'none' },
+
+    '&.checkbox--disabled $checkboxContainer': {
+      borderColor: props => props.theme.disabledBorderColor,
+      backgroundColor: props => props.theme.disabledBgColor,
+    },
+
+    '&.checkbox--disabled.checkbox--checked $checkboxContainer': {
+      backgroundColor(props) {
+        return props.theme.disabledCheckedBgColor;
+      },
+    },
+
+    '&.checkbox--label-left': { flexDirection: 'row-reverse' },
+
+    '&.checkbox--checked:not(.checkbox--disabled) $checkboxContainer': {
+      borderColor: props => props.theme.checkedBorderColor,
+      backgroundColor: props => props.theme.checkedBgColor,
+    },
   },
 
   container: {
@@ -180,40 +210,22 @@ const styles = {
     width: props => props.theme.rippleSize,
   },
 
-  label: {
-    composes: 'checkbox--label',
-    cursor: props => !props.disabled && 'pointer',
-  },
+  label: { composes: 'checkbox--label' },
 
   checkboxContainer: {
     composes: 'checkbox--checkbox-container',
     display: 'inline-block',
     position: 'relative',
+    borderStyle: 'solid',
     margin: props => (props.theme.rippleSize - props.theme.size) / 2,
     height: props => props.theme.size - props.theme.borderWidth * 2,
     width: props => props.theme.size - props.theme.borderWidth * 2,
-    borderStyle: 'solid',
     borderWidth: props => props.theme.borderWidth,
     borderRadius: props => props.theme.borderWidth,
-    borderColor(props) {
-      if (props.disabled) {
-        return props.theme.disabledBorderColor;
-      }
-
-      return props.checked ? props.theme.checkedBorderColor : props.theme.uncheckedBorderColor;
-    },
-    backgroundColor(props) {
-      if (props.disabled) {
-        return props.checked ? props.theme.disabledCheckedBgColor : props.theme.disabledBgColor;
-      }
-
-      return props.checked ? props.theme.checkedBgColor : props.theme.uncheckedBgColor;
-    },
-    transition(props) {
-      const { animationDuration } = props.theme;
-
-      return `background-color ${animationDuration}, border-color ${animationDuration}`;
-    },
+    borderColor: props => props.theme.uncheckedBorderColor,
+    backgroundColor: props => props.theme.uncheckedBgColor,
+    transitionDuration: props => props.theme.animationDuration,
+    transitionProperty: 'background-color, border-color',
   },
 
   checkmark: {

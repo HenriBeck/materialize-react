@@ -4,6 +4,7 @@ import randomstring from 'randomstring';
 
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Checkbox from './checkbox';
+import warning from '../../utils/warning';
 
 /**
  * A component to render a checkbox.
@@ -21,6 +22,7 @@ export default class CheckboxContainer extends PureComponent {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     className: PropTypes.string,
+    labelPosition: PropTypes.string,
   };
 
   static defaultProps = {
@@ -30,6 +32,7 @@ export default class CheckboxContainer extends PureComponent {
     onFocus: () => {},
     onBlur: () => {},
     className: '',
+    labelPosition: 'right',
   };
 
   static keyCodes = [32];
@@ -38,6 +41,21 @@ export default class CheckboxContainer extends PureComponent {
     checked: this.props.defaultChecked,
     isFocused: false,
   };
+
+  /**
+   * Warn against changing the name and the defaultChecked prop.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.name !== this.props.name,
+      'You should not change the name of a checkbox',
+    );
+
+    warning(
+      nextProps.defaultChecked !== this.props.defaultChecked,
+      'Changing the defaultChecked prop has no effect on the component',
+    );
+  }
 
   id = randomstring.generate();
 
@@ -126,6 +144,7 @@ export default class CheckboxContainer extends PureComponent {
         id={this.id}
         className={this.props.className}
         isFocused={this.state.isFocused}
+        labelPosition={this.props.labelPosition}
       >
         {this.props.children}
       </Checkbox>
