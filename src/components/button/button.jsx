@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import injectSheet from '../../styles/jss';
 import warning from '../../utils/warning';
@@ -136,12 +136,9 @@ export class Button extends PureComponent {
     const {
       disabled,
       classes,
+      className,
     } = this.props;
-    const className = classNames(classes.button, this.props.className, {
-      'button--pressed': this.state.pressed && !disabled,
-      'button--disabled': disabled,
-      'button--raised': this.props.raised,
-    });
+    const classNames = classnames(classes.button, className, this.props.raised && 'button--raised');
     const events = { onPress: this.props.raised ? this.handlePress : this.props.onPress };
 
     if (this.props.raised) {
@@ -153,9 +150,10 @@ export class Button extends PureComponent {
         component="span"
         {...getNotDeclaredProps(this.props, Button)}
         role="button"
-        className={className}
+        className={classNames}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
+        aria-pressed={this.state.pressed && !disabled}
         onKeyPress={this.handleKeyPress}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
@@ -196,7 +194,7 @@ const styles = {
     padding: props => `${(props.theme.height - buttonTypo.lineHeight) / 2}px 8px`,
     backgroundColor: props => props.theme.bgColor,
 
-    '&.button--disabled': {
+    '&[aria-disabled="true"]': {
       cursor: 'auto',
       pointerEvents: 'none',
       color: props => props.theme.disabledColor,
@@ -208,13 +206,13 @@ const styles = {
     '&.button--raised': {
       backgroundColor: props => props.theme.raisedBgColor,
 
-      '&:not(.button--disabled)': {
+      '&[aria-disabled="false"]': {
         boxShadow: props => elevation(props.theme.elevation),
 
         '&:hover': { boxShadow: props => elevation(props.theme.pressedElevation) },
       },
 
-      '&.button--pressed': { boxShadow: props => elevation(props.theme.pressedElevation) },
+      '&[aria-pressed="true"]': { boxShadow: props => elevation(props.theme.pressedElevation) },
     },
   },
 };
