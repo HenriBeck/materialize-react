@@ -215,13 +215,13 @@ const styles = {
       '&::after': { animationName: 'progress--splitter' },
     },
 
-    '&[aria-disabled] $primaryBar': {
+    '&[aria-disabled=true] $primaryBar': {
       backgroundColor(props) {
         return props.theme.disabledPrimaryBarColor;
       },
     },
 
-    '&[aria-disabled] $secondaryBar': {
+    '&[aria-disabled=true] $secondaryBar': {
       backgroundColor(props) {
         return props.theme.disabledSecondaryBarColor;
       },

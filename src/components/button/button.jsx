@@ -194,7 +194,7 @@ const styles = {
     padding: props => `${(props.theme.height - buttonTypo.lineHeight) / 2}px 8px`,
     backgroundColor: props => props.theme.bgColor,
 
-    '&[aria-disabled="true"]': {
+    '&[aria-disabled=true]': {
       cursor: 'auto',
       pointerEvents: 'none',
       color: props => props.theme.disabledColor,
@@ -206,13 +206,13 @@ const styles = {
     '&.button--raised': {
       backgroundColor: props => props.theme.raisedBgColor,
 
-      '&[aria-disabled="false"]': {
+      '&[aria-disabled=false]': {
         boxShadow: props => elevation(props.theme.elevation),
 
         '&:hover': { boxShadow: props => elevation(props.theme.pressedElevation) },
       },
 
-      '&[aria-pressed="true"]': { boxShadow: props => elevation(props.theme.pressedElevation) },
+      '&[aria-pressed=true]': { boxShadow: props => elevation(props.theme.pressedElevation) },
     },
   },
 };

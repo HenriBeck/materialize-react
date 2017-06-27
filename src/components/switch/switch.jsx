@@ -111,20 +111,20 @@ const styles = {
 
     '&.switch--label-left': { flexDirection: 'row-reverse' },
 
-    '&[aria-disabled="true"]': { pointerEvents: 'none' },
+    '&[aria-disabled=true]': { pointerEvents: 'none' },
 
-    '&[aria-disabled="false"] $label': { cursor: 'pointer' },
+    '&[aria-disabled=true] $label': { cursor: 'pointer' },
 
-    '&[aria-checked="true"] $thumb': {
+    '&[aria-checked=true] $thumb': {
       transform: 'translateX(16px)',
       backgroundColor: props => props.theme.checkedThumbColor,
     },
 
-    '&[aria-checked="true"] $bar': { backgroundColor: props => props.theme.checkedBarColor },
+    '&[aria-checked=true] $bar': { backgroundColor: props => props.theme.checkedBarColor },
 
-    '&[aria-disabled="true"] $thumb': { backgroundColor: props => props.theme.disabledThumbColor },
+    '&[aria-disabled=true] $thumb': { backgroundColor: props => props.theme.disabledThumbColor },
 
-    '&[aria-disabled="true"] $bar': { backgroundColor: props => props.theme.disabledBarColor },
+    '&[aria-disabled=true] $bar': { backgroundColor: props => props.theme.disabledBarColor },
   },
 
   container: {

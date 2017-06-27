@@ -175,16 +175,16 @@ const styles = {
     padding: props => props.theme.padding,
     height: props => props.theme.rippleSize + (props.theme.padding * 2),
 
-    '&[aria-disabled="false"] $label': { cursor: 'pointer' },
+    '&[aria-disabled=false] $label': { cursor: 'pointer' },
 
-    '&[aria-disabled="true"]': { pointerEvents: 'none' },
+    '&[aria-disabled=true]': { pointerEvents: 'none' },
 
-    '&[aria-disabled="true"] $checkboxContainer': {
+    '&[aria-disabled=true] $checkboxContainer': {
       borderColor: props => props.theme.disabledBorderColor,
       backgroundColor: props => props.theme.disabledBgColor,
     },
 
-    '&[aria-disabled="true"][aria-checked="true"] $checkboxContainer': {
+    '&[aria-disabled=true][aria-checked=true] $checkboxContainer': {
       backgroundColor(props) {
         return props.theme.disabledCheckedBgColor;
       },
@@ -192,7 +192,7 @@ const styles = {
 
     '&.checkbox--label-left': { flexDirection: 'row-reverse' },
 
-    '&[aria-disabled="false"][aria-checked="true"] $checkboxContainer': {
+    '&[aria-disabled=false][aria-checked=true] $checkboxContainer': {
       borderColor: props => props.theme.checkedBorderColor,
       backgroundColor: props => props.theme.checkedBgColor,
     },
