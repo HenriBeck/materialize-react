@@ -50,13 +50,13 @@ test('should add the indeterminate class', (t) => {
   const wrapper = mount(<Progress indeterminate />);
 
   // Check if the correct class has been applied
-  t.deepEqual(wrapper.find('.indeterminate').length, 1);
+  t.deepEqual(wrapper.find('.progress--indeterminate').length, 1);
 
   // Start the progress animation
   wrapper.setProps({ active: true });
 
   // Check if the element got updated
-  t.deepEqual(wrapper.find('.indeterminate.active').length, 1);
+  t.deepEqual(wrapper.find('.progress--indeterminate').prop('data-active'), true);
 });
 
 test('should have aria-disabled set to true', (t) => {

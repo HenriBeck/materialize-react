@@ -118,10 +118,11 @@ export class Progress extends PureComponent {
     const { classes } = this.props;
     const props = {};
     const isIndeterminate = this.props.indeterminate;
-    const className = classnames(this.props.className, classes.progress, {
-      active: isIndeterminate && this.props.active,
-      indeterminate: isIndeterminate,
-    });
+    const className = classnames(
+      this.props.className,
+      classes.progress,
+      isIndeterminate && 'progress--indeterminate',
+    );
 
     if (isIndeterminate) {
       props['data-active'] = this.props.active;
@@ -192,13 +193,13 @@ const styles = {
     width: '100%',
     overflow: 'hidden',
 
-    '&.indeterminate $primaryBar': {
+    '&.progress--indeterminate $primaryBar': {
       transformOrigin: 'right center',
       animationIterationCount: 'infinite',
       animationDuration: props => props.theme.indeterminateDuration,
     },
 
-    '&.indeterminate $primaryBar::after': {
+    '&.progress--indeterminate $primaryBar::after': {
       ...layoutFit,
       content: '""',
       transformOrigin: 'center center',
@@ -208,9 +209,23 @@ const styles = {
       animationDuration: props => props.theme.indeterminateDuration,
     },
 
-    '&.indeterminate.active $primaryBar': { animationName: 'progress--bar' },
+    '&.progress--indeterminate[data-active] $primaryBar': {
+      animationName: 'progress--bar',
 
-    '&.indeterminate.active $primaryBar::after': { animationName: 'progress--splitter' },
+      '&::after': { animationName: 'progress--splitter' },
+    },
+
+    '&[aria-disabled] $primaryBar': {
+      backgroundColor(props) {
+        return props.theme.disabledPrimaryBarColor;
+      },
+    },
+
+    '&[aria-disabled] $secondaryBar': {
+      backgroundColor(props) {
+        return props.theme.disabledSecondaryBarColor;
+      },
+    },
   },
 
   container: {
@@ -227,9 +242,7 @@ const styles = {
     transformOrigin: 'left center',
     willChange: 'transform',
     transform: 'scaleX(0)',
-    backgroundColor(props) {
-      return props.disabled ? props.theme.disabledPrimaryBarColor : props.theme.primaryBarColor;
-    },
+    backgroundColor: props => props.theme.primaryBarColor,
   },
 
   secondaryBar: {
@@ -238,9 +251,7 @@ const styles = {
     transformOrigin: 'left center',
     willChange: 'transform',
     transform: 'scaleX(0)',
-    backgroundColor(props) {
-      return props.disabled ? props.theme.disabledSecondaryBarColor : props.theme.secondaryBarColor;
-    },
+    backgroundColor: props => props.theme.secondaryBarColor,
   },
 };
 
