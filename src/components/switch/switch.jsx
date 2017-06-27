@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
@@ -28,17 +29,23 @@ export function Switch(props) {
     onFocus,
     onBlur,
     isFocused,
+    labelPosition,
     ...otherProps
   } = props;
 
   const rippleColor = toggled ? theme.uncheckedRippleColor : theme.checkedRippleColor;
   const rippleFocusColor = toggled ? theme.checkedRippleColor : theme.uncheckedRippleColor;
+  const classNames = classnames(
+    className,
+    classes.switch,
+    labelPosition === 'left' && 'switch--label-left',
+  );
 
   return (
     <EventHandler
       component="span"
       role="switch"
-      className={`${className} ${classes.switch}`}
+      className={classNames}
       aria-checked={toggled}
       aria-disabled={disabled}
       onKeyPress={onKeyPress}
@@ -91,6 +98,7 @@ Switch.propTypes = {
   disabled: PropTypes.bool.isRequired,
   className: PropTypes.string.isRequired,
   noink: PropTypes.bool.isRequired,
+  labelPosition: PropTypes.string.isRequired,
 };
 
 const styles = {
@@ -98,17 +106,25 @@ const styles = {
     composes: 'switch',
     display: 'inline-flex',
     alignItems: 'center',
-    flexDirection: props => (props.labelPosition === 'left' ? 'row-reverse' : 'row'),
-    pointerEvents: props => props.disabled && 'none',
+
+    '&:focus': { outline: 0 },
+
+    '&.switch--label-left': { flexDirection: 'row-reverse' },
+
+    '&[aria-disabled="true"]': { pointerEvents: 'none' },
+
+    '&[aria-disabled="false"] $label': { cursor: 'pointer' },
 
     '&[aria-checked="true"] $thumb': {
-      backgroundColor: props => props.theme.checkedThumbColor,
       transform: 'translateX(16px)',
+      backgroundColor: props => props.theme.checkedThumbColor,
     },
 
     '&[aria-checked="true"] $bar': { backgroundColor: props => props.theme.checkedBarColor },
 
-    '&:focus': { outline: 0 },
+    '&[aria-disabled="true"] $thumb': { backgroundColor: props => props.theme.disabledThumbColor },
+
+    '&[aria-disabled="true"] $bar': { backgroundColor: props => props.theme.disabledBarColor },
   },
 
   container: {
@@ -131,13 +147,7 @@ const styles = {
     top: props => (props.theme.barHeight - props.theme.thumbSize) / 2,
     height: props => props.theme.thumbSize,
     width: props => props.theme.thumbSize,
-    backgroundColor(props) {
-      if (props.disabled) {
-        return props.theme.disabledThumbColor;
-      }
-
-      return props.theme.uncheckedThumbColor;
-    },
+    backgroundColor: props => props.theme.uncheckedThumbColor,
   },
 
   bar: {
@@ -149,13 +159,7 @@ const styles = {
     transitionProperty: 'background-color',
     transitionDuration: props => props.theme.transitionDuration,
     borderRadius: props => props.theme.barHeight / 2,
-    backgroundColor(props) {
-      if (props.disabled) {
-        return props.theme.disabledBarColor;
-      }
-
-      return props.theme.uncheckedBarColor;
-    },
+    backgroundColor: props => props.theme.uncheckedBarColor,
   },
 
   ripple: {
@@ -165,15 +169,11 @@ const styles = {
     right: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
     bottom: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
     left: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
-    color(props) {
-      return props.toggled ? props.theme.checkedRippleColor : props.theme.uncheckedRippleColor;
-    },
   },
 
   label: {
     composes: 'switch--label',
     padding: 0,
-    cursor: 'pointer',
   },
 };
 
