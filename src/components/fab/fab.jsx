@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 import Ripple from '../ripple';
@@ -21,7 +22,7 @@ export class Fab extends PureComponent {
     classes: PropTypes.object.isRequired,
     icon: PropTypes.string.isRequired,
     className: PropTypes.string,
-    mini: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+    mini: PropTypes.bool,
     noink: PropTypes.bool,
     disabled: PropTypes.bool,
     animateIn: PropTypes.bool,
@@ -80,16 +81,20 @@ export class Fab extends PureComponent {
     const {
       disabled,
       classes,
-      className,
       animateIn,
+      mini,
     } = this.props;
+    const className = classnames(this.props.className, classes.fab, {
+      'fab--animate-in': animateIn,
+      'fab--mini': mini,
+    });
 
     return (
       <EventHandler
         {...getNotDeclaredProps(this.props, Fab)}
         component="span"
         role="button"
-        className={`${className} ${classes.fab} ${animateIn && '.animate-in'}`}
+        className={className}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         onFocus={this.handleFocus}
@@ -133,27 +138,30 @@ const styles = {
     borderRadius: '50%',
     border: 0,
     outline: 'none',
-    width: props => (props.mini ? props.theme.miniSize : props.theme.normalSize),
-    height: props => (props.mini ? props.theme.miniSize : props.theme.normalSize),
-    pointerEvents: props => props.disabled && 'none',
+    width: props => props.theme.normalSize,
+    height: props => props.theme.normalSize,
     color: props => props.theme.iconColor,
-    boxShadow(props) {
-      return props.disabled ? props.theme.disabledElevation : props.theme.elevation;
-    },
-    padding(props) {
-      const size = props.mini ? props.theme.miniSize : props.theme.normalSize;
+    boxShadow: props => elevation(props.theme.elevation),
+    padding: props => (props.theme.normalSize - props.theme.iconSize) / 2,
+    backgroundColor: props => props.theme.backgroundColor,
 
-      return (size - props.theme.iconSize) / 2;
-    },
-    backgroundColor(props) {
-      return props.disabled ? props.theme.disabledBackgroundColor : props.theme.backgroundColor;
+    '&[aria-disabled=true]': {
+      pointerEvents: 'none',
+      backgroundColor: props => props.theme.disabledBackgroundColor,
+      boxShadow: props => elevation(props.theme.disabledElevation),
     },
 
-    '&.animate-in': {
+    '&.fab--mini': {
+      width: props => props.theme.miniSize,
+      height: props => props.theme.miniSize,
+      padding: props => (props.theme.miniSize - props.theme.iconSize) / 2,
+    },
+
+    '&.fab--animate-in': {
       animationName: 'fab--scale-rotate-in',
-      animationDuration: props => props.theme.animationDuration,
       animationFillMode: 'forwards',
       animationTimingFunction: easeInOutCubic,
+      animationDuration: props => props.theme.animationDuration,
     },
   },
 

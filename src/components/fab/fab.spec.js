@@ -29,7 +29,7 @@ test('should animate the fab in', (t) => {
   );
   const root = wrapper.find({ role: 'button' });
 
-  t.true(root.prop('className').includes('animate-in'));
+  t.true(root.prop('className').includes('fab--animate-in'));
 });
 
 test('should set the aria-disabled attribute on the root node', (t) => {
@@ -88,17 +88,6 @@ test('should not call onPress when a key event happens with an invalid keyCode',
   instance.handleKeyPress({ keyCode: 0 });
 
   t.deepEqual(onPress.callCount, 0);
-});
-
-test('should render different styles with the mini prop', (t) => {
-  mount(
-    <FabWrapper
-      icon="build"
-      mini
-    />,
-  );
-
-  t.pass();
 });
 
 test('should be able to call the default event handlers', (t) => {
