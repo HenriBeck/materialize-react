@@ -74,7 +74,7 @@ export function Switch(props) {
       </span>
 
       <Label
-        for={id}
+        htmlFor={id}
         disabled={disabled}
         className={classes.label}
       >

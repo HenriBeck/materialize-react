@@ -153,7 +153,7 @@ export class Checkbox extends PureComponent {
 
         <Label
           className={classes.label}
-          for={this.props.id}
+          htmlFor={this.props.id}
           disabled={disabled}
         >
           {this.props.children}

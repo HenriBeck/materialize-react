@@ -10,27 +10,17 @@ import connectWithTheme from '../../styles/theme/connect-with-theme';
  * A function to render a label tag with special material design stylings.
  *
  * @param {Object} props - The props for the component.
- * @param {Object} props.classes - The classes object provided by jss.
- * @param {String} props.children - Text for the label.
- * @param {String} props.className - Additional className to apply.
- * @param {Boolean} props.disabled - If the label is disabled.
  * @returns {JSX} - Returns the label component.
  */
-export function Label({
-  classes,
-  children,
-  className,
-  disabled,
-  ...props
-}) {
+export function Label(props) {
   return (
     <label
-      aria-disabled={disabled}
-      htmlFor={props.for}
-      className={`${classes.label} ${className}`}
-      {...getNotDeclaredProps(props, Label, 'for')}
+      aria-disabled={props.disabled}
+      htmlFor={props.htmlFor}
+      className={`${props.classes.label} ${props.className}`}
+      {...getNotDeclaredProps(props, Label)}
     >
-      {children}
+      {props.children}
     </label>
   );
 }
@@ -38,7 +28,7 @@ export function Label({
 Label.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  for: PropTypes.string.isRequired,
+  htmlFor: PropTypes.string.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
 };
