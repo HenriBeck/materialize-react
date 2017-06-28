@@ -206,9 +206,9 @@
     react-split-pane "^0.1.63"
     redux "^3.6.0"
 
-"@tf2-pickup/eslint-config@2.7.5":
-  version "2.7.5"
-  resolved "https://registry.yarnpkg.com/@tf2-pickup/eslint-config/-/eslint-config-2.7.5.tgz#d1b76ee145606be06c204adb8bde9394089a5b30"
+"@tf2-pickup/eslint-config@2.7.6":
+  version "2.7.6"
+  resolved "https://registry.yarnpkg.com/@tf2-pickup/eslint-config/-/eslint-config-2.7.6.tgz#1dbf8496b95778cc64cf483c6780c210c0bfda5d"
   dependencies:
     babel-eslint "7.2.3"
     eslint "4.1.1"
@@ -5731,9 +5731,13 @@ q@^1.1.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.0.tgz#dd01bac9d06d30e6f219aecb8253ee9ebdc308f1"
 
-qs@6.4.0, qs@^6.4.0, qs@~6.4.0:
+qs@6.4.0, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
+
+qs@^6.4.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.0.tgz#8d04954d364def3efc55b5a0793e1e2c8b1e6e49"
 
 qs@~6.3.0:
   version "6.3.2"

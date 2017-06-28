@@ -11,6 +11,7 @@ export Progress from './components/progress';
 export Ripple from './components/ripple';
 export Spinner from './components/spinner';
 export Background from './components/background';
+export Switch from './components/switch';
 
 // Styles
 export Theme from './styles/theme';
