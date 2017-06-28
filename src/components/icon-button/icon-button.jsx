@@ -126,8 +126,9 @@ const styles = {
     height: props => props.theme.size,
     width: props => props.theme.size,
     margin: props => props.theme.margin,
-    pointerEvents: props => props.disabled && 'none',
     padding: props => (props.theme.size - props.theme.iconSize) / 2,
+
+    '&[aria-disabled=true]': { pointerEvents: 'none' },
   },
 
   icon: {
