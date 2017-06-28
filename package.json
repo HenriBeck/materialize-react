@@ -20,7 +20,7 @@
     "lint": "eslint $npm_package_options_eslint",
     "lint:fix": "yarn run lint -- --fix",
     "prepublish": "yarn run build",
-    "precommit": "yarn upgrade && yarn run lint && yarn run test"
+    "precommit": "yarn upgrade && yarn run lint"
   },
   "repository": {
     "type": "git",
