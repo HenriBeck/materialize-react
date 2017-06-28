@@ -1,7 +1,9 @@
 // Components
+export Background from './components/background';
 export Button from './components/button';
 export Checkbox from './components/checkbox';
 export Divider from './components/divider';
+export EventHandler from './components/event-handler';
 export Fab from './components/fab';
 export Icon from './components/icon';
 export IconButton from './components/icon-button';
@@ -10,7 +12,6 @@ export Parallax from './components/parallax';
 export Progress from './components/progress';
 export Ripple from './components/ripple';
 export Spinner from './components/spinner';
-export Background from './components/background';
 export Switch from './components/switch';
 
 // Styles
