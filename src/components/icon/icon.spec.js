@@ -17,8 +17,7 @@ test('should have the disabledColor of the theme when the icon is disabled', (t)
       icon="github"
     />,
   );
-  const color = wrapper.find('Icon').prop('sheet').rules.map.icon.renderable.style.color;
-  const theme = wrapper.context('theme');
+  const className = wrapper.find('i').prop('className');
 
-  t.deepEqual(color, theme.icon.disabledColor);
+  t.true(className.includes('icon--disabled'));
 });
