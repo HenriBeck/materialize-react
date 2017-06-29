@@ -23,11 +23,15 @@ export class RadioButton extends PureComponent {
     onPress: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
+    labelPosition: PropTypes.string,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
     disabled: false,
     noink: false,
+    labelPosition: 'right',
+    className: '',
   };
 
   id = randomstring.generate();
@@ -42,8 +46,11 @@ export class RadioButton extends PureComponent {
       isFocused,
       onPress,
       noink,
+      className,
+      labelPosition,
       ...props
     } = this.props;
+    const labelClass = labelPosition === 'left' && 'radio-button--label-left';
 
     return (
       <EventHandler
@@ -52,7 +59,7 @@ export class RadioButton extends PureComponent {
         role="radio"
         id={this.id}
         onKeyPress={onKeyPress}
-        className={classes.radioButton}
+        className={`${className} ${classes.radioButton} ${labelClass}`}
         aria-checked={checked}
         aria-disabled={disabled}
       >
@@ -66,6 +73,7 @@ export class RadioButton extends PureComponent {
             round
             center
             nowaves={noink}
+            className="radio-button--ripple"
           />
 
           <span className={classes.border} />
@@ -76,6 +84,7 @@ export class RadioButton extends PureComponent {
         <Label
           htmlFor={this.id}
           disabled={disabled}
+          className={classes.label}
         >
           {children}
         </Label>
@@ -91,6 +100,8 @@ const styles = {
     alignItems: 'center',
     padding: 4,
 
+    '&.radio-button--label-left': { flexDirection: 'row-reverse' },
+
     '&[aria-checked=true] $border': { borderColor: props => props.theme.checkedColor },
 
     '&[aria-checked=true] $circle': { transform: 'scale(0.5)' },
@@ -103,6 +114,7 @@ const styles = {
   },
 
   container: {
+    composes: 'radio-button--container',
     position: 'relative',
     borderRadius: '50%',
     boxSizing: 'border-box',
@@ -129,8 +141,8 @@ const styles = {
   },
 
   circle: {
-    position: 'absolute',
     composes: 'radio-button--circle',
+    position: 'absolute',
     transform: 'scale(0)',
     borderRadius: '50%',
     transitionProperty: 'transform',
@@ -140,6 +152,11 @@ const styles = {
     bottom: 0,
     transitionDuration: props => props.theme.transitionDuration,
     backgroundColor: props => props.theme.checkedColor,
+  },
+
+  label: {
+    composes: 'radio-button--label',
+    padding: 4,
   },
 };
 
