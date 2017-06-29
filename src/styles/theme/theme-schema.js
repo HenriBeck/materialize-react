@@ -10,9 +10,9 @@ import { schema as iconButton } from '../../components/icon-button/theme';
 import { schema as progress } from '../../components/progress/theme';
 import { schema as fab } from '../../components/fab/theme';
 import { schema as switchSchema } from '../../components/switch/theme';
+import { schema as radioButton } from '../../components/radio-button/theme';
 
 export default PropTypes.shape({
-  variables: PropTypes.object,
   background,
   label,
   divider,
@@ -23,4 +23,5 @@ export default PropTypes.shape({
   progress,
   fab,
   switch: switchSchema,
+  radioButton,
 });

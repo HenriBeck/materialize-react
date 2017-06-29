@@ -26,6 +26,7 @@ import { defaultTheme as progress } from '../../components/progress/theme';
 import { defaultTheme as fab } from '../../components/fab/theme';
 import { defaultTheme as checkbox } from '../../components/checkbox/theme';
 import { defaultTheme as switchTheme } from '../../components/switch/theme';
+import { defaultTheme as radioButton } from '../../components/radio-button/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -65,4 +66,5 @@ export const defaultTheme = {
   fab,
   checkbox,
   switch: switchTheme,
+  radioButton,
 };
