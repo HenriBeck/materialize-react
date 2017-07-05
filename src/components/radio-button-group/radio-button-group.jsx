@@ -10,6 +10,7 @@ import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
 import RadioButtonContainer from './radio-button-container';
 import warning from '../../utils/warning';
+import { hasDuplicates } from './utils';
 
 /**
  * A class that renders a group of radio buttons and handles all the logic.
@@ -29,6 +30,10 @@ export default class RadioButtonGroup extends PureComponent {
 
       if (childrenArray.length <= 2) {
         return new Error('There must at least be three RadioButtons inside a RadioButtonGroup');
+      }
+
+      if (hasDuplicates(childrenArray.map(elem => elem.props.name))) {
+        return new Error('Found duplicate names');
       }
 
       return null;
