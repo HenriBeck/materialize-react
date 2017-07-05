@@ -7,6 +7,7 @@ import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import Label from '../label';
+import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
 
 /**
  * A component to render a RadioButton.
@@ -18,7 +19,6 @@ export class RadioButton extends PureComponent {
     classes: PropTypes.object.isRequired,
     checked: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
     isFocused: PropTypes.bool.isRequired,
     onPress: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
@@ -42,7 +42,6 @@ export class RadioButton extends PureComponent {
       checked,
       disabled,
       children,
-      onKeyPress,
       isFocused,
       onPress,
       noink,
@@ -53,12 +52,10 @@ export class RadioButton extends PureComponent {
     const labelClass = labelPosition === 'left' && 'radio-button--label-left';
 
     return (
-      <EventHandler
-        {...props}
-        component="span"
+      <span
+        {...getNotDeclaredProps(props, RadioButton)}
         role="radio"
         id={this.id}
-        onKeyPress={onKeyPress}
         className={`${className} ${classes.radioButton} ${labelClass}`}
         aria-checked={checked}
         aria-disabled={disabled}
@@ -72,8 +69,8 @@ export class RadioButton extends PureComponent {
             isFocused={isFocused}
             round
             center
-            nowaves={noink}
-            className="radio-button--ripple"
+            nowaves={noink || checked}
+            className={classes.ripple}
           />
 
           <span className={classes.border} />
@@ -88,7 +85,7 @@ export class RadioButton extends PureComponent {
         >
           {children}
         </Label>
-      </EventHandler>
+      </span>
     );
   }
 }
@@ -157,6 +154,15 @@ const styles = {
   label: {
     composes: 'radio-button--label',
     padding: 4,
+  },
+
+  ripple: {
+    composes: 'radio-button--ripple',
+    zIndex: 1,
+    top: ({ theme }) => (theme.rippleSize - theme.size) / -2,
+    right: ({ theme }) => (theme.rippleSize - theme.size) / -2,
+    left: ({ theme }) => (theme.rippleSize - theme.size) / -2,
+    bottom: ({ theme }) => (theme.rippleSize - theme.size) / -2,
   },
 };
 

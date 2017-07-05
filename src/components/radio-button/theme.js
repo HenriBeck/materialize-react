@@ -22,7 +22,7 @@ export function defaultTheme(vars) {
     transitionDuration: vars.transitionTime,
     size: 16,
     borderWidth: 2,
-    rippleSize: 48,
+    rippleSize: 40,
 
     checkedColor: vars.primaryBase,
     uncheckedColor: 'rgba(255, 255, 255, 0.7)',
