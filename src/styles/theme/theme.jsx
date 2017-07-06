@@ -7,7 +7,7 @@ import {
   defaultTheme,
   defaultVars,
 } from './default-theme';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * Compile the theme and merge it with the default theme.

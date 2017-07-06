@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import injectSheet from '../../styles/jss';
 import warning from '../../utils/warning';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import typo from '../../styles/plugins/typo';
 import elevation from '../../styles/plugins/elevation';

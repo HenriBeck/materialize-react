@@ -7,7 +7,7 @@ import {
   getCenter,
   getDistanceToFarthestCorner,
 } from './utils';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The container for the ripple.

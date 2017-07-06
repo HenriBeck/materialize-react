@@ -6,7 +6,7 @@ import Wave from './wave';
 import FocusContainer from './focus-container';
 import EventHandler from '../event-handler';
 import injectSheet from '../../styles/jss';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The presentation container for the ripple.
@@ -95,7 +95,7 @@ export class Ripple extends PureComponent {
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this.props, Ripple, ...Ripple.extraProps)}
+        {...getNotDeclaredProps(this.props, Ripple, Ripple.extraProps)}
         component="span"
         role="presentation"
         className={className}

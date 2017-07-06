@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 
 import Switch from './switch';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component to render a switch component.

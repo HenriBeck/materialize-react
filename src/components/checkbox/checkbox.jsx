@@ -8,7 +8,7 @@ import Ripple from '../ripple';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The actual visual component of the checkbox.
