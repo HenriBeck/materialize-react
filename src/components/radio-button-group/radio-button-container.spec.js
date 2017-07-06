@@ -1,11 +1,10 @@
 import React from 'react';
 import test from 'ava';
+import { shallow } from 'enzyme';
 
 import RadioButtonContainer from './radio-button-container';
-import { mount } from '../../../tests/helpers/enzyme';
 
 const props = {
-  classes: {},
   checked: 'test',
   onKeyPress: () => {},
   onFocus: () => {},
@@ -15,7 +14,10 @@ const props = {
 };
 
 test('should render a jss hoc', (t) => {
-  const wrapper = mount(<RadioButtonContainer {...props}>Children</RadioButtonContainer>);
+  const wrapper = shallow(<RadioButtonContainer {...props}>Children</RadioButtonContainer>);
+  const containerWrapper = wrapper.find('RadioButtonContainer').dive();
+  const className = containerWrapper.find('EventHandler').prop('className');
 
-  t.deepEqual(wrapper.find('Jss(RadioButtonContainer)').length, 1);
+  t.deepEqual(wrapper.find('RadioButtonContainer').length, 1);
+  t.true(className.includes('radio-button-group'));
 });

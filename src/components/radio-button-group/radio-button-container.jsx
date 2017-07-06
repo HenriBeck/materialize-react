@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import EventHandler from '../event-handler';
 import Label from '../label';
 import injectSheet from '../../styles/jss';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 
 /**
  * A function to render a group of radio buttons.
@@ -76,4 +75,4 @@ const styles = {
   },
 };
 
-export default connectWithTheme(injectSheet(styles)(RadioButtonContainer));
+export default injectSheet(styles)(RadioButtonContainer);
