@@ -7,7 +7,7 @@ import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import Label from '../label';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component to render a RadioButton.

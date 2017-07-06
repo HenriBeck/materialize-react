@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A function to inherit some global styling like color and backgroundColor.

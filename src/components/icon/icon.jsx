@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A function to render a material design icon.

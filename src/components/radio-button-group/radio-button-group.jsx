@@ -5,7 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 
-import getNotDeclaredProps from '../../utils/react/get-not-declared-props';
+import getNotDeclaredProps from '../../get-not-declared-props';
 import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
 import RadioButtonContainer from './radio-button-container';
