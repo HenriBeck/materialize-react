@@ -112,16 +112,14 @@ export default class RadioButtonGroup extends PureComponent {
    * @returns {Function} - Returns a function for the onPress handler.
    */
   createHandlePress = name => () => {
-    this.setState(({ selected }) => {
-      if (selected !== name) {
+    if (this.state.selected !== name) {
+      this.setState(() => {
         return {
           selected: name,
           focused: name,
         };
-      }
-
-      return null;
-    }, () => this.props.onChange(this.props.name, this.state.selected));
+      }, () => this.props.onChange(this.props.name, this.state.selected));
+    }
   };
 
   /**
@@ -157,11 +155,7 @@ export default class RadioButtonGroup extends PureComponent {
     if (RadioButtonGroup.toggleOnKeyCodes.includes(ev.keyCode)) {
       if (this.state.selected !== this.state.focused) {
         this.setState(({ focused }) => {
-          if (this.state.selected !== this.state.focused) {
-            return { selected: focused };
-          }
-
-          return null;
+          return { selected: focused };
         }, () => this.props.onChange(this.props.name, this.state.selected));
       }
     }
