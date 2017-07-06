@@ -42,4 +42,5 @@ configure(() => {
   require('../src/components/fab/stories');
   require('../src/components/checkbox/stories');
   require('../src/components/switch/stories');
+  require('../src/components/radio-button-group/stories');
 }, module);
