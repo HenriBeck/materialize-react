@@ -82,7 +82,7 @@ export default class RadioButtonGroup extends PureComponent {
    */
   set selected(selected) {
     warning(
-      this.includes(selected),
+      !this.includes(selected),
       'The passed in name is not a valid radio button name.',
     );
 
@@ -188,6 +188,7 @@ export default class RadioButtonGroup extends PureComponent {
       onPress: this.createHandlePress(child.props.name),
       checked: this.state.selected === child.props.name,
       isFocused: this.state.focused === child.props.name,
+      noink: child.props.noink || this.state.selected === child.props.name,
     }));
   }
 

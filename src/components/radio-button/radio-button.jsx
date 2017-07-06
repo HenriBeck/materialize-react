@@ -69,7 +69,7 @@ export class RadioButton extends PureComponent {
             isFocused={isFocused}
             round
             center
-            nowaves={noink || checked}
+            nowaves={noink}
             className={classes.ripple}
           />
 
