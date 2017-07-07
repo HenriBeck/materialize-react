@@ -12,6 +12,9 @@ jobs:
           command: yarn install
 
   test:
+    working_directory: ~/materialize-react
+    docker:
+      - image: circleci/node:4
     steps:
       - run:
           name: Lint
@@ -24,6 +27,9 @@ jobs:
           command: yarn run report-coverage
 
   deploy_storbook:
+    working_directory: ~/materialize-react
+    docker:
+      - image: circleci/node:4
     steps:
       - run:
           name: Deploy Storybook
