@@ -5,6 +5,6 @@ tests
 .babelrc
 .editorconfig
 .eslintrc.js
-circle.yml
+.circleci
 webpack.config.js
 .nyc_output
