@@ -24,9 +24,6 @@ jobs:
     working_directory: ~/materialize-react
     docker:
       - image: circleci/node:4
-    branches:
-      only:
-        - master
     steps:
       - checkout
       - run:
