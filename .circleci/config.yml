@@ -24,6 +24,9 @@ jobs:
     working_directory: ~/materialize-react
     docker:
       - image: circleci/node:4
+    branches:
+      only:
+        - master
     steps:
       - checkout
       - run:
@@ -32,16 +35,3 @@ jobs:
       - run:
           name: Deploy Storybook
           command: yarn run deploy-storybook
-
-workflows:
-  version: 2
-
-  deploy_storybook:
-    jobs:
-      - test
-      - deploy_storybook:
-          requires:
-            - test
-          filters:
-            branches:
-              only: master
