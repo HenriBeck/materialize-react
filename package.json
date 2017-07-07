@@ -106,6 +106,7 @@
     "concurrency": 2
   },
   "nyc": {
+    "check-coverage": true,
     "extension": [
       ".jsx"
     ],
@@ -114,10 +115,10 @@
       "src/*.spec.js",
       "tests/**/*"
     ],
-    "lines": 90,
-    "statements": 90,
-    "functions": 90,
-    "branches": 90,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
     "report-dir": "./.coverage"
   }
 }
