@@ -44,7 +44,7 @@ workflows:
       - test:
           requires:
             - build
-      - test:
+      - deploy_storbook:
           requires:
             - test
           filters:
