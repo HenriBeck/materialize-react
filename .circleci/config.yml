@@ -1,0 +1,21 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/materialize-react
+    docker:
+      - image: circleci/node:4
+    steps:
+      - checkout
+      - run:
+          name: Install Packages
+          command: yarn install
+      - run:
+          name: Lint Code
+          command: yarn run lint
+      - run:
+          name: Run Tests & Check Coverage
+          command: yarn run test:coverage
+      - run:
+          name: Report Coverage
+          command: yarn run report-coverage
