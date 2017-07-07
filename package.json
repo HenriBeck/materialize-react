@@ -103,7 +103,7 @@
     "babel": {
       "babelrc": true
     },
-    "serial": true
+    "concurrency": 2
   },
   "nyc": {
     "extension": [
