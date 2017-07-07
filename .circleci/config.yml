@@ -1,16 +1,6 @@
 version: 2
 
 jobs:
-  build:
-    working_directory: ~/materialize-react
-    docker:
-      - image: circleci/node:4
-    steps:
-      - checkout
-      - run:
-          name: Install Packages
-          command: yarn install
-
   test:
     working_directory: ~/materialize-react
     docker:
@@ -30,7 +20,7 @@ jobs:
           name: Report Coverage
           command: yarn run report-coverage
 
-  deploy_storbook:
+  deploy_storybook:
     working_directory: ~/materialize-react
     docker:
       - image: circleci/node:4
@@ -48,11 +38,8 @@ workflows:
 
   deploy_storybook:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - deploy_storbook:
+      - test
+      - deploy_storybook:
           requires:
             - test
           filters:
