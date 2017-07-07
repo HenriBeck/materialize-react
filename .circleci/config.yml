@@ -17,6 +17,9 @@ jobs:
       - image: circleci/node:4
     steps:
       - run:
+          name: Install Packages
+          command: yarn install
+      - run:
           name: Lint
           command: yarn run lint
       - run:
@@ -31,6 +34,9 @@ jobs:
     docker:
       - image: circleci/node:4
     steps:
+      - run:
+          name: Install Packages
+          command: yarn install
       - run:
           name: Deploy Storybook
           command: yarn run deploy-storybook
