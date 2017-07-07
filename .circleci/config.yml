@@ -10,8 +10,11 @@ jobs:
       - run:
           name: Install Packages
           command: yarn install
+
+  test:
+    steps:
       - run:
-          name: Lint Code
+          name: Lint
           command: yarn run lint
       - run:
           name: Run Tests & Check Coverage
@@ -19,3 +22,25 @@ jobs:
       - run:
           name: Report Coverage
           command: yarn run report-coverage
+
+  deploy_storbook:
+    steps:
+      - run:
+          name: Deploy Storybook
+          command: yarn run deploy-storybook
+
+workflows:
+  version: 2
+
+  deploy_storybook:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - test:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
