@@ -30,5 +30,11 @@ export default function connectWithTheme(Component, componentName = null) {
 
   Wrapper.contextTypes = { theme: PropTypes.object };
 
+  const displayName = Component.displayName || Component.name || 'Component';
+
+  Wrapper.displayName = displayName.startsWith('Jss')
+    ? `connectWithTheme(${displayName.slice(4, displayName.length - 1)})`
+    : `connectWithTheme(${displayName})`;
+
   return Wrapper;
 }
