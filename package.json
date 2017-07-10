@@ -64,7 +64,6 @@
     "@storybook/addon-knobs": "3.2.0-alpha.0",
     "@storybook/addon-options": "3.1.6",
     "@storybook/react": "3.1.6",
-    "@storybook/storybook-deployer": "^2.0.0",
     "@tf2-pickup/eslint-config": "2.7.6",
     "ava": "0.19.1",
     "babel-cli": "6.24.1",
