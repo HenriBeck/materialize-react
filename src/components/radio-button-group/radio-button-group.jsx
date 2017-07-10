@@ -64,6 +64,21 @@ export default class RadioButtonGroup extends PureComponent {
     focused: null,
   };
 
+  /**
+   * Warn against changing the defaultSelected and the name prop.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.defaultSelected !== this.props.defaultSelected,
+      'You should not change the defaultSelected prop of a RadioButtonGroup',
+    );
+
+    warning(
+      nextProps.name !== this.props.name,
+      'You should not change the name prop of a RadioButtonGroup',
+    );
+  }
+
   id = randomstring.generate();
 
   /**

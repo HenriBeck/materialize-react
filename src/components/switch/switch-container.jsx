@@ -4,6 +4,7 @@ import randomstring from 'randomstring';
 
 import Switch from './switch';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import warning from '../../utils/warning';
 
 /**
  * A component to render a switch component.
@@ -41,6 +42,21 @@ export default class SwitchContainer extends PureComponent {
     isFocused: false,
     toggled: this.props.defaultToggled,
   };
+
+  /**
+   * Warn against changing the defaultToggled and the name prop.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.name !== this.props.name,
+      'You should not change the name prop of the Switch',
+    );
+
+    warning(
+      nextProps.defaultToggled !== this.props.defaultToggled,
+      'You should not change the defaultToggled prop of the Switch',
+    );
+  }
 
   id = randomstring.generate();
 
