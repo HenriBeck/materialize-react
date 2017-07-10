@@ -17,7 +17,7 @@ storiesOf('RadioButtonGroup', module)
       <RadioButton name="test3">Test 3</RadioButton>
     </RadioButtonGroup>
   ))
-  .add('Default styles', () => (
+  .add('With Action', () => (
     <RadioButtonGroup
       name="test"
       defaultSelected="test2"
