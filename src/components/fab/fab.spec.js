@@ -13,10 +13,18 @@ test('should render a button', (t) => {
   t.deepEqual(wrapper.find('Jss(Fab)').length, 1);
 });
 
-test('should have a ripple inside', (t) => {
-  const wrapper = mount(<FabWrapper icon="build" />);
+test('should warn against changing the icon and mini prop', (t) => {
+  const wrapper = shallow(
+    <Fab
+      classes={{}}
+      animateIn
+      icon="build"
+    />,
+  );
 
-  t.deepEqual(wrapper.find('Ripple').length, 1);
+  t.throws(() => wrapper.setProps({ mini: true }));
+
+  t.throws(() => wrapper.setProps({ icon: 'some' }));
 });
 
 test('should animate the fab in', (t) => {
@@ -33,8 +41,8 @@ test('should animate the fab in', (t) => {
 });
 
 test('should set the aria-disabled attribute on the root node', (t) => {
-  const wrapper = mount(
-    <FabWrapper
+  const wrapper = shallow(
+    <Fab
       classes={{}}
       disabled
       icon="build"

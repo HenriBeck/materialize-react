@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
+import warning from '../../utils/warning';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';
@@ -43,6 +44,21 @@ export class Fab extends PureComponent {
   };
 
   static keyCodes = [13, 32];
+
+  /**
+   * Warn against changing the icon and mini prop of a fab.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.icon !== this.props.icon,
+      'You should not change the icon prop of a FAB',
+    );
+
+    warning(
+      nextProps.mini !== this.props.mini,
+      'You should not change the mini prop of a FAB',
+    );
+  }
 
   /**
    * Check if a key was pressed that we should handle.

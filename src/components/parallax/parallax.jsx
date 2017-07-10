@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import { easeInOutCubic } from '../../styles/timings';
 import injectSheet from '../../styles/jss';
+import warning from '../../utils/warning';
 
 /**
  * A component to render a parallax effect.
@@ -31,6 +32,16 @@ export class Parallax extends PureComponent {
    */
   componentDidMount() {
     window.addEventListener('scroll', this.onScroll);
+  }
+
+  /**
+   * Warn against changing the img prop.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.img !== this.props.img,
+      'You should not change the img prop of the Parallax',
+    );
   }
 
   /**

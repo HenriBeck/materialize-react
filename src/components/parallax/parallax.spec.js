@@ -1,14 +1,16 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
-import { mount } from 'enzyme';
+import {
+  mount,
+  shallow,
+} from 'enzyme';
 
 import ParallaxWrapper, { Parallax } from './parallax';
 
-const classes = {
-  root: '',
-  image: '',
-  content: '',
+const defaultProps = {
+  classes: {},
+  img: 'img',
 };
 
 test('should render a div with an img and a div inside', (t) => {
@@ -19,13 +21,14 @@ test('should render a div with an img and a div inside', (t) => {
   t.deepEqual(wrapper.find('.parallax--content').length, 1);
 });
 
+test('should warn against changing the img prop', (t) => {
+  const wrapper = shallow(<Parallax {...defaultProps} />);
+
+  t.throws(() => wrapper.setProps({ img: 'img2' }));
+});
+
 test('should not calculate the position if onScroll get\'s called twice', (t) => {
-  const wrapper = mount(
-    <Parallax
-      classes={classes}
-      img="image"
-    />,
-  );
+  const wrapper = mount(<Parallax {...defaultProps} />);
   const instance = wrapper.instance();
 
   instance.onScroll();
@@ -35,12 +38,7 @@ test('should not calculate the position if onScroll get\'s called twice', (t) =>
 });
 
 test('should not update the scroll pos when the image isn\'t visible', (t) => {
-  const wrapper = mount(
-    <Parallax
-      img="image"
-      classes={classes}
-    />,
-  );
+  const wrapper = mount(<Parallax {...defaultProps} />);
   const instance = wrapper.instance();
 
   window.innerHeight = -100;

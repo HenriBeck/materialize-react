@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Ripple from '../ripple';
 import Icon from '../icon';
+import warning from '../../utils/warning';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
@@ -39,6 +40,16 @@ export class IconButton extends PureComponent {
   static keyCodes = [13, 32];
 
   state = { isFocused: false };
+
+  /**
+   * Warn against changing the icon prop.
+   */
+  componentWillReceiveProps(nextProps) {
+    warning(
+      nextProps.icon !== this.props.icon,
+      'You should not change the icon prop of a FAB',
+    );
+  }
 
   /**
    * Handle the keyDown event.

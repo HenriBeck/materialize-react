@@ -12,6 +12,14 @@ test('should get the state with the toggled getter', (t) => {
   t.deepEqual(instance.toggled, false);
 });
 
+test('should warn against changing the name and the defaultToggled prop', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+
+  t.throws(() => wrapper.setProps({ defaultToggled: true }));
+
+  t.throws(() => wrapper.setProps({ name: 'name2' }));
+});
+
 test('should set the state with the toggled getter', (t) => {
   const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
   const instance = wrapper.instance();
