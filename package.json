@@ -54,7 +54,7 @@
     "randomstring": "1.1.5",
     "react": "15.6.1",
     "react-get-not-declared-props": "0.2.0",
-    "react-jss": "7.0.0-pre.1",
+    "react-jss": "6.1.1",
     "web-animations-js": "2.2.5"
   },
   "devDependencies": {
@@ -73,7 +73,7 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-2": "6.24.1",
     "babel-register": "6.24.1",
-    "browser-env": "3.1.0",
+    "browser-env": "2.0.31",
     "coveralls": "2.13.1",
     "css-loader": "0.28.4",
     "enzyme": "2.9.1",
