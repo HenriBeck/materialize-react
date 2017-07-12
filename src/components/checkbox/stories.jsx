@@ -6,13 +6,15 @@ import Checkbox from './checkbox-container';
 
 storiesOf('Checkbox', module)
   .add('Default styles', () => (
-    <Checkbox name="name" />
+    <Checkbox name="name">Label</Checkbox>
   ))
   .add('Default Checked', () => (
     <Checkbox
       defaultChecked
       name="name"
-    />
+    >
+      Label
+    </Checkbox>
   ))
   .add('Right Label', () => (
     <Checkbox name="name">Right Label</Checkbox>
@@ -23,14 +25,6 @@ storiesOf('Checkbox', module)
       name="name"
     >
       Left Label
-    </Checkbox>
-  ))
-  .add('Disabled', () => (
-    <Checkbox
-      disabled
-      name="name"
-    >
-      Right Label
     </Checkbox>
   ))
   .add('Disabled and Checked', () => (

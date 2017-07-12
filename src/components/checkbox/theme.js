@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+import { grey700 } from '../../styles/colors';
+
 export const schema = PropTypes.shape({
   checkedBorderColor: PropTypes.string.isRequired,
   checkedBackgroundColor: PropTypes.string.isRequired,
@@ -34,9 +36,9 @@ export function defaultTheme(vars) {
     uncheckedBorderColor: 'rgba(255, 255, 255, 0.7)',
     uncheckedBgColor: 'transparent',
 
-    disabledBorderColor: 'rgba(255, 255, 255, 0.3)',
+    disabledBorderColor: grey700,
     disabledBgColor: 'transparent',
-    disabledCheckedBgColor: 'rgba(255, 255, 255, 0.3)',
+    disabledCheckedBgColor: grey700,
 
     padding: 4,
     rippleSize: 48,
