@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
+import { easeInOutQuad } from '../../styles/timings';
 
 /**
  * A component that renders a tablist.
@@ -90,7 +91,8 @@ const styles = {
     transform: 'scaleX(0) translateX(0px)',
     transformOrigin: 'left center',
     willChange: 'transform',
-    transition: 'transform, 0.3s ease-in-out',
+    transition: `transform ${easeInOutQuad}`,
+    transitionDuration: props => props.theme.transitionDuration,
     backgroundColor: props => props.theme.barColor,
   },
 };
