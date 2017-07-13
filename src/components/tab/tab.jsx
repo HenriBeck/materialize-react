@@ -86,13 +86,18 @@ const styles = {
     height: 48,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     boxSizing: 'border-box',
 
-    '&.tab--icon-with-text': {
+    '&.tab--text-and-icons': {
       height: 72,
       padding: '0 16px',
     },
+
+    '&.tab--text-and-icons $tabContent': { padding: '10px 0 16px 0' },
+
+    '&.tab--text-and-icons $icon': { padding: 0 },
 
     '&.tab--focused $tabContent': { fontWeight: 700 },
 
@@ -115,11 +120,14 @@ const styles = {
     transition: 'opacity 0.1s cubic-bezier(0.4, 0.0, 1, 1)',
     textTransform: 'uppercase',
     textAlign: 'center',
+    lineHeight: typography.fontSize,
+    padding: '0 0 20px 0',
     opacity: props => props.theme.unselectedOpacity,
   },
 
   icon: {
     composes: 'tab--icon',
+    padding: '0 0 12px 0',
     height: 24,
     width: 24,
     fontSize: 24,
