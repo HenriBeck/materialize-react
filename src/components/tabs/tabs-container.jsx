@@ -75,6 +75,7 @@ const styles = {
     composes: 'tabs',
     display: 'flex',
     flexDirection: 'row',
+    position: 'relative',
 
     '&:focus': { outline: 0 },
   },
@@ -88,6 +89,8 @@ const styles = {
     width: 1,
     transform: 'scaleX(0) translateX(0px)',
     transformOrigin: 'left center',
+    willChange: 'transform',
+    transition: 'transform, 0.3s ease-in-out',
     backgroundColor: props => props.theme.barColor,
   },
 };
