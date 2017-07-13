@@ -11,6 +11,8 @@ import { schema as progress } from '../../components/progress/theme';
 import { schema as fab } from '../../components/fab/theme';
 import { schema as switchSchema } from '../../components/switch/theme';
 import { schema as radioButton } from '../../components/radio-button/theme';
+import { schema as tabs } from '../../components/tabs/theme';
+import { schema as tab } from '../../components/tab/theme';
 
 export default PropTypes.shape({
   background,
@@ -24,4 +26,6 @@ export default PropTypes.shape({
   fab,
   switch: switchSchema,
   radioButton,
+  tabs,
+  tab,
 });
