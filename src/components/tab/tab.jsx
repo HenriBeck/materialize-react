@@ -28,7 +28,7 @@ export function Tab(props) {
       createRef={props.createRef}
       className={className}
     >
-      {props.tabStyle.includes('icon') && (
+      {props.tabStyle.includes('icons') && (
         <Icon
           icon={props.icon}
           className={props.classes.icon}
