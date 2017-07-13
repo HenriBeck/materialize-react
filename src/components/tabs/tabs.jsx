@@ -36,9 +36,7 @@ export default class Tabs extends PureComponent {
     },
     // eslint-disable-next-line react/require-default-props
     initialTab(props) {
-      const tabNames = Children
-        .toArray(props.children)
-        .map(elem => elem.props.name);
+      const tabNames = Children.map(props.children, elem => elem.props.name);
 
       if (tabNames.includes(props.initialTab)) {
         return new Error('The initial tab id can\'t be mapped to one of the passed tabs');
@@ -72,6 +70,24 @@ export default class Tabs extends PureComponent {
     focusedTab: null,
   };
 
+  /**
+   * Animate the bar to it's initial position.
+   */
+  componentDidMount() {
+    if (!this.props.noBar) {
+      this.animateBar(this.props.initialTab);
+    }
+  }
+
+  /**
+   * Animate the bar to a new position when the selectedTab has changed.
+   */
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.props.noBar && prevState.selectedTab !== this.state.selectedTab) {
+      this.animateBar(this.state.selectedTab);
+    }
+  }
+
   tabs = {};
 
   /**
@@ -104,6 +120,20 @@ export default class Tabs extends PureComponent {
       { selectedTab: name },
       () => this.props.onChange(name),
     );
+  }
+
+  /**
+   * Animate the bottom bar to the new tab.
+   *
+   * @param {String} tabName - The new tab name.
+   */
+  animateBar(tabName) {
+    const containerRect = this.container.root.getBoundingClientRect();
+    const tabRect = this.tabs[tabName].getBoundingClientRect();
+    const relativeLeft = tabRect.left - containerRect.left;
+    const value = `scaleX(${tabRect.width}) translateX(${relativeLeft / tabRect.width * 100}%)`;
+
+    this.container.bar.style.transform = value;
   }
 
   /**
