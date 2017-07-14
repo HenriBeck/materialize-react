@@ -123,18 +123,6 @@ export default class Tabs extends PureComponent {
   }
 
   /**
-   * Change the selected state.
-   *
-   * @param {String} name - The new tab name.
-   */
-  changeSelectedTab(name) {
-    this.setState(
-      { selectedTab: name },
-      () => this.props.onChange(name),
-    );
-  }
-
-  /**
    * Animate the bottom bar to the new tab.
    *
    * @param {String} tabName - The new tab name.
