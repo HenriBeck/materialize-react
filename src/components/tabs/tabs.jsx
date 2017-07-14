@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Tab from '../tab';
 import TabsContainer from './tabs-container';
 import hasDuplicates from '../../utils/has-duplicates';
+import getNextIndex from '../../utils/get-next-index';
 
 /**
  * A component which hosts the logic for multiple tabs.
@@ -38,7 +39,7 @@ export default class Tabs extends PureComponent {
     initialTab(props) {
       const tabNames = Children.map(props.children, elem => elem.props.name);
 
-      if (tabNames.includes(props.initialTab)) {
+      if (!tabNames.includes(props.initialTab)) {
         return new Error('The initial tab id can\'t be mapped to one of the passed tabs');
       }
 
@@ -63,6 +64,13 @@ export default class Tabs extends PureComponent {
     onChange: () => {},
     onBlur: () => {},
     onFocus: () => {},
+  };
+
+  static switchOnKeyCodes = [13, 32];
+
+  static moveDirectionsOnKeyCodes = {
+    37: 'left',
+    39: 'right',
   };
 
   state = {
@@ -105,9 +113,7 @@ export default class Tabs extends PureComponent {
    * @param {String} tabName - The new tab name.
    */
   set currentTab(tabName) {
-    if (tabName !== this.state.selectedTab) {
-      this.setState({ selectedTab: tabName });
-    }
+    this.setState(({ selectedTab }) => (selectedTab === tabName ? {} : { selectedTab: tabName }));
   }
 
   /**
@@ -131,7 +137,7 @@ export default class Tabs extends PureComponent {
     const containerRect = this.container.root.getBoundingClientRect();
     const tabRect = this.tabs[tabName].getBoundingClientRect();
     const relativeLeft = tabRect.left - containerRect.left;
-    const value = `scaleX(${tabRect.width}) translateX(${relativeLeft / tabRect.width * 100}%)`;
+    const value = `matrix(${tabRect.width}, 0, 0, 1, ${relativeLeft}, 0)`;
 
     this.container.bar.style.transform = value;
   }
@@ -155,7 +161,12 @@ export default class Tabs extends PureComponent {
     this.container = instance;
   };
 
-  handlePress = name => () => this.changeSelectedTab(name);
+  handlePress = name => () => {
+    this.setState({
+      selectedTab: name,
+      focusedTab: name,
+    }, () => this.props.onChange(name));
+  };
 
   /**
    * Change the focused state back to null.
@@ -180,7 +191,30 @@ export default class Tabs extends PureComponent {
   /**
    * Handle different key presses.
    */
-  handleKeyPress = () => {};
+  handleKeyPress = (ev) => {
+    ev.persist();
+
+    if (Tabs.switchOnKeyCodes.includes(ev.keyCode)) {
+      this.setState((state) => {
+        if (state.selectedTab === state.focusedTab) {
+          return {};
+        }
+
+        return { selectedTab: state.focusedTab };
+      }, () => this.props.onChange(this.state.selectedTab));
+    }
+
+    if (Tabs.moveDirectionsOnKeyCodes[ev.keyCode]) {
+      this.setState(({ focusedTab }) => {
+        const direction = Tabs.moveDirectionsOnKeyCodes[ev.keyCode];
+        const children = Children.map(this.props.children, child => child.props.name);
+        const currentIndex = children.findIndex(name => name === focusedTab);
+        const nextIndex = getNextIndex(children, currentIndex, direction);
+
+        return { focusedTab: children[nextIndex] };
+      });
+    }
+  };
 
   /**
    * Clone the tabs with some additional props.
@@ -202,7 +236,7 @@ export default class Tabs extends PureComponent {
       <TabsContainer
         noBar={this.props.noBar}
         className={this.props.className}
-        onFocus={this.handleBlur}
+        onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyPress={this.handleKeyPress}
         createRef={this.createRef}
