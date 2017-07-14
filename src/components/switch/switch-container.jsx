@@ -136,18 +136,18 @@ export default class SwitchContainer extends PureComponent {
   render() {
     return (
       <Switch
+        {...getNotDeclaredProps(this.props, SwitchContainer)}
         id={this.id}
         toggled={this.state.toggled}
-        onPress={this.handlePress}
-        onKeyPress={this.handleKeyPress}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
         isFocused={this.state.isFocused}
         disabled={this.props.disabled}
         className={this.props.className}
         noink={this.props.noink}
         labelPosition={this.props.labelPosition}
-        {...getNotDeclaredProps(this.props, SwitchContainer)}
+        onPress={this.handlePress}
+        onKeyPress={this.handleKeyPress}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
       >
         {this.props.children}
       </Switch>

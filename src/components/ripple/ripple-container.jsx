@@ -131,10 +131,10 @@ export default class RippleContainer extends PureComponent {
         className={this.props.className}
         round={this.props.round}
         nowaves={this.props.nowaves}
+        createRef={this.createRef}
         onAnimationFinish={this.handleAnimationFinish}
         onDownAction={this.handleDownAction}
         onMouseLeave={this.props.onMouseLeave}
-        createRef={this.createRef}
       />
     );
   }

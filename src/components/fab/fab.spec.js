@@ -16,9 +16,9 @@ test('should render a button', (t) => {
 test('should warn against changing the icon and mini prop', (t) => {
   const wrapper = shallow(
     <Fab
-      classes={{}}
       animateIn
       icon="build"
+      classes={{}}
     />,
   );
 
@@ -30,9 +30,9 @@ test('should warn against changing the icon and mini prop', (t) => {
 test('should animate the fab in', (t) => {
   const wrapper = shallow(
     <Fab
-      classes={{}}
       animateIn
       icon="build"
+      classes={{}}
     />,
   );
   const root = wrapper.find({ role: 'button' });
@@ -43,9 +43,9 @@ test('should animate the fab in', (t) => {
 test('should set the aria-disabled attribute on the root node', (t) => {
   const wrapper = shallow(
     <Fab
-      classes={{}}
       disabled
       icon="build"
+      classes={{}}
     />,
   );
   const root = wrapper.find({ role: 'button' });
@@ -71,8 +71,8 @@ test('should only call onPress when a key event happens with a valid keyCode', (
   const wrapper = shallow(
     <Fab
       classes={{}}
-      onPress={onPress}
       icon="build"
+      onPress={onPress}
     />,
   );
   const instance = wrapper.instance();
@@ -87,8 +87,8 @@ test('should not call onPress when a key event happens with an invalid keyCode',
   const wrapper = shallow(
     <Fab
       classes={{}}
-      onPress={onPress}
       icon="build"
+      onPress={onPress}
     />,
   );
   const instance = wrapper.instance();

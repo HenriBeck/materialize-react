@@ -121,16 +121,16 @@ export class Checkbox extends PureComponent {
         aria-disabled={disabled}
         aria-checked={checked}
         className={className}
+        createRef={this.createRef}
         onKeyPress={this.props.onKeyPress}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
-        createRef={this.createRef}
       >
         <EventHandler
           component="span"
           role="presentation"
-          onPress={this.props.onPress}
           className={classes.container}
+          onPress={this.props.onPress}
         >
           <span
             className={classes.checkboxContainer}

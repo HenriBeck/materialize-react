@@ -16,8 +16,8 @@ storiesOf('FAB', module)
   ))
   .add('Animate in', () => (
     <Fab
-      icon="pencil"
       animateIn
+      icon="pencil"
     />
   ))
   .add('With Action', () => (

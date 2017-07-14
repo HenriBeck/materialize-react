@@ -62,13 +62,13 @@ export class RadioButton extends PureComponent {
       >
         <EventHandler
           component="span"
-          onPress={onPress}
           className={classes.container}
+          onPress={onPress}
         >
           <Ripple
-            isFocused={isFocused}
             round
             center
+            isFocused={isFocused}
             nowaves={noink}
             className={classes.ripple}
           />

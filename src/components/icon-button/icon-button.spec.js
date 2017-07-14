@@ -29,9 +29,9 @@ test('should warn against changing the icon prop', (t) => {
 test('should have aria-disabled and tabIndex of -1 when disabled', (t) => {
   const wrapper = shallow(
     <IconButton
+      disabled
       classes={{}}
       theme={{}}
-      disabled
       icon="github"
     />,
   );
@@ -67,8 +67,8 @@ test('should only call onPress when a key event happens with a valid keyCode', (
   const onPress = sinon.spy();
   const wrapper = mount(
     <IconButtonWrapper
-      onPress={onPress}
       icon="build"
+      onPress={onPress}
     />,
   );
 
@@ -81,8 +81,8 @@ test('should not call onPress when a key event happens with an invalid keyCode',
   const onPress = sinon.spy();
   const wrapper = mount(
     <IconButtonWrapper
-      onPress={onPress}
       icon="build"
+      onPress={onPress}
     />,
   );
 
