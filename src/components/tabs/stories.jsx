@@ -63,8 +63,8 @@ storiesOf('Tabs', module)
   ))
   .add('No Bar', () => (
     <Tabs
-      initialTab="test2"
       noBar
+      initialTab="test2"
     >
       <Tab name="test1">Test 1</Tab>
       <Tab name="test2">Test 2</Tab>

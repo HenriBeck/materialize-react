@@ -52,11 +52,11 @@ export class TabsContainer extends PureComponent {
         component="div"
         role="tablist"
         tabIndex="0"
+        createRef={this.createRootRef}
+        className={`${className} ${classes.tabs}`}
         onKeyPress={this.props.onKeyPress}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
-        createRef={this.createRootRef}
-        className={`${className} ${classes.tabs}`}
       >
         {this.props.children}
 

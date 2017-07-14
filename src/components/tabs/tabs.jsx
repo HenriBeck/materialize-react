@@ -113,7 +113,13 @@ export default class Tabs extends PureComponent {
    * @param {String} tabName - The new tab name.
    */
   set currentTab(tabName) {
-    this.setState(({ selectedTab }) => (selectedTab === tabName ? {} : { selectedTab: tabName }));
+    this.setState(({ selectedTab }) => {
+      if (selectedTab === tabName) {
+        return {};
+      }
+
+      return { selectedTab: tabName };
+    });
   }
 
   /**
@@ -236,10 +242,10 @@ export default class Tabs extends PureComponent {
       <TabsContainer
         noBar={this.props.noBar}
         className={this.props.className}
+        createRef={this.createRef}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyPress={this.handleKeyPress}
-        createRef={this.createRef}
       >
         {this.renderTabs()}
       </TabsContainer>

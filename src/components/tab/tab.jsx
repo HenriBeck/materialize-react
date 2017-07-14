@@ -24,9 +24,9 @@ export function Tab(props) {
   return (
     <EventHandler
       component="div"
-      onPress={props.onPress}
       createRef={props.createRef}
       className={className}
+      onPress={props.onPress}
     >
       {props.tabStyle.includes('icons') && (
         <Icon
