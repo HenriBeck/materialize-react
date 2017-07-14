@@ -63,8 +63,8 @@ test('should not call the onPress prop when no key code was passed to the handle
   const onPress = sinon.spy();
   const wrapper = mount(
     <Button
-      onPress={onPress}
       classes={classes}
+      onPress={onPress}
     />,
   );
 
@@ -77,8 +77,8 @@ test('should call the onPress prop when a valid key code was passed to the handl
   const onPress = sinon.spy();
   const wrapper = mount(
     <Button
-      onPress={onPress}
       classes={classes}
+      onPress={onPress}
     />,
   );
 

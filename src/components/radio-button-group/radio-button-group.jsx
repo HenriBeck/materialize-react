@@ -206,10 +206,10 @@ export default class RadioButtonGroup extends PureComponent {
       <RadioButtonContainer
         {...getNotDeclaredProps(this.props, RadioButtonGroup)}
         label={this.props.label}
+        id={this.id}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyPress={this.handleKeyPress}
-        id={this.id}
       >
         {this.renderChildren()}
       </RadioButtonContainer>

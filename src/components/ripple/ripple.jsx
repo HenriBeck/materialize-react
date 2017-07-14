@@ -80,8 +80,8 @@ export class Ripple extends PureComponent {
       <Wave
         key={wave.id}
         classes={this.props.classes}
-        onFinish={this.props.onAnimationFinish}
         ref={(element) => { this.waves[wave.id] = element; }}
+        onFinish={this.props.onAnimationFinish}
         {...wave}
       />
     ));

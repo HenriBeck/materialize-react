@@ -43,17 +43,17 @@ export function Switch(props) {
 
   return (
     <EventHandler
+      {...otherProps}
       component="span"
       role="switch"
       className={classNames}
       aria-checked={toggled}
       aria-disabled={disabled}
+      tabIndex={disabled ? -1 : 0}
+      id={id}
       onKeyPress={onKeyPress}
       onFocus={onFocus}
       onBlur={onBlur}
-      tabIndex={disabled ? -1 : 0}
-      id={id}
-      {...otherProps}
     >
       <span className={classes.container}>
         <span className={classes.bar} />

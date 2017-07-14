@@ -49,8 +49,8 @@ export default class Wave extends PureComponent {
         role="presentation"
         className={this.props.classes.wave}
         style={this.props.style}
-        onTransitionEnd={this.handleTransitionEnd}
         ref={(element) => { this.wave = element; }}
+        onTransitionEnd={this.handleTransitionEnd}
       />
     );
   }

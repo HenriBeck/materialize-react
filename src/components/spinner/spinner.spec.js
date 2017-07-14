@@ -48,9 +48,9 @@ test('should not update the opacity of the spinner and only add the new styles',
 test('should remove and add the active class if necessary', (t) => {
   const wrapper = mount(
     <Spinner
+      active
       classes={{ spinner: 'spinner' }}
       theme={{}}
-      active
     />,
   );
   const root = wrapper.find('.spinner');
