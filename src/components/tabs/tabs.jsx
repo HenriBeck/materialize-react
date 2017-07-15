@@ -125,6 +125,7 @@ export default class Tabs extends PureComponent {
   /**
    * Animate the bottom bar to the new tab.
    *
+   * @private
    * @param {String} tabName - The new tab name.
    */
   animateBar(tabName) {
@@ -139,6 +140,7 @@ export default class Tabs extends PureComponent {
   /**
    * A function which will be called with the root element of one tab.
    *
+   * @private
    * @param {String} name - The name of the tab as a reference later on.
    * @returns {Function} - Returns a function that will take the element and creates a reference.
    */
@@ -164,6 +166,8 @@ export default class Tabs extends PureComponent {
 
   /**
    * Change the focused state back to null.
+   *
+   * @private
    */
   handleBlur = (ev) => {
     this.props.onBlur(ev);
@@ -173,6 +177,8 @@ export default class Tabs extends PureComponent {
 
   /**
    * Change the focused state to the at this point selected tab.
+   *
+   * @private
    */
   handleFocus = (ev) => {
     this.props.onFocus(ev);
@@ -184,6 +190,8 @@ export default class Tabs extends PureComponent {
 
   /**
    * Handle different key presses.
+   *
+   * @private
    */
   handleKeyPress = (ev) => {
     ev.persist();
