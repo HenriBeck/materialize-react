@@ -5,15 +5,17 @@ import sinon from 'sinon';
 import TabsContainerWrapper, { TabsContainer } from './tabs-container';
 import { shallow } from '../../../tests/helpers/enzyme';
 
+const props = {
+  classes: {},
+  className: '',
+  noBar: false,
+  createRef: sinon.spy(),
+  onFocus: () => {},
+  onBlur: () => {},
+  onKeyPress: () => {},
+};
+
 test('should render a Jss hoc', (t) => {
-  const props = {
-    className: '',
-    noBar: false,
-    createRef: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
-    onKeyPress: () => {},
-  };
   const wrapper = shallow(<TabsContainerWrapper {...props}>Children</TabsContainerWrapper>);
   const jssContainer = wrapper.find('Jss(TabsContainer)');
 
@@ -22,15 +24,6 @@ test('should render a Jss hoc', (t) => {
 });
 
 test('should render an EventHandler as a root', (t) => {
-  const props = {
-    classes: {},
-    className: '',
-    noBar: false,
-    createRef: sinon.spy(),
-    onFocus: () => {},
-    onBlur: () => {},
-    onKeyPress: () => {},
-  };
   const wrapper = shallow(<TabsContainer {...props}>Children</TabsContainer>);
 
   t.deepEqual(wrapper.find('EventHandler').length, 1);
@@ -38,15 +31,6 @@ test('should render an EventHandler as a root', (t) => {
 });
 
 test('should set the root prop of the instance', (t) => {
-  const props = {
-    classes: {},
-    className: '',
-    noBar: false,
-    createRef: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
-    onKeyPress: () => {},
-  };
   const wrapper = shallow(<TabsContainer {...props}>Children</TabsContainer>);
   const instance = wrapper.instance();
 
@@ -56,15 +40,6 @@ test('should set the root prop of the instance', (t) => {
 });
 
 test('should set the bar prop of the instance', (t) => {
-  const props = {
-    classes: {},
-    className: '',
-    noBar: false,
-    createRef: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
-    onKeyPress: () => {},
-  };
   const wrapper = shallow(<TabsContainer {...props}>Children</TabsContainer>);
   const instance = wrapper.instance();
   const eventHandler = wrapper.find('EventHandler').dive();

@@ -4,14 +4,17 @@ import test from 'ava';
 import TabWrapper, { Tab } from './tab';
 import { shallow } from '../../../tests/helpers/enzyme';
 
+const props = {
+  theme: {},
+  classes: {},
+  onPress: () => {},
+  tabStyle: 'text-and-icons',
+  createRef: () => {},
+  selected: true,
+  focused: false,
+};
+
 test('should render a Jss hoc and the Tab component', (t) => {
-  const props = {
-    onPress: () => {},
-    tabStyle: 'text',
-    createRef: () => {},
-    selected: false,
-    focused: false,
-  };
   const wrapper = shallow(<TabWrapper {...props}>Children</TabWrapper>);
   const jssContainer = wrapper.find('Jss(Tab)');
 
@@ -20,15 +23,6 @@ test('should render a Jss hoc and the Tab component', (t) => {
 });
 
 test('should render an event handler', (t) => {
-  const props = {
-    theme: {},
-    classes: {},
-    onPress: () => {},
-    tabStyle: 'text-and-icons',
-    createRef: () => {},
-    selected: true,
-    focused: false,
-  };
   const wrapper = shallow(<Tab {...props}>Children</Tab>);
 
   t.deepEqual(wrapper.find('.tab--selected').length, 1);
