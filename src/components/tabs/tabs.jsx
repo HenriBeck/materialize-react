@@ -8,6 +8,7 @@ import Tab from '../tab';
 import TabsContainer from './tabs-container';
 import hasDuplicates from '../../utils/has-duplicates';
 import getNextIndex from '../../utils/get-next-index';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which hosts the logic for multiple tabs.
@@ -113,13 +114,11 @@ export default class Tabs extends PureComponent {
    * @param {String} tabName - The new tab name.
    */
   set currentTab(tabName) {
-    this.setState(({ selectedTab }) => {
-      if (selectedTab === tabName) {
-        return {};
-      }
-
-      return { selectedTab: tabName };
-    });
+    if (this.state.selectedTab !== tabName) {
+      this.setState(() => {
+        return { selectedTab: tabName };
+      });
+    }
   }
 
   /**
@@ -194,21 +193,19 @@ export default class Tabs extends PureComponent {
    * @private
    */
   handleKeyPress = (ev) => {
-    ev.persist();
+    const { keyCode } = ev;
 
-    if (Tabs.switchOnKeyCodes.includes(ev.keyCode)) {
-      this.setState((state) => {
-        if (state.selectedTab === state.focusedTab) {
-          return {};
-        }
-
-        return { selectedTab: state.focusedTab };
-      }, () => this.props.onChange(this.state.selectedTab));
+    if (Tabs.switchOnKeyCodes.includes(keyCode)) {
+      if (this.state.selectedTab !== this.state.focusedTab) {
+        this.setState((state) => {
+          return { selectedTab: state.focusedTab };
+        }, () => this.props.onChange(this.state.focusedTab));
+      }
     }
 
-    if (Tabs.moveDirectionsOnKeyCodes[ev.keyCode]) {
+    if (Tabs.moveDirectionsOnKeyCodes[keyCode]) {
       this.setState(({ focusedTab }) => {
-        const direction = Tabs.moveDirectionsOnKeyCodes[ev.keyCode];
+        const direction = Tabs.moveDirectionsOnKeyCodes[keyCode];
         const children = Children.map(this.props.children, child => child.props.name);
         const currentIndex = children.findIndex(name => name === focusedTab);
         const nextIndex = getNextIndex(children, currentIndex, direction);
@@ -234,10 +231,17 @@ export default class Tabs extends PureComponent {
   }
 
   render() {
+    const {
+      noBar,
+      className,
+      ...props
+    } = this.props;
+
     return (
       <TabsContainer
-        noBar={this.props.noBar}
-        className={this.props.className}
+        {...getNotDeclaredProps(props, Tabs)}
+        noBar={noBar}
+        className={className}
         createRef={this.createRef}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
