@@ -16,13 +16,13 @@ export default function connectWithTheme(Component, componentName = null) {
    *
    * @param {Object} props - Additional props for the element.
    * @param {Object} context - The context of the function.
-   * @param {Object} context.theme - The theme provided by the context.
+   * @param {Object} [context.theme] - The theme provided by the context.
    * @returns {JSX} - Returns the HOC from JSS.
    */
-  function Wrapper(props, { theme }) {
+  function Wrapper(props, { theme = {} }) {
     return (
       <Component
-        theme={componentName ? theme[componentName] : theme}
+        theme={componentName ? theme[componentName] || {} : theme}
         {...props}
       />
     );
