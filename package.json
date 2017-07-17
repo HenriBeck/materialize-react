@@ -102,7 +102,7 @@
     "babel": {
       "babelrc": true
     },
-    "concurrency": 2
+    "concurrency": 5
   },
   "nyc": {
     "check-coverage": true,
