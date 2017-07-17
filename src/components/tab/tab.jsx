@@ -8,6 +8,7 @@ import EventHandler from '../event-handler';
 import Icon from '../icon';
 import typo from '../../styles/plugins/typo';
 import Ripple from '../ripple';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * Renders a tab.
@@ -16,14 +17,19 @@ import Ripple from '../ripple';
  * @returns {JSX} - Returns the component.
  */
 export function Tab(props) {
-  const className = classnames(props.className, props.classes.tab, {
-    'tab--focused': props.focused,
-    'tab--selected': props.selected,
-  }, `tab--${props.tabStyle}`);
+  const className = classnames(
+    props.className,
+    props.classes.tab,
+    props.focused && 'tab--focused',
+    `tab--${props.tabStyle}`,
+  );
 
   return (
     <EventHandler
+      {...getNotDeclaredProps(props, Tab, 'name')}
       component="div"
+      role="tab"
+      aria-selected={props.selected}
       createRef={props.createRef}
       className={className}
       onPress={props.onPress}
@@ -101,7 +107,7 @@ const styles = {
 
     '&.tab--focused $tabContent': { fontWeight: 700 },
 
-    '&.tab--selected $tabContent, &.tab--selected $icon': {
+    '&[aria-selected=true] $tabContent, &[aria-selected=true] $icon': {
       opacity(props) {
         return props.theme.selectedOpacity;
       },

@@ -25,6 +25,6 @@ test('should render a Jss hoc and the Tab component', (t) => {
 test('should render an event handler', (t) => {
   const wrapper = shallow(<Tab {...props}>Children</Tab>);
 
-  t.deepEqual(wrapper.find('.tab--selected').length, 1);
+  t.deepEqual(wrapper.find({ role: 'tab' }).length, 1);
 });
 

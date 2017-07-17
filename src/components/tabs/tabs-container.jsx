@@ -5,6 +5,7 @@ import connectWithTheme from '../../styles/theme/connect-with-theme';
 import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
 import { easeInOutQuad } from '../../styles/timings';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component that renders a tablist.
@@ -45,22 +46,29 @@ export class TabsContainer extends PureComponent {
     const {
       classes,
       className,
+      onKeyPress,
+      onFocus,
+      onBlur,
+      children,
+      noBar,
+      ...props
     } = this.props;
 
     return (
       <EventHandler
+        {...getNotDeclaredProps(props, TabsContainer)}
         component="div"
         role="tablist"
         tabIndex="0"
         createRef={this.createRootRef}
         className={`${className} ${classes.tabs}`}
-        onKeyPress={this.props.onKeyPress}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
+        onKeyPress={onKeyPress}
+        onFocus={onFocus}
+        onBlur={onBlur}
       >
-        {this.props.children}
+        {children}
 
-        {!this.props.noBar && (
+        {!noBar && (
           <span
             className={classes.bar}
             ref={(element) => { this.bar = element; }}
