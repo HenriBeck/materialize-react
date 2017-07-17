@@ -10,7 +10,7 @@ import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
 import RadioButtonContainer from './radio-button-container';
 import warning from '../../utils/warning';
-import { hasDuplicates } from './utils';
+import hasDuplicates from '../../utils/has-duplicates';
 
 /**
  * A class that renders a group of radio buttons and handles all the logic.

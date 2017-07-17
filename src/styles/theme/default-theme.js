@@ -27,6 +27,8 @@ import { defaultTheme as fab } from '../../components/fab/theme';
 import { defaultTheme as checkbox } from '../../components/checkbox/theme';
 import { defaultTheme as switchTheme } from '../../components/switch/theme';
 import { defaultTheme as radioButton } from '../../components/radio-button/theme';
+import { defaultTheme as tabs } from '../../components/tabs/theme';
+import { defaultTheme as tab } from '../../components/tab/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -67,4 +69,6 @@ export const defaultTheme = {
   checkbox,
   switch: switchTheme,
   radioButton,
+  tabs,
+  tab,
 };
