@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import injectSheet from '../jss';
+import jssInstance from '../jss';
+import { jss } from 'react-jss/lib/ns';
 import themeSchema from './theme-schema';
 import {
   defaultTheme,
@@ -35,7 +36,7 @@ export function compileTheme(variables, theme) {
  *
  * @class
  */
-export class Theme extends PureComponent {
+export default class Theme extends PureComponent {
   static propTypes = {
     theme: PropTypes.object,
     variables: PropTypes.object,
@@ -53,13 +54,19 @@ export class Theme extends PureComponent {
     component: 'div',
   };
 
-  static childContextTypes = { theme: themeSchema };
+  static childContextTypes = {
+    theme: themeSchema,
+    [jss]: PropTypes.object,
+  };
 
   /**
    * Merge the passed in theme with the default one.
    */
   getChildContext() {
-    return { theme: compileTheme(this.variables, this.props.theme) };
+    return {
+      theme: compileTheme(this.variables, this.props.theme),
+      [jss]: jssInstance,
+    };
   }
 
   /**
@@ -72,17 +79,16 @@ export class Theme extends PureComponent {
   }
 
   render() {
-    const { component: Component } = this.props;
+    const {
+      component: Component,
+      children,
+      ...props
+    } = this.props;
 
     return (
-      <Component {...getNotDeclaredProps(this.props, Theme)}>
-        {this.props.children}
+      <Component {...getNotDeclaredProps(props, Theme)}>
+        {children}
       </Component>
     );
   }
 }
-
-// Turn off the highlight when the user is using a touch device
-const styles = { '@global': { '*': { WebkitTapHighlightColor: 'transparent' } } };
-
-export default injectSheet(styles)(Theme);

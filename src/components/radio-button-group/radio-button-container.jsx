@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import injectSheet from 'react-jss';
 
 import EventHandler from '../event-handler';
 import Label from '../label';
-import injectSheet from '../../styles/jss';
 
 /**
  * A function to render a group of radio buttons.

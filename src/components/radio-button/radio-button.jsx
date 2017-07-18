@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
+import injectSheet from 'react-jss';
 
 import Ripple from '../ripple';
-import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import Label from '../label';

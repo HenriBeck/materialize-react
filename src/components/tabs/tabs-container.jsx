@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import injectSheet from 'react-jss';
 
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
 import { easeInOutQuad } from '../../styles/timings';
 import getNotDeclaredProps from '../../get-not-declared-props';

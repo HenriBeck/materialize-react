@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import injectSheet from 'react-jss';
 
 import { easeInOutCubic } from '../../styles/timings';
 import Label from '../label';
 import Ripple from '../ripple';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 

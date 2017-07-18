@@ -42,8 +42,6 @@
     "jss-camel-case": "5.0.0",
     "jss-compose": "4.0.0",
     "jss-default-unit": "7.0.0",
-    "jss-expand": "4.0.0",
-    "jss-global": "2.0.0",
     "jss-nested": "5.0.0",
     "jss-props-sort": "5.0.0",
     "jss-vendor-prefixer": "6.0.0",
@@ -54,7 +52,7 @@
     "randomstring": "1.1.5",
     "react": "15.6.1",
     "react-get-not-declared-props": "0.2.0",
-    "react-jss": "6.1.1",
+    "react-jss": "7.0.1",
     "web-animations-js": "2.2.5"
   },
   "devDependencies": {
