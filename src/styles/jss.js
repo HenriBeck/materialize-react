@@ -1,5 +1,4 @@
 import { create as createJss } from 'jss';
-import { create as createInjectSheet } from 'react-jss';
 
 import cache from 'jss-cache';
 import camelCase from 'jss-camel-case';
@@ -23,4 +22,4 @@ jss.use(expand());
 jss.use(vendorPrefixer());
 jss.use(propsSort());
 
-export default createInjectSheet(jss);
+export default jss;

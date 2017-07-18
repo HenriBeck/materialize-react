@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import injectSheet from 'react-jss';
 
 import Wave from './wave';
 import FocusContainer from './focus-container';
 import EventHandler from '../event-handler';
-import injectSheet from '../../styles/jss';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -137,6 +137,7 @@ const styles = {
     overflow: 'hidden',
     cursor: 'pointer',
     zIndex: 'inherit',
+    WebkitTapHighlightColor: 'transparent',
 
     '&.ripple--no-waves': { pointerEvents: 'none' },
 

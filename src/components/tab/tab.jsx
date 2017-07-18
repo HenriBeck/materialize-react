@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import injectSheet from 'react-jss';
 
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import injectSheet from '../../styles/jss';
 import EventHandler from '../event-handler';
 import Icon from '../icon';
 import typo from '../../styles/plugins/typo';
