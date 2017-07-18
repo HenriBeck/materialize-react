@@ -52,7 +52,16 @@ export class Button extends PureComponent {
 
   static keyCodes = [13, 32];
 
+  /**
+   * The styles for the component.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.button - The actual theme for the button component.
+   * @returns {Object} - Returns the styles which will be rendered.
+   */
   static styles({ button: theme }) {
+    console.log(theme.height - buttonTypo.fontSize * buttonTypo.lineHeight, buttonTypo);
+
     return {
       button: {
         ...buttonTypo,
@@ -72,7 +81,7 @@ export class Button extends PureComponent {
         height: theme.height,
         minWidth: theme.minWidth,
         color: theme.color,
-        padding: `${(theme.height - buttonTypo.lineHeight) / 2}px 8px`,
+        padding: `${(theme.height - buttonTypo.fontSize * buttonTypo.lineHeight) / 2}px 8px`,
         backgroundColor: theme.bgColor,
 
         '&[aria-disabled=true]': {
@@ -189,8 +198,6 @@ export class Button extends PureComponent {
     } = this.props;
     const classNames = classnames(classes.button, className, raised && 'button--raised');
     const events = { onPress: raised ? this.handlePress : onPress };
-
-    console.log(classes);
 
     if (raised) {
       events.onRelease = this.handleRelease;

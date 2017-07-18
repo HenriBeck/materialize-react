@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ThemeProvider,
-  JssProvider,
-} from 'react-jss';
+import { ThemeProvider } from 'react-jss';
 
-import jssInstance from '../jss';
-import themeSchema from './theme-schema';
 import {
   defaultTheme,
   defaultVars,
@@ -37,6 +32,9 @@ export function compileTheme(customVariables, customTheme) {
 
 /**
  * A React Component to supply a custom jss instance for our components and the theme.
+ *
+ * @param {Object} props - The props for the component.
+ * @returns {JSX} - Returns the children wrapped by a child component.
  */
 export default function Theme(props) {
   const compiledTheme = compileTheme(props.variables, props.theme);
@@ -45,9 +43,7 @@ export default function Theme(props) {
 
   return (
     <ThemeProvider theme={compiledTheme}>
-      <JssProvider jss={jssInstance}>
-        {props.children}
-      </JssProvider>
+      {props.children}
     </ThemeProvider>
   );
 }

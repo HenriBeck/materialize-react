@@ -37,7 +37,7 @@ Background.propTypes = {
 
 Background.defaultProps = { className: '' };
 
-const styles = ({ background: theme }) => {
+Background.styles = ({ background: theme }) => {
   return {
     root: {
       composes: 'background',
@@ -47,4 +47,4 @@ const styles = ({ background: theme }) => {
   };
 };
 
-export default injectSheet(styles)(Background);
+export default injectSheet(Background.styles)(Background);
