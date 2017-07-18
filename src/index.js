@@ -16,3 +16,5 @@ export Switch from './components/switch';
 
 // Styles
 export Theme from './styles/theme';
+export * as typography from './styles/typography';
+export elevation from './styles/elevation';

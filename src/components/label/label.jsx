@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import typo from '../../styles/plugins/typo';
+import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
@@ -40,7 +40,7 @@ Label.defaultProps = {
 
 const styles = {
   label: {
-    ...typo('body1'),
+    ...body1,
     composes: 'label',
     userSelect: 'none',
     padding: '0 8px',

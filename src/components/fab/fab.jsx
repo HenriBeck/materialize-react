@@ -9,7 +9,7 @@ import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';
 import injectSheet from '../../styles/jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import elevation from '../../styles/plugins/elevation';
+import elevation from '../../styles/elevation';
 import EventHandler from '../event-handler';
 
 /**
