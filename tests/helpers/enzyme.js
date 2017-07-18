@@ -1,10 +1,7 @@
-import {
-  mount as eMount,
-  shallow as eShallow,
-} from 'enzyme';
+import React from 'react';
+import { mount as eMount } from 'enzyme';
 
-import { compileTheme } from '../../src/styles/theme/theme';
-import { defaultVars } from '../../src/styles/theme/default-theme';
+import Theme from '../../src/styles/theme';
 
 /**
  * A wrapper function around enzyme's mount function to provide an context which is needed for
@@ -15,23 +12,9 @@ import { defaultVars } from '../../src/styles/theme/default-theme';
  * @returns {Object} - Returns the object returned from the mount function.
  */
 export function mount(children, options = {}) {
-  return eMount(children, {
-    context: { theme: compileTheme(defaultVars, {}) },
-    ...options,
-  });
-}
-
-/**
- * A wrapper function around enzyme's shallow function to provide an context which is needed for
- * the components.
- *
- * @param {JSX} children - The markup to render.
- * @param {Object} [options] - An object of options which will be passed to the shallow function.
- * @returns {Object} - Returns the object returned from the shallow function.
- */
-export function shallow(children, options = {}) {
-  return eShallow(children, {
-    context: { theme: compileTheme(defaultVars, {}) },
-    ...options,
-  });
+  return eMount((
+    <Theme>
+      {children}
+    </Theme>
+  ), options);
 }

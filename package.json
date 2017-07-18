@@ -20,7 +20,6 @@
     "lint": "eslint $npm_package_options_eslint",
     "lint:fix": "yarn run lint -- --fix",
     "prepublish": "yarn run build",
-    "precommit": "yarn run lint",
     "deploy-storybook": "storybook-to-ghpages"
   },
   "repository": {

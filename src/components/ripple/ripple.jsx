@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
 import Wave from './wave';
-import FocusContainer from './focus-container';
 import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -21,7 +20,6 @@ export class Ripple extends PureComponent {
     classes: PropTypes.object.isRequired,
     className: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
-    focusOpacity: PropTypes.number.isRequired,
     round: PropTypes.bool.isRequired,
     onDownAction: PropTypes.func.isRequired,
     onAnimationFinish: PropTypes.func.isRequired,
@@ -33,6 +31,7 @@ export class Ripple extends PureComponent {
   static extraProps = [
     'initialOpacity',
     'focusColor',
+    'focusOpacity',
   ];
 
   waves = {};
@@ -91,6 +90,7 @@ export class Ripple extends PureComponent {
     const className = classnames(this.props.className, this.props.classes.ripple, {
       'ripple--round': this.props.round,
       'ripple--no-waves': this.props.nowaves,
+      'ripple--focused': this.props.isFocused,
     });
 
     return (
@@ -104,12 +104,7 @@ export class Ripple extends PureComponent {
         onRelease={this.handleRelease}
         onMouseLeave={this.handleMouseLeave}
       >
-        <FocusContainer
-          classes={this.props.classes}
-          round={this.props.round}
-          opacity={this.props.focusOpacity}
-          isFocused={this.props.isFocused}
-        />
+        <span className={this.props.classes.focus} />
 
         <span className={this.props.classes.waveContainer}>
           {this.renderWaves()}
@@ -141,9 +136,16 @@ const styles = {
 
     '&.ripple--no-waves': { pointerEvents: 'none' },
 
-    '&.ripple--round $focus': { borderRadius: '50%' },
+    '&.ripple--round $focus': {
+      borderRadius: '50%',
+      transform: 'scale(0)',
+    },
 
     '&.ripple--round $waveContainer': { borderRadius: '50%' },
+
+    '&.ripple--focused $focus': { opacity: props => props.focusOpacity },
+
+    '&.ripple--round.ripple--focused $focus': { transform: 'scale(1)' },
   },
 
   focus: {
@@ -155,7 +157,8 @@ const styles = {
     left: 0,
     opacity: 0,
     backgroundColor: props => props.focusColor,
-    transition: 'backgroundColor 140ms linear',
+    transitionProperty: 'background-color, opacity, transform',
+    transition: '140ms linear',
   },
 
   waveContainer: {

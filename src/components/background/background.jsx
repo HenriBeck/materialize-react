@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -38,12 +37,14 @@ Background.propTypes = {
 
 Background.defaultProps = { className: '' };
 
-const styles = {
-  root: {
-    composes: 'background',
-    color: props => props.theme.color,
-    backgroundColor: props => props.theme.backgroundColor,
-  },
+const styles = ({ background: theme }) => {
+  return {
+    root: {
+      composes: 'background',
+      color: theme.color,
+      backgroundColor: theme.backgroundColor,
+    },
+  };
 };
 
-export default connectWithTheme(injectSheet(styles)(Background), 'background');
+export default injectSheet(styles)(Background);

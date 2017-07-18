@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import Theme, { compileTheme } from './theme';
 
-test('should just render the children passed to theme', (t) => {
+test('should just render a Jss Provider', (t) => {
   const wrapper = shallow(
     <Theme>
       <div>
@@ -14,19 +14,7 @@ test('should just render the children passed to theme', (t) => {
     </Theme>,
   );
 
-  t.deepEqual(wrapper.text(), 'Children');
-});
-
-test('should have a theme object as the context', (t) => {
-  const instance = shallow(
-    <Theme>
-      <div>
-        Children
-      </div>
-    </Theme>,
-  ).instance();
-
-  t.true(is.json(instance.getChildContext().theme));
+  t.deepEqual(wrapper.find('JssProvider').length, 1);
 });
 
 test('should compile a theme', (t) => {

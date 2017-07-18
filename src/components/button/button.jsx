@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
 import warning from '../../utils/warning';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import { button as buttonTypo } from '../../styles/typography';
@@ -52,6 +51,51 @@ export class Button extends PureComponent {
   };
 
   static keyCodes = [13, 32];
+
+  static styles({ button: theme }) {
+    return {
+      button: {
+        ...buttonTypo,
+        composes: 'button',
+        userSelect: 'none',
+        display: 'inline-block',
+        position: 'relative',
+        zIndex: 0,
+        boxSizing: 'border-box',
+        textTransform: 'uppercase',
+        textAlign: 'center',
+        outline: 0,
+        border: 0,
+        borderRadius: 2,
+        margin: '0 8px',
+        cursor: 'pointer',
+        height: theme.height,
+        minWidth: theme.minWidth,
+        color: theme.color,
+        padding: `${(theme.height - buttonTypo.lineHeight) / 2}px 8px`,
+        backgroundColor: theme.bgColor,
+
+        '&[aria-disabled=true]': {
+          cursor: 'auto',
+          pointerEvents: 'none',
+          color: theme.disabledColor,
+          backgroundColor: theme.disabledBgColor,
+        },
+
+        '&.button--raised': { backgroundColor: theme.raisedBgColor },
+
+        '&[aria-disabled=true].button--raised': { backgroundColor: theme.raisedAndDisabledBgColor },
+
+        '&[aria-disabled=false].button--raised': {
+          boxShadow: elevation(theme.elevation),
+
+          '&:hover': { boxShadow: elevation(theme.pressedElevation) },
+        },
+
+        '&[aria-pressed=true].button--raised': { boxShadow: elevation(theme.pressedElevation) },
+      },
+    };
+  }
 
   state = {
     pressed: false,
@@ -137,18 +181,23 @@ export class Button extends PureComponent {
       disabled,
       classes,
       className,
+      children,
+      noink,
+      raised,
+      onPress,
+      ...props
     } = this.props;
-    const classNames = classnames(classes.button, className, this.props.raised && 'button--raised');
-    const events = { onPress: this.props.raised ? this.handlePress : this.props.onPress };
+    const classNames = classnames(classes.button, className, raised && 'button--raised');
+    const events = { onPress: raised ? this.handlePress : onPress };
 
-    if (this.props.raised) {
+    if (raised) {
       events.onRelease = this.handleRelease;
     }
 
     return (
       <EventHandler
         component="span"
-        {...getNotDeclaredProps(this.props, Button)}
+        {...getNotDeclaredProps(props, Button)}
         role="button"
         className={classNames}
         tabIndex={disabled ? -1 : 0}
@@ -162,59 +211,14 @@ export class Button extends PureComponent {
         <Ripple
           className="button--ripple"
           isFocused={this.state.isFocused}
-          nowaves={this.props.noink}
+          nowaves={noink}
           {...this.rippleProps}
         />
 
-        {this.props.children}
+        {children}
       </EventHandler>
     );
   }
 }
 
-const styles = {
-  button: {
-    ...buttonTypo,
-    composes: 'button',
-    userSelect: 'none',
-    display: 'inline-block',
-    position: 'relative',
-    zIndex: 0,
-    boxSizing: 'border-box',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    outline: 0,
-    border: 0,
-    borderRadius: 2,
-    margin: '0 8px',
-    cursor: 'pointer',
-    height: props => props.theme.height,
-    minWidth: props => props.theme.minWidth,
-    color: props => props.theme.color,
-    padding: props => `${(props.theme.height - buttonTypo.lineHeight) / 2}px 8px`,
-    backgroundColor: props => props.theme.bgColor,
-
-    '&[aria-disabled=true]': {
-      cursor: 'auto',
-      pointerEvents: 'none',
-      color: props => props.theme.disabledColor,
-      backgroundColor: props => props.theme.disabledBgColor,
-
-      '&.button--raised': { backgroundColor: props => props.theme.raisedAndDisabledBgColor },
-    },
-
-    '&.button--raised': {
-      backgroundColor: props => props.theme.raisedBgColor,
-
-      '&[aria-disabled=false]': {
-        boxShadow: props => elevation(props.theme.elevation),
-
-        '&:hover': { boxShadow: props => elevation(props.theme.pressedElevation) },
-      },
-
-      '&[aria-pressed=true]': { boxShadow: props => elevation(props.theme.pressedElevation) },
-    },
-  },
-};
-
-export default connectWithTheme(injectSheet(styles)(Button), 'button');
+export default injectSheet(Button.styles)(Button);
