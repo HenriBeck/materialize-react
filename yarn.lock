@@ -44,9 +44,9 @@
   dependencies:
     arrify "^1.0.1"
 
-"@storybook/addon-actions@3.1.8", "@storybook/addon-actions@^3.1.8":
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.1.8.tgz#2b6d7aa97530b19965c1010b822f40b130ebbc4d"
+"@storybook/addon-actions@3.1.9", "@storybook/addon-actions@^3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.1.9.tgz#2fb0e686742b9d645d9c622f01e5ba99acab8b69"
   dependencies:
     "@storybook/addons" "^3.1.6"
     deep-equal "^1.0.1"
@@ -55,9 +55,9 @@
     react-inspector "^2.1.1"
     uuid "^3.1.0"
 
-"@storybook/addon-comments@3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-comments/-/addon-comments-3.1.6.tgz#b4f8f687f85be649cddff30b72921794d0e69c79"
+"@storybook/addon-comments@3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-comments/-/addon-comments-3.1.9.tgz#14ab14abc1ecd4785b11a364d79bd76d14f3ffa7"
   dependencies:
     "@storybook/addons" "^3.1.6"
     babel-runtime "^6.23.0"
@@ -71,9 +71,9 @@
     react-render-html "^0.1.6"
     react-textarea-autosize "^4.3.0"
 
-"@storybook/addon-info@3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-3.1.6.tgz#db85f9d46f5debe9e7fd3a95488fddf8a7f5ff91"
+"@storybook/addon-info@3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-3.1.9.tgz#e2c096c27257a864ff6936a8dbca13d6a42ee461"
   dependencies:
     "@storybook/addons" "^3.1.6"
     babel-runtime "^6.23.0"
@@ -136,15 +136,15 @@
     fuse.js "^3.0.1"
     prop-types "^15.5.9"
 
-"@storybook/react@3.1.8":
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-3.1.8.tgz#4d140c5ae7e9b5eaf627f2071d7324aa38c7af49"
+"@storybook/react@3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-3.1.9.tgz#80ef22aa6f678f09326005c43b16b5acc331fbb2"
   dependencies:
-    "@storybook/addon-actions" "^3.1.8"
+    "@storybook/addon-actions" "^3.1.9"
     "@storybook/addon-links" "^3.1.6"
     "@storybook/addons" "^3.1.6"
     "@storybook/channel-postmessage" "^3.1.6"
-    "@storybook/ui" "^3.1.6"
+    "@storybook/ui" "^3.1.9"
     airbnb-js-shims "^1.1.1"
     autoprefixer "^7.1.1"
     babel-core "^6.24.1"
@@ -171,6 +171,7 @@
     json-loader "^0.5.4"
     json-stringify-safe "^5.0.1"
     json5 "^0.5.1"
+    lodash.flattendeep "^4.4.0"
     lodash.pick "^4.4.0"
     postcss-flexbugs-fixes "^3.0.0"
     postcss-loader "^2.0.5"
@@ -189,9 +190,9 @@
     webpack-dev-middleware "^1.10.2"
     webpack-hot-middleware "^2.18.0"
 
-"@storybook/ui@^3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@storybook/ui/-/ui-3.1.6.tgz#5d47c6003a2d78c06ede43861089747d986d918e"
+"@storybook/ui@^3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@storybook/ui/-/ui-3.1.9.tgz#38e9a0aaf21e49f7d20f9b393449a89fec715759"
   dependencies:
     "@storybook/react-fuzzy" "^0.4.0"
     babel-runtime "^6.23.0"
@@ -4288,7 +4289,7 @@ jss-default-unit@7.0.0, jss-default-unit@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/jss-default-unit/-/jss-default-unit-7.0.0.tgz#176c1db91da870e3ad16301f6f4b4cfc6fe1e90a"
 
-jss-expand@4.0.0, jss-expand@^4.0.0:
+jss-expand@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/jss-expand/-/jss-expand-4.0.0.tgz#71ec15386d7839bb23892acf9dcaa40b7fe9c785"
 
@@ -4298,7 +4299,7 @@ jss-extend@^5.0.0:
   dependencies:
     warning "^3.0.0"
 
-jss-global@2.0.0, jss-global@^2.0.0:
+jss-global@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/jss-global/-/jss-global-2.0.0.tgz#a162f822f17e5d760151d908bdb41d7f2824c28f"
 
