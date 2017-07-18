@@ -7,7 +7,7 @@ import warning from '../../utils/warning';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
-import typo from '../../styles/plugins/typo';
+import { button as buttonTypo } from '../../styles/typography';
 import elevation from '../../styles/plugins/elevation';
 import EventHandler from '../event-handler';
 
@@ -172,8 +172,6 @@ export class Button extends PureComponent {
   }
 }
 
-const buttonTypo = typo('button');
-
 const styles = {
   button: {
     ...buttonTypo,
@@ -183,6 +181,8 @@ const styles = {
     position: 'relative',
     zIndex: 0,
     boxSizing: 'border-box',
+    textTransform: 'uppercase',
+    textAlign: 'center',
     outline: 0,
     border: 0,
     borderRadius: 2,
