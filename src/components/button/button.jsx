@@ -8,7 +8,7 @@ import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import { button as buttonTypo } from '../../styles/typography';
-import elevation from '../../styles/plugins/elevation';
+import elevation from '../../styles/elevation';
 import EventHandler from '../event-handler';
 
 /**
