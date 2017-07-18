@@ -13,7 +13,7 @@
     "test": "NODE_ENV=\"test\" ava",
     "test:watch": "yarn run test -- --watch",
     "test:coverage": "nyc yarn run test",
-    "build": "babel src --out-dir lib",
+    "build": "babel src --out-dir lib --ignore *.spec.js",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
     "report-coverage": "yarn run generate-report:lcov | coveralls",
@@ -86,10 +86,7 @@
     "style-loader": "0.18.2"
   },
   "ava": {
-    "files": [
-      "src/**/*.spec.js",
-      "src/*.spec.js"
-    ],
+    "files": ["src/**/*.spec.js"],
     "require": [
       "babel-register",
       "babel-polyfill",
@@ -109,7 +106,6 @@
     ],
     "exclude": [
       "src/**/*.spec.js",
-      "src/*.spec.js",
       "tests/**/*"
     ],
     "lines": 100,
