@@ -1,9 +1,7 @@
-import {
-  shadow1,
-  shadow2,
-  shadow3,
-} from '../../colors';
-
+// Shadow colors
+export const shadow1 = 'rgba(0, 0, 0, 0.14)';
+export const shadow2 = 'rgba(0, 0, 0, 0.12)';
+export const shadow3 = 'rgba(0, 0, 0, 0.2)';
 /**
  * A function to generate shadows.
  *

@@ -9,7 +9,7 @@ import Ripple from '../ripple';
 import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
-import elevation from '../../styles/plugins/elevation';
+import elevation from '../../styles/elevation';
 import EventHandler from '../event-handler';
 
 /**

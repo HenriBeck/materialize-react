@@ -309,8 +309,3 @@ export const whiteIcons = '#ffffff';
 export const whiteDisabled = 'rgba(255, 255, 255, 0.3)';
 export const whiteHint = 'rgba(255, 255, 255, 0.3)';
 export const whiteDivider = 'rgba(255, 255, 255, 0.12)';
-
-// Shadow colors
-export const shadow1 = 'rgba(0, 0, 0, 0.14)';
-export const shadow2 = 'rgba(0, 0, 0, 0.12)';
-export const shadow3 = 'rgba(0, 0, 0, 0.2)';

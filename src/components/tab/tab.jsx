@@ -6,7 +6,7 @@ import injectSheet from 'react-jss';
 import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import Icon from '../icon';
-import typo from '../../styles/plugins/typo';
+import { body1 } from '../../styles/typography';
 import Ripple from '../ripple';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -78,8 +78,6 @@ Tab.defaultProps = {
   noink: false,
 };
 
-const typography = typo('body1');
-
 const styles = {
   tab: {
     composes: 'tab',
@@ -122,11 +120,11 @@ const styles = {
 
   tabContent: {
     composes: 'tab--content',
-    ...typography,
+    ...body1,
     transition: 'opacity 0.1s cubic-bezier(0.4, 0.0, 1, 1)',
     textTransform: 'uppercase',
     textAlign: 'center',
-    lineHeight: typography.fontSize,
+    lineHeight: body1.fontSize,
     padding: '0 0 20px 0',
     opacity: props => props.theme.unselectedOpacity,
   },
