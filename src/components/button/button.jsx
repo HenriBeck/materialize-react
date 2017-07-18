@@ -190,6 +190,8 @@ export class Button extends PureComponent {
     const classNames = classnames(classes.button, className, raised && 'button--raised');
     const events = { onPress: raised ? this.handlePress : onPress };
 
+    console.log(classes);
+
     if (raised) {
       events.onRelease = this.handleRelease;
     }
