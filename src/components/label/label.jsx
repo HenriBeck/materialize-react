@@ -38,17 +38,19 @@ Label.defaultProps = {
   disabled: false,
 };
 
-const styles = {
-  label: {
-    ...body1,
-    composes: 'label',
-    userSelect: 'none',
-    padding: '0 8px',
-    color: props => props.theme.color,
+Label.styles = ({ label: theme }) => {
+  return {
+    label: {
+      ...body1,
+      composes: 'label',
+      userSelect: 'none',
+      padding: '0 8px',
+      color: theme.color,
 
-    '&[aria-disabled]': { color: props => props.theme.disabledColor },
-  },
+      '&[aria-disabled=true]': { color: theme.disabledColor },
+    },
+  };
 };
 
-export default connectWithTheme(injectSheet(styles)(Label), 'label');
+export default injectSheet(Label.styles)(Label);
 
