@@ -60,8 +60,6 @@ export class Button extends PureComponent {
    * @returns {Object} - Returns the styles which will be rendered.
    */
   static styles({ button: theme }) {
-    console.log(theme.height - buttonTypo.fontSize * buttonTypo.lineHeight, buttonTypo);
-
     return {
       button: {
         ...buttonTypo,

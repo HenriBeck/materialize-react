@@ -1,7 +1,8 @@
 import React from 'react';
 import test from 'ava';
+import { shallow } from 'enzyme';
 
-import Checkbox from './checkbox';
+import CheckboxWrapper, { Checkbox } from './checkbox';
 import { mount } from '../../../tests/helpers/enzyme';
 
 const props = {
@@ -21,14 +22,14 @@ const props = {
 };
 
 test('should render a span with a role of checkbox and a Jss HoC', (t) => {
-  const wrapper = mount(<Checkbox {...props} />);
+  const wrapper = mount(<CheckboxWrapper {...props} />);
 
   t.deepEqual(wrapper.find('Jss(Checkbox)').length, 1);
   t.deepEqual(wrapper.find({ role: 'checkbox' }).length, 1);
 });
 
 test('should set the aria-checked attribute on the root element', (t) => {
-  const wrapper = mount(
+  const wrapper = shallow(
     <Checkbox
       {...props}
       checked
@@ -37,14 +38,15 @@ test('should set the aria-checked attribute on the root element', (t) => {
   const root = wrapper.find({ role: 'checkbox' });
 
   t.deepEqual(root.prop('aria-checked'), true);
-
-  wrapper.setProps({ checked: false });
-
-  t.deepEqual(root.prop('aria-checked'), false);
 });
 
 test('should set the aria-disabled attribute on the root element', (t) => {
-  const wrapper = mount(<Checkbox {...props} />);
+  const wrapper = shallow(
+    <Checkbox
+      {...props}
+      disabled
+    />,
+  );
   const root = wrapper.find({ role: 'checkbox' });
 
   wrapper.setProps({ disabled: true });

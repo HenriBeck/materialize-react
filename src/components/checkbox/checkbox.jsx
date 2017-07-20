@@ -6,7 +6,6 @@ import injectSheet from 'react-jss';
 import { easeInOutCubic } from '../../styles/timings';
 import Label from '../label';
 import Ripple from '../ripple';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -33,6 +32,96 @@ export class Checkbox extends PureComponent {
     onBlur: PropTypes.func.isRequired,
     labelPosition: PropTypes.string.isRequired,
   };
+
+  /**
+   * The styles for the component.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.checkbox - The actual theme for the checkbox component.
+   * @returns {Object} - Returns the styles which will be rendered.
+   */
+  static styles({ checkbox: theme }) {
+    const { disabledCheckedBgColor } = theme;
+
+    return {
+      checkbox: {
+        composes: 'checkbox',
+        boxSizing: 'border-box',
+        outline: 'none',
+        border: 0,
+        backgroundColor: 'inherit',
+        display: 'inline-flex',
+        alignItems: 'center',
+        padding: theme.padding,
+        height: theme.rippleSize + (theme.padding * 2),
+
+        '&[aria-disabled=false] $label': { cursor: 'pointer' },
+
+        '&[aria-disabled=true]': {
+          pointerEvents: 'none',
+
+          '&[aria-checked=true] $checkboxContainer': { backgroundColor: disabledCheckedBgColor },
+        },
+
+        '&[aria-disabled=true] $checkboxContainer': {
+          borderColor: theme.disabledBorderColor,
+          backgroundColor: theme.disabledBgColor,
+        },
+
+        '&.checkbox--label-left': { flexDirection: 'row-reverse' },
+
+        '&[aria-disabled=false][aria-checked=true] $checkboxContainer': {
+          borderColor: theme.checkedBorderColor,
+          backgroundColor: theme.checkedBgColor,
+        },
+      },
+
+      container: {
+        composes: 'checkbox--container',
+        display: 'inline-block',
+        position: 'relative',
+        cursor: 'pointer',
+        borderRadius: '50%',
+        boxSizing: 'border-box',
+        zIndex: 1,
+        height: theme.rippleSize,
+        width: theme.rippleSize,
+      },
+
+      label: { composes: 'checkbox--label' },
+
+      checkboxContainer: {
+        composes: 'checkbox--checkbox-container',
+        display: 'inline-block',
+        position: 'relative',
+        borderStyle: 'solid',
+        margin: (theme.rippleSize - theme.size) / 2,
+        height: theme.size - theme.borderWidth * 2,
+        width: theme.size - theme.borderWidth * 2,
+        borderWidth: theme.borderWidth,
+        borderRadius: theme.borderWidth,
+        borderColor: theme.uncheckedBorderColor,
+        backgroundColor: theme.uncheckedBgColor,
+        transitionDuration: theme.animationDuration,
+        transitionProperty: 'background-color, border-color',
+      },
+
+      checkmark: {
+        composes: 'checkbox--checkmark',
+        width: '36%',
+        height: '70%',
+        left: -1,
+        position: 'absolute',
+        border: `${8 / 3}px solid`,
+        borderTop: 0,
+        borderLeft: 0,
+        transformOrigin: '97% 86%',
+        boxSizing: 'content-box',
+        willChange: 'opacity, transform',
+        opacity: 0,
+      },
+    };
+  }
 
   /**
    * Set the border color of the checkmark to the background-color from the root element.
@@ -163,85 +252,4 @@ export class Checkbox extends PureComponent {
   }
 }
 
-const styles = {
-  checkbox: {
-    composes: 'checkbox',
-    boxSizing: 'border-box',
-    outline: 'none',
-    border: 0,
-    backgroundColor: 'inherit',
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: props => props.theme.padding,
-    height: props => props.theme.rippleSize + (props.theme.padding * 2),
-
-    '&[aria-disabled=false] $label': { cursor: 'pointer' },
-
-    '&[aria-disabled=true]': { pointerEvents: 'none' },
-
-    '&[aria-disabled=true] $checkboxContainer': {
-      borderColor: props => props.theme.disabledBorderColor,
-      backgroundColor: props => props.theme.disabledBgColor,
-    },
-
-    '&[aria-disabled=true][aria-checked=true] $checkboxContainer': {
-      backgroundColor(props) {
-        return props.theme.disabledCheckedBgColor;
-      },
-    },
-
-    '&.checkbox--label-left': { flexDirection: 'row-reverse' },
-
-    '&[aria-disabled=false][aria-checked=true] $checkboxContainer': {
-      borderColor: props => props.theme.checkedBorderColor,
-      backgroundColor: props => props.theme.checkedBgColor,
-    },
-  },
-
-  container: {
-    composes: 'checkbox--container',
-    display: 'inline-block',
-    position: 'relative',
-    cursor: 'pointer',
-    borderRadius: '50%',
-    boxSizing: 'border-box',
-    zIndex: 1,
-    height: props => props.theme.rippleSize,
-    width: props => props.theme.rippleSize,
-  },
-
-  label: { composes: 'checkbox--label' },
-
-  checkboxContainer: {
-    composes: 'checkbox--checkbox-container',
-    display: 'inline-block',
-    position: 'relative',
-    borderStyle: 'solid',
-    margin: props => (props.theme.rippleSize - props.theme.size) / 2,
-    height: props => props.theme.size - props.theme.borderWidth * 2,
-    width: props => props.theme.size - props.theme.borderWidth * 2,
-    borderWidth: props => props.theme.borderWidth,
-    borderRadius: props => props.theme.borderWidth,
-    borderColor: props => props.theme.uncheckedBorderColor,
-    backgroundColor: props => props.theme.uncheckedBgColor,
-    transitionDuration: props => props.theme.animationDuration,
-    transitionProperty: 'background-color, border-color',
-  },
-
-  checkmark: {
-    composes: 'checkbox--checkmark',
-    width: '36%',
-    height: '70%',
-    left: -1,
-    position: 'absolute',
-    border: `${8 / 3}px solid`,
-    borderTop: 0,
-    borderLeft: 0,
-    transformOrigin: '97% 86%',
-    boxSizing: 'content-box',
-    willChange: 'opacity, transform',
-    opacity: 0,
-  },
-};
-
-export default connectWithTheme(injectSheet(styles)(Checkbox), 'checkbox');
+export default injectSheet(Checkbox.styles)(Checkbox);

@@ -1,33 +1,40 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
 import TabsContainerWrapper, { TabsContainer } from './tabs-container';
-import { shallow } from '../../../tests/helpers/enzyme';
+import { mount } from '../../../tests/helpers/enzyme';
 
 const props = {
   classes: {},
   className: '',
   noBar: false,
-  createRef: sinon.spy(),
+  createRef: () => {},
   onFocus: () => {},
   onBlur: () => {},
   onKeyPress: () => {},
 };
 
 test('should render a Jss hoc', (t) => {
-  const wrapper = shallow(<TabsContainerWrapper {...props}>Children</TabsContainerWrapper>);
-  const jssContainer = wrapper.find('Jss(TabsContainer)');
+  const wrapper = mount(<TabsContainerWrapper {...props}>Children</TabsContainerWrapper>);
 
-  t.deepEqual(jssContainer.length, 1);
-  t.deepEqual(jssContainer.dive().find('TabsContainer').length, 1);
+  t.deepEqual(wrapper.find('Jss(TabsContainer)').length, 1);
 });
 
 test('should render an EventHandler as a root', (t) => {
-  const wrapper = shallow(<TabsContainer {...props}>Children</TabsContainer>);
+  const createRef = sinon.spy();
+  const wrapper = shallow(
+    <TabsContainer
+      {...props}
+      createRef={createRef}
+    >
+      Children
+    </TabsContainer>,
+  );
 
   t.deepEqual(wrapper.find('EventHandler').length, 1);
-  t.deepEqual(props.createRef.callCount, 1);
+  t.deepEqual(createRef.callCount, 1);
 });
 
 test('should set the root prop of the instance', (t) => {

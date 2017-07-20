@@ -31,9 +31,9 @@ export default class Wave extends PureComponent {
    *
    * @private
    */
-  startFadeOutAnimation() {
+  startFadeOutAnimation = () => {
     this.wave.style.opacity = 0;
-  }
+  };
 
   /**
    * When the opacity transition ends we want to call the onFinish prop

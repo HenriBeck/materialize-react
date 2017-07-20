@@ -1,11 +1,9 @@
 import test from 'ava';
 import React from 'react';
-import {
-  shallow,
-  mount,
-} from '../../../tests/helpers/enzyme';
 import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
+import { mount } from '../../../tests/helpers/enzyme';
 import ButtonWrapper, { Button } from './button';
 
 const classes = { button: 'button' };
@@ -18,12 +16,17 @@ test('should render the button', (t) => {
 });
 
 test('should warn when the user changes the raised prop', (t) => {
-  const wrapper = mount(<ButtonWrapper />);
+  const wrapper = shallow(
+    <Button
+      raised
+      classes={classes}
+    />,
+  );
 
-  t.throws(() => wrapper.setProps({ raised: true }));
+  t.throws(() => wrapper.setProps({ raised: false }));
 });
 
-test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t disabled', (t) => {
+test('should have tabIndex -1 when the button is disabled', (t) => {
   const wrapper = shallow(
     <Button
       disabled
@@ -37,18 +40,14 @@ test('should have tabIndex 0 when the button isn\'t disabled and -1 when isn\'t 
 });
 
 test('should change the state when an interaction happens', (t) => {
-  const wrapper = mount(
-    <Button
-      raised
-      classes={classes}
-    />,
-  );
+  const wrapper = shallow(<Button classes={classes} />);
+  const instance = wrapper.instance();
 
-  wrapper.simulate('mouseDown');
+  instance.handlePress();
 
   t.deepEqual(wrapper.state('pressed'), true);
 
-  wrapper.simulate('mouseUp');
+  instance.handleRelease();
 
   t.deepEqual(wrapper.state('pressed'), false);
 });
@@ -61,34 +60,36 @@ test('should have a Ripple inside the button', (t) => {
 
 test('should not call the onPress prop when no key code was passed to the handler', (t) => {
   const onPress = sinon.spy();
-  const wrapper = mount(
+  const wrapper = shallow(
     <Button
       classes={classes}
       onPress={onPress}
     />,
   );
+  const instance = wrapper.instance();
 
-  wrapper.simulate('keyDown');
+  instance.handleKeyPress({});
 
   t.deepEqual(onPress.callCount, 0);
 });
 
 test('should call the onPress prop when a valid key code was passed to the handler', (t) => {
   const onPress = sinon.spy();
-  const wrapper = mount(
+  const wrapper = shallow(
     <Button
       classes={classes}
       onPress={onPress}
     />,
   );
+  const instance = wrapper.instance();
 
-  wrapper.simulate('keyDown', { keyCode: Button.keyCodes[0] });
+  instance.handleKeyPress({ keyCode: Button.keyCodes[0] });
 
   t.deepEqual(onPress.callCount, 1);
 });
 
 test('should handle onFocus and onBlur events and add focus to the element', (t) => {
-  const wrapper = mount(<Button classes={classes} />);
+  const wrapper = shallow(<Button classes={classes} />);
 
   wrapper.simulate('focus');
 

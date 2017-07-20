@@ -5913,9 +5913,9 @@ react-inspector@^2.0.0, react-inspector@^2.1.1:
     babel-runtime "^6.23.0"
     is-dom "^1.0.9"
 
-react-jss@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/react-jss/-/react-jss-7.0.1.tgz#36c505c3798993edd46ea01734f171f895348e25"
+react-jss@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-jss/-/react-jss-7.0.2.tgz#1939c8c41980dadadf25204953136fbdb6bd1ade"
   dependencies:
     hoist-non-react-statics "^1.2.0"
     jss "^8.1.0"

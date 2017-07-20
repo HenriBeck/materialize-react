@@ -1,10 +1,6 @@
 import React from 'react';
 import test from 'ava';
-import {
-  shallow,
-  mount,
-} from 'enzyme';
-import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
 import Tabs from './tabs';
 import Tab from '../tab';
@@ -68,92 +64,4 @@ test('should get the currently selected tab with the currentTab property', (t) =
   const instance = wrapper.instance();
 
   t.deepEqual(instance.currentTab, 'test1');
-});
-
-test('should change the state when with currentTab property', (t) => {
-  const wrapper = renderTabs(mount);
-  const instance = wrapper.instance();
-
-  instance.currentTab = 'test1';
-  instance.currentTab = 'test2';
-
-  t.deepEqual(wrapper.state('selectedTab'), 'test2');
-});
-
-test('should set the focusedTab state when the component receives focus', (t) => {
-  const wrapper = renderTabs(shallow);
-
-  wrapper.simulate('focus');
-
-  t.deepEqual(wrapper.state('focusedTab'), wrapper.state('selectedTab'));
-});
-
-test('should set the focusedTab state back to null the component looses focus', (t) => {
-  const wrapper = renderTabs(shallow);
-
-  wrapper.simulate('focus');
-  wrapper.simulate('blur');
-
-  t.deepEqual(wrapper.state('focusedTab'), null);
-});
-
-test('should change the state when the handlePress function get\'s called', (t) => {
-  const wrapper = renderTabs(mount);
-  const instance = wrapper.instance();
-
-  instance.handlePress('test2')();
-
-  t.deepEqual(wrapper.state(), {
-    selectedTab: 'test2',
-    focusedTab: 'test2',
-  });
-});
-
-test('should not animate the bar when the noBar prop is passed', (t) => {
-  const wrapper = renderTabs(shallow, { noBar: true });
-  const instance = wrapper.instance();
-  const animateBar = sinon.spy();
-
-  instance.animateBar = animateBar;
-
-  instance.componentDidMount();
-
-  t.deepEqual(animateBar.callCount, 0);
-});
-
-test('should not call onChange when Enter is pressed and the state does no change', (t) => {
-  const onChange = sinon.spy();
-  const wrapper = renderTabs(mount, { onChange });
-  const instance = wrapper.instance();
-
-  wrapper.simulate('focus');
-
-  instance.handleKeyPress({ keyCode: Tabs.switchOnKeyCodes[0] });
-
-  t.deepEqual(onChange.callCount, 0);
-});
-
-test('should call onChange when Enter is pressed and the state changes', (t) => {
-  const onChange = sinon.spy();
-  const wrapper = renderTabs(mount, { onChange });
-  const instance = wrapper.instance();
-
-  wrapper.simulate('focus');
-
-  wrapper.setState({ focusedTab: 'test2' });
-
-  instance.handleKeyPress({ keyCode: Tabs.switchOnKeyCodes[0] });
-
-  t.deepEqual(onChange.callCount, 1);
-});
-
-test('should move the focusedTab when the left arrow key is pressed', (t) => {
-  const wrapper = renderTabs(shallow);
-  const instance = wrapper.instance();
-
-  wrapper.simulate('focus');
-
-  instance.handleKeyPress({ keyCode: 39 });
-
-  t.deepEqual(wrapper.state('focusedTab'), 'test2');
 });

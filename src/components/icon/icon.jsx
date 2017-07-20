@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -25,7 +24,8 @@ export function Icon({
 }) {
   return (
     <i
-      className={`mdi-${icon} ${className} ${classes.icon} ${disabled && 'icon--disabled'}`}
+      className={`mdi-${icon} ${className} ${classes.icon}`}
+      aria-disabled={disabled}
       {...getNotDeclaredProps(props, Icon)}
     />
   );
@@ -43,14 +43,16 @@ Icon.defaultProps = {
   disabled: false,
 };
 
-const styles = {
-  icon: {
-    composes: 'icon mdi mdi-24px',
-    color: props => props.theme.color,
-    lineHeight: 24,
+Icon.styles = ({ icon: theme }) => {
+  return {
+    icon: {
+      composes: 'icon mdi mdi-24px',
+      color: theme.color,
+      lineHeight: 1,
 
-    '&.icon--disabled': { color: props => props.theme.disabledColor },
-  },
+      '&[aria-disabled=true]': { color: theme.disabledColor },
+    },
+  };
 };
 
-export default connectWithTheme(injectSheet(styles)(Icon), 'icon');
+export default injectSheet(Icon.styles)(Icon);

@@ -8,7 +8,6 @@ import warning from '../../utils/warning';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import elevation from '../../styles/elevation';
 import EventHandler from '../event-handler';
 
@@ -44,6 +43,77 @@ export class Fab extends PureComponent {
   };
 
   static keyCodes = [13, 32];
+
+  /**
+   * The styles for the component.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.fab - The actual theme for the fab component.
+   * @returns {Object} - Returns the styles which will be rendered.
+   */
+  static styles({ fab: theme }) {
+    return {
+      '@keyframes fab--scale-rotate-in': {
+        from: { transform: 'scale(0) rotate(-45deg)' },
+        to: { transform: 'scale(1) rotate(0deg)' },
+      },
+
+      fab: {
+        composes: 'fab',
+        zIndex: 16,
+        position: 'relative',
+        boxSizing: 'border-box',
+        borderRadius: '50%',
+        border: 0,
+        outline: 'none',
+        width: theme.normalSize,
+        height: theme.normalSize,
+        color: theme.iconColor,
+        boxShadow: elevation(theme.elevation),
+        padding: (theme.normalSize - theme.iconSize) / 2,
+        backgroundColor: theme.backgroundColor,
+
+        '&[aria-disabled=true]': {
+          pointerEvents: 'none',
+          backgroundColor: theme.disabledBackgroundColor,
+          boxShadow: elevation(theme.disabledElevation),
+        },
+
+        '&.fab--mini': {
+          width: theme.miniSize,
+          height: theme.miniSize,
+          padding: (theme.miniSize - theme.iconSize) / 2,
+        },
+
+        '&.fab--animate-in': {
+          animationName: 'fab--scale-rotate-in',
+          animationFillMode: 'forwards',
+          animationTimingFunction: easeInOutCubic,
+          animationDuration: theme.animationDuration,
+        },
+      },
+
+      icon: {
+        composes: 'fab--icon',
+        userSelect: 'none',
+        height: theme.iconSize,
+        width: theme.iconSize,
+      },
+
+      shadow: {
+        composes: 'fab--shadow',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        borderRadius: 'inherit',
+        opacity: 0,
+        boxShadow: elevation(theme.focusedElevation),
+        transition: `opacity ${theme.transitionTime}ms linear`,
+      },
+    };
+  }
 
   /**
    * Warn against changing the icon and mini prop of a fab.
@@ -140,66 +210,4 @@ export class Fab extends PureComponent {
   }
 }
 
-const styles = {
-  '@keyframes fab--scale-rotate-in': {
-    from: { transform: 'scale(0) rotate(-45deg)' },
-    to: { transform: 'scale(1) rotate(0deg)' },
-  },
-
-  fab: {
-    composes: 'fab',
-    zIndex: 16,
-    position: 'relative',
-    boxSizing: 'border-box',
-    borderRadius: '50%',
-    border: 0,
-    outline: 'none',
-    width: props => props.theme.normalSize,
-    height: props => props.theme.normalSize,
-    color: props => props.theme.iconColor,
-    boxShadow: props => elevation(props.theme.elevation),
-    padding: props => (props.theme.normalSize - props.theme.iconSize) / 2,
-    backgroundColor: props => props.theme.backgroundColor,
-
-    '&[aria-disabled=true]': {
-      pointerEvents: 'none',
-      backgroundColor: props => props.theme.disabledBackgroundColor,
-      boxShadow: props => elevation(props.theme.disabledElevation),
-    },
-
-    '&.fab--mini': {
-      width: props => props.theme.miniSize,
-      height: props => props.theme.miniSize,
-      padding: props => (props.theme.miniSize - props.theme.iconSize) / 2,
-    },
-
-    '&.fab--animate-in': {
-      animationName: 'fab--scale-rotate-in',
-      animationFillMode: 'forwards',
-      animationTimingFunction: easeInOutCubic,
-      animationDuration: props => props.theme.animationDuration,
-    },
-  },
-
-  icon: {
-    composes: 'fab--icon',
-    userSelect: 'none',
-    height: props => props.theme.iconSize,
-    width: props => props.theme.iconSize,
-  },
-
-  shadow: {
-    composes: 'fab--shadow',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    borderRadius: 'inherit',
-    opacity: 0,
-    boxShadow: props => elevation(props.theme.focusedElevation),
-    transition: props => `opacity ${props.theme.transitionTime}ms linear`,
-  },
-};
-
-export default connectWithTheme(injectSheet(styles)(Fab), 'fab');
+export default injectSheet(Fab.styles)(Fab);

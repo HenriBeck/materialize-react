@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import Ripple from '../ripple';
 import Label from '../label';
@@ -101,80 +100,82 @@ Switch.propTypes = {
   labelPosition: PropTypes.string.isRequired,
 };
 
-const styles = {
-  switch: {
-    composes: 'switch',
-    display: 'inline-flex',
-    alignItems: 'center',
+Switch.styles = ({ switch: theme }) => {
+  return {
+    switch: {
+      composes: 'switch',
+      display: 'inline-flex',
+      alignItems: 'center',
 
-    '&:focus': { outline: 0 },
+      '&:focus': { outline: 0 },
 
-    '&.switch--label-left': { flexDirection: 'row-reverse' },
+      '&.switch--label-left': { flexDirection: 'row-reverse' },
 
-    '&[aria-disabled=true]': { pointerEvents: 'none' },
+      '&[aria-checked=true] $thumb': {
+        transform: 'translateX(16px)',
+        backgroundColor: theme.checkedThumbColor,
+      },
 
-    '&[aria-disabled=true] $label': { cursor: 'pointer' },
+      '&[aria-checked=true] $bar': { backgroundColor: theme.checkedBarColor },
 
-    '&[aria-checked=true] $thumb': {
-      transform: 'translateX(16px)',
-      backgroundColor: props => props.theme.checkedThumbColor,
+      '&[aria-disabled=true] $thumb': { backgroundColor: theme.disabledThumbColor },
+
+      '&[aria-disabled=true] $bar': { backgroundColor: theme.disabledBarColor },
+
+      '&[aria-disabled=true]': { pointerEvents: 'none' },
+
+      '&[aria-disabled=true] $label': { cursor: 'pointer' },
     },
 
-    '&[aria-checked=true] $bar': { backgroundColor: props => props.theme.checkedBarColor },
+    container: {
+      composes: 'switch--container',
+      position: 'relative',
+      height: theme.barHeight,
+      width: theme.barWidth,
+      margin: (theme.rippleSize - theme.barHeight) / 2 + 4,
+    },
 
-    '&[aria-disabled=true] $thumb': { backgroundColor: props => props.theme.disabledThumbColor },
+    thumb: {
+      composes: 'switch--thumb',
+      position: 'absolute',
+      left: 0,
+      borderRadius: '50%',
+      transitionProperty: 'transform, background-color',
+      willChange: 'transform',
+      boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.6)',
+      transitionDuration: theme.transitionDuration,
+      top: (theme.barHeight - theme.thumbSize) / 2,
+      height: theme.thumbSize,
+      width: theme.thumbSize,
+      backgroundColor: theme.uncheckedThumbColor,
+    },
 
-    '&[aria-disabled=true] $bar': { backgroundColor: props => props.theme.disabledBarColor },
-  },
+    bar: {
+      composes: 'switch--bar',
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      pointerEvents: 'none',
+      transitionProperty: 'background-color',
+      transitionDuration: theme.transitionDuration,
+      borderRadius: theme.barHeight / 2,
+      backgroundColor: theme.uncheckedBarColor,
+    },
 
-  container: {
-    composes: 'switch--container',
-    position: 'relative',
-    height: props => props.theme.barHeight,
-    width: props => props.theme.barWidth,
-    margin: props => (props.theme.rippleSize - props.theme.barHeight) / 2 + 4,
-  },
+    ripple: {
+      composes: 'switch--ripple',
+      position: 'absolute',
+      top: (theme.thumbSize - theme.rippleSize) / 2,
+      left: (theme.thumbSize - theme.rippleSize) / 2,
+      right: (theme.thumbSize - theme.rippleSize) / 2,
+      bottom: (theme.thumbSize - theme.rippleSize) / 2,
+    },
 
-  thumb: {
-    composes: 'switch--thumb',
-    position: 'absolute',
-    left: 0,
-    borderRadius: '50%',
-    transitionProperty: 'transform, background-color',
-    willChange: 'transform',
-    boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.6)',
-    transitionDuration: props => props.theme.transitionDuration,
-    top: props => (props.theme.barHeight - props.theme.thumbSize) / 2,
-    height: props => props.theme.thumbSize,
-    width: props => props.theme.thumbSize,
-    backgroundColor: props => props.theme.uncheckedThumbColor,
-  },
-
-  bar: {
-    composes: 'switch--bar',
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    pointerEvents: 'none',
-    transitionProperty: 'background-color',
-    transitionDuration: props => props.theme.transitionDuration,
-    borderRadius: props => props.theme.barHeight / 2,
-    backgroundColor: props => props.theme.uncheckedBarColor,
-  },
-
-  ripple: {
-    composes: 'switch--ripple',
-    position: 'absolute',
-    top: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
-    right: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
-    bottom: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
-    left: props => (props.theme.thumbSize - props.theme.rippleSize) / 2,
-  },
-
-  label: {
-    composes: 'switch--label',
-    padding: 0,
-  },
+    label: {
+      composes: 'switch--label',
+      padding: 0,
+    },
+  };
 };
 
-export default connectWithTheme(injectSheet(styles)(Switch), 'switch');
+export default injectSheet(Switch.styles)(Switch);

@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import Theme, { compileTheme } from './theme';
 
-test('should just render a Jss Provider', (t) => {
+test('should just render a Theme Provider', (t) => {
   const wrapper = shallow(
     <Theme>
       <div>
@@ -14,7 +14,7 @@ test('should just render a Jss Provider', (t) => {
     </Theme>,
   );
 
-  t.deepEqual(wrapper.find('JssProvider').length, 1);
+  t.deepEqual(wrapper.find('ThemeProvider').length, 1);
 });
 
 test('should compile a theme', (t) => {

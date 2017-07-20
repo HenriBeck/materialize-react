@@ -17,7 +17,7 @@ test('should have the disabledColor of the theme when the icon is disabled', (t)
       icon="github"
     />,
   );
-  const className = wrapper.find('i').prop('className');
+  const element = wrapper.find('i');
 
-  t.true(className.includes('icon--disabled'));
+  t.true(element.prop('aria-disabled'));
 });
