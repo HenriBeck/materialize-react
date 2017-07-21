@@ -53,15 +53,12 @@ export function Switch(props) {
       onKeyPress={onKeyPress}
       onFocus={onFocus}
       onBlur={onBlur}
+      onPress={onPress}
     >
       <span className={classes.container}>
         <span className={classes.bar} />
 
-        <EventHandler
-          component="span"
-          className={classes.thumb}
-          onPress={onPress}
-        >
+        <span className={classes.thumb}>
           <Ripple
             round
             center
@@ -71,7 +68,7 @@ export function Switch(props) {
             isFocused={isFocused}
             className={classes.ripple}
           />
-        </EventHandler>
+        </span>
       </span>
 
       <Label
