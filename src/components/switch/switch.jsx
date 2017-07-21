@@ -63,6 +63,8 @@ export function Switch(props) {
           onPress={onPress}
         >
           <Ripple
+            round
+            center
             nowaves={noink}
             focusColor={rippleFocusColor}
             color={rippleColor}
