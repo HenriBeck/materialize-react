@@ -136,19 +136,17 @@ export class RadioButton extends PureComponent {
     const labelClass = labelPosition === 'left' && 'radio-button--label-left';
 
     return (
-      <span
+      <EventHandler
         {...getNotDeclaredProps(props, RadioButton)}
+        component="span"
         role="radio"
         id={this.id}
         className={`${className} ${classes.radioButton} ${labelClass}`}
         aria-checked={checked}
         aria-disabled={disabled}
+        onPress={onPress}
       >
-        <EventHandler
-          component="span"
-          className={classes.container}
-          onPress={onPress}
-        >
+        <span className={classes.container}>
           <Ripple
             round
             center
@@ -160,7 +158,7 @@ export class RadioButton extends PureComponent {
           <span className={classes.border} />
 
           <span className={classes.circle} />
-        </EventHandler>
+        </span>
 
         <Label
           htmlFor={this.id}
@@ -169,7 +167,7 @@ export class RadioButton extends PureComponent {
         >
           {children}
         </Label>
-      </span>
+      </EventHandler>
     );
   }
 }

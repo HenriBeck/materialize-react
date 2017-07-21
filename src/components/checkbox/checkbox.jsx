@@ -214,13 +214,9 @@ export class Checkbox extends PureComponent {
         onKeyPress={this.props.onKeyPress}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
+        onPress={this.props.onPress}
       >
-        <EventHandler
-          component="span"
-          role="presentation"
-          className={classes.container}
-          onPress={this.props.onPress}
-        >
+        <span className={classes.container}>
           <span
             className={classes.checkboxContainer}
             ref={(element) => { this.checkbox = element; }}
@@ -238,7 +234,7 @@ export class Checkbox extends PureComponent {
             isFocused={this.props.isFocused}
             {...this.getRippleProps()}
           />
-        </EventHandler>
+        </span>
 
         <Label
           className={classes.label}
