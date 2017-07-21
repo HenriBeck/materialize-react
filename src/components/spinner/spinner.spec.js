@@ -2,7 +2,7 @@ import test from 'ava';
 import React from 'react';
 
 import { mount } from '../../../tests/helpers/enzyme';
-import SpinnerWrapper, { Spinner } from './spinner';
+import SpinnerWrapper from './spinner';
 
 test('should render a div with an svg inside', (t) => {
   const wrapper = mount(<SpinnerWrapper />);
@@ -30,23 +30,20 @@ test('should fade the spinner in/out when the active prop changes', (t) => {
   t.deepEqual(root().node.style.opacity, '0');
 });
 
-test('should remove the active class after the fade out animation finishes', (t) => {
-  const wrapper = mount(
-    <Spinner
-      active
-      classes={{ spinner: 'spinner' }}
-      theme={{ spinner: {} }}
-    />,
-  );
-  const instance = wrapper.instance();
+test('should remove the active class when the transition end handler get\'s called', (t) => {
+  const wrapper = mount(<SpinnerWrapper />);
 
-  instance.fadeOut();
+  wrapper.setProps({ active: true });
 
-  instance.anim.onfinish();
+  wrapper.simulate('transitionEnd');
+
+  wrapper.setProps({ active: false });
+
+  wrapper.simulate('transitionEnd');
 
   const root = wrapper.find('.spinner');
 
-  t.deepEqual(root.node.classList.contains('spinner--active'), false);
+  t.true(!root.node.classList.contains('spinner--active'));
 });
 
 test('should not update the opacity of the spinner when the active prop doesn\'t changes', (t) => {

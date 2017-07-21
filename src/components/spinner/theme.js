@@ -7,6 +7,7 @@ export const schema = PropTypes.shape({
   color: PropTypes.string.isRequired,
   strokeWidth: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
+  fadeInOutDuration: PropTypes.number.isRequired,
 });
 
 /**
@@ -23,5 +24,6 @@ export function defaultTheme(vars) {
     color: vars.primaryBase,
     strokeWidth: 4,
     size: 56,
+    fadeInOutDuration: 1333 / 3,
   };
 }
