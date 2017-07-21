@@ -14,7 +14,6 @@ import { easeInOutCubic } from '../../styles/timings';
 export class Spinner extends PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
     active: PropTypes.bool,
     className: PropTypes.string,
   };
@@ -66,6 +65,8 @@ export class Spinner extends PureComponent {
         height: theme.size,
         padding: 8,
         boxSizing: 'border-box',
+        opacity: 0,
+        transition: `opacity ${theme.fadeInOutDuration / 2}ms ${easeInOutCubic}`,
 
         '&.spinner--active $container': { animationName: 'spinner--container-rotate' },
 
@@ -182,11 +183,7 @@ export class Spinner extends PureComponent {
     }
   }
 
-  animationOptions = {
-    duration: this.props.theme.spinner.expandContractDuration / 2,
-    easing: easeInOutCubic,
-    fill: 'forwards',
-  };
+  removeActiveClass = false;
 
   /**
    * Fade the spinner in.
@@ -196,7 +193,7 @@ export class Spinner extends PureComponent {
   fadeIn() {
     this.root.classList.add('spinner--active');
 
-    this.root.animate({ opacity: [0, 1] }, this.animationOptions);
+    this.root.style.opacity = 1;
   }
 
   /**
@@ -205,24 +202,35 @@ export class Spinner extends PureComponent {
    * @private
    */
   fadeOut() {
-    this.anim = this.root.animate({ opacity: [1, 0] }, this.animationOptions);
+    this.removeActiveClass = true;
 
-    this.anim.onfinish = () => this.root.classList.remove('spinner--active');
+    this.root.style.opacity = 0;
   }
+
+  /**
+   * When the transition ends we need to check if we should handle the event
+   * and remove the .spinner--active class.
+   */
+  handleTransitionEnd = () => {
+    if (this.removeActiveClass) {
+      this.removeActiveClass = false;
+
+      this.root.classList.remove('spinner--active');
+    }
+  };
 
   render() {
     const { classes } = this.props;
 
     return (
       <div
+        role="presentation"
         {...getNotDeclaredProps(this.props, Spinner)}
         className={`${classes.spinner} ${this.props.className}`}
         ref={(element) => { this.root = element; }}
+        onTransitionEnd={this.handleTransitionEnd}
       >
-        <div
-          className={classes.container}
-          ref={(element) => { this.container = element; }}
-        >
+        <div className={classes.container}>
           <div className={classes.layer}>
             <div className={`${classes.clipper} ${classes.clipperLeft}`} />
             <div className={`${classes.clipper} ${classes.clipperRight}`} />
