@@ -153,7 +153,7 @@ export class Checkbox extends PureComponent {
    */
   getRippleProps() {
     const {
-      theme,
+      theme: { checkbox: theme },
       checked,
     } = this.props;
 
@@ -175,7 +175,7 @@ export class Checkbox extends PureComponent {
     this.checkmark.animate(animations, {
       easing: easeInOutCubic,
       fill: 'forwards',
-      duration: this.props.theme.animationDuration,
+      duration: this.props.theme.checkbox.animationDuration,
     });
   }
 
