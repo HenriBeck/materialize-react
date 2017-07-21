@@ -6,7 +6,6 @@ import Ripple from '../ripple';
 import Icon from '../icon';
 import warning from '../../utils/warning';
 import getNotDeclaredProps from '../../get-not-declared-props';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 
 /**
@@ -38,6 +37,38 @@ export class IconButton extends PureComponent {
   };
 
   static keyCodes = [13, 32];
+
+  /**
+   * The styles for the component.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.iconButton - The actual theme for the icon button component.
+   * @returns {Object} - Returns the styles which will be rendered.
+   */
+  static styles({ iconButton: theme }) {
+    return {
+      iconButton: {
+        composes: 'icon-button',
+        position: 'relative',
+        backgroundColor: 'inherit',
+        borderRadius: '50%',
+        outline: 0,
+        border: 0,
+        height: theme.size,
+        width: theme.size,
+        margin: theme.margin,
+        padding: (theme.size - theme.iconSize) / 2,
+
+        '&[aria-disabled=true]': { pointerEvents: 'none' },
+      },
+
+      icon: {
+        composes: 'icon-button--icon',
+        display: 'inline-flex',
+        fontSize: theme.iconSize,
+      },
+    };
+  }
 
   state = { isFocused: false };
 
@@ -126,27 +157,4 @@ export class IconButton extends PureComponent {
   }
 }
 
-const styles = {
-  iconButton: {
-    composes: 'icon-button',
-    position: 'relative',
-    backgroundColor: 'inherit',
-    borderRadius: '50%',
-    outline: 0,
-    border: 0,
-    height: props => props.theme.size,
-    width: props => props.theme.size,
-    margin: props => props.theme.margin,
-    padding: props => (props.theme.size - props.theme.iconSize) / 2,
-
-    '&[aria-disabled=true]': { pointerEvents: 'none' },
-  },
-
-  icon: {
-    composes: 'icon-button--icon',
-    display: 'inline-flex',
-    fontSize: props => props.theme.iconSize,
-  },
-};
-
-export default connectWithTheme(injectSheet(styles)(IconButton), 'iconButton');
+export default injectSheet(IconButton.styles)(IconButton);

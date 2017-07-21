@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import EventHandler from '../event-handler';
 import { easeInOutQuad } from '../../styles/timings';
 import getNotDeclaredProps from '../../get-not-declared-props';
@@ -24,6 +23,41 @@ export class TabsContainer extends PureComponent {
     createRef: PropTypes.func.isRequired,
     noBar: PropTypes.bool.isRequired,
   };
+
+  /**
+   * The styles for the component.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.tabs - The actual theme for the tabs component.
+   * @returns {Object} - Returns the styles which will be rendered.
+   */
+  static styles({ tabs: theme }) {
+    return {
+      tabs: {
+        composes: 'tabs',
+        display: 'flex',
+        flexDirection: 'row',
+        position: 'relative',
+
+        '&:focus': { outline: 0 },
+      },
+
+      bar: {
+        composes: 'tabs--bar',
+        position: 'absolute',
+        left: 0,
+        bottom: 0,
+        height: 2,
+        width: 1,
+        transform: 'scaleX(0) translateX(0px)',
+        transformOrigin: 'left center',
+        willChange: 'transform',
+        transition: `transform ${easeInOutQuad}`,
+        transitionDuration: theme.transitionDuration,
+        backgroundColor: theme.barColor,
+      },
+    };
+  }
 
   /**
    * Expose the instance to the parent.
@@ -79,30 +113,4 @@ export class TabsContainer extends PureComponent {
   }
 }
 
-const styles = {
-  tabs: {
-    composes: 'tabs',
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'relative',
-
-    '&:focus': { outline: 0 },
-  },
-
-  bar: {
-    composes: 'tabs--bar',
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    height: 2,
-    width: 1,
-    transform: 'scaleX(0) translateX(0px)',
-    transformOrigin: 'left center',
-    willChange: 'transform',
-    transition: `transform ${easeInOutQuad}`,
-    transitionDuration: props => props.theme.transitionDuration,
-    backgroundColor: props => props.theme.barColor,
-  },
-};
-
-export default connectWithTheme(injectSheet(styles)(TabsContainer), 'tabs');
+export default injectSheet(TabsContainer.styles)(TabsContainer);

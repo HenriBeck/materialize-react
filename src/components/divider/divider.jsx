@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -33,12 +32,14 @@ Divider.propTypes = {
 
 Divider.defaultProps = { className: '' };
 
-const styles = {
-  divider: {
-    composes: 'divider',
-    height: props => props.theme.height,
-    backgroundColor: props => props.theme.backgroundColor,
-  },
+Divider.styles = ({ divider: theme }) => {
+  return {
+    divider: {
+      composes: 'divider',
+      height: theme.height,
+      backgroundColor: theme.backgroundColor,
+    },
+  };
 };
 
-export default connectWithTheme(injectSheet(styles)(Divider), 'divider');
+export default injectSheet(Divider.styles)(Divider);

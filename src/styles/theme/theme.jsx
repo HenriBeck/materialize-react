@@ -1,28 +1,31 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  ThemeProvider,
+  JssProvider,
+} from 'react-jss';
 
-import jssInstance from '../jss';
-import { jss } from 'react-jss/lib/ns';
-import themeSchema from './theme-schema';
+import jss from '../jss';
 import {
   defaultTheme,
   defaultVars,
 } from './default-theme';
-import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * Compile the theme and merge it with the default theme.
  *
  * @private
- * @param {Object} variables - The variables that will be passed to the theme functions.
- * @param {Object} [theme] - The theme provided by the user.
+ * @param {Object} customVariables - The variables that will be passed to the theme functions.
+ * @param {Object} customTheme - The theme provided by the user.
  * @returns {Object} - Returns the compiled theme.
  */
-export function compileTheme(variables, theme) {
+export function compileTheme(customVariables, customTheme) {
+  const variables = Object.assign({}, defaultVars, customVariables);
+
   return Object
     .keys(defaultTheme)
     .reduce((current, component) => {
-      const userTheme = theme[component] ? theme[component](variables) : {};
+      const userTheme = customTheme[component] ? customTheme[component](variables) : {};
 
       return {
         ...current,
@@ -32,63 +35,32 @@ export function compileTheme(variables, theme) {
 }
 
 /**
- * A React Component to supply the theme for the elements via the context.
+ * A React Component to supply a custom jss instance for our components and the theme.
  *
- * @class
+ * @param {Object} props - The props for the component.
+ * @returns {JSX} - Returns the children wrapped by a child component.
  */
-export default class Theme extends PureComponent {
-  static propTypes = {
-    theme: PropTypes.object,
-    variables: PropTypes.object,
-    children: PropTypes.node,
-    component: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.string,
-    ]),
-  };
+export default function Theme(props) {
+  const compiledTheme = compileTheme(props.variables, props.theme);
 
-  static defaultProps = {
-    theme: {},
-    variables: {},
-    children: '',
-    component: 'div',
-  };
+  // PropTypes.checkPropTypes(themeSchema, compiledTheme, 'prop', 'Theme');
 
-  static childContextTypes = {
-    theme: themeSchema,
-    [jss]: PropTypes.object,
-  };
-
-  /**
-   * Merge the passed in theme with the default one.
-   */
-  getChildContext() {
-    return {
-      theme: compileTheme(this.variables, this.props.theme),
-      [jss]: jssInstance,
-    };
-  }
-
-  /**
-   * Merge the default variables with the from the user.
-   *
-   * @returns {Object} - Returns the merged variables.
-   */
-  get variables() {
-    return Object.assign({}, defaultVars, this.props.variables);
-  }
-
-  render() {
-    const {
-      component: Component,
-      children,
-      ...props
-    } = this.props;
-
-    return (
-      <Component {...getNotDeclaredProps(props, Theme)}>
-        {children}
-      </Component>
-    );
-  }
+  return (
+    <JssProvider jss={jss}>
+      <ThemeProvider theme={compiledTheme}>
+        {props.children}
+      </ThemeProvider>
+    </JssProvider>
+  );
 }
+
+Theme.propTypes = {
+  children: PropTypes.element.isRequired,
+  variables: PropTypes.object,
+  theme: PropTypes.object,
+};
+
+Theme.defaultProps = {
+  variables: {},
+  theme: {},
+};

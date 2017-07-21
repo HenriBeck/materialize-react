@@ -52,7 +52,7 @@
     "randomstring": "1.1.5",
     "react": "15.6.1",
     "react-get-not-declared-props": "0.2.0",
-    "react-jss": "7.0.1",
+    "react-jss": "7.0.2",
     "web-animations-js": "2.2.5"
   },
   "devDependencies": {

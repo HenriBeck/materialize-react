@@ -6,11 +6,8 @@ import SpinnerWrapper, { Spinner } from './spinner';
 
 test('should render a div with an svg inside', (t) => {
   const wrapper = mount(<SpinnerWrapper />);
-  const children = wrapper.find('.spinner').children();
 
   t.deepEqual(wrapper.find('Jss(Spinner)').length, 1);
-  t.deepEqual(children.length, 1);
-  t.deepEqual(children.children().length, 1);
 });
 
 test('should fade in the animation when the active prop is passed', (t) => {
@@ -20,44 +17,44 @@ test('should fade in the animation when the active prop is passed', (t) => {
   t.deepEqual(root.node.style.opacity, '1');
 });
 
-test('should fade in/out the animation when the active prop is changed', (t) => {
-  const wrapper = mount(<SpinnerWrapper active />);
-  const root = wrapper.find('.spinner');
-
-  t.deepEqual(root.node.style.opacity, '1');
-
-  wrapper.setProps({ active: false });
-
-  t.deepEqual(root.node.style.opacity, '0');
+test('should fade the spinner in/out when the active prop changes', (t) => {
+  const wrapper = mount(<SpinnerWrapper />);
+  const root = () => wrapper.find('.spinner');
 
   wrapper.setProps({ active: true });
 
-  t.deepEqual(root.node.style.opacity, '1');
+  t.deepEqual(root().node.style.opacity, '1');
+
+  wrapper.setProps({ active: false });
+
+  t.deepEqual(root().node.style.opacity, '0');
 });
 
-test('should not update the opacity of the spinner and only add the new styles', (t) => {
-  const wrapper = mount(<SpinnerWrapper active />);
-
-  wrapper.setProps({ className: 'something' });
-
-  const div = wrapper.find('.spinner').first();
-
-  t.true(div.prop('className').includes('something'));
-});
-
-test('should remove and add the active class if necessary', (t) => {
+test('should remove the active class after the fade out animation finishes', (t) => {
   const wrapper = mount(
     <Spinner
       active
       classes={{ spinner: 'spinner' }}
-      theme={{}}
+      theme={{ spinner: {} }}
     />,
   );
+  const instance = wrapper.instance();
+
+  instance.fadeOut();
+
+  instance.anim.onfinish();
+
   const root = wrapper.find('.spinner');
 
-  wrapper.setProps({ active: false });
+  t.deepEqual(root.node.classList.contains('spinner--active'), false);
+});
 
-  wrapper.instance().anim.onfinish();
+test('should not update the opacity of the spinner when the active prop doesn\'t changes', (t) => {
+  const wrapper = mount(<SpinnerWrapper />);
 
-  t.deepEqual(root.prop('className').includes('.spinner--active'), false);
+  wrapper.setProps({ className: 'spinner--test' });
+
+  const className = wrapper.find('.spinner').prop('className');
+
+  t.true(className.includes('spinner--test'));
 });

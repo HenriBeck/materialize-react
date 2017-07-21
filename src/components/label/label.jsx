@@ -4,7 +4,6 @@ import injectSheet from 'react-jss';
 
 import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 
 /**
  * A function to render a label tag with special material design stylings.
@@ -38,17 +37,19 @@ Label.defaultProps = {
   disabled: false,
 };
 
-const styles = {
-  label: {
-    ...body1,
-    composes: 'label',
-    userSelect: 'none',
-    padding: '0 8px',
-    color: props => props.theme.color,
+Label.styles = ({ label: theme }) => {
+  return {
+    label: {
+      ...body1,
+      composes: 'label',
+      userSelect: 'none',
+      padding: '0 8px',
+      color: theme.color,
 
-    '&[aria-disabled]': { color: props => props.theme.disabledColor },
-  },
+      '&[aria-disabled=true]': { color: theme.disabledColor },
+    },
+  };
 };
 
-export default connectWithTheme(injectSheet(styles)(Label), 'label');
+export default injectSheet(Label.styles)(Label);
 

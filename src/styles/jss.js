@@ -14,7 +14,7 @@ jss.use(cache());
 jss.use(nested());
 jss.use(compose());
 jss.use(camelCase());
-jss.use(defaultUnit({ 'line-height': 'px' }));
+jss.use(defaultUnit());
 jss.use(vendorPrefixer());
 jss.use(propsSort());
 

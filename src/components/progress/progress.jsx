@@ -6,7 +6,6 @@ import injectSheet from 'react-jss';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import { easeInOutCubic } from '../../styles/timings';
 import warning from '../../utils/warning';
-import connectWithTheme from '../../styles/theme/connect-with-theme';
 
 /**
  * A component to render a material design progress bar.
@@ -44,6 +43,109 @@ export class Progress extends PureComponent {
    */
   static clamp(value) {
     return Math.max(0, Math.min(value, 100));
+  }
+
+  /**
+   * The styles for the component.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.progress - The actual theme for the progress component.
+   * @returns {Object} - Returns the styles which will be rendered.
+   */
+  static styles({ progress: theme }) {
+    return {
+      '@keyframes progress--bar': {
+        '0%': { transform: 'scaleX(1) translateX(-100%)' },
+        '50%': { transform: 'scaleX(1) translateX(0%)' },
+        '75%': {
+          transform: 'scaleX(1) translateX(0%)',
+          animationTimingFunction: 'cubic-bezier(.28, .62, .37, .91)',
+        },
+        '100%': { transform: 'scaleX(0) translateX(0%)' },
+      },
+
+      '@keyframes progress--splitter': {
+        '0%': { transform: 'scaleX(.75) translateX(-125%)' },
+        '30%': {
+          transform: 'scaleX(.75) translateX(-125%)',
+          animationTimingFunction: 'cubic-bezier(.42, 0, .6, .8)',
+        },
+        '90%': { transform: 'scaleX(.75) translateX(125%)' },
+        '100%': { transform: 'scaleX(.75) translateX(125%)' },
+      },
+
+      progress: {
+        composes: 'progress',
+        display: 'block',
+        position: 'relative',
+        width: '100%',
+        overflow: 'hidden',
+
+        '&.progress--indeterminate $primaryBar': {
+          transformOrigin: 'right center',
+          animationIterationCount: 'infinite',
+          animationDuration: theme.indeterminateDuration,
+        },
+
+        '&.progress--indeterminate $primaryBar::after': {
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          content: '""',
+          transformOrigin: 'center center',
+          animationIterationCount: 'infinite',
+          height: theme.barHeight,
+          backgroundColor: theme.backgroundColor,
+          animationDuration: theme.indeterminateDuration,
+        },
+
+        '&.progress--indeterminate[data-active] $primaryBar': {
+          animationName: 'progress--bar',
+
+          '&::after': { animationName: 'progress--splitter' },
+        },
+
+        '&[aria-disabled=true] $primaryBar': { backgroundColor: theme.disabledPrimaryBarColor },
+
+        '&[aria-disabled=true] $secondaryBar': { backgroundColor: theme.disabledSecondaryBarColor },
+      },
+
+      container: {
+        composes: 'progress--container',
+        position: 'relative',
+        width: '100%',
+        height: theme.barHeight,
+        backgroundColor: theme.backgroundColor,
+      },
+
+      primaryBar: {
+        composes: 'progress--primary-bar',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        transformOrigin: 'left center',
+        willChange: 'transform',
+        transform: 'scaleX(0)',
+        backgroundColor: theme.primaryBarColor,
+      },
+
+      secondaryBar: {
+        composes: 'progress--secondary-bar',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        transformOrigin: 'left center',
+        willChange: 'transform',
+        transform: 'scaleX(0)',
+        backgroundColor: theme.secondaryBarColor,
+      },
+    };
   }
 
   /**
@@ -100,7 +202,7 @@ export class Progress extends PureComponent {
     const transform = window.getComputedStyle(elem).transform;
     const clampNewValue = Progress.clamp(newProgress);
     const clampPrevValue = Progress.clamp(prevProgress);
-    const { fullAnimationDuration } = this.props.theme;
+    const { fullAnimationDuration } = this.props.theme.progress;
 
     elem.animate({
       transform: [
@@ -157,102 +259,4 @@ export class Progress extends PureComponent {
   }
 }
 
-const layoutFit = {
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0,
-};
-
-const styles = {
-  '@keyframes progress--bar': {
-    '0%': { transform: 'scaleX(1) translateX(-100%)' },
-    '50%': { transform: 'scaleX(1) translateX(0%)' },
-    '75%': {
-      transform: 'scaleX(1) translateX(0%)',
-      animationTimingFunction: 'cubic-bezier(.28, .62, .37, .91)',
-    },
-    '100%': { transform: 'scaleX(0) translateX(0%)' },
-  },
-
-  '@keyframes progress--splitter': {
-    '0%': { transform: 'scaleX(.75) translateX(-125%)' },
-    '30%': {
-      transform: 'scaleX(.75) translateX(-125%)',
-      animationTimingFunction: 'cubic-bezier(.42, 0, .6, .8)',
-    },
-    '90%': { transform: 'scaleX(.75) translateX(125%)' },
-    '100%': { transform: 'scaleX(.75) translateX(125%)' },
-  },
-
-  progress: {
-    composes: 'progress',
-    display: 'block',
-    position: 'relative',
-    width: '100%',
-    overflow: 'hidden',
-
-    '&.progress--indeterminate $primaryBar': {
-      transformOrigin: 'right center',
-      animationIterationCount: 'infinite',
-      animationDuration: props => props.theme.indeterminateDuration,
-    },
-
-    '&.progress--indeterminate $primaryBar::after': {
-      ...layoutFit,
-      content: '""',
-      transformOrigin: 'center center',
-      animationIterationCount: 'infinite',
-      height: props => props.theme.barHeight,
-      backgroundColor: props => props.theme.backgroundColor,
-      animationDuration: props => props.theme.indeterminateDuration,
-    },
-
-    '&.progress--indeterminate[data-active] $primaryBar': {
-      animationName: 'progress--bar',
-
-      '&::after': { animationName: 'progress--splitter' },
-    },
-
-    '&[aria-disabled=true] $primaryBar': {
-      backgroundColor(props) {
-        return props.theme.disabledPrimaryBarColor;
-      },
-    },
-
-    '&[aria-disabled=true] $secondaryBar': {
-      backgroundColor(props) {
-        return props.theme.disabledSecondaryBarColor;
-      },
-    },
-  },
-
-  container: {
-    composes: 'progress--container',
-    position: 'relative',
-    width: '100%',
-    height: props => props.theme.barHeight,
-    backgroundColor: props => props.theme.backgroundColor,
-  },
-
-  primaryBar: {
-    composes: 'progress--primary-bar',
-    ...layoutFit,
-    transformOrigin: 'left center',
-    willChange: 'transform',
-    transform: 'scaleX(0)',
-    backgroundColor: props => props.theme.primaryBarColor,
-  },
-
-  secondaryBar: {
-    composes: 'progress--secondary-bar',
-    ...layoutFit,
-    transformOrigin: 'left center',
-    willChange: 'transform',
-    transform: 'scaleX(0)',
-    backgroundColor: props => props.theme.secondaryBarColor,
-  },
-};
-
-export default connectWithTheme(injectSheet(styles)(Progress), 'progress');
+export default injectSheet(Progress.styles)(Progress);

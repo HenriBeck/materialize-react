@@ -1,8 +1,8 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
+import { mount } from 'enzyme';
 
-import { mount } from '../../../tests/helpers/enzyme';
 import Wave from './wave';
 
 const defaultProps = {
