@@ -57,3 +57,13 @@ test('should set the aria-disabled attribute on the root element', (t) => {
 
   t.deepEqual(wrapper.find({ role: 'checkbox' }).prop('aria-disabled'), true);
 });
+
+test('should add the class checkbox--label-left when the labelPosition is left', (t) => {
+  const wrapper = mount(<CheckboxWrapper {...defaultProps} />);
+
+  wrapper.setProps({ labelPosition: 'left' });
+
+  const className = wrapper.find({ role: 'checkbox' }).prop('className');
+
+  t.deepEqual(className.includes('checkbox--label-left'), true);
+});
