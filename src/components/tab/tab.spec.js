@@ -6,6 +6,7 @@ import TabWrapper, { Tab } from './tab';
 import { mount } from '../../../tests/helpers/enzyme';
 
 const props = {
+  name: 'test',
   theme: {},
   classes: {},
   onPress: () => {},
