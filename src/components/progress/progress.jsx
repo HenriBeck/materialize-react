@@ -130,6 +130,7 @@ export class Progress extends PureComponent {
         transformOrigin: 'left center',
         willChange: 'transform',
         transform: 'scaleX(0)',
+        transition: `transform ${easeInOutCubic}`,
         backgroundColor: theme.primaryBarColor,
       },
 
@@ -143,6 +144,7 @@ export class Progress extends PureComponent {
         transformOrigin: 'left center',
         willChange: 'transform',
         transform: 'scaleX(0)',
+        transition: `transform ${easeInOutCubic}`,
         backgroundColor: theme.secondaryBarColor,
       },
     };
@@ -199,21 +201,15 @@ export class Progress extends PureComponent {
    * @param {Number} newProgress - The new progress to animate too.
    */
   animateBar(elem, prevProgress, newProgress) {
-    const transform = window.getComputedStyle(elem).transform;
     const clampNewValue = Progress.clamp(newProgress);
     const clampPrevValue = Progress.clamp(prevProgress);
     const { fullAnimationDuration } = this.props.theme.progress;
+    const duration = Math.abs((clampPrevValue - clampNewValue) / 100) * fullAnimationDuration;
 
-    elem.animate({
-      transform: [
-        transform,
-        `matrix(${clampNewValue / 100}, 0, 0, 1, 0, 0)`,
-      ],
-    }, {
-      fill: 'forwards',
-      duration: Math.abs((clampPrevValue - clampNewValue) / 100) * fullAnimationDuration,
-      easing: easeInOutCubic,
-    });
+    /* eslint-disable no-param-reassign */
+    elem.style.transitionDuration = `${duration}ms`;
+    elem.style.transform = `matrix(${clampNewValue / 100}, 0, 0, 1, 0, 0)`;
+    /* eslint-enable no-param-reassign */
   }
 
   render() {

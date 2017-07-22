@@ -44,6 +44,28 @@ export class Checkbox extends PureComponent {
     const { disabledCheckedBgColor } = theme;
 
     return {
+      '@keyframes checkbox--animate-in': {
+        from: {
+          opacity: 1,
+          transform: 'scale(0) rotate(-45deg)',
+        },
+        to: {
+          opacity: 1,
+          transform: 'scale(1) rotate(45deg)',
+        },
+      },
+
+      '@keyframes checkbox--animate-out': {
+        from: {
+          opacity: 1,
+          transform: 'scale(1) rotate(45deg)',
+        },
+        to: {
+          opacity: 0,
+          transform: 'scale(1) rotate(45deg)',
+        },
+      },
+
       checkbox: {
         composes: 'checkbox',
         boxSizing: 'border-box',
@@ -119,6 +141,9 @@ export class Checkbox extends PureComponent {
         boxSizing: 'content-box',
         willChange: 'opacity, transform',
         opacity: 0,
+        animationDuration: `${theme.animationDuration}ms`,
+        animationFillMode: 'forwards',
+        animationTimingFunction: easeInOutCubic,
       },
     };
   }
@@ -133,7 +158,7 @@ export class Checkbox extends PureComponent {
     this.checkmark.style.borderColor = bgColor;
 
     if (this.props.checked) {
-      this.animateCheckmark();
+      this.checkmark.style.animationName = 'checkbox--animate-in';
     }
   }
 
@@ -142,7 +167,11 @@ export class Checkbox extends PureComponent {
    */
   componentDidUpdate(prevProps) {
     if (prevProps.checked !== this.props.checked) {
-      this.animateCheckmark();
+      if (this.props.checked) {
+        this.checkmark.style.animationName = 'checkbox--animate-in';
+      } else {
+        this.checkmark.style.animationName = 'checkbox--animate-out';
+      }
     }
   }
 
@@ -161,22 +190,6 @@ export class Checkbox extends PureComponent {
       color: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
       focusColor: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
     };
-  }
-
-  /**
-   * Animate the checkmark either in or out.
-   */
-  animateCheckmark() {
-    const animations = this.props.checked ? {
-      opacity: [1, 1],
-      transform: ['scale(0, 0) rotate(-45deg)', 'scale(1, 1) rotate(45deg)'],
-    } : { opacity: [1, 0] };
-
-    this.checkmark.animate(animations, {
-      easing: easeInOutCubic,
-      fill: 'forwards',
-      duration: this.props.theme.checkbox.animationDuration,
-    });
   }
 
   /**

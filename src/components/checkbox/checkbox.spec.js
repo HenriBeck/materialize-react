@@ -1,21 +1,18 @@
 import React from 'react';
 import test from 'ava';
-import sinon from 'sinon';
 
-import CheckboxWrapper, { Checkbox } from './checkbox';
+import CheckboxWrapper from './checkbox';
 import { mount } from '../../../tests/helpers/enzyme';
 
 const defaultProps = {
-  classes: {},
-  theme: { checkbox: {} },
   checked: false,
   disabled: false,
   className: '',
   isFocused: false,
-  onPress: () => {},
   id: 'id',
   children: '',
   labelPosition: 'right',
+  onPress: () => {},
   onKeyPress: () => {},
   onFocus: () => {},
   onBlur: () => {},
@@ -29,29 +26,28 @@ test('should render a span with a role of checkbox and a Jss HoC', (t) => {
 });
 
 test('should animate the checkmark when the checked prop is initially passed', (t) => {
-  const spy = sinon.spy(Checkbox.prototype, 'animateCheckmark');
-
-  mount(
+  const wrapper = mount(
     <CheckboxWrapper
       {...defaultProps}
       checked
     />,
   );
+  const checkmark = wrapper.find('.checkbox--checkmark').node;
 
-  t.true(spy.calledOnce);
+  t.deepEqual(checkmark.style.animationName, 'checkbox--animate-in');
 });
 
-test('should call the animateCheckmark when the checked prop changes', (t) => {
+test('should change the animationName when the checked prop changes', (t) => {
   const wrapper = mount(<CheckboxWrapper {...defaultProps} />);
-  const root = () => wrapper.find({ role: 'checkbox' });
+  const checkmark = () => wrapper.find('.checkbox--checkmark').node;
 
   wrapper.setProps({ checked: true });
 
-  t.deepEqual(root().prop('aria-checked'), true);
+  t.deepEqual(checkmark().style.animationName, 'checkbox--animate-in');
 
   wrapper.setProps({ checked: false });
 
-  t.deepEqual(root().prop('aria-checked'), false);
+  t.deepEqual(checkmark().style.animationName, 'checkbox--animate-out');
 });
 
 test('should set the aria-disabled attribute on the root element', (t) => {
