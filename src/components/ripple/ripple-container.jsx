@@ -119,22 +119,35 @@ export default class RippleContainer extends PureComponent {
   };
 
   render() {
+    const {
+      focusOpacity,
+      isFocused,
+      focusColor,
+      initialOpacity,
+      color,
+      className,
+      round,
+      nowaves,
+      onMouseLeave,
+      ...props
+    } = this.props;
+
     return (
       <Ripple
-        {...getNotDeclaredProps(this.props, RippleContainer)}
-        focusOpacity={this.props.focusOpacity}
-        isFocused={this.props.isFocused}
-        focusColor={this.props.focusColor}
-        initialOpacity={this.props.initialOpacity}
-        color={this.props.color}
+        {...getNotDeclaredProps(props, RippleContainer)}
+        focusOpacity={focusOpacity}
+        isFocused={isFocused}
+        focusColor={focusColor}
+        initialOpacity={initialOpacity}
+        color={color}
         waves={this.state.waves}
-        className={this.props.className}
-        round={this.props.round}
-        nowaves={this.props.nowaves}
+        className={className}
+        round={round}
+        nowaves={nowaves}
         createRef={this.createRef}
         onAnimationFinish={this.handleAnimationFinish}
         onDownAction={this.handleDownAction}
-        onMouseLeave={this.props.onMouseLeave}
+        onMouseLeave={onMouseLeave}
       />
     );
   }

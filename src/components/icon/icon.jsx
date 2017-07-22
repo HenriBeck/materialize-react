@@ -24,9 +24,9 @@ export function Icon({
 }) {
   return (
     <i
+      {...getNotDeclaredProps(props, Icon)}
       className={`mdi-${icon} ${className} ${classes.icon}`}
       aria-disabled={disabled}
-      {...getNotDeclaredProps(props, Icon)}
     />
   );
 }

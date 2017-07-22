@@ -21,8 +21,8 @@ function Background({
 }) {
   return (
     <div
-      className={`${classes.root} ${className}`}
       {...getNotDeclaredProps(props, Background)}
+      className={`${classes.root} ${className}`}
     >
       {children}
     </div>

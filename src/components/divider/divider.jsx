@@ -19,8 +19,8 @@ export function Divider({
 }) {
   return (
     <div
-      className={`${classes.divider} ${className}`}
       {...getNotDeclaredProps(props, Divider)}
+      className={`${classes.divider} ${className}`}
     />
   );
 }

@@ -9,17 +9,31 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * A function to render a label tag with special material design stylings.
  *
  * @param {Object} props - The props for the component.
+ * @param {Boolean} props.disabled - Whether or not the label is disabled.
+ * It will apply a different text color.
+ * @param {String} props.htmlFor - For which the element is a label.
+ * Needed for better UX.
+ * @param {Object} props.classes - Classes for the component. Provided by Jss.
+ * @param {String} props.className - Additional className for the label component.
+ * @param {JSX} props.children - Children to be rendered inside the Label.
  * @returns {JSX} - Returns the label component.
  */
-export function Label(props) {
+export function Label({
+  disabled,
+  htmlFor,
+  classes,
+  className,
+  children,
+  ...props
+}) {
   return (
     <label
-      aria-disabled={props.disabled}
-      htmlFor={props.htmlFor}
-      className={`${props.classes.label} ${props.className}`}
+      aria-disabled={disabled}
+      htmlFor={htmlFor}
+      className={`${classes.label} ${className}`}
       {...getNotDeclaredProps(props, Label)}
     >
-      {props.children}
+      {children}
     </label>
   );
 }

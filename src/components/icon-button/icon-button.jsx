@@ -121,17 +121,22 @@ export class IconButton extends PureComponent {
       disabled,
       classes,
       theme,
+      className,
+      onPress,
+      noink,
+      icon,
+      ...props
     } = this.props;
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this.props, IconButton)}
+        {...getNotDeclaredProps(props, IconButton)}
         component="span"
         role="button"
-        className={`${classes.iconButton} ${this.props.className}`}
+        className={`${classes.iconButton} ${className}`}
         aria-disabled={disabled}
         tabIndex={disabled ? -1 : 0}
-        onPress={this.props.onPress}
+        onPress={onPress}
         onKeyPress={this.handleKeyPress}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
@@ -143,13 +148,13 @@ export class IconButton extends PureComponent {
           color={theme.rippleColor}
           focusColor={theme.rippleColor}
           focusOpacity={0.12}
-          nowaves={this.props.noink}
+          nowaves={noink}
           isFocused={this.state.isFocused}
         />
 
         <Icon
           className={classes.icon}
-          icon={this.props.icon}
+          icon={icon}
           disabled={disabled}
         />
       </EventHandler>

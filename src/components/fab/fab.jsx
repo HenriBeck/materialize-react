@@ -169,6 +169,10 @@ export class Fab extends PureComponent {
       classes,
       animateIn,
       mini,
+      onPress,
+      noink,
+      icon,
+      ...props
     } = this.props;
     const className = classnames(this.props.className, classes.fab, {
       'fab--animate-in': animateIn,
@@ -177,7 +181,7 @@ export class Fab extends PureComponent {
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this.props, Fab)}
+        {...getNotDeclaredProps(props, Fab)}
         component="span"
         role="button"
         className={className}
@@ -186,7 +190,7 @@ export class Fab extends PureComponent {
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyPress={this.handleKeyPress}
-        onPress={this.props.onPress}
+        onPress={onPress}
       >
         <span
           className={classes.shadow}
@@ -197,12 +201,12 @@ export class Fab extends PureComponent {
           round
           center
           className="fab--ripple"
-          nowaves={this.props.noink}
+          nowaves={noink}
         />
 
         <Icon
           className={classes.icon}
-          icon={this.props.icon}
+          icon={icon}
           disabled={disabled}
         />
       </EventHandler>

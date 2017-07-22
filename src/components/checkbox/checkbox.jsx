@@ -206,28 +206,38 @@ export class Checkbox extends PureComponent {
       disabled,
       classes,
       checked,
+      isFocused,
+      children,
+      id,
+      className,
+      labelPosition,
+      onKeyPress,
+      onPress,
+      onBlur,
+      onFocus,
+      ...props
     } = this.props;
 
-    const className = classnames(
-      this.props.className,
+    const classNames = classnames(
+      className,
       classes.checkbox,
-      { 'checkbox--label-left': this.props.labelPosition === 'left' },
+      labelPosition === 'left' && 'checkbox--label-left',
     );
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this.props, Checkbox)}
+        {...getNotDeclaredProps(props, Checkbox)}
         component="span"
         role="checkbox"
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         aria-checked={checked}
-        className={className}
+        className={classNames}
         createRef={this.createRef}
-        onKeyPress={this.props.onKeyPress}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onPress={this.props.onPress}
+        onKeyPress={onKeyPress}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onPress={onPress}
       >
         <span className={classes.container}>
           <span
@@ -244,17 +254,17 @@ export class Checkbox extends PureComponent {
             round
             center
             className={classes.ripple}
-            isFocused={this.props.isFocused}
+            isFocused={isFocused}
             {...this.getRippleProps()}
           />
         </span>
 
         <Label
           className={classes.label}
-          htmlFor={this.props.id}
+          htmlFor={id}
           disabled={disabled}
         >
-          {this.props.children}
+          {children}
         </Label>
       </EventHandler>
     );

@@ -132,21 +132,29 @@ export default class CheckboxContainer extends PureComponent {
   };
 
   render() {
+    const {
+      disabled,
+      className,
+      labelPosition,
+      children,
+      ...props
+    } = this.props;
+
     return (
       <Checkbox
-        {...getNotDeclaredProps(this.props, CheckboxContainer)}
-        disabled={this.props.disabled}
+        {...getNotDeclaredProps(props, CheckboxContainer)}
+        disabled={disabled}
         checked={this.state.checked}
         id={this.id}
-        className={this.props.className}
+        className={className}
         isFocused={this.state.isFocused}
-        labelPosition={this.props.labelPosition}
+        labelPosition={labelPosition}
         onPress={this.handlePress}
         onKeyPress={this.handleKeyPress}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
       >
-        {this.props.children}
+        {children}
       </Checkbox>
     );
   }
