@@ -220,13 +220,17 @@ export class Spinner extends PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      className,
+      ...props
+    } = this.props;
 
     return (
       <div
+        {...getNotDeclaredProps(props, Spinner)}
         role="presentation"
-        {...getNotDeclaredProps(this.props, Spinner)}
-        className={`${classes.spinner} ${this.props.className}`}
+        className={`${classes.spinner} ${className}`}
         ref={(element) => { this.root = element; }}
         onTransitionEnd={this.handleTransitionEnd}
       >

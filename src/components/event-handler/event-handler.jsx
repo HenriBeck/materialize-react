@@ -118,8 +118,16 @@ export default class EventHandler extends PureComponent {
   };
 
   render() {
-    const { component: Component } = this.props;
-    const additionalProps = pick(this.props, [
+    const {
+      component: Component,
+      onKeyPress,
+      onPress,
+      onRelease,
+      createRef,
+      children,
+      ...props
+    } = this.props;
+    const additionalProps = pick(props, [
       'onKeyDown',
       'onKeyUp',
       'onTouchStart',
@@ -129,31 +137,31 @@ export default class EventHandler extends PureComponent {
     ]);
 
     // We only apply our custom handlers if necessary
-    if (this.props.onKeyPress) {
+    if (onKeyPress) {
       additionalProps.onKeyDown = this.handleKeyDown;
       additionalProps.onKeyUp = this.handleKeyUp;
     }
 
-    if (this.props.onPress) {
+    if (onPress) {
       additionalProps.onMouseDown = this.handleMouseDown;
       additionalProps.onTouchStart = this.handleTouchStart;
     }
 
-    if (this.props.onRelease) {
+    if (onRelease) {
       additionalProps.onMouseUp = this.handleMouseUp;
       additionalProps.onTouchEnd = this.handleTouchEnd;
     }
 
-    if (this.props.createRef) {
-      additionalProps.ref = this.props.createRef;
+    if (createRef) {
+      additionalProps.ref = createRef;
     }
 
     return (
       <Component
-        {...getNotDeclaredProps(this.props, EventHandler)}
+        {...getNotDeclaredProps(props, EventHandler)}
         {...additionalProps}
       >
-        {this.props.children}
+        {children}
       </Component>
     );
   }

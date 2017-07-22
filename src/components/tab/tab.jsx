@@ -13,51 +13,72 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * Renders a tab.
  *
  * @param {Object} props - The props for the component.
+ * @param {String} props.name - The name for the tab.
+ * @param {Object} props.classes - Classes for the component. Provided by Jss.
+ * @param {JSX} props.children - The text for the tab.
+ * @param {Boolean} props.focused - Whether or not the tab is in the focused state.
+ * @param {Boolean} props.selected - Whether or not the tab is selected.
+ * @param {String} props.className - Additional className to be applied to the root.
+ * @param {String} props.tabStyle - The style of the tab. Provided by the TabsContainer.
+ * @param {Function} props.createRef - A function which will create a reference
+ * to the root component. Used by the TabsContainer.
+ * @param {Function} props.onPress - A handler when the tab gets pressed to change the state.
+ * @param {Boolean} props.noink - Whether or not the tab has no ripple effect.
+ * @param {String} props.icon - An icon that will be render when the tabStyle has an icon.
  * @returns {JSX} - Returns the component.
  */
-export function Tab(props) {
-  const className = classnames(
-    props.className,
-    props.classes.tab,
-    props.focused && 'tab--focused',
-    `tab--${props.tabStyle}`,
+export function Tab({
+  selected,
+  className,
+  classes,
+  focused,
+  tabStyle,
+  createRef,
+  onPress,
+  name,
+  noink,
+  children,
+  icon,
+  ...props
+}) {
+  const classNames = classnames(
+    className,
+    classes.tab,
+    focused && 'tab--focused',
+    `tab--${tabStyle}`,
   );
 
   return (
     <EventHandler
-      {...getNotDeclaredProps(props, Tab, 'name')}
+      {...getNotDeclaredProps(props, Tab)}
       component="div"
       role="tab"
-      aria-selected={props.selected}
-      createRef={props.createRef}
-      className={className}
-      onPress={props.onPress}
+      data-name={name}
+      aria-selected={selected}
+      createRef={createRef}
+      className={classNames}
+      onPress={onPress}
     >
-      {props.tabStyle.includes('icons') && (
+      {tabStyle.includes('icons') && (
         <Icon
-          icon={props.icon}
-          className={props.classes.icon}
+          icon={icon}
+          className={classes.icon}
         />
       )}
 
-      {props.tabStyle.includes('text') && (
-        <span className={props.classes.tabContent}>
-          {props.children}
+      {tabStyle.includes('text') && (
+        <span className={classes.tabContent}>
+          {children}
         </span>
       )}
 
-      {!props.noink && (
-        <Ripple
-          color={props.theme.rippleColor}
-          className="tab--ripple"
-        />
-      )}
+      {!noink && (<Ripple className={classes.ripple} />)}
     </EventHandler>
   );
 }
 
 Tab.propTypes = {
-  theme: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   onPress: PropTypes.func.isRequired,
   tabStyle: PropTypes.string.isRequired,
@@ -133,6 +154,11 @@ Tab.styles = ({ tab: theme }) => {
       width: 24,
       fontSize: 24,
       opacity: theme.unselectedOpacity,
+    },
+
+    ripple: {
+      composes: 'tab--ripple',
+      color: theme.rippleColor,
     },
   };
 };

@@ -213,31 +213,33 @@ export class Progress extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props;
-    const props = {};
-    const isIndeterminate = this.props.indeterminate;
+    const {
+      classes,
+      indeterminate,
+      disabled,
+      progress,
+      active,
+      ...props
+    } = this.props;
+    const additionalProps = indeterminate ? { 'data-active': active } : {
+      'aria-valuenow': Progress.clamp(progress),
+      'aria-valuemin': 0,
+      'aria-valuemax': 100,
+    };
     const className = classnames(
       this.props.className,
       classes.progress,
-      isIndeterminate && 'progress--indeterminate',
+      indeterminate && 'progress--indeterminate',
     );
-
-    if (isIndeterminate) {
-      props['data-active'] = this.props.active;
-    } else {
-      props['aria-valuenow'] = Progress.clamp(this.props.progress);
-      props['aria-valuemin'] = 0;
-      props['aria-valuemax'] = 100;
-    }
 
     return (
       <span
-        {...getNotDeclaredProps(this.props, Progress)}
+        {...getNotDeclaredProps(props, Progress)}
         role="progressbar"
-        aria-disabled={this.props.disabled}
+        aria-disabled={disabled}
         className={className}
         ref={(element) => { this.root = element; }}
-        {...props}
+        {...additionalProps}
       >
         <div className={classes.container}>
           <div

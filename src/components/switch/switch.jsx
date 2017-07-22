@@ -11,27 +11,39 @@ import Label from '../label';
  * A function that is used internally to render the elements for the switch.
  *
  * @param {Object} props - Props provided by the container.
+ * @param {Object} props.classes - Classes for the component. Provided by Jss.
+ * @param {Object} props.theme - The theme provided by Jss.
+ * @param {String} props.className - Additional className for the root component.
+ * @param {Boolean} props.noink - Whether or not the component has no ripple effect.
+ * @param {Boolean} props.toggled - Whether or not the switch is toggled.
+ * @param {Boolean} props.disabled - Whether or not the switch should be disabled.
+ * @param {String} props.id - The id for the component which will create a link to the Label.
+ * @param {JSX} props.children - Children which will be passed to the Label.
+ * @param {Boolean} props.isFocused - Whether or not the switch is currently being focused.
+ * @param {String} props.labelPosition - Define where the label should be. On the left or the right.
+ * @param {Function} props.onFocus - A function which will be provided by the Container.
+ * @param {Function} props.onBlur - A function which will be provided by the Container.
+ * @param {Function} props.onKeyPress - A function which will be provided by the Container.
+ * @param {Function} props.onPress - A function which will be provided by the Container.
  * @returns {JSX} - Returns the JSX.
  */
-export function Switch(props) {
-  const {
-    classes,
-    theme,
-    className,
-    noink,
-    onKeyPress,
-    onPress,
-    toggled,
-    disabled,
-    id,
-    children,
-    onFocus,
-    onBlur,
-    isFocused,
-    labelPosition,
-    ...otherProps
-  } = props;
-
+export function Switch({
+  classes,
+  theme,
+  className,
+  noink,
+  onKeyPress,
+  onPress,
+  toggled,
+  disabled,
+  id,
+  children,
+  onFocus,
+  onBlur,
+  isFocused,
+  labelPosition,
+  ...props
+}) {
   const rippleColor = toggled ? theme.uncheckedRippleColor : theme.checkedRippleColor;
   const rippleFocusColor = toggled ? theme.checkedRippleColor : theme.uncheckedRippleColor;
   const classNames = classnames(
@@ -42,7 +54,7 @@ export function Switch(props) {
 
   return (
     <EventHandler
-      {...otherProps}
+      {...props}
       component="span"
       role="switch"
       className={classNames}

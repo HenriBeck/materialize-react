@@ -89,24 +89,31 @@ export class Parallax extends PureComponent {
   };
 
   render() {
+    const {
+      classes,
+      img,
+      className,
+      children,
+      ...props
+    } = this.props;
+
     return (
       <div
-        {...getNotDeclaredProps(this.props, Parallax)}
+        {...getNotDeclaredProps(props, Parallax)}
         role="presentation"
-        className={`${this.props.classes.root} ${this.props.className}`}
+        className={`${classes.root} ${className}`}
         ref={(element) => { this.root = element; }}
       >
         <img
           width="100%"
-          src={this.props.img}
-          className={this.props.classes.image}
+          src={img}
+          className={classes.image}
           alt="parallax"
           ref={(element) => { this.image = element; }}
-          style={this.props.imgStyle}
         />
 
-        <div className={this.props.classes.content}>
-          {this.props.children}
+        <div className={classes.content}>
+          {children}
         </div>
       </div>
     );
