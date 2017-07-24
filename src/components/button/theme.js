@@ -7,6 +7,7 @@ export const schema = PropTypes.shape({
   height: PropTypes.number.isRequired,
   minWidth: PropTypes.number.isRequired,
   margin: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  horizontalPadding: PropTypes.string,
 
   bgColor: PropTypes.string.isRequired,
   raisedBgColor: PropTypes.string.isRequired,
@@ -33,12 +34,13 @@ export function defaultTheme(vars) {
     height: 36,
     minWidth: 88,
     margin: '0 8px',
+    padding: '0 8px',
 
     bgColor: 'transparent',
-    raisedBgColor: vars.primaryBase,
+    raisedBgColor: 'transparent',
     disabledBgColor: 'transparent',
     raisedAndDisabledBgColor: 'rgba(0, 0, 0, 0.12)',
-    raisedAndPressedBgColor: vars.primaryDark,
+    raisedAndPressedBgColor: 'transparent',
 
     color: vars.textColor,
     disabledColor: 'rgba(0, 0, 0, 0.30)',

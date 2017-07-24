@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+import { whiteIcons } from '../../styles/colors';
+
 export const schema = PropTypes.shape({
   miniSize: PropTypes.number.isRequired,
   normalSize: PropTypes.number.isRequired,
@@ -9,6 +11,7 @@ export const schema = PropTypes.shape({
   focusedElevation: PropTypes.number.isRequired,
   disabledElevation: PropTypes.number.isRequired,
 
+  iconColor: PropTypes.string,
   backgroundColor: PropTypes.string.isRequired,
   disabledBackgroundColor: PropTypes.string.isRequired,
 
@@ -32,6 +35,7 @@ export function defaultTheme(vars) {
     focusedElevation: 4,
     disabledElevation: 0,
 
+    iconColor: whiteIcons,
     backgroundColor: vars.primaryBase,
     disabledBackgroundColor: 'rgba(255, 255, 255, 0.1)',
 

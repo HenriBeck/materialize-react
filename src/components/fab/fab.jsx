@@ -66,9 +66,9 @@ export class Fab extends PureComponent {
         borderRadius: '50%',
         border: 0,
         outline: 'none',
+        color: theme.iconColor,
         width: theme.normalSize,
         height: theme.normalSize,
-        color: theme.iconColor,
         boxShadow: elevation(theme.elevation),
         padding: (theme.normalSize - theme.iconSize) / 2,
         backgroundColor: theme.backgroundColor,
@@ -98,6 +98,7 @@ export class Fab extends PureComponent {
         userSelect: 'none',
         height: theme.iconSize,
         width: theme.iconSize,
+        color: theme.iconColor,
       },
 
       shadow: {
@@ -110,7 +111,7 @@ export class Fab extends PureComponent {
         borderRadius: 'inherit',
         opacity: 0,
         boxShadow: elevation(theme.focusedElevation),
-        transition: `opacity ${theme.transitionTime}ms linear`,
+        transition: `opacity ${theme.animationDuration}ms linear`,
       },
     };
   }

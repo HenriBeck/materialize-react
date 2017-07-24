@@ -41,8 +41,8 @@ export class Button extends PureComponent {
   };
 
   static normalRippleProps = {
-    color: '#cccccc',
-    initialOpacity: 0.25,
+    color: '#999999',
+    initialOpacity: 0.4,
   };
 
   static raisedRippleProps = {
@@ -65,7 +65,9 @@ export class Button extends PureComponent {
         ...buttonTypo,
         composes: 'button',
         userSelect: 'none',
-        display: 'inline-block',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         position: 'relative',
         zIndex: 0,
         boxSizing: 'border-box',
@@ -79,7 +81,7 @@ export class Button extends PureComponent {
         height: theme.height,
         minWidth: theme.minWidth,
         color: theme.color,
-        padding: `${(theme.height - buttonTypo.fontSize * buttonTypo.lineHeight) / 2}px 8px`,
+        padding: theme.padding,
         backgroundColor: theme.bgColor,
 
         '&[aria-disabled=true]': {
