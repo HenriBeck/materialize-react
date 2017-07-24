@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import color from 'color';
 
 import {
+  grey50,
   grey400,
-  grey800,
 } from '../../styles/colors';
 
 export const schema = PropTypes.shape({
@@ -47,11 +47,11 @@ export function defaultTheme(vars) {
     checkedBarColor: `rgba(${primaryBaseRGB.join(',')}, 0.5)`,
     checkedRippleColor: vars.primaryBase,
 
-    uncheckedThumbColor: grey400,
-    uncheckedBarColor: 'rgba(255, 255, 255, 0.3)',
-    uncheckedRippleColor: grey400,
+    uncheckedThumbColor: grey50,
+    uncheckedBarColor: 'rgba(0, 0, 0, 0.38)',
+    uncheckedRippleColor: grey50,
 
-    disabledThumbColor: grey800,
-    disabledBarColor: 'rgba(255, 255, 255, 0.1)',
+    disabledThumbColor: grey400,
+    disabledBarColor: 'rgba(0, 0, 0, 0.12)',
   };
 }

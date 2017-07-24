@@ -5,15 +5,16 @@ import {
   yellowA200,
   yellowA100,
   yellowA400,
-  whiteText,
-  whiteSecondaryText,
-  whiteDisabled,
-  whiteDivider,
-  whiteIcons,
-  whiteHint,
-  black500,
-  grey900,
-  orangeA700,
+  blackText,
+  blackSecondaryText,
+  blackDisabled,
+  blackDivider,
+  blackIcons,
+  blackHint,
+  grey100,
+  grey50,
+  grey300,
+  orange900,
 } from '../colors';
 import { defaultTheme as background } from '../../components/background/theme';
 import { defaultTheme as button } from '../../components/button/theme';
@@ -39,19 +40,19 @@ export const defaultVars = {
   accentLight: yellowA100,
   accentDark: yellowA400,
 
-  statusBarColor: black500,
-  appBar: grey900,
-  backgroundColor: '#303030',
+  statusBarColor: grey300,
+  appBar: grey100,
+  backgroundColor: grey50,
 
-  textColor: whiteText,
-  secondaryTextColor: whiteSecondaryText,
-  disabledColor: whiteDisabled,
-  iconColor: whiteIcons,
-  hintColor: whiteHint,
-  dividerColor: whiteDivider,
+  textColor: blackText,
+  secondaryTextColor: blackSecondaryText,
+  disabledColor: blackDisabled,
+  iconColor: blackIcons,
+  hintColor: blackHint,
+  dividerColor: blackDivider,
 
   // Other
-  errorColor: orangeA700,
+  errorColor: orange900,
 
   transitionTime: 140,
 };
