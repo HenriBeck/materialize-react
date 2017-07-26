@@ -31,7 +31,12 @@ export class Parallax extends PureComponent {
    * Add the event listener for when the user scrolls.
    */
   componentDidMount() {
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize);
+
+    this.computeValues();
+
+    this.positionImage();
   }
 
   /**
@@ -48,23 +53,53 @@ export class Parallax extends PureComponent {
    * Remove the event listener again.
    */
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize);
   }
 
   /**
-   * Check if the root element is currently completely visible.
+   * Compute some static values which don't change when the user scrolls.
    *
    * @private
-   * @returns {Boolean} - Returns whether the component is visible.
    */
-  get isVisible() {
+  computeValues() {
+    this.rootHeight = this.root.getBoundingClientRect().height;
+    this.imageHeight = this.image.getBoundingClientRect().height;
+    this.pixelsToScroll = window.innerHeight - this.rootHeight;
+    this.overflowImageHeight = this.imageHeight - this.rootHeight;
+  }
+
+  /**
+   * Reposition the image based on the current scroll position.
+   *
+   * @private
+   */
+  positionImage() {
     const {
       top,
       bottom,
     } = this.root.getBoundingClientRect();
+    const { innerHeight } = window;
 
-    return top >= 0 && bottom <= window.innerHeight;
+    // Check if the parallax is completely visible
+    if (top >= 0 && bottom <= innerHeight) {
+      const scrollPos = 1 - Math.abs((innerHeight - this.rootHeight - top) / this.pixelsToScroll);
+      const transform = scrollPos * this.overflowImageHeight;
+
+      this.image.style.transform = `translate3D(0, ${-transform}px, 0)`;
+    }
   }
+
+  /**
+   * Recompute the static values and reposition the image.
+   *
+   * @private
+   */
+  handleResize = () => {
+    this.computeValues();
+
+    this.positionImage();
+  };
 
   /**
    * Update the image position on a scroll event.
@@ -72,20 +107,8 @@ export class Parallax extends PureComponent {
    *
    * @private
    */
-  onScroll = () => {
-    if (this.isVisible) {
-      const {
-        height,
-        top,
-      } = this.root.getBoundingClientRect();
-      const imageHeight = this.image.getBoundingClientRect().height;
-      const overflowImageHeight = imageHeight - height;
-      const { innerHeight } = window;
-      const scrollPos = Math.abs((innerHeight - height - top) / (innerHeight - height));
-      const transform = Math.min(scrollPos * overflowImageHeight, overflowImageHeight);
-
-      this.image.style.transform = `translate3D(0, ${-transform}px, 0)`;
-    }
+  handleScroll = () => {
+    this.positionImage();
   };
 
   render() {
