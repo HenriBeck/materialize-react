@@ -13,9 +13,9 @@ export default function DrawerContent({
   ...props
 }) {
   return (
-    <div {...props}>
+    <aside {...props}>
       {children}
-    </div>
+    </aside>
   );
 }
 

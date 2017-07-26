@@ -13,9 +13,9 @@ export default function MainContent({
   ...props
 }) {
   return (
-    <div {...props}>
+    <main {...props}>
       {children}
-    </div>
+    </main>
   );
 }
 
