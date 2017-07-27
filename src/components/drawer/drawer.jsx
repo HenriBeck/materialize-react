@@ -50,6 +50,9 @@ export default class Drawer extends PureComponent {
     onNarrowChange: () => {},
   };
 
+  static MainContent = MainContent;
+  static DrawerContent = DrawerContent;
+
   /**
    * Get all the children which are the DrawerContent component.
    *
