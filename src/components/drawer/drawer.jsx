@@ -18,7 +18,7 @@ export default class Drawer extends PureComponent {
     children(props) {
       const children = Children.toArray(props.children);
       const contentElements = Drawer.getMainContent(children);
-      const drawerElement = Drawer.getDrawerContent(children);
+      const drawerElements = Drawer.getDrawerContent(children);
       const missingElementMessage = elem => `Missing ${elem} element inside Drawer component`;
       const multipleElementsMessage = elem => `Multiple ${elem} elements are not supported`;
 
@@ -28,8 +28,8 @@ export default class Drawer extends PureComponent {
           : new Error(multipleElementsMessage('MainContent'));
       }
 
-      if (drawerElement.length !== 1) {
-        return contentElements.length === 0
+      if (drawerElements.length !== 1) {
+        return drawerElements.length === 0
           ? new Error(missingElementMessage('DrawerContent'))
           : new Error(multipleElementsMessage('DrawerContent'));
       }
@@ -133,8 +133,6 @@ export default class Drawer extends PureComponent {
         opened: false,
       }, () => this.props.onNarrowChange(this.state.isNarrow));
     }
-
-    this.setState({ isNarrow });
   };
 
   render() {
