@@ -54,7 +54,7 @@ export class Parallax extends PureComponent {
    */
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    window.addEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.handleResize);
   }
 
   /**
