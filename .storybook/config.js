@@ -44,5 +44,6 @@ configure(() => {
   require('../src/components/switch/stories');
   require('../src/components/radio-button-group/stories');
   require('../src/components/tabs/stories');
+  require('../src/components/drawer/stories');
   require('../src/components/parallax/stories');
 }, module);

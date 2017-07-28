@@ -30,6 +30,7 @@ import { defaultTheme as switchTheme } from '../../components/switch/theme';
 import { defaultTheme as radioButton } from '../../components/radio-button/theme';
 import { defaultTheme as tabs } from '../../components/tabs/theme';
 import { defaultTheme as tab } from '../../components/tab/theme';
+import { defaultTheme as drawer } from '../../components/drawer/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -72,4 +73,5 @@ export const defaultTheme = {
   radioButton,
   tabs,
   tab,
+  drawer,
 };
