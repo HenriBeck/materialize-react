@@ -1,10 +1,7 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
-import {
-  mount,
-  shallow,
-} from 'enzyme';
+import { mount } from 'enzyme';
 
 import ParallaxWrapper, { Parallax } from './parallax';
 
@@ -22,37 +19,50 @@ test('should render a div with an img and a div inside', (t) => {
 });
 
 test('should warn against changing the img prop', (t) => {
-  const wrapper = shallow(<Parallax {...defaultProps} />);
+  const wrapper = mount(<ParallaxWrapper img="img" />);
 
   t.throws(() => wrapper.setProps({ img: 'img2' }));
 });
 
-test('should not calculate the position if onScroll get\'s called twice', (t) => {
-  const wrapper = mount(<Parallax {...defaultProps} />);
-  const instance = wrapper.instance();
-
-  instance.onScroll();
-  instance.onScroll();
-
-  t.pass();
-});
-
-test('should not update the scroll pos when the image isn\'t visible', (t) => {
-  const wrapper = mount(<Parallax {...defaultProps} />);
-  const instance = wrapper.instance();
-
-  window.innerHeight = -100;
-
-  t.deepEqual(instance.isVisible, false);
-
-  instance.onScroll();
-});
-
-test('should remove the event listener when the node get\'s unmounted', (t) => {
-  const wrapper = mount(<ParallaxWrapper img="image" />);
-  const removeEventListener = sinon.spy(window, 'removeEventListener');
+test('should remove event listeners from the document when the component unmounts', (t) => {
+  const wrapper = mount(<ParallaxWrapper img="img" />);
+  const spy = sinon.spy(window, 'removeEventListener');
 
   wrapper.unmount();
 
-  t.deepEqual(removeEventListener.callCount, 1);
+  t.deepEqual(spy.callCount, 2);
+});
+
+test('should call the positionImage function when the user scrolls', (t) => {
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+  const spy = sinon.spy(instance, 'positionImage');
+
+  instance.handleScroll();
+
+  t.deepEqual(spy.callCount, 1);
+});
+
+test('should call the positionImage and computeValues function when the window resizes', (t) => {
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+  const positionImage = sinon.spy(instance, 'positionImage');
+  const computeValues = sinon.spy(instance, 'computeValues');
+
+  instance.handleResize();
+
+  t.deepEqual(positionImage.callCount, 1);
+  t.deepEqual(computeValues.callCount, 1);
+});
+
+test('should not position the image when the image is not in the viewport ', (t) => {
+  window.innerHeight = -100;
+
+  const wrapper = mount(<Parallax {...defaultProps} />);
+  const instance = wrapper.instance();
+
+  instance.positionImage();
+
+  // eslint-disable-next-line no-undefined
+  t.deepEqual(instance.image.style.transform, undefined);
 });
