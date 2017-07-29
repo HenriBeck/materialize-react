@@ -20,7 +20,7 @@ Animations.styles = {
     to: { opacity: 0 },
   },
 
-  '@keyframes image-load': {
+  '@keyframes fade-in-image': {
     '0%': {
       opacity: 0,
       filter: 'saturate(20%) brightness(125%)',
