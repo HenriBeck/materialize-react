@@ -55,15 +55,15 @@ test('should call the positionImage and computeValues function when the window r
   t.deepEqual(computeValues.callCount, 1);
 });
 
-test('should default position the parallax to the end', (t) => {
+test('should default position the parallax to the end when the img loads', (t) => {
   window.innerHeight = -100;
 
   const wrapper = mount(<Parallax {...defaultProps} />);
   const instance = wrapper.instance();
 
-  instance.positionImage();
+  instance.handleImgLoad();
 
-  // In this case the overflowImageHeight is 0 which means that second
+  // In this case the overflowImageHeight will be 0 which means that second
   // parameter will be zero
   t.deepEqual(instance.image.style.transform, 'translate3D(0, 0px, 0)');
 });

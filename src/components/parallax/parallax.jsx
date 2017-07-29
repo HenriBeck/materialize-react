@@ -33,12 +33,6 @@ export class Parallax extends PureComponent {
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize);
-
-    this.computeValues();
-
-    this.image.style.transform = `translate3D(0, ${-this.overflowImageHeight}px, 0)`;
-
-    this.positionImage();
   }
 
   /**
@@ -113,6 +107,18 @@ export class Parallax extends PureComponent {
     this.positionImage();
   };
 
+  /**
+   * When the img loads we initially compute the values because when we would do it
+   * in componentDidMount, the img wouldn't have loaded then which meant that the img height is 0.
+   */
+  handleImgLoad = () => {
+    this.computeValues();
+
+    this.image.style.transform = `translate3D(0, ${-this.overflowImageHeight}px, 0)`;
+
+    this.positionImage();
+  };
+
   render() {
     const {
       classes,
@@ -135,6 +141,7 @@ export class Parallax extends PureComponent {
           className={classes.image}
           alt="parallax"
           ref={(element) => { this.image = element; }}
+          onLoad={this.handleImgLoad}
         />
 
         <div className={classes.content}>
