@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ThemeProvider,
-  JssProvider,
-} from 'react-jss';
+import { ThemeProvider } from 'react-jss';
 
-import jss from '../jss';
 import {
   defaultTheme,
   defaultVars,
@@ -46,11 +42,9 @@ export default function Theme(props) {
   // PropTypes.checkPropTypes(themeSchema, compiledTheme, 'prop', 'Theme');
 
   return (
-    <JssProvider jss={jss}>
-      <ThemeProvider theme={compiledTheme}>
-        {props.children}
-      </ThemeProvider>
-    </JssProvider>
+    <ThemeProvider theme={compiledTheme}>
+      {props.children}
+    </ThemeProvider>
   );
 }
 
