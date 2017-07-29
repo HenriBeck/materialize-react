@@ -36,6 +36,8 @@ export class Parallax extends PureComponent {
 
     this.computeValues();
 
+    this.image.style.transform = `translate3D(0, ${-this.overflowImageHeight}px, 0)`;
+
     this.positionImage();
   }
 

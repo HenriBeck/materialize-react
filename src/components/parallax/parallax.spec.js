@@ -55,7 +55,7 @@ test('should call the positionImage and computeValues function when the window r
   t.deepEqual(computeValues.callCount, 1);
 });
 
-test('should not position the image when the image is not in the viewport ', (t) => {
+test('should default position the parallax to the end', (t) => {
   window.innerHeight = -100;
 
   const wrapper = mount(<Parallax {...defaultProps} />);
@@ -63,6 +63,7 @@ test('should not position the image when the image is not in the viewport ', (t)
 
   instance.positionImage();
 
-  // eslint-disable-next-line no-undefined
-  t.deepEqual(instance.image.style.transform, undefined);
+  // In this case the overflowImageHeight is 0 which means that second
+  // parameter will be zero
+  t.deepEqual(instance.image.style.transform, 'translate3D(0, 0px, 0)');
 });
