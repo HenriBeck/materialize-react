@@ -27,7 +27,10 @@ Animations.styles = {
     },
     '66.7%': { opacity: 1 },
     '83.3%': { filter: 'saturate(87%) brightness(100%)' },
-    '100%': { filter: 'saturate(100%) brightness(100%)' },
+    '100%': {
+      filter: 'saturate(100%) brightness(100%)',
+      opacity: 1,
+    },
   },
 };
 
