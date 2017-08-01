@@ -4,6 +4,8 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import { easeInOutQuad } from '../../styles/timings';
+import EventHandler from '../event-handler';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The container for the component. This is will render all the dom elements
@@ -18,6 +20,7 @@ import { easeInOutQuad } from '../../styles/timings';
  * @param {Boolean} props.isNarrow - Whether or not the drawer is currently in narrow mode.
  * @param {Boolean} props.opened - Whether or not the drawer is opened.
  * Only applies when the drawer is also in narrow mode.
+ * @param {Function} props.onBackdropPress - A callback to when the backdrop is pressed.
  * @param {String} props.drawerPosition - The position of the drawer. Either left or right.
  * @returns {JSX} - Returns the jsx for the drawer.
  */
@@ -29,6 +32,8 @@ export function DrawerContainer({
   isNarrow,
   opened,
   drawerPosition,
+  onBackdropPress,
+  ...props
 }) {
   const className = classNames(classes.drawer, {
     'drawer--backdrop-active': backdropEnabled && isNarrow && opened,
@@ -38,12 +43,21 @@ export function DrawerContainer({
   });
 
   return (
-    <div className={className}>
+    <div
+      {...getNotDeclaredProps(props, DrawerContainer)}
+      className={className}
+    >
       {React.cloneElement(drawerContent, { className: classes.drawerContent })}
 
       {React.cloneElement(mainContent, { className: classes.mainContent })}
 
-      {backdropEnabled && <span className={classes.backdrop} />}
+      {backdropEnabled && (
+        <EventHandler
+          component="span"
+          className={classes.backdrop}
+          onPress={onBackdropPress}
+        />
+      )}
     </div>
   );
 }
@@ -56,6 +70,7 @@ DrawerContainer.propTypes = {
   isNarrow: PropTypes.bool.isRequired,
   opened: PropTypes.bool.isRequired,
   drawerPosition: PropTypes.string.isRequired,
+  onBackdropPress: PropTypes.func.isRequired,
 };
 
 DrawerContainer.styles = ({ drawer: theme }) => {
@@ -67,7 +82,10 @@ DrawerContainer.styles = ({ drawer: theme }) => {
       width: '100%',
       overflow: 'hidden',
 
-      '&.backdrop--active $backdrop': { opacity: theme.backdropActiveOpacity },
+      '&.drawer--backdrop-active $backdrop': {
+        opacity: theme.backdropActiveOpacity,
+        pointerEvents: 'auto',
+      },
 
       '&.drawer--narrow-mode $drawerContent': { transform: 'translateX(0)' },
 
@@ -104,6 +122,7 @@ DrawerContainer.styles = ({ drawer: theme }) => {
       left: -theme.drawerWidth,
       bottom: 0,
       width: theme.drawerWidth,
+      zIndex: 5,
       transform: 'translateX(100%)',
       willChange: 'transform',
       transition: `transform ${theme.transitionDuration}ms ${easeInOutQuad}`,
@@ -125,7 +144,9 @@ DrawerContainer.styles = ({ drawer: theme }) => {
       right: 0,
       bottom: 0,
       backgroundColor: theme.backdropBgColor,
+      zIndex: 3,
       opacity: 0,
+      pointerEvents: 'none',
       willChange: 'opacity',
       transition: `opacity ${theme.transitionDuration}ms ${easeInOutQuad}`,
     },

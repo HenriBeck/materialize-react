@@ -13,6 +13,7 @@ const defaultProps = {
   isNarrow: false,
   opened: false,
   drawerPosition: 'left',
+  onBackdropPress: () => {},
 };
 
 test('should render div with the class of drawer', (t) => {
