@@ -115,3 +115,26 @@ test('should update the narrow state when the window resizes', (t) => {
 
   t.deepEqual(wrapper.state('isNarrow'), true);
 });
+
+test('should set the opened state to false when the backdrop click handler get\'s called', (t) => {
+  const wrapper = shallow(
+    <Drawer closeOnBackdropClick={false}>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </Drawer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleBackdropPress();
+
+  // Should not change the state because closeOnBackdropClick was false
+  t.deepEqual(wrapper.state('opened'), true);
+
+  wrapper.setProps({ closeOnBackdropClick: true });
+
+  instance.handleBackdropPress();
+
+  t.deepEqual(wrapper.state('opened'), false);
+});
