@@ -28,9 +28,11 @@ export default class EventHandler extends PureComponent {
 
   static defaultProps = { children: '' };
 
+  static ignoreMouseEventsAfterTouchFor = 750;
+
   isPressingKey = false;
-  isTouchStartEvent = false;
-  isTouchEndEvent = false;
+  lastTouchStart = false;
+  lastTouchEnd = false;
 
   /**
    * Call the onKeyDown prop if the user passed one
@@ -67,11 +69,9 @@ export default class EventHandler extends PureComponent {
       this.props.onMouseDown(ev);
     }
 
-    if (!this.isTouchStartEvent) {
+    if (ev.timeStamp - this.lastTouchStart > EventHandler.ignoreMouseEventsAfterTouchFor) {
       this.props.onPress(ev);
     }
-
-    this.isTouchStartEvent = false;
   };
 
   /**
@@ -82,11 +82,9 @@ export default class EventHandler extends PureComponent {
       this.props.onMouseUp(ev);
     }
 
-    if (!this.isTouchEndEvent) {
+    if (ev.timeStamp - this.lastTouchEnd > EventHandler.ignoreMouseEventsAfterTouchFor) {
       this.props.onRelease(ev);
     }
-
-    this.isTouchEndEvent = false;
   };
 
   /**
@@ -100,7 +98,7 @@ export default class EventHandler extends PureComponent {
 
     this.props.onPress(ev);
 
-    this.isTouchStartEvent = true;
+    this.lastTouchStart = ev.timeStamp;
   };
 
   /**
@@ -114,7 +112,7 @@ export default class EventHandler extends PureComponent {
 
     this.props.onRelease(ev);
 
-    this.isTouchEndEvent = true;
+    this.lastTouchEnd = ev.timeStamp;
   };
 
   render() {
