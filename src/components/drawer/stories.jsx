@@ -7,7 +7,7 @@ import MainContent from './main-content';
 
 storiesOf('Drawer', module)
   .add('Default styles', () => (
-    <Drawer>
+    <Drawer drawerPosition="right">
       <DrawerContent>Drawer Content</DrawerContent>
 
       <MainContent>Main Content</MainContent>

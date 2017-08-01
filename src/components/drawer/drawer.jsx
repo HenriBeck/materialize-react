@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import DrawerContainer from './drawer-container';
 import DrawerContent from './drawer-content';
 import MainContent from './main-content';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which will render a SideNav and some content.
@@ -40,6 +41,7 @@ export default class Drawer extends PureComponent {
     backdrop: PropTypes.bool,
     drawerPosition: PropTypes.oneOf(['left', 'right']),
     onNarrowChange: PropTypes.func,
+    closeOnBackdropClick: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -48,6 +50,7 @@ export default class Drawer extends PureComponent {
     backdrop: true,
     drawerPosition: 'left',
     onNarrowChange: () => {},
+    closeOnBackdropClick: true,
   };
 
   static MainContent = MainContent;
@@ -135,17 +138,33 @@ export default class Drawer extends PureComponent {
     }
   };
 
+  /**
+   * Close the drawer upon backdrop press.
+   */
+  handleBackdropPress = () => {
+    if (this.props.closeOnBackdropClick) {
+      this.close();
+    }
+  };
+
   render() {
     const children = Children.toArray(this.props.children);
+    const {
+      backdrop,
+      drawerPosition,
+      ...props
+    } = this.props;
 
     return (
       <DrawerContainer
+        {...getNotDeclaredProps(props, Drawer)}
         drawerContent={Drawer.getDrawerContent(children)[0]}
         mainContent={Drawer.getMainContent(children)[0]}
-        backdropEnabled={this.props.backdrop}
+        backdropEnabled={backdrop}
         isNarrow={this.state.isNarrow}
         opened={this.state.opened}
-        drawerPosition={this.props.drawerPosition}
+        drawerPosition={drawerPosition}
+        onBackdropPress={this.handleBackdropPress}
       />
     );
   }
