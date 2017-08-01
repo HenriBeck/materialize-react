@@ -8,7 +8,6 @@ export Fab from './components/fab';
 export Icon from './components/icon';
 export IconButton from './components/icon-button';
 export Label from './components/label';
-export Parallax from './components/parallax';
 export Progress from './components/progress';
 export Ripple from './components/ripple';
 export Spinner from './components/spinner';
