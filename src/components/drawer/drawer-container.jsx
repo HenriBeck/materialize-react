@@ -65,14 +65,34 @@ DrawerContainer.styles = ({ drawer: theme }) => {
       position: 'relative',
       height: '100%',
       width: '100%',
+      overflow: 'hidden',
 
       '&.backdrop--active $backdrop': { opacity: theme.backdropActiveOpacity },
 
       '&.drawer--narrow-mode $drawerContent': { transform: 'translateX(0)' },
 
-      '&.drawer--narrow-mode $mainContent': { paddingLeft: '0' },
+      '&.drawer--narrow-mode $mainContent': { paddingLeft: 0 },
 
       '&.drawer--narrow-mode.drawer--opened $drawerContent': { transform: 'translateX(100%)' },
+
+      // Drawer position right styles
+      '&.drawer--position-right $mainContent': {
+        paddingLeft: 0,
+        paddingRight: theme.drawerWidth,
+      },
+
+      '&.drawer--position-right $drawerContent': {
+        left: 'auto',
+        right: -theme.drawerWidth,
+        transform: 'translateX(-100%)',
+      },
+
+      '&.drawer--position-right.drawer--narrow-mode $drawerContent': { transform: 'translateX(0)' },
+
+      // eslint-disable-next-line max-len
+      '&.drawer--position-right.drawer--narrow-mode.drawer--opened $drawerContent': { transform: 'translateX(-100%)' },
+
+      '&.drawer--position-right.drawer--narrow-mode $mainContent': { paddingRight: 0 },
     },
 
     drawerContent: {
