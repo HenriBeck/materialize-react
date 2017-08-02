@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import { schema as background } from '../../components/background/theme';
 import { schema as button } from '../../components/button/theme';
 import { schema as divider } from '../../components/divider/theme';
@@ -14,7 +12,7 @@ import { schema as radioButton } from '../../components/radio-button/theme';
 import { schema as tabs } from '../../components/tabs/theme';
 import { schema as tab } from '../../components/tab/theme';
 
-export default PropTypes.shape({
+export default {
   background,
   label,
   divider,
@@ -28,4 +26,4 @@ export default PropTypes.shape({
   radioButton,
   tabs,
   tab,
-});
+};
