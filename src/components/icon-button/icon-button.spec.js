@@ -5,6 +5,9 @@ import { shallow } from 'enzyme';
 
 import IconButtonWrapper, { IconButton } from './icon-button';
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
+const classes = createClassesFromStyles(IconButton.styles({ iconButton: {} }));
 
 test('should render various elements and components', (t) => {
   const wrapper = mount(<IconButtonWrapper icon="github" />);
@@ -17,8 +20,7 @@ test('should render various elements and components', (t) => {
 test('should warn against changing the icon prop', (t) => {
   const wrapper = shallow(
     <IconButton
-      classes={{}}
-      theme={{}}
+      classes={classes}
       icon="github"
     />,
   );
@@ -30,8 +32,7 @@ test('should have aria-disabled and tabIndex of -1 when disabled', (t) => {
   const wrapper = shallow(
     <IconButton
       disabled
-      classes={{}}
-      theme={{}}
+      classes={classes}
       icon="github"
     />,
   );
@@ -46,8 +47,7 @@ test('should add and remove the focus from the ripple', (t) => {
   const onBlur = sinon.spy();
   const wrapper = shallow(
     <IconButton
-      classes={{}}
-      theme={{}}
+      classes={classes}
       icon="github"
       onFocus={onFocus}
       onBlur={onBlur}

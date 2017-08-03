@@ -5,6 +5,9 @@ import { shallow } from 'enzyme';
 
 import FabWrapper, { Fab } from './fab';
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
+const classes = createClassesFromStyles(Fab.styles({ fab: {} }));
 
 test('should render a button', (t) => {
   const wrapper = mount(<FabWrapper icon="build" />);
@@ -18,7 +21,7 @@ test('should warn against changing the icon and mini prop', (t) => {
     <Fab
       animateIn
       icon="build"
-      classes={{}}
+      classes={classes}
     />,
   );
 
@@ -32,7 +35,7 @@ test('should animate the fab in', (t) => {
     <Fab
       animateIn
       icon="build"
-      classes={{}}
+      classes={classes}
     />,
   );
   const root = wrapper.find({ role: 'button' });
@@ -45,7 +48,7 @@ test('should set the aria-disabled attribute on the root node', (t) => {
     <Fab
       disabled
       icon="build"
-      classes={{}}
+      classes={classes}
     />,
   );
   const root = wrapper.find({ role: 'button' });
@@ -70,7 +73,7 @@ test('should only call onPress when a key event happens with a valid keyCode', (
   const onPress = sinon.spy();
   const wrapper = shallow(
     <Fab
-      classes={{}}
+      classes={classes}
       icon="build"
       onPress={onPress}
     />,
@@ -86,7 +89,7 @@ test('should not call onPress when a key event happens with an invalid keyCode',
   const onPress = sinon.spy();
   const wrapper = shallow(
     <Fab
-      classes={{}}
+      classes={classes}
       icon="build"
       onPress={onPress}
     />,

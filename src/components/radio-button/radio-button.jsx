@@ -15,7 +15,14 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  */
 export class RadioButton extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      radioButton: PropTypes.string.isRequired,
+      container: PropTypes.string.isRequired,
+      border: PropTypes.string.isRequired,
+      circle: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      ripple: PropTypes.string.isRequired,
+    }).isRequired,
     checked: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
     isFocused: PropTypes.bool.isRequired,

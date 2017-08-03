@@ -63,7 +63,12 @@ export function DrawerContainer({
 }
 
 DrawerContainer.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({
+    drawer: PropTypes.string.isRequired,
+    drawerContent: PropTypes.string.isRequired,
+    mainContent: PropTypes.string.isRequired,
+    backdrop: PropTypes.string.isRequired,
+  }).isRequired,
   drawerContent: PropTypes.node.isRequired,
   mainContent: PropTypes.node.isRequired,
   backdropEnabled: PropTypes.bool.isRequired,

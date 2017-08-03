@@ -16,8 +16,11 @@ import EventHandler from '../event-handler';
  */
 export class IconButton extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      iconButton: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired,
+      ripple: PropTypes.string.isRequired,
+    }).isRequired,
     icon: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
@@ -66,6 +69,11 @@ export class IconButton extends PureComponent {
         composes: 'icon-button--icon',
         display: 'inline-flex',
         fontSize: theme.iconSize,
+      },
+
+      ripple: {
+        composes: 'icon-button--ripple',
+        color: theme.rippleColor,
       },
     };
   }
@@ -120,7 +128,6 @@ export class IconButton extends PureComponent {
     const {
       disabled,
       classes,
-      theme,
       className,
       onPress,
       noink,
@@ -145,8 +152,6 @@ export class IconButton extends PureComponent {
           round
           center
           className="icon-button--ripple"
-          color={theme.rippleColor}
-          focusColor={theme.rippleColor}
           focusOpacity={0.12}
           nowaves={noink}
           isFocused={this.state.isFocused}

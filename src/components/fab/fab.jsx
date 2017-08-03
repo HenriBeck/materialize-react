@@ -19,7 +19,11 @@ import EventHandler from '../event-handler';
  */
 export class Fab extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      fab: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired,
+      shadow: PropTypes.string.isRequired,
+    }).isRequired,
     icon: PropTypes.string.isRequired,
     className: PropTypes.string,
     mini: PropTypes.bool,

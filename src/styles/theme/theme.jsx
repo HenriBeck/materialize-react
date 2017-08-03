@@ -55,8 +55,8 @@ export default function Theme(props) {
 
 Theme.propTypes = {
   children: PropTypes.element.isRequired,
-  variables: PropTypes.object,
-  theme: PropTypes.object,
+  variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Theme.defaultProps = {

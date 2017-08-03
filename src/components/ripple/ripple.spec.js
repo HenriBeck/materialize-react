@@ -5,11 +5,12 @@ import sinon from 'sinon';
 import Ripple from './ripple';
 import Wave from './wave';
 import { mount } from 'enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 const defaultProps = {
   waves: [],
   initialOpacity: 0.25,
-  classes: { ripple: 'ripple' },
+  classes: createClassesFromStyles(Ripple.styles),
   className: '',
   isFocused: false,
   focusOpacity: 0.2,
@@ -35,7 +36,12 @@ test('should render a Wave component', (t) => {
       {...defaultProps}
       waves={[{
         id: 1,
-        style: {},
+        style: {
+          height: 0,
+          width: 0,
+          left: 0,
+          top: 0,
+        },
         radius: 5,
       }]}
     />,

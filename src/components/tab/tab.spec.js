@@ -4,11 +4,11 @@ import { shallow } from 'enzyme';
 
 import TabWrapper, { Tab } from './tab';
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 const props = {
   name: 'test',
-  theme: {},
-  classes: {},
+  classes: createClassesFromStyles(Tab.styles({ tab: {} })),
   onPress: () => {},
   tabStyle: 'text-and-icons',
   createRef: () => {},
