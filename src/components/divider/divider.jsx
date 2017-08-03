@@ -26,7 +26,7 @@ export function Divider({
 }
 
 Divider.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({ divider: PropTypes.string.isRequired }).isRequired,
   className: PropTypes.string,
 };
 

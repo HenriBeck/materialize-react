@@ -31,7 +31,7 @@ function Background({
 
 Background.propTypes = {
   children: PropTypes.node.isRequired,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({ background: PropTypes.string.isRequired }).isRequired,
   className: PropTypes.string,
 };
 
@@ -39,7 +39,7 @@ Background.defaultProps = { className: '' };
 
 Background.styles = ({ background: theme }) => {
   return {
-    root: {
+    background: {
       composes: 'background',
       color: theme.color,
       backgroundColor: theme.backgroundColor,

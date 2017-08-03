@@ -18,8 +18,13 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  */
 export class Checkbox extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      checkbox: PropTypes.string.isRequired,
+      container: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      checkboxContainer: PropTypes.string.isRequired,
+      checkmark: PropTypes.string.isRequired,
+    }).isRequired,
     checked: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
     isFocused: PropTypes.bool.isRequired,
@@ -96,6 +101,8 @@ export class Checkbox extends PureComponent {
           borderColor: theme.checkedBorderColor,
           backgroundColor: theme.checkedBgColor,
         },
+
+        '&[aria-checked=true] $ripple': { color: theme.checkedBorderColor },
       },
 
       container: {
@@ -111,6 +118,11 @@ export class Checkbox extends PureComponent {
       },
 
       label: { composes: 'checkbox--label' },
+
+      ripple: {
+        composes: 'checkbox--ripple',
+        color: theme.uncheckedBorderColor,
+      },
 
       checkboxContainer: {
         composes: 'checkbox--checkbox-container',
@@ -176,23 +188,6 @@ export class Checkbox extends PureComponent {
   }
 
   /**
-   * Compute the color for the ripple and the focusColor based on the props.
-   *
-   * @returns {{ color: String, focusColor: String }} - Returns an object with the colors.
-   */
-  getRippleProps() {
-    const {
-      theme: { checkbox: theme },
-      checked,
-    } = this.props;
-
-    return {
-      color: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
-      focusColor: checked ? theme.checkedBorderColor : theme.uncheckedBorderColor,
-    };
-  }
-
-  /**
    * A function which will be called with the element from EventHandler.
    *
    * @param {Object} element - The root element from EventHandler.
@@ -255,7 +250,6 @@ export class Checkbox extends PureComponent {
             center
             className={classes.ripple}
             isFocused={isFocused}
-            {...this.getRippleProps()}
           />
         </span>
 

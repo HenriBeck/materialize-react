@@ -10,9 +10,14 @@ import PropTypes from 'prop-types';
  */
 export default class Wave extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    className: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
+    style: PropTypes.shape({
+      height: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+      width: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+      top: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+      left: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+    }).isRequired,
     radius: PropTypes.number.isRequired,
     onFinish: PropTypes.func.isRequired,
   };
@@ -47,7 +52,7 @@ export default class Wave extends PureComponent {
     return (
       <span
         role="presentation"
-        className={this.props.classes.wave}
+        className={this.props.className}
         style={this.props.style}
         ref={(element) => { this.wave = element; }}
         onTransitionEnd={this.handleTransitionEnd}

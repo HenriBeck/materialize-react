@@ -5,9 +5,10 @@ import { shallow } from 'enzyme';
 
 import TabsContainerWrapper, { TabsContainer } from './tabs-container';
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 const props = {
-  classes: {},
+  classes: createClassesFromStyles(TabsContainer.styles({ tabs: {} })),
   className: '',
   noBar: false,
   createRef: () => {},
