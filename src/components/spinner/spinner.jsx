@@ -13,7 +13,14 @@ import { easeInOutCubic } from '../../styles/timings';
  */
 export class Spinner extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      spinner: PropTypes.string.isRequired,
+      container: PropTypes.string.isRequired,
+      layer: PropTypes.string.isRequired,
+      clipper: PropTypes.string.isRequired,
+      clipperLeft: PropTypes.string.isRequired,
+      clipperRight: PropTypes.string.isRequired,
+    }).isRequired,
     active: PropTypes.bool,
     className: PropTypes.string,
   };

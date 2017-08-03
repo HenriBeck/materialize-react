@@ -39,7 +39,7 @@ export function Label({
 }
 
 Label.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({ label: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   htmlFor: PropTypes.string.isRequired,
   className: PropTypes.string,

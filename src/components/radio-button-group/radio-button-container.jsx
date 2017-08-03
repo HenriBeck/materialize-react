@@ -48,7 +48,10 @@ export function RadioButtonContainer(props) {
 }
 
 RadioButtonContainer.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({
+    radioButtonGroup: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }).isRequired,
   onFocus: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
   onKeyPress: PropTypes.func.isRequired,
@@ -60,7 +63,7 @@ RadioButtonContainer.propTypes = {
 
 RadioButtonContainer.defaultProps = { className: '' };
 
-const styles = {
+RadioButtonContainer.styles = {
   radioButtonGroup: {
     composes: 'radio-button-group',
     display: 'inline-flex',
@@ -75,4 +78,4 @@ const styles = {
   },
 };
 
-export default injectSheet(styles)(RadioButtonContainer);
+export default injectSheet(RadioButtonContainer.styles)(RadioButtonContainer);

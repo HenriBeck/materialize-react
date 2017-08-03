@@ -79,7 +79,12 @@ export function Tab({
 
 Tab.propTypes = {
   name: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({
+    tab: PropTypes.string.isRequired,
+    tabContent: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    ripple: PropTypes.string.isRequired,
+  }).isRequired,
   onPress: PropTypes.func.isRequired,
   tabStyle: PropTypes.string.isRequired,
   createRef: PropTypes.func.isRequired,
