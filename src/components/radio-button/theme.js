@@ -25,7 +25,7 @@ export function defaultTheme(vars) {
     rippleSize: 40,
 
     checkedColor: vars.primaryBase,
-    uncheckedColor: 'rgba(255, 255, 255, 0.7)',
-    disabledColor: 'rgba(255, 255, 255, 0.3)',
+    uncheckedColor: 'rgba(0, 0, 0, 0.54)',
+    disabledColor: 'rgba(0, 0, 0, 0.26)',
   };
 }

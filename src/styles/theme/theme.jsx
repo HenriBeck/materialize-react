@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ThemeProvider,
-  JssProvider,
-} from 'react-jss';
+import { ThemeProvider } from 'react-jss';
 
-import jss from '../jss';
 import {
   defaultTheme,
   defaultVars,
 } from './default-theme';
+import themeSchema from './theme-schema';
 
 /**
  * Compile the theme and merge it with the default theme.
@@ -43,21 +40,23 @@ export function compileTheme(customVariables, customTheme) {
 export default function Theme(props) {
   const compiledTheme = compileTheme(props.variables, props.theme);
 
-  // PropTypes.checkPropTypes(themeSchema, compiledTheme, 'prop', 'Theme');
+  Object
+    .keys(themeSchema)
+    .forEach((component) => {
+      PropTypes.checkPropTypes(themeSchema, compiledTheme, component, 'Theme');
+    });
 
   return (
-    <JssProvider jss={jss}>
-      <ThemeProvider theme={compiledTheme}>
-        {props.children}
-      </ThemeProvider>
-    </JssProvider>
+    <ThemeProvider theme={compiledTheme}>
+      {props.children}
+    </ThemeProvider>
   );
 }
 
 Theme.propTypes = {
   children: PropTypes.element.isRequired,
-  variables: PropTypes.object,
-  theme: PropTypes.object,
+  variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Theme.defaultProps = {

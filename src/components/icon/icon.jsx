@@ -33,7 +33,7 @@ export function Icon({
 
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({ icon: PropTypes.string.isRequired }).isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
 };

@@ -8,13 +8,21 @@ export Fab from './components/fab';
 export Icon from './components/icon';
 export IconButton from './components/icon-button';
 export Label from './components/label';
-export Parallax from './components/parallax';
 export Progress from './components/progress';
 export Ripple from './components/ripple';
 export Spinner from './components/spinner';
 export Switch from './components/switch';
+export Drawer from './components/drawer';
+export Tabs from './components/tabs';
+export Tab from './components/tab';
+export RadioButton from './components/radio-button';
+export RadioButtonGroup from './components/radio-button-group';
+export Animations from './components/animations';
 
 // Styles
 export Theme from './styles/theme';
 export * as typography from './styles/typography';
 export elevation from './styles/elevation';
+export * as timings from './styles/timings';
+export * as colors from './styles/colors';
+export jss from './styles/jss';

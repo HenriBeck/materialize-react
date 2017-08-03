@@ -5,8 +5,6 @@ import { mount } from '../../../tests/helpers/enzyme';
 import Switch from './switch';
 
 const defaultProps = {
-  classes: {},
-  theme: {},
   toggled: false,
   id: '',
   onKeyPress: () => {},

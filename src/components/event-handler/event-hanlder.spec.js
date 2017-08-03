@@ -5,6 +5,15 @@ import { shallow } from 'enzyme';
 
 import EventHanlder from './event-handler';
 
+/**
+ * Create an event object with the required timeStamp property.
+ *
+ * @returns {Object} - Returns the event object.
+ */
+function createEvent() {
+  return { timeStamp: Date.now() };
+}
+
 test('should call onPress when a mouse or touch event happens', (t) => {
   const onPress = sinon.spy();
   const wrapper = shallow(
@@ -14,11 +23,11 @@ test('should call onPress when a mouse or touch event happens', (t) => {
     />,
   );
 
-  wrapper.simulate('mouseDown');
+  wrapper.simulate('mouseDown', createEvent());
 
   t.deepEqual(onPress.callCount, 1);
 
-  wrapper.simulate('touchStart');
+  wrapper.simulate('touchStart', createEvent());
 
   t.deepEqual(onPress.callCount, 2);
 });
@@ -32,11 +41,11 @@ test('should call onPress only once when a mouse event happens after a touch eve
     />,
   );
 
-  wrapper.simulate('touchStart');
+  wrapper.simulate('touchStart', createEvent());
 
   t.deepEqual(onPress.callCount, 1);
 
-  wrapper.simulate('mouseDown');
+  wrapper.simulate('mouseDown', createEvent());
 
   t.deepEqual(onPress.callCount, 1);
 });
@@ -50,11 +59,11 @@ test('should call onRelease when a mouse or touch event happens', (t) => {
     />,
   );
 
-  wrapper.simulate('mouseUp');
+  wrapper.simulate('mouseUp', createEvent());
 
   t.deepEqual(onRelease.callCount, 1);
 
-  wrapper.simulate('touchEnd');
+  wrapper.simulate('touchEnd', createEvent());
 
   t.deepEqual(onRelease.callCount, 2);
 });
@@ -68,11 +77,11 @@ test('should call onRelease only once when a mouse event happens after a touch e
     />,
   );
 
-  wrapper.simulate('touchEnd');
+  wrapper.simulate('touchEnd', createEvent());
 
   t.deepEqual(onRelease.callCount, 1);
 
-  wrapper.simulate('mouseUp');
+  wrapper.simulate('mouseUp', createEvent());
 
   t.deepEqual(onRelease.callCount, 1);
 });
@@ -91,11 +100,11 @@ test('should call the actual mouse event handlers', (t) => {
     />,
   );
 
-  wrapper.simulate('mouseDown');
+  wrapper.simulate('mouseDown', createEvent());
 
   t.deepEqual(onMouseDown.callCount, 1);
 
-  wrapper.simulate('mouseUp');
+  wrapper.simulate('mouseUp', createEvent());
 
   t.deepEqual(onMouseUp.callCount, 1);
 });
@@ -114,11 +123,11 @@ test('should call the actual touch event handlers', (t) => {
     />,
   );
 
-  wrapper.simulate('touchStart');
+  wrapper.simulate('touchStart', createEvent());
 
   t.deepEqual(onTouchStart.callCount, 1);
 
-  wrapper.simulate('touchEnd');
+  wrapper.simulate('touchEnd', createEvent());
 
   t.deepEqual(onTouchEnd.callCount, 1);
 });

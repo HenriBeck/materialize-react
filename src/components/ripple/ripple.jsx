@@ -17,7 +17,12 @@ import getNotDeclaredProps from '../../get-not-declared-props';
 export class Ripple extends PureComponent {
   static propTypes = {
     waves: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      ripple: PropTypes.string.isRequired,
+      focus: PropTypes.string.isRequired,
+      waveContainer: PropTypes.string.isRequired,
+      wave: PropTypes.string.isRequired,
+    }).isRequired,
     className: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
     round: PropTypes.bool.isRequired,
@@ -33,6 +38,80 @@ export class Ripple extends PureComponent {
     'focusColor',
     'focusOpacity',
   ];
+
+  static styles = {
+    '@keyframes ripple--scale-in': {
+      from: { transform: 'scale(0)' },
+      to: { transform: 'scale(1)' },
+    },
+
+    ripple: {
+      composes: 'ripple',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      display: 'block',
+      borderRadius: 'inherit',
+      overflow: 'hidden',
+      cursor: 'pointer',
+      zIndex: 'inherit',
+      WebkitTapHighlightColor: 'transparent',
+
+      '&.ripple--no-waves': { pointerEvents: 'none' },
+
+      '&.ripple--round $focus': {
+        borderRadius: '50%',
+        transform: 'scale(0)',
+      },
+
+      '&.ripple--round $waveContainer': { borderRadius: '50%' },
+
+      '&.ripple--focused $focus': { opacity: props => props.focusOpacity },
+
+      '&.ripple--round.ripple--focused $focus': { transform: 'scale(1)' },
+    },
+
+    focus: {
+      composes: 'ripple--focus',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      opacity: 0,
+      backgroundColor: props => props.focusColor,
+      transitionProperty: 'background-color, opacity, transform',
+      transition: '140ms linear',
+    },
+
+    waveContainer: {
+      composes: 'ripple--wave-container',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100%',
+      width: '100%',
+      pointerEvents: 'none',
+      overflow: 'hidden',
+    },
+
+    wave: {
+      composes: 'ripple--wave',
+      position: 'absolute',
+      pointerEvents: 'none',
+      opacity: props => props.initialOpacity,
+      overflow: 'hidden',
+      borderRadius: '50%',
+      transform: 'scale(0)',
+      willChange: 'opacity, transform',
+      zIndex: 1,
+      animationFillMode: 'forwards',
+      transition: 'opacity 140ms linear',
+      backgroundColor: props => props.color,
+    },
+  };
 
   waves = {};
 
@@ -78,7 +157,7 @@ export class Ripple extends PureComponent {
     return this.props.waves.map(wave => (
       <Wave
         key={wave.id}
-        classes={this.props.classes}
+        className={this.props.classes.wave}
         ref={(element) => { this.waves[wave.id] = element; }}
         onFinish={this.props.onAnimationFinish}
         {...wave}
@@ -114,78 +193,4 @@ export class Ripple extends PureComponent {
   }
 }
 
-const styles = {
-  '@keyframes ripple--scale-in': {
-    from: { transform: 'scale(0)' },
-    to: { transform: 'scale(1)' },
-  },
-
-  ripple: {
-    composes: 'ripple',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: 'block',
-    borderRadius: 'inherit',
-    overflow: 'hidden',
-    cursor: 'pointer',
-    zIndex: 'inherit',
-    WebkitTapHighlightColor: 'transparent',
-
-    '&.ripple--no-waves': { pointerEvents: 'none' },
-
-    '&.ripple--round $focus': {
-      borderRadius: '50%',
-      transform: 'scale(0)',
-    },
-
-    '&.ripple--round $waveContainer': { borderRadius: '50%' },
-
-    '&.ripple--focused $focus': { opacity: props => props.focusOpacity },
-
-    '&.ripple--round.ripple--focused $focus': { transform: 'scale(1)' },
-  },
-
-  focus: {
-    composes: 'ripple--focus',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    opacity: 0,
-    backgroundColor: props => props.focusColor,
-    transitionProperty: 'background-color, opacity, transform',
-    transition: '140ms linear',
-  },
-
-  waveContainer: {
-    composes: 'ripple--wave-container',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    height: '100%',
-    width: '100%',
-    pointerEvents: 'none',
-    overflow: 'hidden',
-  },
-
-  wave: {
-    composes: 'ripple--wave',
-    position: 'absolute',
-    pointerEvents: 'none',
-    opacity: props => props.initialOpacity,
-    overflow: 'hidden',
-    borderRadius: '50%',
-    transform: 'scale(0)',
-    willChange: 'opacity, transform',
-    zIndex: 1,
-    animationFillMode: 'forwards',
-    transition: 'opacity 140ms linear',
-    backgroundColor: props => props.color,
-  },
-};
-
-export default injectSheet(styles)(Ripple);
+export default injectSheet(Ripple.styles)(Ripple);

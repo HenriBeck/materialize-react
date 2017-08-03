@@ -29,7 +29,6 @@ import Label from '../label';
  */
 export function Switch({
   classes,
-  theme,
   className,
   noink,
   onKeyPress,
@@ -44,8 +43,6 @@ export function Switch({
   labelPosition,
   ...props
 }) {
-  const rippleColor = toggled ? theme.uncheckedRippleColor : theme.checkedRippleColor;
-  const rippleFocusColor = toggled ? theme.checkedRippleColor : theme.uncheckedRippleColor;
   const classNames = classnames(
     className,
     classes.switch,
@@ -75,8 +72,6 @@ export function Switch({
             round
             center
             nowaves={noink}
-            focusColor={rippleFocusColor}
-            color={rippleColor}
             isFocused={isFocused}
             className={classes.ripple}
           />
@@ -95,8 +90,14 @@ export function Switch({
 }
 
 Switch.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  classes: PropTypes.shape({
+    switch: PropTypes.string.isRequired,
+    container: PropTypes.string.isRequired,
+    thumb: PropTypes.string.isRequired,
+    bar: PropTypes.string.isRequired,
+    ripple: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }).isRequired,
   toggled: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
   onKeyPress: PropTypes.func.isRequired,
@@ -128,6 +129,8 @@ Switch.styles = ({ switch: theme }) => {
       },
 
       '&[aria-checked=true] $bar': { backgroundColor: theme.checkedBarColor },
+
+      '&[aria-checked=true] $ripple': { color: theme.checkedRippleColor },
 
       '&[aria-disabled=true] $thumb': { backgroundColor: theme.disabledThumbColor },
 
@@ -176,6 +179,7 @@ Switch.styles = ({ switch: theme }) => {
     ripple: {
       composes: 'switch--ripple',
       position: 'absolute',
+      color: theme.uncheckedRippleColor,
       top: (theme.thumbSize - theme.rippleSize) / 2,
       left: (theme.thumbSize - theme.rippleSize) / 2,
       right: (theme.thumbSize - theme.rippleSize) / 2,

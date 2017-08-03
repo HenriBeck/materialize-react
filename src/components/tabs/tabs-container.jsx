@@ -14,7 +14,10 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  */
 export class TabsContainer extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      tabs: PropTypes.string.isRequired,
+      bar: PropTypes.string.isRequired,
+    }).isRequired,
     children: PropTypes.node.isRequired,
     className: PropTypes.string.isRequired,
     onFocus: PropTypes.func.isRequired,

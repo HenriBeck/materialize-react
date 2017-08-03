@@ -6,18 +6,23 @@ import { mount } from 'enzyme';
 import Wave from './wave';
 
 const defaultProps = {
-  classes: { wave: 'wave' },
+  className: 'wave',
   id: 1,
-  style: {},
+  style: {
+    height: 2,
+    width: 2,
+    left: -2,
+    top: -2,
+  },
   radius: 2,
   initialOpacity: 0.25,
   onFinish: () => {},
 };
 
-test('should render a span', (t) => {
+test('should render an element with the class of wave', (t) => {
   const wrapper = mount(<Wave {...defaultProps} />);
 
-  t.deepEqual(wrapper.find('span.wave').length, 1);
+  t.deepEqual(wrapper.find('.wave').length, 1);
 });
 
 test('animate the wave out', (t) => {

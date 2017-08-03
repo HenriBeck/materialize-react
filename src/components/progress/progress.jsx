@@ -15,8 +15,13 @@ import warning from '../../utils/warning';
  */
 export class Progress extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+      progress: PropTypes.string.isRequired,
+      container: PropTypes.string.isRequired,
+      primaryBar: PropTypes.string.isRequired,
+      secondaryBar: PropTypes.string.isRequired,
+    }).isRequired,
+    theme: PropTypes.shape({ progress: PropTypes.object.isRequired }).isRequired,
     indeterminate: PropTypes.bool,
     disabled: PropTypes.bool,
     progress: PropTypes.number,
