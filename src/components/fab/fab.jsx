@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
-import warning from '../../utils/warning';
+import warning from 'warning';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';
@@ -125,12 +125,12 @@ export class Fab extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.icon !== this.props.icon,
+      nextProps.icon === this.props.icon,
       'You should not change the icon prop of a FAB',
     );
 
     warning(
-      nextProps.mini !== this.props.mini,
+      nextProps.mini === this.props.mini,
       'You should not change the mini prop of a FAB',
     );
   }

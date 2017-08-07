@@ -4,7 +4,7 @@ import injectSheet from 'react-jss';
 
 import Ripple from '../ripple';
 import Icon from '../icon';
-import warning from '../../utils/warning';
+import warning from 'warning';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import EventHandler from '../event-handler';
 
@@ -85,7 +85,7 @@ export class IconButton extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.icon !== this.props.icon,
+      nextProps.icon === this.props.icon,
       'You should not change the icon prop of a FAB',
     );
   }
