@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 export const schema = PropTypes.shape({
   backgroundColor: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
-  mobileHeight: PropTypes.string.isRequired,
-  mobileMaxScreenWidth: PropTypes.string.isRequired,
+  mobileHeight: PropTypes.number.isRequired,
+  mobileMaxScreenWidth: PropTypes.number.isRequired,
 });
 
 /**
