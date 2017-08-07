@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ThemeProvider } from 'react-jss';
+import injectSheet, { ThemeProvider } from 'react-jss';
 
 import {
   defaultTheme,
@@ -37,7 +37,7 @@ export function compileTheme(customVariables, customTheme) {
  * @param {Object} props - The props for the component.
  * @returns {JSX} - Returns the children wrapped by a child component.
  */
-export default function Theme(props) {
+export function Theme(props) {
   const compiledTheme = compileTheme(props.variables, props.theme);
 
   Object
@@ -63,3 +63,7 @@ Theme.defaultProps = {
   variables: {},
   theme: {},
 };
+
+Theme.styles = { '@global *': { WebkitTapHighlightColor: 'transparent' } };
+
+export default injectSheet(Theme.styles)(Theme);
