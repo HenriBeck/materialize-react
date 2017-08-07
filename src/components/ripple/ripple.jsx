@@ -57,7 +57,6 @@ export class Ripple extends PureComponent {
       overflow: 'hidden',
       cursor: 'pointer',
       zIndex: 'inherit',
-      WebkitTapHighlightColor: 'transparent',
 
       '&.ripple--no-waves': { pointerEvents: 'none' },
 
