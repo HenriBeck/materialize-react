@@ -11,6 +11,7 @@ import { schema as switchSchema } from '../../components/switch/theme';
 import { schema as radioButton } from '../../components/radio-button/theme';
 import { schema as tabs } from '../../components/tabs/theme';
 import { schema as tab } from '../../components/tab/theme';
+import { schema as toolbar } from '../../components/toolbar/theme';
 
 export default {
   background,
@@ -26,4 +27,5 @@ export default {
   radioButton,
   tabs,
   tab,
+  toolbar,
 };
