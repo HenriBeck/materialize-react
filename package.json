@@ -35,7 +35,6 @@
   "homepage": "https://github.com/HenriBeck/materialize-react#readme",
   "dependencies": {
     "classnames": "2.2.5",
-    "is_js": "0.9.0",
     "lodash.omit": "4.5.0",
     "lodash.pick": "4.4.0",
     "polished": "1.3.0",
@@ -68,6 +67,8 @@
     "enzyme": "2.9.1",
     "eslint": "4.3.0",
     "husky": "0.14.3",
+    "is_js": "0.9.0",
+    "mdi": "2.0.46",
     "normalize.css": "7.0.0",
     "nyc": "11.0.3",
     "react-addons-test-utils": "15.6.0",
