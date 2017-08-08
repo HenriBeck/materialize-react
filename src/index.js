@@ -19,6 +19,7 @@ export RadioButton from './components/radio-button';
 export RadioButtonGroup from './components/radio-button-group';
 export Animations from './components/animations';
 export Toolbar from './components/toolbar';
+export Modal from './components/modal';
 
 // Styles
 export Theme from './styles/theme';
