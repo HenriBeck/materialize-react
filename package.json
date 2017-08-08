@@ -35,11 +35,11 @@
   "homepage": "https://github.com/HenriBeck/materialize-react#readme",
   "dependencies": {
     "classnames": "2.2.5",
-    "color": "2.0.0",
     "is_js": "0.9.0",
     "lodash.omit": "4.5.0",
     "lodash.pick": "4.4.0",
     "mdi": "1.9.33",
+    "polished": "1.3.0",
     "prop-types": "15.5.10",
     "randomstring": "1.1.5",
     "react": "15.6.1",
