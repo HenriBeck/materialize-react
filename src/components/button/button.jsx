@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
-import warning from '../../utils/warning';
+import warning from 'warning';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import { button as buttonTypo } from '../../styles/typography';
@@ -117,7 +117,7 @@ export class Button extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.raised !== this.props.raised,
+      nextProps.raised === this.props.raised,
       'You should not change the raised prop of a button!',
     );
   }

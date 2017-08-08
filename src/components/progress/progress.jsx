@@ -5,7 +5,7 @@ import injectSheet from 'react-jss';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import { easeInOutCubic } from '../../styles/timings';
-import warning from '../../utils/warning';
+import warning from 'warning';
 
 /**
  * A component to render a material design progress bar.
@@ -175,7 +175,7 @@ export class Progress extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.indeterminate !== this.props.indeterminate,
+      nextProps.indeterminate === this.props.indeterminate,
       'You should not change the mode of the progress bar!',
     );
   }

@@ -52,7 +52,8 @@
     "randomstring": "1.1.5",
     "react": "15.6.1",
     "react-get-not-declared-props": "0.2.0",
-    "react-jss": "7.0.2"
+    "react-jss": "7.0.2",
+    "warning": "3.0.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "3.1.9",
@@ -85,7 +86,9 @@
     "style-loader": "0.18.2"
   },
   "ava": {
-    "files": ["src/**/*.spec.js"],
+    "files": [
+      "src/**/*.spec.js"
+    ],
     "require": [
       "babel-register",
       "babel-polyfill",
