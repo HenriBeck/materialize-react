@@ -165,26 +165,35 @@ export class Ripple extends PureComponent {
   }
 
   render() {
-    const className = classnames(this.props.className, this.props.classes.ripple, {
-      'ripple--round': this.props.round,
-      'ripple--no-waves': this.props.nowaves,
-      'ripple--focused': this.props.isFocused,
+    const {
+      classes,
+      round,
+      nowaves,
+      isFocused,
+      createRef,
+      onDownAction,
+      ...props
+    } = this.props;
+    const className = classnames(this.props.className, classes.ripple, {
+      'ripple--round': round,
+      'ripple--no-waves': nowaves,
+      'ripple--focused': isFocused,
     });
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(this.props, Ripple, Ripple.extraProps)}
+        {...getNotDeclaredProps(props, Ripple, Ripple.extraProps)}
         component="span"
         role="presentation"
         className={className}
-        createRef={this.props.createRef}
-        onPress={this.props.onDownAction}
+        createRef={createRef}
+        onPress={onDownAction}
         onRelease={this.handleRelease}
         onMouseLeave={this.handleMouseLeave}
       >
-        <span className={this.props.classes.focus} />
+        <span className={classes.focus} />
 
-        <span className={this.props.classes.waveContainer}>
+        <span className={classes.waveContainer}>
           {this.renderWaves()}
         </span>
       </EventHandler>
