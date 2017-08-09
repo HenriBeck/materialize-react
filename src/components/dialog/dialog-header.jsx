@@ -3,47 +3,43 @@ import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
 /**
- * A component which adds the appropriate styles for a button row inside a modal.
+ * A component which adds the appropriate styles for the header of a dialog.
  *
  * @param {Object} props - The props for the component.
  * @param {Object} props.classes - Classes provided by Jss.
  * @param {String} props.className - Additional className.
- * @param {JSX} props.children - The buttons for the row.
+ * @param {JSX} props.children - The content for the header.
  * @returns {JSX} - Returns the jsx.
  */
-export function ModalButtons({
+export function ModalHeader({
   classes,
   className,
   children,
   ...props
 }) {
   return (
-    <div
-      className={`${classes.buttons} ${className}`}
+    <header
+      className={`${classes.header} ${className}`}
       {...props}
     >
       {children}
-    </div>
+    </header>
   );
 }
 
-ModalButtons.propTypes = {
+ModalHeader.propTypes = {
   classes: PropTypes.shape({ content: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 
-ModalButtons.defaultProps = { className: '' };
+ModalHeader.defaultProps = { className: '' };
 
-ModalButtons.styles = {
-  buttons: {
-    composes: 'modal--buttons',
-    padding: 8,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+ModalHeader.styles = {
+  header: {
+    composes: 'dialog--header',
+    marginBottom: 20,
   },
 };
 
-export default injectSheet(ModalButtons.styles)(ModalButtons);
+export default injectSheet(ModalHeader.styles)(ModalHeader);

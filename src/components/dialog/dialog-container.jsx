@@ -2,17 +2,17 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
-import Modal from './modal';
-import ModalHeader from './modal-header';
-import ModalContent from './modal-content';
-import ModalButtons from './modal-buttons';
+import Modal from './dialog';
+import ModalHeader from './dialog-header';
+import ModalContent from './dialog-content';
+import ModalButtons from './dialog-buttons';
 
 /**
- * A component to render a modal.
+ * A component to render a dialog.
  *
  * @class
  */
-export default class ModalContainer extends PureComponent {
+export default class DialogContainer extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     hasBackdrop: PropTypes.bool,
@@ -31,21 +31,21 @@ export default class ModalContainer extends PureComponent {
   state = { opened: false };
 
   /**
-   * Open the modal.
+   * Open the dialog.
    */
   open() {
     this.setState({ opened: true });
   }
 
   /**
-   * Close the modal.
+   * Close the dialog.
    */
   close() {
     this.setState({ opened: false });
   }
 
   /**
-   * Close the modal when the user clicks on the backdrop.
+   * Close the dialog when the user clicks on the backdrop.
    */
   onBackdropClick() {
     this.close();
@@ -61,7 +61,7 @@ export default class ModalContainer extends PureComponent {
 
     return (
       <Modal
-        {...getNotDeclaredProps(props, ModalContainer)}
+        {...getNotDeclaredProps(props, DialogContainer)}
         hasBackdrop={hasBackdrop}
         closeOnBackdropClick={closeOnBackdropClick}
       >
