@@ -12,6 +12,7 @@ import { schema as radioButton } from '../../components/radio-button/theme';
 import { schema as tabs } from '../../components/tabs/theme';
 import { schema as tab } from '../../components/tab/theme';
 import { schema as toolbar } from '../../components/toolbar/theme';
+import { schema as modal } from '../../components/modal/theme';
 
 export default {
   background,
@@ -28,4 +29,5 @@ export default {
   tabs,
   tab,
   toolbar,
+  modal,
 };
