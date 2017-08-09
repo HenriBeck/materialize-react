@@ -116,7 +116,7 @@ test('should update the narrow state when the window resizes', (t) => {
   t.deepEqual(wrapper.state('isNarrow'), true);
 });
 
-test('should set the opened state to false when the backdrop click handler get\'s called', (t) => {
+test('should not close the drawer when the prop closeOnBackdropClick is false', (t) => {
   const wrapper = shallow(
     <Drawer closeOnBackdropClick={false}>
       <MainContent>Test</MainContent>
@@ -129,10 +129,37 @@ test('should set the opened state to false when the backdrop click handler get\'
 
   instance.handleBackdropPress();
 
-  // Should not change the state because closeOnBackdropClick was false
   t.deepEqual(wrapper.state('opened'), true);
+});
 
-  wrapper.setProps({ closeOnBackdropClick: true });
+test('should not close the drawer when the backdrop hasn\'t finished transitioning', (t) => {
+  const wrapper = shallow(
+    <Drawer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </Drawer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleBackdropPress();
+
+  t.deepEqual(wrapper.state('opened'), true);
+});
+
+test('should close the drawer when the backdrop has finished transitioning and is clicked', (t) => {
+  const wrapper = shallow(
+    <Drawer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </Drawer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleTransitionEnd();
 
   instance.handleBackdropPress();
 

@@ -14,6 +14,7 @@ const defaultProps = {
   opened: false,
   drawerPosition: 'left',
   onBackdropPress: () => {},
+  onTransitionEnd: () => {},
 };
 
 test('should render div with the class of drawer', (t) => {
