@@ -22,6 +22,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * Only applies when the drawer is also in narrow mode.
  * @param {Function} props.onBackdropPress - A callback to when the backdrop is pressed.
  * @param {String} props.drawerPosition - The position of the drawer. Either left or right.
+ * @param {Function} props.onTransitionEnd - When the transition of the backdrop has finished.
  * @returns {JSX} - Returns the jsx for the drawer.
  */
 export function DrawerContainer({
@@ -33,6 +34,7 @@ export function DrawerContainer({
   opened,
   drawerPosition,
   onBackdropPress,
+  onTransitionEnd,
   ...props
 }) {
   const className = classNames(classes.drawer, {
@@ -56,6 +58,7 @@ export function DrawerContainer({
           component="span"
           className={classes.backdrop}
           onPress={onBackdropPress}
+          onTransitionEnd={onTransitionEnd}
         />
       )}
     </div>
@@ -76,6 +79,7 @@ DrawerContainer.propTypes = {
   opened: PropTypes.bool.isRequired,
   drawerPosition: PropTypes.string.isRequired,
   onBackdropPress: PropTypes.func.isRequired,
+  onTransitionEnd: PropTypes.func.isRequired,
 };
 
 DrawerContainer.styles = ({ drawer: theme }) => {
@@ -123,6 +127,8 @@ DrawerContainer.styles = ({ drawer: theme }) => {
       height: '100%',
       display: 'inline',
       position: 'absolute',
+      boxSizing: 'border-box',
+      backgroundColor: theme.drawerBgColor,
       top: 0,
       left: -theme.drawerWidth,
       bottom: 0,

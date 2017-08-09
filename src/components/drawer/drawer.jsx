@@ -99,6 +99,8 @@ export default class Drawer extends PureComponent {
     window.removeEventListener('resize', this.handleResize);
   }
 
+  backdropFinishedTransitioning = false;
+
   /**
    * Open the SideNav when the drawer is in narrow mode.
    */
@@ -142,9 +144,19 @@ export default class Drawer extends PureComponent {
    * Close the drawer upon backdrop press.
    */
   handleBackdropPress = () => {
-    if (this.props.closeOnBackdropClick) {
+    if (this.props.closeOnBackdropClick && this.backdropFinishedTransitioning) {
       this.close();
     }
+  };
+
+  /**
+   * Toggle the backdropFinishedTransitioning when the backdrop finishes the transition.
+   * This fixes a bug we're on mobile the drawer would immediately close after opening it
+   * because the mouse event after the touch event would fire on the backdrop
+   * and not the actual clicked element.
+   */
+  handleTransitionEnd = () => {
+    this.backdropFinishedTransitioning = !this.backdropFinishedTransitioning;
   };
 
   render() {
@@ -165,6 +177,7 @@ export default class Drawer extends PureComponent {
         opened={this.state.opened}
         drawerPosition={drawerPosition}
         onBackdropPress={this.handleBackdropPress}
+        onTransitionEnd={this.handleTransitionEnd}
       />
     );
   }
