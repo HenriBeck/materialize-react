@@ -14,7 +14,11 @@ export const schema = PropTypes.shape({
  */
 export function defaultTheme(vars) {
   return {
-    backgroundColor: vars.dialogBgColor,
+    backgroundColor: '#ffffff',
     backdropColor: 'rgba(0, 0, 0, 0.4)',
+    padding: 24,
+    transitionDuration: vars.transitionTime,
+    zIndex: 500,
+    elevation: 6,
   };
 }
