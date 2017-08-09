@@ -5,6 +5,7 @@ export const schema = PropTypes.shape({
   backdropActiveOpacity: PropTypes.number,
   backdropBgColor: PropTypes.string,
   transitionDuration: PropTypes.number,
+  drawerBgColor: PropTypes.string.isRequired,
 });
 
 /**
@@ -19,5 +20,6 @@ export function defaultTheme() {
     backdropActiveOpacity: 0.5,
     backdropBgColor: '#000000',
     transitionDuration: 250,
+    drawerBgColor: '#ffffff',
   };
 }
