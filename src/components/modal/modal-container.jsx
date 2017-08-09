@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Modal from './modal';
+import ModalHeader from './modal-header';
+import ModalContent from './modal-content';
+import ModalButtons from './modal-buttons';
 
 /**
  * A component to render a modal.
@@ -20,6 +23,10 @@ export default class ModalContainer extends PureComponent {
     hasBackdrop: false,
     closeOnBackdropClick: false,
   };
+
+  static ModalHeader = ModalHeader;
+  static ModalContent = ModalContent;
+  static ModalButtons = ModalButtons;
 
   state = { opened: false };
 
