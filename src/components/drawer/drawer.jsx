@@ -50,7 +50,7 @@ export default class Drawer extends PureComponent {
     backdrop: true,
     drawerPosition: 'left',
     onNarrowChange: () => {},
-    closeOnBackdropClick: true,
+    closeOnBackdropClick: false,
   };
 
   static MainContent = MainContent;
