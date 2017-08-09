@@ -4,7 +4,7 @@ import randomstring from 'randomstring';
 
 import Switch from './switch';
 import getNotDeclaredProps from '../../get-not-declared-props';
-import warning from '../../utils/warning';
+import warning from 'warning';
 
 /**
  * A component to render a switch component.
@@ -48,12 +48,12 @@ export default class SwitchContainer extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.name !== this.props.name,
+      nextProps.name === this.props.name,
       'You should not change the name prop of the Switch',
     );
 
     warning(
-      nextProps.defaultToggled !== this.props.defaultToggled,
+      nextProps.defaultToggled === this.props.defaultToggled,
       'You should not change the defaultToggled prop of the Switch',
     );
   }

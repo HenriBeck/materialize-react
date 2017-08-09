@@ -4,7 +4,7 @@ import randomstring from 'randomstring';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Checkbox from './checkbox';
-import warning from '../../utils/warning';
+import warning from 'warning';
 
 /**
  * A component to render a checkbox.
@@ -47,12 +47,12 @@ export default class CheckboxContainer extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.name !== this.props.name,
+      nextProps.name === this.props.name,
       'You should not change the name of a checkbox',
     );
 
     warning(
-      nextProps.defaultChecked !== this.props.defaultChecked,
+      nextProps.defaultChecked === this.props.defaultChecked,
       'Changing the defaultChecked prop has no effect on the component',
     );
   }

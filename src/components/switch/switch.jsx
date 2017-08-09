@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
 import EventHandler from '../event-handler';
 import Ripple from '../ripple';
 import Label from '../label';
@@ -51,7 +52,7 @@ export function Switch({
 
   return (
     <EventHandler
-      {...props}
+      {...getNotDeclaredProps(props, Switch)}
       component="span"
       role="switch"
       className={classNames}

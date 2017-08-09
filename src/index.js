@@ -18,6 +18,7 @@ export Tab from './components/tab';
 export RadioButton from './components/radio-button';
 export RadioButtonGroup from './components/radio-button-group';
 export Animations from './components/animations';
+export Toolbar from './components/toolbar';
 
 // Styles
 export Theme from './styles/theme';
@@ -25,4 +26,3 @@ export * as typography from './styles/typography';
 export elevation from './styles/elevation';
 export * as timings from './styles/timings';
 export * as colors from './styles/colors';
-export jss from './styles/jss';

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import color from 'color';
+import { rgba } from 'polished';
 
 import {
   grey50,
@@ -32,10 +32,6 @@ export const schema = PropTypes.shape({
  * @returns {Object} - Returns the default theme for the switch component.
  */
 export function defaultTheme(vars) {
-  const primaryBaseRGB = color(vars.primaryBase)
-    .rgb()
-    .array();
-
   return {
     thumbSize: 20,
     barWidth: 36,
@@ -44,7 +40,7 @@ export function defaultTheme(vars) {
     transitionDuration: vars.transitionTime,
 
     checkedThumbColor: vars.primaryBase,
-    checkedBarColor: `rgba(${primaryBaseRGB.join(',')}, 0.5)`,
+    checkedBarColor: rgba(vars.primaryBase, 0.5),
     checkedRippleColor: vars.primaryBase,
 
     uncheckedThumbColor: grey50,

@@ -9,7 +9,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
 import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
 import RadioButtonContainer from './radio-button-container';
-import warning from '../../utils/warning';
+import warning from 'warning';
 import hasDuplicates from '../../utils/has-duplicates';
 
 /**
@@ -69,12 +69,12 @@ export default class RadioButtonGroup extends PureComponent {
    */
   componentWillReceiveProps(nextProps) {
     warning(
-      nextProps.defaultSelected !== this.props.defaultSelected,
+      nextProps.defaultSelected === this.props.defaultSelected,
       'You should not change the defaultSelected prop of a RadioButtonGroup',
     );
 
     warning(
-      nextProps.name !== this.props.name,
+      nextProps.name === this.props.name,
       'You should not change the name prop of a RadioButtonGroup',
     );
   }
@@ -97,7 +97,7 @@ export default class RadioButtonGroup extends PureComponent {
    */
   set selected(selected) {
     warning(
-      !this.includes(selected),
+      this.includes(selected),
       'The passed in name is not a valid radio button name.',
     );
 
