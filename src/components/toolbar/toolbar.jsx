@@ -2,6 +2,8 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 /**
  * A component which renders an AppBar.
  *
@@ -19,9 +21,13 @@ function Toolbar({
   height,
   className,
   noShadow,
+  ...props
 }) {
   return (
-    <div className={`${classes.toolbar} toolbar--${height} ${className}`}>
+    <div
+      {...getNotDeclaredProps(props, Toolbar)}
+      className={`${classes.toolbar} toolbar--${height} ${className}`}
+    >
       {children}
 
       {!noShadow && <span className={classes.shadow} />}
