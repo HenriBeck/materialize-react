@@ -1,10 +1,28 @@
 version: 2
 
 jobs:
-  test:
+  test-node6:
     working_directory: ~/materialize-react
     docker:
-      - image: circleci/node:4
+      - image: circleci/node:6
+    steps:
+      - checkout
+      - run:
+          name: Install Packages
+          command: yarn install
+      - run:
+          name: Lint
+          command: yarn run lint
+      - run:
+          name: Run Tests & Check Coverage
+          command: yarn run test:coverage
+      - run:
+          name: Report Coverage
+          command: yarn run report-coverage
+  test-node8:
+    working_directory: ~/materialize-react
+    docker:
+      - image: circleci/node:8
     steps:
       - checkout
       - run:
@@ -23,6 +41,7 @@ jobs:
 workflows:
   version: 2
 
-  test_and_deploy:
+  test:
     jobs:
-      - test
+      - test-node6
+      - test-node8
