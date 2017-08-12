@@ -1,0 +1,238 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { position } from 'polished';
+import injectSheet from 'react-jss';
+
+import { body1 } from '../../styles/typography';
+
+/**
+ * A component which renders the currently active snackbar.
+ *
+ * @class
+ */
+export class SnackbarContainer extends PureComponent {
+  static propTypes = {
+    classes: PropTypes.shape({
+      snackbarContainer: PropTypes.string.isRequired,
+      snackbar: PropTypes.string.isRequired,
+    }).isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
+    horizontalPos: PropTypes.oneOf(['start', 'center', 'end']),
+    animateInName: PropTypes.string,
+    animateOutName: PropTypes.string,
+  };
+
+  static defaultProps = {
+    horizontalPos: 'center',
+    animateInName: 'snackbar--animate-in',
+    animateOutName: 'snackbar--animate-out',
+  };
+
+  static contextTypes = {
+    snackbarController: PropTypes.shape({
+      initiateContainer: PropTypes.func.isRequired,
+      removeContainer: PropTypes.func.isRequired,
+    }).isRequired,
+  };
+
+  /**
+   * The styles for the container and the actual snackbar.
+   *
+   * @param {Object} theme - The theme provided by Jss.
+   * @param {Object} theme.snackbar - The actual theme for the snackbar.
+   * @returns {Object} - Returns the styles.
+   */
+  static styles = ({ snackbar: theme }) => {
+    return {
+      '@keyframes snackbar--animate-in': {
+        from: { transform: 'translateY(0)' },
+        to: { transform: 'translateY(-100%)' },
+      },
+
+      '@keyframes snackbar--animate-out': {
+        from: { transform: 'translateY(-100%)' },
+        to: { transform: 'translateY(0)' },
+      },
+
+      snackbarContainer: {
+        ...position('fixed', '0px', '0px', '0px', '0px'),
+        display: 'flex',
+
+        '&.snackbar--pos-start': { justifyContent: 'flex-start' },
+        '&.snackbar--pos-center': { justifyContent: 'center' },
+        '&.snackbar--pos-end': { justifyContent: 'flex-end' },
+
+        '@media screen and (min-width: 640px)': { padding: '0 24px' },
+      },
+
+      snackbar: {
+        ...body1,
+        color: theme.color,
+        boxSizing: 'border-box',
+        padding: `${theme.verticalPadding}px ${theme.horizontalPadding}px`,
+        height: theme.height,
+        backgroundColor: theme.backgroundColor,
+        position: 'absolute',
+        bottom: -theme.height,
+        zIndex: 1000,
+        display: 'flex',
+        animationDuration: 300,
+        animationName: props => props.animateInName,
+        animationFillMode: 'forwards',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+
+        '&.snackbar--animate-out': { animationName: props => props.animateOutName },
+
+        '@media screen and (max-width: 640px)': { width: '100%' },
+
+        '@media screen and (min-width: 640px)': {
+          borderRadius: theme.desktopBorderRadius,
+          minWidth: theme.desktopMinWidth,
+          maxWidth: theme.desktopMaxWidth,
+        },
+
+        '& > .button': {
+          margin: 0,
+          color: theme.color,
+
+          '@media screen and (max-width: 640px)': { marginLeft: theme.mobileLeftButtonMargin },
+
+          '@media screen and (min-width: 640px)': { marginLeft: theme.desktopLeftButtonMargin },
+        },
+      },
+    };
+  };
+
+  state = {
+    currentlyVisible: null,
+    animatingOut: false,
+  };
+
+  /**
+   * Initiate the container in the controller.
+   */
+  componentWillMount() {
+    this.context.snackbarController.initiateContainer(this.addSnackbar, this.closeSnackbar);
+  }
+
+  /**
+   * Create a new timeout to close the new snackbar when the currentlyVisible state changes.
+   */
+  componentDidUpdate(prevProps, prevState) {
+    const { currentlyVisible } = this.state;
+
+    if (prevState.currentlyVisible !== currentlyVisible && currentlyVisible !== null) {
+      const snackbar = this.snackbars[0];
+
+      if (snackbar.autoCloseTimer) {
+        this.timeout = setTimeout(() => this.closeSnackbar(snackbar.id), snackbar.autoCloseTimer);
+      }
+    }
+  }
+
+  /**
+   * Remove the container from the controller.
+   */
+  componentWillUnmount() {
+    this.context.snackbarController.removeContainer();
+  }
+
+  timeout = null;
+  snackbars = [];
+  snackbarCount = 0;
+
+  /**
+   * When the controller adds an.
+   *
+   * @param {Object} snackbar - The snackbar.
+   */
+  addSnackbar = (snackbar) => {
+    this.snackbarCount += 1;
+
+    const id = this.snackbarCount;
+
+    this.snackbars.push({
+      ...snackbar,
+      id,
+    });
+
+    if (this.state.currentlyVisible === null) {
+      this.setState({ currentlyVisible: id });
+    }
+  };
+
+  /**
+   * Close the snackbar with the current id.
+   *
+   * @param {String} id - The id of the snackbar.
+   */
+  closeSnackbar = (id) => {
+    if (this.state.currentlyVisible === id || id === 'current') {
+      this.setState({ animatingOut: true });
+
+      clearTimeout(this.timeout);
+
+      return;
+    }
+
+    this.snackbars = this.snackbars.filter(elem => elem.id !== id);
+  };
+
+  /**
+   * When the snackbar finishes the animation,
+   * we need to change the currentlyVisible to the next snackbar.
+   */
+  handleAnimationEnd = () => {
+    this.setState(({ animatingOut }) => {
+      if (animatingOut) {
+        const oldSnackbar = this.snackbars.shift();
+
+        oldSnackbar.onClose();
+
+        return {
+          currentlyVisible: this.snackbars.length > 0 ? this.snackbars[0].id : null,
+          animatingOut: false,
+        };
+      }
+
+      return null;
+    });
+  };
+
+  render() {
+    const {
+      classes,
+      animateInName,
+      animateOutName,
+      horizontalPos,
+    } = this.props;
+    const {
+      currentlyVisible,
+      animatingOut,
+    } = this.state;
+    let content = null;
+
+    if (currentlyVisible) {
+      const snackbar = this.snackbars[0];
+
+      content = (
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+          className={`${classes.snackbar} ${snackbar.className}`}
+          style={{ animationName: animatingOut ? animateOutName : animateInName }}
+          onAnimationEnd={this.handleAnimationEnd}
+        >
+          {snackbar.content}
+        </div>
+      );
+    }
+
+    return (
+      <div className={`${classes.snackbarContainer} snackbar--pos-${horizontalPos}`}>
+        {content}
+      </div>
+    );
+  }
+}
+
+export default injectSheet(SnackbarContainer.styles)(SnackbarContainer);
