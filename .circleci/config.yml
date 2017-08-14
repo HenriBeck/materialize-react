@@ -34,9 +34,6 @@ jobs:
       - run:
           name: Run Tests & Check Coverage
           command: yarn run test:coverage
-      - run:
-          name: Report Coverage
-          command: yarn run report-coverage
 
 workflows:
   version: 2
