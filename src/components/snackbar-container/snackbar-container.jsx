@@ -55,6 +55,7 @@ export class SnackbarContainer extends PureComponent {
       },
 
       snackbarContainer: {
+        composes: 'snackbar--container',
         ...position('fixed', '0px', '0px', '0px', '0px'),
         display: 'flex',
 
@@ -66,6 +67,7 @@ export class SnackbarContainer extends PureComponent {
       },
 
       snackbar: {
+        composes: 'snackbar',
         ...body1,
         color: theme.color,
         boxSizing: 'border-box',

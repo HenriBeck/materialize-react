@@ -54,12 +54,10 @@ export default class SnackbarController extends PureComponent {
       'A snackbar container is already registered. Only one container can be active at a time.',
     );
 
-    if (!this.hasController) {
-      this.hasController = true;
+    this.hasController = true;
 
-      this.addSnackbarCallback = addSnackbar;
-      this.closeSnackbarCallback = closeSnackbar;
-    }
+    this.addSnackbarCallback = addSnackbar;
+    this.closeSnackbarCallback = closeSnackbar;
   }
 
   /**
@@ -85,9 +83,7 @@ export default class SnackbarController extends PureComponent {
       ].join(' '),
     );
 
-    if (this.addSnackbarCallback) {
-      this.addSnackbarCallback(component);
-    }
+    this.addSnackbarCallback(component);
   }
 
   /**
@@ -104,9 +100,7 @@ export default class SnackbarController extends PureComponent {
       ].join(' '),
     );
 
-    if (this.closeSnackbarCallback) {
-      this.closeSnackbarCallback(id);
-    }
+    this.closeSnackbarCallback(id);
   }
 
   render() {

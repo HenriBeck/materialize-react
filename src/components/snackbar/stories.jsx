@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import Snackbar from './snackbar';
-import Button from '../button';
-import SnackbarController from '../snackbar-controller';
-import SnackbarContainer from '../snackbar-container';
+import Button from '../button/index';
+import SnackbarController from '../snackbar-controller/index';
+import SnackbarContainer from '../snackbar-container/index';
 
 /**
  * A component which creates a fully working drawer for the story.
