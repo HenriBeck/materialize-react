@@ -13,6 +13,7 @@ import { schema as tabs } from '../../components/tabs/theme';
 import { schema as tab } from '../../components/tab/theme';
 import { schema as toolbar } from '../../components/toolbar/theme';
 import { schema as dialog } from '../../components/dialog/theme';
+import { schema as snackbar } from '../../components/snackbar/theme';
 
 export default {
   background,
@@ -30,4 +31,5 @@ export default {
   tab,
   toolbar,
   dialog,
+  snackbar,
 };

@@ -46,4 +46,5 @@ configure(() => {
   require('../src/components/tabs/stories');
   require('../src/components/drawer/stories');
   require('../src/components/toolbar/stories');
+  require('../src/components/snackbar/stories');
 }, module);

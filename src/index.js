@@ -1,4 +1,5 @@
 // Components
+
 export Background from './components/background';
 export Button from './components/button';
 export Checkbox from './components/checkbox';
@@ -20,6 +21,10 @@ export RadioButtonGroup from './components/radio-button-group';
 export Animations from './components/animations';
 export Toolbar from './components/toolbar';
 export Dialog from './components/dialog';
+export SnackbarController from './components/snackbar-controller';
+export SnackbarContainer from './components/snackbar-container';
+export Snackbar from './components/snackbar';
+
 
 // Styles
 export Theme from './styles/theme';

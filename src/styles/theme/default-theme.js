@@ -33,6 +33,7 @@ import { defaultTheme as tab } from '../../components/tab/theme';
 import { defaultTheme as drawer } from '../../components/drawer/theme';
 import { defaultTheme as toolbar } from '../../components/toolbar/theme';
 import { defaultTheme as dialog } from '../../components/dialog/theme';
+import { defaultTheme as snackbar } from '../../components/snackbar/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -78,4 +79,5 @@ export const defaultTheme = {
   drawer,
   toolbar,
   dialog,
+  snackbar,
 };
