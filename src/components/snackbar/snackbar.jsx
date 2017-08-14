@@ -1,5 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import randomstring from 'randomstring';
 
 /**
  * The actual snackbar.
@@ -38,11 +39,14 @@ export default class Snackbar extends PureComponent {
     }
   }
 
+  id = randomstring.generate();
+
   /**
    * Show the current snackbar.
    */
   show() {
     this.context.snackbarController.addSnackbar({
+      id: this.id,
       content: this.props.children,
       onClose: this.props.onClose,
       autoCloseTimer: this.props.autoCloseTimer,
@@ -57,8 +61,7 @@ export default class Snackbar extends PureComponent {
    * and could remove the wrong snackbar.
    */
   close() {
-    // TODO: Proide a better close method and let the user speficy which toast should be closed
-    this.context.snackbarController.closeSnackbar('current');
+    this.context.snackbarController.closeSnackbar(this.id);
   }
 
   render() {

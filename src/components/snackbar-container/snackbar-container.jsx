@@ -142,7 +142,6 @@ export class SnackbarContainer extends PureComponent {
 
   timeout = null;
   snackbars = [];
-  snackbarCount = 0;
 
   /**
    * When the controller adds an.
@@ -150,17 +149,14 @@ export class SnackbarContainer extends PureComponent {
    * @param {Object} snackbar - The snackbar.
    */
   addSnackbar = (snackbar) => {
-    this.snackbarCount += 1;
+    if (this.snackbars.find(({ id }) => id === snackbar.id)) {
+      return;
+    }
 
-    const id = this.snackbarCount;
-
-    this.snackbars.push({
-      ...snackbar,
-      id,
-    });
+    this.snackbars.push(snackbar);
 
     if (this.state.currentlyVisible === null) {
-      this.setState({ currentlyVisible: id });
+      this.setState({ currentlyVisible: snackbar.id });
     }
   };
 
@@ -170,7 +166,7 @@ export class SnackbarContainer extends PureComponent {
    * @param {String} id - The id of the snackbar.
    */
   closeSnackbar = (id) => {
-    if (this.state.currentlyVisible === id || id === 'current') {
+    if (this.state.currentlyVisible === id) {
       this.setState({ animatingOut: true });
 
       clearTimeout(this.timeout);
