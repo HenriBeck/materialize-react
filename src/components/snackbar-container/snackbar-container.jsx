@@ -4,6 +4,7 @@ import { position } from 'polished';
 import injectSheet from 'react-jss';
 
 import { body1 } from '../../styles/typography';
+import breakpoints from '../../styles/breakpoints';
 
 /**
  * A component which renders the currently active snackbar.
@@ -63,7 +64,7 @@ export class SnackbarContainer extends PureComponent {
         '&.snackbar--pos-center': { justifyContent: 'center' },
         '&.snackbar--pos-end': { justifyContent: 'flex-end' },
 
-        '@media screen and (min-width: 640px)': { padding: '0 24px' },
+        [breakpoints.up('tablet')]: { padding: '0 24px' },
       },
 
       snackbar: {
@@ -86,9 +87,9 @@ export class SnackbarContainer extends PureComponent {
 
         '&.snackbar--animate-out': { animationName: props => props.animateOutName },
 
-        '@media screen and (max-width: 640px)': { width: '100%' },
+        [breakpoints.only('mobile')]: { width: '100%' },
 
-        '@media screen and (min-width: 640px)': {
+        [breakpoints.up('tablet')]: {
           borderRadius: theme.desktopBorderRadius,
           minWidth: theme.desktopMinWidth,
           maxWidth: theme.desktopMaxWidth,
@@ -97,10 +98,9 @@ export class SnackbarContainer extends PureComponent {
         '& > .button': {
           margin: 0,
           color: theme.color,
+          marginLeft: theme.mobileLeftButtonMargin,
 
-          '@media screen and (max-width: 640px)': { marginLeft: theme.mobileLeftButtonMargin },
-
-          '@media screen and (min-width: 640px)': { marginLeft: theme.desktopLeftButtonMargin },
+          [breakpoints.up('tablet')]: { marginLeft: theme.desktopLeftButtonMargin },
         },
       },
     };
