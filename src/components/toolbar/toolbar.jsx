@@ -3,6 +3,7 @@ import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
+import breakpoints from '../../styles/breakpoints';
 
 /**
  * A component which renders an AppBar.
@@ -62,25 +63,26 @@ Toolbar.styles = ({ toolbar: theme }) => {
       composes: 'toolbar',
       position: 'relative',
       overflow: 'hidden',
-      height: theme.height,
       width: '100%',
       padding: '0 16px',
       backgroundColor: theme.backgroundColor,
 
-      '& > .row': { height: theme.height },
+      height: theme.mobileHeight,
 
-      '&.toolbar--medium-tall': { height: theme.height * 2 },
+      '& > .row': { height: theme.mobileHeight },
 
-      '&.toolbar--tall': { height: theme.height * 3 },
+      '&.toolbar--medium-tall': { height: theme.mobileHeight * 2 },
 
-      [`@media screen and (max-width: ${theme.mobileMaxScreenWidth}px)`]: {
-        height: theme.mobileHeight,
+      '&.toolbar--tall': { height: theme.mobileHeight * 3 },
 
-        '& > .row': { height: theme.mobileHeight },
+      [breakpoints.up('tablet')]: {
+        height: theme.height,
 
-        '&.toolbar--medium-tall': { height: theme.mobileHeight * 2 },
+        '& > .row': { height: theme.height },
 
-        '&.toolbar--tall': { height: theme.mobileHeight * 3 },
+        '&.toolbar--medium-tall': { height: theme.height * 2 },
+
+        '&.toolbar--tall': { height: theme.height * 3 },
       },
     },
 
