@@ -4,7 +4,6 @@ export const schema = PropTypes.shape({
   backgroundColor: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
   mobileHeight: PropTypes.number.isRequired,
-  mobileMaxScreenWidth: PropTypes.number.isRequired,
 });
 
 /**
@@ -18,6 +17,5 @@ export function defaultTheme(vars) {
     backgroundColor: vars.appBar,
     height: 64,
     mobileHeight: 56,
-    mobileMaxScreenWidth: 640,
   };
 }
