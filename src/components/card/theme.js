@@ -25,7 +25,9 @@ export function defaultTheme(vars) {
     backgroundColor: vars.cardBackgroundColor,
     borderRadius: 2,
     elevation: 2,
-    margin: 8,
+    gutter: 8,
+    tabletGutter: 16,
+    desktopGutter: 24,
 
     content: {
       horizontalPadding: 16,

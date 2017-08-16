@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import elevation from '../../styles/elevation';
 import getNotDeclaredProps from '../../get-not-declared-props';
-
+import breakpoints from '../../styles/breakpoints';
 import CardActions from './card-actions';
 import CardContent from './card-content';
 
@@ -48,7 +48,11 @@ Card.styles = ({ card: theme }) => {
       position: 'relative',
       borderRadius: theme.borderRadius,
       boxShadow: elevation(theme.elevation),
-      margin: theme.margin,
+      margin: theme.gutter,
+
+      [breakpoints.only('tablet')]: { margin: theme.tabletGutter },
+
+      [breakpoints.only('desktop')]: { margin: theme.desktopGutter },
     },
   };
 };
