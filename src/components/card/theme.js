@@ -5,6 +5,13 @@ export const schema = PropTypes.shape({
   elevation: PropTypes.number.isRequired,
   margin: PropTypes.number.isRequired,
   backgroundColor: PropTypes.string.isRequired,
+
+  content: PropTypes.shape({
+    horizontalPadding: PropTypes.number.isRequired,
+    tabletHorizontalPadding: PropTypes.number.isRequired,
+    verticalMargin: PropTypes.number.isRequired,
+    bottomMarginForLastChild: PropTypes.number.isRequired,
+  }).isRequired,
 });
 
 /**
@@ -19,5 +26,12 @@ export function defaultTheme(vars) {
     borderRadius: 2,
     elevation: 2,
     margin: 8,
+
+    content: {
+      horizontalPadding: 16,
+      tabletHorizontalPadding: 24,
+      verticalMargin: 16,
+      bottomMarginForLastChild: 24,
+    },
   };
 }

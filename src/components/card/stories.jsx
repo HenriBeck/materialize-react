@@ -7,11 +7,13 @@ import Button from '../button';
 storiesOf('Card', module)
   .add('Default', () => (
     <Card>
-      Hello
+      <Card.Content>
+        Title
+      </Card.Content>
 
-      <Card.CardActions stacked>
+      <Card.Actions stacked>
         <Button>Test</Button>
         <Button>Test</Button>
-      </Card.CardActions>
+      </Card.Actions>
     </Card>
   ));
