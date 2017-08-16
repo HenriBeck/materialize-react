@@ -50,7 +50,7 @@ CardActions.styles = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    margin: '8px 0',
+    padding: '8px 0',
 
     '& > *': { margin: '0 8px' },
 
