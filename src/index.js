@@ -23,6 +23,7 @@ export Toolbar from './components/toolbar';
 export SnackbarController from './components/snackbar-controller';
 export SnackbarContainer from './components/snackbar-container';
 export Snackbar from './components/snackbar';
+export Card from './components/card';
 
 // Styles
 export Theme from './styles/theme';
