@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 export const schema = PropTypes.shape({
   borderRadius: PropTypes.number.isRequired,
   elevation: PropTypes.number.isRequired,
-  margin: PropTypes.number.isRequired,
+  gutter: PropTypes.number.isRequired,
+  tabletGutter: PropTypes.number.isRequired,
+  desktopGutter: PropTypes.number.isRequired,
   backgroundColor: PropTypes.string.isRequired,
 
   content: PropTypes.shape({
