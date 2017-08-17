@@ -30,7 +30,7 @@ export function CardMedia({
 }
 
 CardMedia.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({ media: PropTypes.string.isRequired }).isRequired,
   url: PropTypes.string.isRequired,
   className: PropTypes.string,
 };

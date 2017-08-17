@@ -32,7 +32,10 @@ export function CardActions({
 }
 
 CardActions.propTypes = {
-  classes: PropTypes.shape({ actions: PropTypes.string.isRequired }).isRequired,
+  classes: PropTypes.shape({
+    actions: PropTypes.string.isRequired,
+    actionsStacked: PropTypes.string.isRequired,
+  }).isRequired,
   children: PropTypes.node.isRequired,
   stacked: PropTypes.bool,
   className: PropTypes.string,

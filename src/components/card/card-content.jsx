@@ -32,7 +32,7 @@ export function CardContent({
 }
 
 CardContent.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({ content: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
