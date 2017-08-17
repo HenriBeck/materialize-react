@@ -23,7 +23,7 @@ export function CardActions({
 }) {
   return (
     <div
-      className={`${classes.actions} ${className} ${stacked && 'card--actions-stacked'}`}
+      className={`${classes.actions} ${className} ${stacked && classes.actionsStacked}`}
       {...getNotDeclaredProps(props, CardActions)}
     >
       {children}
@@ -48,17 +48,20 @@ CardActions.styles = {
     composes: 'card--actions',
     position: 'relative',
     display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     padding: '8px 0',
 
     '& > *': { margin: '0 8px' },
+  },
 
-    '&.card--actions-stacked': { flexDirection: 'column' },
+  actionsStacked: {
+    composes: 'card--actions-stacked',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
 
-    '&.card--actions-stacked > *': { marginBottom: 4 },
+    '& > *': { marginBottom: 4 },
 
-    '&.card--actions-stacked > *:last-child': { marginBottom: 0 },
+    '& > *:last-child': { marginBottom: 0 },
   },
 };
 
