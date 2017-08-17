@@ -14,6 +14,12 @@ export const schema = PropTypes.shape({
     verticalMargin: PropTypes.number.isRequired,
     bottomMarginForLastChild: PropTypes.number.isRequired,
   }).isRequired,
+
+  header: PropTypes.shape({
+    avatarSize: PropTypes.number.isRequired,
+    avatarMarginRight: PropTypes.number.isRequired,
+    subtitleColor: PropTypes.string.isRequired,
+  }).isRequired,
 });
 
 /**
@@ -36,6 +42,12 @@ export function defaultTheme(vars) {
       tabletHorizontalPadding: 24,
       verticalMargin: 16,
       bottomMarginForLastChild: 24,
+    },
+
+    header: {
+      avatarSize: 40,
+      avatarMarginRight: 16,
+      subtitleColor: vars.secondaryTextColor,
     },
   };
 }

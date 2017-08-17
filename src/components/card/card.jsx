@@ -9,6 +9,7 @@ import breakpoints from '../../styles/breakpoints';
 import CardActions from './card-actions';
 import CardContent from './card-content';
 import CardMedia from './card-media';
+import CardHeader from './card-header';
 
 /**
  * A component which renders a material design card.
@@ -62,5 +63,6 @@ Card.styles = ({ card: theme }) => {
 Card.Actions = CardActions;
 Card.Content = CardContent;
 Card.Media = CardMedia;
+Card.Header = CardHeader;
 
 export default injectSheet(Card.styles)(Card);

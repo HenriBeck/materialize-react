@@ -4,12 +4,21 @@ import { storiesOf } from '@storybook/react';
 import Card from './card';
 import Button from '../button';
 
+const avatar = (
+  <span style={{ backgroundColor: 'red' }}>
+    HB
+  </span>
+);
+
 storiesOf('Card', module)
   .add('Default', () => (
     <Card>
-      <Card.Content>
+      <Card.Header
+        avatar={avatar}
+        subtitle="Subtitle"
+      >
         Title
-      </Card.Content>
+      </Card.Header>
 
       <Card.Actions stacked>
         <Button>Test</Button>
