@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
 import breakpoints from '../../styles/breakpoints';
+import getNotDeclaredProps from '../../get-not-declared-props';
 import {
   headline,
   body1,
@@ -23,9 +24,13 @@ export function CardHeader({
   children,
   subtitle,
   avatar,
+  ...props
 }) {
   return (
-    <header className={`${classes.header} ${avatar && classes.withAvatar}`}>
+    <header
+      className={`${classes.header} ${avatar && classes.withAvatar}`}
+      {...getNotDeclaredProps(props, CardHeader)}
+    >
       {avatar && (
         <span className={classes.avatar}>
           {avatar}

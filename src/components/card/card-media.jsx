@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 /**
  * A component which renders an image inside a card.
  *
@@ -19,7 +21,7 @@ export function CardMedia({
 }) {
   return (
     <img
-      {...props}
+      {...getNotDeclaredProps(props, CardMedia)}
       alt="card-media"
       className={`${classes.media} ${className}`}
       src={url}

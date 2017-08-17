@@ -4,6 +4,7 @@ import injectSheet from 'react-jss';
 
 import breakpoints from '../../styles/breakpoints';
 import { body1 } from '../../styles/typography';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component to render the content of a card.
@@ -23,7 +24,7 @@ export function CardContent({
   return (
     <div
       className={`${classes.content} ${className}`}
-      {...props}
+      {...getNotDeclaredProps(props, CardContent)}
     >
       {children}
     </div>
