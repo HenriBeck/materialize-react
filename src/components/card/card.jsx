@@ -5,8 +5,10 @@ import PropTypes from 'prop-types';
 import elevation from '../../styles/elevation';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import breakpoints from '../../styles/breakpoints';
+
 import CardActions from './card-actions';
 import CardContent from './card-content';
+import CardMedia from './card-media';
 
 /**
  * A component which renders a material design card.
@@ -59,5 +61,6 @@ Card.styles = ({ card: theme }) => {
 
 Card.Actions = CardActions;
 Card.Content = CardContent;
+Card.Media = CardMedia;
 
 export default injectSheet(Card.styles)(Card);
