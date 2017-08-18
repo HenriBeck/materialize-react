@@ -24,6 +24,7 @@ export SnackbarController from './components/snackbar-controller';
 export SnackbarContainer from './components/snackbar-container';
 export Snackbar from './components/snackbar';
 export Card from './components/card';
+export Typography from './components/typography';
 
 // Styles
 export Theme from './styles/theme';
@@ -32,3 +33,4 @@ export elevation from './styles/elevation';
 export * as timings from './styles/timings';
 export * as colors from './styles/colors';
 export breakpoints from './styles/breakpoints';
+export getNotDeclaredProps from './get-not-declared-props';

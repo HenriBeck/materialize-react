@@ -34,6 +34,7 @@ import { defaultTheme as drawer } from '../../components/drawer/theme';
 import { defaultTheme as toolbar } from '../../components/toolbar/theme';
 import { defaultTheme as snackbar } from '../../components/snackbar/theme';
 import { defaultTheme as card } from '../../components/card/theme';
+import { defaultTheme as typography } from '../../components/typography/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -81,4 +82,5 @@ export const defaultTheme = {
   toolbar,
   snackbar,
   card,
+  typography,
 };
