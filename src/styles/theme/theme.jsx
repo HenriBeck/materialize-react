@@ -40,11 +40,7 @@ export function compileTheme(customVariables, customTheme) {
 export function Theme(props) {
   const compiledTheme = compileTheme(props.variables, props.theme);
 
-  Object
-    .keys(themeSchema)
-    .forEach((component) => {
-      PropTypes.checkPropTypes(themeSchema, compiledTheme, component, 'Theme');
-    });
+  PropTypes.checkPropTypes(themeSchema, compiledTheme, 'prop', 'Theme');
 
   return (
     <ThemeProvider theme={compiledTheme}>
