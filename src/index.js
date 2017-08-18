@@ -32,3 +32,4 @@ export elevation from './styles/elevation';
 export * as timings from './styles/timings';
 export * as colors from './styles/colors';
 export breakpoints from './styles/breakpoints';
+export getNotDeclaredProps from './get-not-declared-props';
