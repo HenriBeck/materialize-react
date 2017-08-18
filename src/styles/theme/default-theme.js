@@ -14,7 +14,7 @@ import {
   grey100,
   grey50,
   grey300,
-  orange900,
+  orange900, white500,
 } from '../colors';
 import { defaultTheme as background } from '../../components/background/theme';
 import { defaultTheme as button } from '../../components/button/theme';
@@ -33,6 +33,7 @@ import { defaultTheme as tab } from '../../components/tab/theme';
 import { defaultTheme as drawer } from '../../components/drawer/theme';
 import { defaultTheme as toolbar } from '../../components/toolbar/theme';
 import { defaultTheme as snackbar } from '../../components/snackbar/theme';
+import { defaultTheme as card } from '../../components/card/theme';
 import { defaultTheme as typography } from '../../components/typography/theme';
 
 export const defaultVars = {
@@ -47,6 +48,7 @@ export const defaultVars = {
   statusBarColor: grey300,
   appBar: grey100,
   backgroundColor: grey50,
+  cardBackgroundColor: white500,
 
   textColor: blackText,
   secondaryTextColor: blackSecondaryText,
@@ -79,5 +81,6 @@ export const defaultTheme = {
   drawer,
   toolbar,
   snackbar,
+  card,
   typography,
 };

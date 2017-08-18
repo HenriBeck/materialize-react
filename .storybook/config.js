@@ -47,5 +47,6 @@ configure(() => {
   require('../src/components/drawer/stories');
   require('../src/components/toolbar/stories');
   require('../src/components/snackbar/stories');
+  require('../src/components/card/stories');
   require('../src/components/typography/stories');
 }, module);
