@@ -50,8 +50,6 @@ Card.styles = ({ card: theme }) => {
       overflow: 'hidden',
       composes: 'card',
       position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
       borderRadius: theme.borderRadius,
       boxShadow: elevation(theme.elevation),
       margin: theme.gutter,

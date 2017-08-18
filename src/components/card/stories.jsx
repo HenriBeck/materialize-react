@@ -11,45 +11,35 @@ const avatar = (
   </span>
 );
 
+const content = (
+  <Card.Content>
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+    sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+    sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+    Stet clita kasd gubergren.
+  </Card.Content>
+);
+
 storiesOf('Card', module)
   .add('Title with content', () => (
     <Card>
       <Card.Header>Title</Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
     </Card>
   ))
   .add('Title with subtitle and content', () => (
     <Card>
       <Card.Header subtitle="Subtitle">Title</Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
     </Card>
   ))
   .add('Title with avatar and content', () => (
     <Card>
       <Card.Header avatar={avatar}>Title</Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
     </Card>
   ))
   .add('Title with avatar and subtitle and content', () => (
@@ -61,30 +51,17 @@ storiesOf('Card', module)
         Title
       </Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
     </Card>
   ))
   .add('Title with content and actions', () => (
     <Card>
       <Card.Header>Title</Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
 
       <Card.Actions>
         <Button>Action 1</Button>
-
         <Button>Action 2</Button>
       </Card.Actions>
     </Card>
@@ -93,17 +70,10 @@ storiesOf('Card', module)
     <Card>
       <Card.Header>Title</Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
 
       <Card.Actions stacked>
         <Button>Action 1</Button>
-
         <Button>Action 2</Button>
       </Card.Actions>
     </Card>
@@ -114,13 +84,7 @@ storiesOf('Card', module)
 
       <Card.Header subtitle="subtitle">Title</Card.Header>
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
     </Card>
   ))
   .add('Title with image and action', () => (
@@ -129,12 +93,6 @@ storiesOf('Card', module)
 
       <Card.Media url="http://placehold.it/400x250" />
 
-      <Card.Content>
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-        Lorem ipsum dolor, Lorem ipsum dolor
-      </Card.Content>
+      {content}
     </Card>
   ));
