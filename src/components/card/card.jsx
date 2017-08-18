@@ -47,6 +47,7 @@ Card.defaultProps = { className: '' };
 Card.styles = ({ card: theme }) => {
   return {
     card: {
+      overflow: 'hidden',
       composes: 'card',
       position: 'relative',
       display: 'flex',
