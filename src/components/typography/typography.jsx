@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 // eslint-disable-next-line import/no-namespace
 import * as typos from '../../styles/typography';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component to render a set of text with the specified typography.
@@ -25,6 +26,7 @@ export function Typography({
   children,
   className,
   secondary,
+  ...props
 }) {
   const classNames = classnames(
     classes.typography,
@@ -34,7 +36,10 @@ export function Typography({
   );
 
   return (
-    <Element className={classNames}>
+    <Element
+      className={classNames}
+      {...getNotDeclaredProps(props, Typography)}
+    >
       {children}
     </Element>
   );
