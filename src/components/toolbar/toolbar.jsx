@@ -65,6 +65,7 @@ Toolbar.styles = ({ toolbar: theme }) => {
       overflow: 'hidden',
       width: '100%',
       padding: '0 16px',
+      boxSizing: 'border-box',
       backgroundColor: theme.backgroundColor,
 
       height: theme.mobileHeight,
