@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export const schema = PropTypes.shape({
   barColor: PropTypes.string.isRequired,
   transitionDuration: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the tabs.

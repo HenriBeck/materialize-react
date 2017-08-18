@@ -23,7 +23,7 @@ export const schema = PropTypes.shape({
 
   disabledThumbColor: PropTypes.string.isRequired,
   disabledBarColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * Compute the default theme for the switch component.

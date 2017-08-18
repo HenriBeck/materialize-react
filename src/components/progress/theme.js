@@ -17,7 +17,7 @@ export const schema = PropTypes.shape({
 
   primaryDisabledBarColor: PropTypes.string.isRequired,
   secondaryDisabledBarColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the progress component.

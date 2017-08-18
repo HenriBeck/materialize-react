@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
-  typo: PropTypes.string,
-  color: PropTypes.string,
-  disabledColor: PropTypes.string,
-});
+  color: PropTypes.string.isRequired,
+  disabledColor: PropTypes.string.isRequired,
+}).isRequired;
 
 /**
  * The default theme for the label   component.
