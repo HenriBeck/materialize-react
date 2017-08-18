@@ -36,6 +36,8 @@ export function defaultTheme(vars) {
     gutter: 8,
     tabletGutter: 16,
     desktopGutter: 24,
+    minWidth: 240,
+    maxWidth: 420,
 
     content: {
       horizontalPadding: 16,

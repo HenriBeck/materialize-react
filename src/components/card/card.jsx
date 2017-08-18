@@ -49,9 +49,13 @@ Card.styles = ({ card: theme }) => {
     card: {
       composes: 'card',
       position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
       borderRadius: theme.borderRadius,
       boxShadow: elevation(theme.elevation),
       margin: theme.gutter,
+      minWidth: theme.minWidth,
+      maxWidth: theme.maxWidth,
 
       [breakpoints.only('tablet')]: { margin: theme.tabletGutter },
 
