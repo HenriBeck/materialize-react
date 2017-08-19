@@ -5,7 +5,7 @@ export const schema = PropTypes.shape({
   selectedOpacity: PropTypes.number.isRequired,
   focusedOpacity: PropTypes.number.isRequired,
   rippleColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the tab.

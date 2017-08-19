@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export const schema = PropTypes.shape({
   color: PropTypes.string.isRequired,
   secondaryColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the typograpgy component.

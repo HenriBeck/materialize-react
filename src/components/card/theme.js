@@ -20,7 +20,7 @@ export const schema = PropTypes.shape({
     avatarMarginRight: PropTypes.number.isRequired,
     subtitleColor: PropTypes.string.isRequired,
   }).isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the card component.

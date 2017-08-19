@@ -11,12 +11,12 @@ export const schema = PropTypes.shape({
   focusedElevation: PropTypes.number.isRequired,
   disabledElevation: PropTypes.number.isRequired,
 
-  iconColor: PropTypes.string,
+  iconColor: PropTypes.string.isRequired,
   backgroundColor: PropTypes.string.isRequired,
   disabledBackgroundColor: PropTypes.string.isRequired,
 
   animationDuration: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * The default theme for the FAB   component.
