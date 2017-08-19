@@ -32,27 +32,44 @@ export function compileTheme(customVariables, customTheme) {
 }
 
 /**
+ * Create a merge strategy for the theme.
+ * When we have a outer theme, we just merge the passed in theme
+ * else wise we compiled a default theme.
+ *
+ * @param {Object} props - The props which were passed to the theme component.
+ * @returns {Function} - Returns a function which will merge the themes.
+ */
+export function createThemeMergeStrategy(props) {
+  return (outerTheme) => {
+    const mergedTheme = outerTheme
+      ? Object.assign({}, outerTheme, props.theme)
+      : compileTheme(props.variables, props.theme);
+
+    PropTypes.checkPropTypes(themeSchema, mergedTheme, 'prop', 'Theme');
+
+    return mergedTheme;
+  };
+}
+
+/**
  * A React Component to supply a custom jss instance for our components and the theme.
  *
  * @param {Object} props - The props for the component.
  * @returns {JSX} - Returns the children wrapped by a child component.
  */
 export function Theme(props) {
-  const compiledTheme = compileTheme(props.variables, props.theme);
-
-  PropTypes.checkPropTypes(themeSchema, compiledTheme, 'prop', 'Theme');
-
   return (
-    <ThemeProvider theme={compiledTheme}>
+    <ThemeProvider theme={createThemeMergeStrategy(props)}>
       {props.children}
     </ThemeProvider>
   );
 }
 
+/* eslint-disable react/forbid-prop-types, react/no-unused-prop-types */
 Theme.propTypes = {
   children: PropTypes.element.isRequired,
-  variables: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  theme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  variables: PropTypes.object,
+  theme: PropTypes.object,
 };
 
 Theme.defaultProps = {
