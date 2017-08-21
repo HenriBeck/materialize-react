@@ -1,8 +1,6 @@
-import { defaultTheme } from '../../src/styles/theme/default-theme';
+import { compileTheme } from '../../src/styles/theme/theme';
 
-const themeArgument = Object
-  .keys(defaultTheme)
-  .reduce((theme, component) => Object.assign({}, theme, { [component]: {} }));
+const defaultTheme = compileTheme({}, {});
 
 /**
  * Create a classes object from the styles for testing purposes.
@@ -12,7 +10,7 @@ const themeArgument = Object
  */
 export default function createClassesFromStyles(styles) {
   if (typeof styles === 'function') {
-    return createClassesFromStyles(styles(themeArgument));
+    return createClassesFromStyles(styles(defaultTheme));
   }
 
   return Object
