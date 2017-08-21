@@ -8,7 +8,7 @@ import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 const props = {
-  classes: createClassesFromStyles(TabsContainer.styles()),
+  classes: createClassesFromStyles(TabsContainer.styles),
   className: '',
   noBar: false,
   createRef: () => {},
