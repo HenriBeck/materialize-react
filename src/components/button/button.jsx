@@ -18,7 +18,10 @@ import EventHandler from '../event-handler';
  */
 export class Button extends PureComponent {
   static propTypes = {
-    classes: PropTypes.shape({ button: PropTypes.string.isRequired }).isRequired,
+    classes: PropTypes.shape({
+      button: PropTypes.string.isRequired,
+      buttonRaised: PropTypes.string.isRequired,
+    }).isRequired,
     children: PropTypes.node.isRequired,
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
@@ -90,18 +93,21 @@ export class Button extends PureComponent {
           color: theme.disabledColor,
           backgroundColor: theme.disabledBgColor,
         },
+      },
 
-        '&.button--raised': { backgroundColor: theme.raisedBgColor },
+      buttonRaised: {
+        composes: 'button--raised',
+        backgroundColor: theme.raisedBgColor,
 
-        '&[aria-disabled=true].button--raised': { backgroundColor: theme.raisedAndDisabledBgColor },
+        '&[aria-disabled=true]': { backgroundColor: theme.raisedAndDisabledBgColor },
 
-        '&[aria-disabled=false].button--raised': {
+        '&[aria-disabled=false]': {
           boxShadow: elevation(theme.elevation),
 
           '&:hover': { boxShadow: elevation(theme.pressedElevation) },
         },
 
-        '&[aria-pressed=true].button--raised': { boxShadow: elevation(theme.pressedElevation) },
+        '&[aria-pressed=true]': { boxShadow: elevation(theme.pressedElevation) },
       },
     };
   }
@@ -196,7 +202,7 @@ export class Button extends PureComponent {
       onPress,
       ...props
     } = this.props;
-    const classNames = classnames(classes.button, className, raised && 'button--raised');
+    const classNames = classnames(classes.button, className, raised && classes.buttonRaised);
     const events = { onPress: raised ? this.handlePress : onPress };
 
     if (raised) {
