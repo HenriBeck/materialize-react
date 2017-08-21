@@ -92,7 +92,7 @@ export class Fab extends PureComponent {
       },
 
       animateIn: {
-        composes: 'fab--animte-in',
+        composes: 'fab--animate-in',
         animationName: 'fab--scale-rotate-in',
         animationFillMode: 'forwards',
         animationTimingFunction: easeInOutCubic,
