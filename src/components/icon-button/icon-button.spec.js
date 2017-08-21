@@ -7,7 +7,7 @@ import IconButtonWrapper, { IconButton } from './icon-button';
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-const classes = createClassesFromStyles(IconButton.styles({ iconButton: {} }));
+const classes = createClassesFromStyles(IconButton.styles);
 
 test('should render various elements and components', (t) => {
   const wrapper = mount(<IconButtonWrapper icon="github" />);
