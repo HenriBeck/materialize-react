@@ -80,12 +80,9 @@ export class SnackbarContainer extends PureComponent {
         zIndex: 1000,
         display: 'flex',
         animationDuration: 300,
-        animationName: props => props.animateInName,
         animationFillMode: 'forwards',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-        '&.snackbar--animate-out': { animationName: props => props.animateOutName },
 
         [breakpoints.only('mobile')]: { width: '100%' },
 

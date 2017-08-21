@@ -22,6 +22,7 @@ export class RadioButton extends PureComponent {
       circle: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       ripple: PropTypes.string.isRequired,
+      labelLeft: PropTypes.string.isRequired,
     }).isRequired,
     checked: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
@@ -54,8 +55,6 @@ export class RadioButton extends PureComponent {
         display: 'inline-flex',
         alignItems: 'center',
         padding: 4,
-
-        '&.radio-button--label-left': { flexDirection: 'row-reverse' },
 
         '&[aria-checked=true] $border': { borderColor: theme.checkedColor },
 
@@ -122,6 +121,11 @@ export class RadioButton extends PureComponent {
         right: (theme.rippleSize - theme.size) / -2,
         bottom: (theme.rippleSize - theme.size) / -2,
       },
+
+      labelLeft: {
+        composes: 'radio-button--label-left',
+        flexDirection: 'row-reverse',
+      },
     };
   }
 
@@ -140,7 +144,7 @@ export class RadioButton extends PureComponent {
       labelPosition,
       ...props
     } = this.props;
-    const labelClass = labelPosition === 'left' && 'radio-button--label-left';
+    const labelClass = labelPosition === 'left' && classes.labelLeft;
 
     return (
       <EventHandler

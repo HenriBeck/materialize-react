@@ -47,7 +47,7 @@ export function Switch({
   const classNames = classnames(
     className,
     classes.switch,
-    labelPosition === 'left' && 'switch--label-left',
+    labelPosition === 'left' && classes.labelLeft,
   );
 
   return (
@@ -122,8 +122,6 @@ Switch.styles = ({ switch: theme }) => {
 
       '&:focus': { outline: 0 },
 
-      '&.switch--label-left': { flexDirection: 'row-reverse' },
-
       '&[aria-checked=true] $thumb': {
         transform: 'translateX(16px)',
         backgroundColor: theme.checkedThumbColor,
@@ -140,6 +138,11 @@ Switch.styles = ({ switch: theme }) => {
       '&[aria-disabled=true]': { pointerEvents: 'none' },
 
       '&[aria-disabled=true] $label': { cursor: 'pointer' },
+    },
+
+    labelLeft: {
+      composes: 'switch--label-left',
+      flexDirection: 'row-reverse',
     },
 
     container: {
