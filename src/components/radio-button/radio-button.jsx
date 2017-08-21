@@ -22,6 +22,7 @@ export class RadioButton extends PureComponent {
       circle: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       ripple: PropTypes.string.isRequired,
+      labelLeft: PropTypes.string.isRequired,
     }).isRequired,
     checked: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
