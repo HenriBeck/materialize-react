@@ -77,7 +77,7 @@ export class SnackbarContainer extends PureComponent {
         backgroundColor: theme.backgroundColor,
         position: 'absolute',
         bottom: -theme.height,
-        zIndex: 1000,
+        zIndex: theme.zIndex,
         display: 'flex',
         animationDuration: 300,
         animationFillMode: 'forwards',
