@@ -21,5 +21,7 @@ export function defaultTheme() {
     backdropBgColor: '#000000',
     transitionDuration: 250,
     drawerBgColor: '#ffffff',
+    drawerZIndex: 3000,
+    backdropZIndex: 1000,
   };
 }
