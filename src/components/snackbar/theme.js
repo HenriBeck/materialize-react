@@ -32,5 +32,6 @@ export function defaultTheme() {
     desktopBorderRadius: 2,
     desktopMinWidth: 288,
     desktopMaxWidth: 568,
+    zIndex: 500,
   };
 }

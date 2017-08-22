@@ -115,7 +115,6 @@ export class RadioButton extends PureComponent {
 
       ripple: {
         composes: 'radio-button--ripple',
-        zIndex: 1,
         top: (theme.rippleSize - theme.size) / -2,
         left: (theme.rippleSize - theme.size) / -2,
         right: (theme.rippleSize - theme.size) / -2,
@@ -158,6 +157,10 @@ export class RadioButton extends PureComponent {
         onPress={onPress}
       >
         <span className={classes.container}>
+          <span className={classes.border} />
+
+          <span className={classes.circle} />
+
           <Ripple
             round
             center
@@ -165,10 +168,6 @@ export class RadioButton extends PureComponent {
             nowaves={noink}
             className={classes.ripple}
           />
-
-          <span className={classes.border} />
-
-          <span className={classes.circle} />
         </span>
 
         <Label

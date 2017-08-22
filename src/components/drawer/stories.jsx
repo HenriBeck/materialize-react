@@ -33,22 +33,26 @@ class DrawerStory extends PureComponent {
         style={{ flex: 1 }}
         ref={(element) => { this.drawer = element; }}
       >
-        <DrawerContent style={{ padding: 32 }}>
-          Drawer Content
+        <DrawerContent>
+          <div style={{ padding: 32 }}>
+            Drawer Content
 
-          <IconButton
-            icon="close"
-            onPress={this.handleDrawerClose}
-          />
+            <IconButton
+              icon="close"
+              onPress={this.handleDrawerClose}
+            />
+          </div>
         </DrawerContent>
 
-        <MainContent style={{ padding: 32 }}>
-          Main Content
+        <MainContent>
+          <div style={{ padding: 32 }}>
+            Main Content
 
-          <IconButton
-            icon="menu"
-            onPress={this.handleDrawerOpen}
-          />
+            <IconButton
+              icon="menu"
+              onPress={this.handleDrawerOpen}
+            />
+          </div>
         </MainContent>
       </Drawer>
     );
