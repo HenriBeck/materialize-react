@@ -53,8 +53,8 @@ export class IconButton extends PureComponent {
       iconButton: {
         composes: 'icon-button',
         position: 'relative',
-        backgroundColor: 'inherit',
         borderRadius: '50%',
+        boxSizing: 'border-box',
         outline: 0,
         border: 0,
         height: theme.size,
@@ -67,7 +67,6 @@ export class IconButton extends PureComponent {
 
       icon: {
         composes: 'icon-button--icon',
-        display: 'inline-flex',
         fontSize: theme.iconSize,
       },
 
@@ -86,7 +85,7 @@ export class IconButton extends PureComponent {
   componentWillReceiveProps(nextProps) {
     warning(
       nextProps.icon === this.props.icon,
-      'You should not change the icon prop of a FAB',
+      'You should not change the icon prop of a IconButton',
     );
   }
 
