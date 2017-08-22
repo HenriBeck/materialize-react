@@ -57,7 +57,6 @@ export class Ripple extends PureComponent {
       borderRadius: 'inherit',
       overflow: 'hidden',
       cursor: 'pointer',
-      zIndex: 'inherit',
 
       '&.ripple--round $focus': {
         borderRadius: '50%',
@@ -109,7 +108,6 @@ export class Ripple extends PureComponent {
       borderRadius: '50%',
       transform: 'scale(0)',
       willChange: 'opacity, transform',
-      zIndex: 1,
       animationFillMode: 'forwards',
       transition: 'opacity 140ms linear',
       backgroundColor: props => props.color,

@@ -111,7 +111,6 @@ export class Checkbox extends PureComponent {
         cursor: 'pointer',
         borderRadius: '50%',
         boxSizing: 'border-box',
-        zIndex: 1,
         height: theme.rippleSize,
         width: theme.rippleSize,
       },
