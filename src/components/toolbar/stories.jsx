@@ -6,7 +6,7 @@ import Toolbar from './toolbar';
 storiesOf('Toolbar', module)
   .add('Default styles', () => (
     <Toolbar>
-      <div>
+      <div className="row">
         Title
       </div>
     </Toolbar>

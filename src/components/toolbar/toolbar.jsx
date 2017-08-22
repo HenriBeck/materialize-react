@@ -62,7 +62,6 @@ Toolbar.styles = ({ toolbar: theme }) => {
     toolbar: {
       composes: 'toolbar',
       position: 'relative',
-      overflow: 'hidden',
       width: '100%',
       padding: '0 16px',
       boxSizing: 'border-box',
@@ -102,7 +101,7 @@ Toolbar.styles = ({ toolbar: theme }) => {
     shadow: {
       composes: 'toolbar--shadow',
       position: 'absolute',
-      bottom: 0,
+      bottom: -6,
       left: 0,
       right: 0,
       height: 6,
