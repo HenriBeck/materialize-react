@@ -72,7 +72,6 @@ export class Button extends PureComponent {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
-        zIndex: 0,
         boxSizing: 'border-box',
         textTransform: 'uppercase',
         textAlign: 'center',
