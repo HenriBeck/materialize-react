@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { position } from 'polished';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import { body1 } from '../../styles/typography';
 import breakpoints from '../../styles/breakpoints';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which renders the currently active snackbar.
@@ -16,17 +18,20 @@ export class SnackbarContainer extends PureComponent {
     classes: PropTypes.shape({
       snackbarContainer: PropTypes.string.isRequired,
       snackbar: PropTypes.string.isRequired,
+      hideContainer: PropTypes.string.isRequired,
     }).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
     horizontalPos: PropTypes.oneOf(['start', 'center', 'end']),
     animateInName: PropTypes.string,
     animateOutName: PropTypes.string,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
     horizontalPos: 'center',
     animateInName: 'snackbar--animate-in',
     animateOutName: 'snackbar--animate-out',
+    className: '',
   };
 
   static contextTypes = {
@@ -57,7 +62,8 @@ export class SnackbarContainer extends PureComponent {
 
       snackbarContainer: {
         composes: 'snackbar--container',
-        ...position('fixed', '0px', '0px', '0px', '0px'),
+        ...position('fixed', null, '0px', '0px', '0px'),
+        height: theme.height,
         display: 'flex',
 
         '&.snackbar--pos-start': { justifyContent: 'flex-start' },
@@ -65,6 +71,11 @@ export class SnackbarContainer extends PureComponent {
         '&.snackbar--pos-end': { justifyContent: 'flex-end' },
 
         [breakpoints.up('tablet')]: { padding: '0 24px' },
+      },
+
+      hideContainer: {
+        composes: 'snackbar--hide-container',
+        transform: 'translateY(100%)',
       },
 
       snackbar: {
@@ -201,12 +212,20 @@ export class SnackbarContainer extends PureComponent {
       animateInName,
       animateOutName,
       horizontalPos,
+      className,
+      ...props
     } = this.props;
     const {
       currentlyVisible,
       animatingOut,
     } = this.state;
     let content = null;
+    const classNames = classnames(
+      classes.snackbarContainer,
+      className,
+      `snackbar--pos-${horizontalPos}`,
+      { [classes.hideContainer]: !currentlyVisible },
+    );
 
     if (currentlyVisible) {
       const snackbar = this.snackbars[0];
@@ -223,7 +242,10 @@ export class SnackbarContainer extends PureComponent {
     }
 
     return (
-      <div className={`${classes.snackbarContainer} snackbar--pos-${horizontalPos}`}>
+      <div
+        className={classNames}
+        {...getNotDeclaredProps(props, SnackbarContainer)}
+      >
         {content}
       </div>
     );
