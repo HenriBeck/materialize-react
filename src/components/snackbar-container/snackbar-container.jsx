@@ -65,6 +65,7 @@ export class SnackbarContainer extends PureComponent {
         ...position('fixed', null, '0px', '0px', '0px'),
         height: theme.height,
         display: 'flex',
+        zIndex: theme.zIndex,
 
         '&.snackbar--pos-start': { justifyContent: 'flex-start' },
         '&.snackbar--pos-center': { justifyContent: 'center' },
@@ -88,7 +89,6 @@ export class SnackbarContainer extends PureComponent {
         backgroundColor: theme.backgroundColor,
         position: 'absolute',
         bottom: -theme.height,
-        zIndex: theme.zIndex,
         display: 'flex',
         animationDuration: 300,
         animationFillMode: 'forwards',
