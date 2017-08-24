@@ -31,8 +31,8 @@ export function defaultTheme(vars) {
     normalSize: 56,
     iconSize: 24,
 
-    elevation: 1,
-    focusedElevation: 4,
+    elevation: 2,
+    focusedElevation: 6,
     disabledElevation: 0,
 
     iconColor: whiteIcons,

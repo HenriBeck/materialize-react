@@ -32,7 +32,7 @@ export function defaultTheme(vars) {
   return {
     backgroundColor: vars.cardBackgroundColor,
     borderRadius: 2,
-    elevation: 2,
+    elevation: 4,
     gutter: 8,
     tabletGutter: 16,
     desktopGutter: 24,

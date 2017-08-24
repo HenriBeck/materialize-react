@@ -28,8 +28,8 @@ export const schema = PropTypes.shape({
  */
 export function defaultTheme(vars) {
   return {
-    elevation: 2,
-    pressedElevation: 4,
+    elevation: 3,
+    pressedElevation: 6,
 
     height: 36,
     minWidth: 88,
