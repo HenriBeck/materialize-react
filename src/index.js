@@ -20,8 +20,6 @@ export RadioButton from './components/radio-button';
 export RadioButtonGroup from './components/radio-button-group';
 export Animations from './components/animations';
 export Toolbar from './components/toolbar';
-export SnackbarController from './components/snackbar-controller';
-export SnackbarContainer from './components/snackbar-container';
 export Snackbar from './components/snackbar';
 export Card from './components/card';
 export Typography from './components/typography';
