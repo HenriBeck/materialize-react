@@ -2,6 +2,9 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 
+import SnackbarController from './snackbar-controller';
+import SnackbarContainer from './snackbar-container';
+
 /**
  * The actual snackbar.
  *
@@ -68,3 +71,6 @@ export default class Snackbar extends PureComponent {
     return null;
   }
 }
+
+Snackbar.Controller = SnackbarController;
+Snackbar.Container = SnackbarContainer;
