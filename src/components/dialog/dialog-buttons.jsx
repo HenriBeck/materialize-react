@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
  * @param {JSX} props.children - The buttons for the row.
  * @returns {JSX} - Returns the jsx.
  */
-export function ModalButtons({
+export function DialogButtons({
   classes,
   className,
   children,
@@ -27,23 +27,27 @@ export function ModalButtons({
   );
 }
 
-ModalButtons.propTypes = {
-  classes: PropTypes.shape({ content: PropTypes.string.isRequired }).isRequired,
+DialogButtons.propTypes = {
+  classes: PropTypes.shape({ buttons: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 
-ModalButtons.defaultProps = { className: '' };
+DialogButtons.defaultProps = { className: '' };
 
-ModalButtons.styles = {
-  buttons: {
-    composes: 'dialog--buttons',
-    padding: 8,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
+DialogButtons.styles = ({ dialog: theme }) => {
+  return {
+    buttons: {
+      composes: 'dialog--buttons',
+      padding: theme.buttonPadding,
+      width: '100%',
+      boxSizing: 'border-box',
+      paddingLeft: theme.padding,
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+  };
 };
-
-export default injectSheet(ModalButtons.styles)(ModalButtons);
+export default injectSheet(DialogButtons.styles)(DialogButtons);

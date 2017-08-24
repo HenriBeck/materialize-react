@@ -25,7 +25,6 @@ export SnackbarController from './components/snackbar-controller';
 export SnackbarContainer from './components/snackbar-container';
 export Snackbar from './components/snackbar';
 
-
 // Styles
 export Theme from './styles/theme';
 export * as typography from './styles/typography';

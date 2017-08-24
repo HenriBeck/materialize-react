@@ -2,6 +2,8 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
+import { body1 } from '../../styles/typography';
+
 /**
  * A component which adds the appropriate styles for the content inside a dialog.
  *
@@ -11,7 +13,7 @@ import PropTypes from 'prop-types';
  * @param {JSX} props.children - The actual content for the dialog.
  * @returns {JSX} - Returns the jsx.
  */
-export function ModalContent({
+export function DialogContent({
   classes,
   className,
   children,
@@ -27,21 +29,25 @@ export function ModalContent({
   );
 }
 
-ModalContent.propTypes = {
+DialogContent.propTypes = {
   classes: PropTypes.shape({ content: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 
-ModalContent.defaultProps = { className: '' };
+DialogContent.defaultProps = { className: '' };
 
-ModalContent.styles = ({ dialog: theme }) => {
+DialogContent.styles = ({ dialog: theme }) => {
   return {
     content: {
       composes: 'dialog--content',
+      ...body1,
       padding: theme.padding,
+      paddingTop: 0,
+      width: '100%',
+      boxSizing: 'border-box',
     },
   };
 };
 
-export default injectSheet(ModalContent.styles)(ModalContent);
+export default injectSheet(DialogContent.styles)(DialogContent);

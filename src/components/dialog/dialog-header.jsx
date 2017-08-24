@@ -2,6 +2,8 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
+import { title } from '../../styles/typography';
+
 /**
  * A component which adds the appropriate styles for the header of a dialog.
  *
@@ -11,7 +13,7 @@ import PropTypes from 'prop-types';
  * @param {JSX} props.children - The content for the header.
  * @returns {JSX} - Returns the jsx.
  */
-export function ModalHeader({
+export function DialogHeader({
   classes,
   className,
   children,
@@ -27,19 +29,25 @@ export function ModalHeader({
   );
 }
 
-ModalHeader.propTypes = {
+DialogHeader.propTypes = {
   classes: PropTypes.shape({ content: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 
-ModalHeader.defaultProps = { className: '' };
+DialogHeader.defaultProps = { className: '' };
 
-ModalHeader.styles = {
-  header: {
-    composes: 'dialog--header',
-    marginBottom: 20,
-  },
+DialogHeader.styles = ({ dialog: theme }) => {
+  return {
+    header: {
+      composes: 'dialog--header',
+      ...title,
+      padding: theme.padding,
+      paddingBottom: theme.headerBottomPadding,
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+  };
 };
 
-export default injectSheet(ModalHeader.styles)(ModalHeader);
+export default injectSheet(DialogHeader.styles)(DialogHeader);
