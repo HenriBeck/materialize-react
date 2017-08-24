@@ -53,7 +53,6 @@ export default class Dialog extends PureComponent {
       component,
       hasBackdrop,
       closeOnOutsideClick,
-      onClose,
       ...props
     } = this.props;
 
@@ -62,11 +61,7 @@ export default class Dialog extends PureComponent {
       closeOnOutsideClick,
       component,
       additionalProps: getNotDeclaredProps(props, Dialog),
-      onClose: () => {
-        this.isOpened = false;
-
-        onClose();
-      },
+      onClose: this.onClose,
     });
   }
 
@@ -81,6 +76,15 @@ export default class Dialog extends PureComponent {
 
     this.context.dialogController.closeDialog();
   }
+
+  /**
+   * When the modal wants to be closed. This can happen when the user clicks on the backdrop.
+   */
+  onClose = () => {
+    this.isOpened = false;
+
+    this.props.onClose();
+  };
 
   render() {
     return null;
