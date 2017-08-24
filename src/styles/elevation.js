@@ -66,7 +66,10 @@ export default function elevation(elevate) {
         ambientShadow(0, 11, 15, -7),
       ].join(',');
     default:
-      warning(false, '');
+      warning(
+        false,
+        `${elevate} is not a valid elevation! Please choose from: 0, 2, 3, 4, 6, 8, 12, 16, 24`,
+      );
 
       return 'none';
   }
