@@ -30,7 +30,7 @@ export function DialogHeader({
 }
 
 DialogHeader.propTypes = {
-  classes: PropTypes.shape({ content: PropTypes.string.isRequired }).isRequired,
+  classes: PropTypes.shape({ header: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
