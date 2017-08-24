@@ -76,7 +76,7 @@ export class SnackbarContainer extends PureComponent {
 
       hideContainer: {
         composes: 'snackbar--hide-container',
-        transform: 'translateY(100%)',
+        transform: 'scale(0)',
       },
 
       snackbar: {
