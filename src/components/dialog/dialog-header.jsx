@@ -3,6 +3,7 @@ import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
 import { title } from '../../styles/typography';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which adds the appropriate styles for the header of a dialog.
@@ -22,7 +23,7 @@ export function DialogHeader({
   return (
     <header
       className={`${classes.header} ${className}`}
-      {...props}
+      {...getNotDeclaredProps(props, DialogHeader)}
     >
       {children}
     </header>

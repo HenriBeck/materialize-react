@@ -18,7 +18,7 @@ export function defaultTheme() {
     padding: 24,
     animationDuration: 333,
     zIndex: 2000,
-    elevation: 7,
+    elevation: 24,
     borderRadius: 2,
 
     headerBottomPadding: 20,

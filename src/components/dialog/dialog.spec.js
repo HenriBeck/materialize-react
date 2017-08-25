@@ -63,6 +63,8 @@ test('should call the onClose prop when the onClose method get\'s called', (t) =
     />, { context });
   const instance = wrapper.instance();
 
+  instance.open();
+
   instance.onClose();
 
   Dialog.defaultProps.onClose();

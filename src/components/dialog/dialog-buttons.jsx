@@ -2,6 +2,8 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 /**
  * A component which adds the appropriate styles for a button row inside a dialog.
  *
@@ -20,7 +22,7 @@ export function DialogButtons({
   return (
     <div
       className={`${classes.buttons} ${className}`}
-      {...props}
+      {...getNotDeclaredProps(props, DialogButtons)}
     >
       {children}
     </div>

@@ -3,6 +3,7 @@ import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
 import { body1 } from '../../styles/typography';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which adds the appropriate styles for the content inside a dialog.
@@ -22,7 +23,7 @@ export function DialogContent({
   return (
     <main
       className={`${classes.content} ${className}`}
-      {...props}
+      {...getNotDeclaredProps(props, DialogContent)}
     >
       {children}
     </main>

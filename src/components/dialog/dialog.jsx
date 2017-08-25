@@ -70,7 +70,7 @@ export default class Dialog extends PureComponent {
    */
   close() {
     warning(
-      !this.isOpened,
+      this.isOpened,
       'You are closing the current dialog from a different dialog which is not the opened one!',
     );
 

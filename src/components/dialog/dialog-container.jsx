@@ -80,14 +80,6 @@ export class DialogContainer extends PureComponent {
         justifyContent: 'center',
         transform: 'scale(1)',
         zIndex: theme.zIndex,
-
-        '& > .modal': {
-          backgroundColor: theme.backgroundColor,
-          borderRadius: theme.borderRadius,
-          boxShadow: elevation(theme.elevation),
-          animationDuration: theme.animationDuration,
-          animationFillMode: 'forwards',
-        },
       },
 
       hideContainer: {
