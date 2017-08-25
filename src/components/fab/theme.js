@@ -11,12 +11,12 @@ export const schema = PropTypes.shape({
   focusedElevation: PropTypes.number.isRequired,
   disabledElevation: PropTypes.number.isRequired,
 
-  iconColor: PropTypes.string,
+  iconColor: PropTypes.string.isRequired,
   backgroundColor: PropTypes.string.isRequired,
   disabledBackgroundColor: PropTypes.string.isRequired,
 
   animationDuration: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * The default theme for the FAB   component.
@@ -31,8 +31,8 @@ export function defaultTheme(vars) {
     normalSize: 56,
     iconSize: 24,
 
-    elevation: 1,
-    focusedElevation: 4,
+    elevation: 2,
+    focusedElevation: 6,
     disabledElevation: 0,
 
     iconColor: whiteIcons,

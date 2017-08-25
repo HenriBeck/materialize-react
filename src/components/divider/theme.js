@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export const schema = PropTypes.shape({
   height: PropTypes.number.isRequired,
   backgroundColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * The default theme for the divider component.

@@ -4,9 +4,10 @@ import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 import ButtonWrapper, { Button } from './button';
 
-const classes = { button: 'button' };
+const classes = createClassesFromStyles(Button.styles);
 
 test('should render the button', (t) => {
   const wrapper = mount(<ButtonWrapper />);

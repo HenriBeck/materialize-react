@@ -14,6 +14,8 @@ import { schema as tab } from '../../components/tab/theme';
 import { schema as toolbar } from '../../components/toolbar/theme';
 import { schema as dialog } from '../../components/dialog/theme';
 import { schema as snackbar } from '../../components/snackbar/theme';
+import { schema as card } from '../../components/card/theme';
+import { schema as typography } from '../../components/typography/theme';
 
 export default {
   background,
@@ -32,4 +34,6 @@ export default {
   toolbar,
   dialog,
   snackbar,
+  card,
+  typography,
 };

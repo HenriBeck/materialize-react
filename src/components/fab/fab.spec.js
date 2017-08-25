@@ -7,7 +7,7 @@ import FabWrapper, { Fab } from './fab';
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-const classes = createClassesFromStyles(Fab.styles({ fab: {} }));
+const classes = createClassesFromStyles(Fab.styles);
 
 test('should render a button', (t) => {
   const wrapper = mount(<FabWrapper icon="build" />);

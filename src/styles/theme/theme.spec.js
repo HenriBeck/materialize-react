@@ -18,6 +18,20 @@ test('should render a Jss Hoc and a Theme Provider', (t) => {
   t.deepEqual(wrapper.find('ThemeProvider').length, 1);
 });
 
+test('should merge the theme when Theme components are nested', (t) => {
+  const wrapper = mount(
+    <Theme>
+      <Theme theme={{}}>
+        <div>
+          Children
+        </div>
+      </Theme>
+    </Theme>,
+  );
+
+  t.deepEqual(wrapper.find('Jss(Theme)').length, 2);
+});
+
 test('should compile a theme', (t) => {
   const theme = compileTheme({}, { button: () => {} });
 

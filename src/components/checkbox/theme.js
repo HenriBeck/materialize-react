@@ -19,7 +19,7 @@ export const schema = PropTypes.shape({
   borderWidth: PropTypes.number.isRequired,
 
   animationDuration: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * The default theme for the checkbox component.

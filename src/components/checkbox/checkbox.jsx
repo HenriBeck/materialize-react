@@ -24,6 +24,7 @@ export class Checkbox extends PureComponent {
       label: PropTypes.string.isRequired,
       checkboxContainer: PropTypes.string.isRequired,
       checkmark: PropTypes.string.isRequired,
+      labelLeft: PropTypes.string.isRequired,
     }).isRequired,
     checked: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
@@ -95,8 +96,6 @@ export class Checkbox extends PureComponent {
           backgroundColor: theme.disabledBgColor,
         },
 
-        '&.checkbox--label-left': { flexDirection: 'row-reverse' },
-
         '&[aria-disabled=false][aria-checked=true] $checkboxContainer': {
           borderColor: theme.checkedBorderColor,
           backgroundColor: theme.checkedBgColor,
@@ -112,7 +111,6 @@ export class Checkbox extends PureComponent {
         cursor: 'pointer',
         borderRadius: '50%',
         boxSizing: 'border-box',
-        zIndex: 1,
         height: theme.rippleSize,
         width: theme.rippleSize,
       },
@@ -156,6 +154,11 @@ export class Checkbox extends PureComponent {
         animationDuration: `${theme.animationDuration}ms`,
         animationFillMode: 'forwards',
         animationTimingFunction: easeInOutCubic,
+      },
+
+      labelLeft: {
+        composes: 'checkbox--label-left',
+        flexDirection: 'row-reverse',
       },
     };
   }
@@ -216,7 +219,7 @@ export class Checkbox extends PureComponent {
     const classNames = classnames(
       className,
       classes.checkbox,
-      labelPosition === 'left' && 'checkbox--label-left',
+      labelPosition === 'left' && classes.labelLeft,
     );
 
     return (

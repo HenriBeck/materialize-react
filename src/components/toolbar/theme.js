@@ -4,7 +4,7 @@ export const schema = PropTypes.shape({
   backgroundColor: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
   mobileHeight: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the toolbar.

@@ -8,7 +8,7 @@ import createClassesFromStyles from '../../../tests/helpers/create-classes-from-
 
 const props = {
   name: 'test',
-  classes: createClassesFromStyles(Tab.styles({ tab: {} })),
+  classes: createClassesFromStyles(Tab.styles),
   onPress: () => {},
   tabStyle: 'text-and-icons',
   createRef: () => {},

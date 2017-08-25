@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react';
 
 import Snackbar from './snackbar';
 import Button from '../button/index';
-import SnackbarController from '../snackbar-controller/index';
-import SnackbarContainer from '../snackbar-container/index';
+import SnackbarController from './snackbar-controller';
+import SnackbarContainer from './snackbar-container';
 
 /**
  * A component which creates a fully working drawer for the story.

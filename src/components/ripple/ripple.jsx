@@ -22,6 +22,7 @@ export class Ripple extends PureComponent {
       focus: PropTypes.string.isRequired,
       waveContainer: PropTypes.string.isRequired,
       wave: PropTypes.string.isRequired,
+      noWaves: PropTypes.string.isRequired,
     }).isRequired,
     className: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
@@ -56,9 +57,6 @@ export class Ripple extends PureComponent {
       borderRadius: 'inherit',
       overflow: 'hidden',
       cursor: 'pointer',
-      zIndex: 'inherit',
-
-      '&.ripple--no-waves': { pointerEvents: 'none' },
 
       '&.ripple--round $focus': {
         borderRadius: '50%',
@@ -70,6 +68,11 @@ export class Ripple extends PureComponent {
       '&.ripple--focused $focus': { opacity: props => props.focusOpacity },
 
       '&.ripple--round.ripple--focused $focus': { transform: 'scale(1)' },
+    },
+
+    noWaves: {
+      composes: 'ripple--no-waves',
+      pointerEvents: 'none',
     },
 
     focus: {
@@ -105,7 +108,6 @@ export class Ripple extends PureComponent {
       borderRadius: '50%',
       transform: 'scale(0)',
       willChange: 'opacity, transform',
-      zIndex: 1,
       animationFillMode: 'forwards',
       transition: 'opacity 140ms linear',
       backgroundColor: props => props.color,
@@ -172,12 +174,13 @@ export class Ripple extends PureComponent {
       isFocused,
       createRef,
       onDownAction,
+      className,
       ...props
     } = this.props;
-    const className = classnames(this.props.className, classes.ripple, {
+    const classNames = classnames(className, classes.ripple, {
       'ripple--round': round,
-      'ripple--no-waves': nowaves,
       'ripple--focused': isFocused,
+      [classes.noWaves]: nowaves,
     });
 
     return (
@@ -185,7 +188,7 @@ export class Ripple extends PureComponent {
         {...getNotDeclaredProps(props, Ripple, Ripple.extraProps)}
         component="span"
         role="presentation"
-        className={className}
+        className={classNames}
         createRef={createRef}
         onPress={onDownAction}
         onRelease={this.handleRelease}

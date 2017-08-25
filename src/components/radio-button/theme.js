@@ -9,7 +9,7 @@ export const schema = PropTypes.shape({
   checkedColor: PropTypes.string.isRequired,
   uncheckedColor: PropTypes.string.isRequired,
   disabledColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the radio button component.
