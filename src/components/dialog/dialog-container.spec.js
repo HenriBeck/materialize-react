@@ -89,6 +89,8 @@ test('should close the dialog when the backdrop is clicked', (t) => {
     closeOnOutsideClick: true,
   });
 
+  instance.handleAnimationEnd();
+
   instance.handleBackdropPress();
 
   t.deepEqual(spy.callCount, 1);
