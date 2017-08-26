@@ -12,7 +12,7 @@ import DialogButtons from './dialog-buttons';
 
 /**
  * Render a dialog in the dialog container.
- * This creates the dialog object and exposes open and close methods for the specific modal.
+ * This creates the dialog object and exposes open and close methods for the specific dialog.
  *
  * @class
  */
@@ -78,7 +78,7 @@ export default class Dialog extends PureComponent {
   }
 
   /**
-   * When the modal wants to be closed. This can happen when the user clicks on the backdrop.
+   * When the dialog wants to be closed. This can happen when the user clicks on the backdrop.
    */
   onClose = () => {
     this.isOpened = false;

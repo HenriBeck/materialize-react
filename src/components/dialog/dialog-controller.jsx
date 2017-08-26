@@ -73,7 +73,7 @@ export default class DialogController extends PureComponent {
    * Open a new dialog and call the callback from the container.
    *
    * @param {Object} dialog - The dialog object.
-   * @returns {Boolean} - Returns whether or not the container will open the modal.
+   * @returns {Boolean} - Returns whether or not the container will open the dialog.
    */
   openDialog = (dialog) => {
     warning(
@@ -88,7 +88,7 @@ export default class DialogController extends PureComponent {
   };
 
   /**
-   * Close the current opened modal and call the callback from the container.
+   * Close the current opened dialog and call the callback from the container.
    */
   closeDialog = () => {
     warning(

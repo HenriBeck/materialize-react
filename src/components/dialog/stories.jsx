@@ -10,7 +10,7 @@ import Button from '../button/index';
  * @class
  */
 class DialogStory extends PureComponent {
-  static ModalElement = ({ close }) => (
+  static DialogElement = ({ close }) => (
     <div>
       <Dialog.Header>Dialog Header</Dialog.Header>
 
@@ -42,11 +42,11 @@ class DialogStory extends PureComponent {
           <Dialog.Container />
 
           <div>
-            <Button onRelease={this.handlePress}>Open Modal</Button>
+            <Button onRelease={this.handlePress}>Open Dialog</Button>
 
             <Dialog
               ref={(elem) => { this.dialog = elem; }}
-              component={DialogStory.ModalElement}
+              component={DialogStory.DialogElement}
             />
           </div>
         </div>
