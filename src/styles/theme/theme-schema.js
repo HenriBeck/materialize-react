@@ -16,6 +16,7 @@ import { schema as dialog } from '../../components/dialog/theme';
 import { schema as snackbar } from '../../components/snackbar/theme';
 import { schema as card } from '../../components/card/theme';
 import { schema as typography } from '../../components/typography/theme';
+import { schema as badge } from '../../components/badge/theme';
 
 export default {
   background,
@@ -36,4 +37,5 @@ export default {
   snackbar,
   card,
   typography,
+  badge,
 };

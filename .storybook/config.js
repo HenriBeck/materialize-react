@@ -52,4 +52,5 @@ configure(() => {
   require('../src/components/typography/stories');
   require('../src/components/icon/stories');
   require('../src/components/icon-button/stories');
+  require('../src/components/badge/stories');
 }, module);
