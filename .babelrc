@@ -9,7 +9,6 @@
         "safari": 10
       },
       "useBuiltIns": true,
-      "debug": true,
       "loose": true
     }]
   ],
