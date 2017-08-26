@@ -17,7 +17,10 @@ export class DialogContainer extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       dialogContainer: PropTypes.string.isRequired,
+      hideContainer: PropTypes.string.isRequired,
       backdrop: PropTypes.string.isRequired,
+      backdropActive: PropTypes.string.isRequired,
+      dialog: PropTypes.string.isRequired,
     }).isRequired,
     className: PropTypes.string,
     animateInName: PropTypes.string,
@@ -99,9 +102,13 @@ export class DialogContainer extends PureComponent {
         transition: `opacity ${theme.animationDuration}ms linear`,
       },
 
-      backdropActive: { opacity: 1 },
+      backdropActive: {
+        composes: 'dialog--backdrop-active',
+        opacity: 1,
+      },
 
-      modal: {
+      dialog: {
+        composes: 'dialog',
         backgroundColor: theme.backgroundColor,
         borderRadius: theme.borderRadius,
         boxShadow: elevation(theme.elevation),
@@ -139,14 +146,10 @@ export class DialogContainer extends PureComponent {
    */
   openDialog = (dialog) => {
     if (this.state.currentDialog) {
-      warning(false, 'There is already a dialog currently opened!');
-
-      return false;
+      return warning(false, 'There is already a dialog currently opened!');
     }
 
-    this.setState(() => {
-      return { currentDialog: dialog };
-    });
+    this.setState({ currentDialog: dialog });
 
     return true;
   };
@@ -156,17 +159,12 @@ export class DialogContainer extends PureComponent {
    * This will only change the animationOut state so the dialog animates out correctly.
    */
   closeDialog = () => {
-    warning(
-      !this.state.currentDialog,
-      'There is currently no open dialog! This action will have no effect',
-    );
-
     this.setState(({ currentDialog }) => {
       if (currentDialog) {
         return { animatingOut: true };
       }
 
-      return null;
+      return warning(false, 'There is currently no open dialog! This action will have no effect');
     });
   };
 
@@ -225,6 +223,10 @@ export class DialogContainer extends PureComponent {
 
     if (currentDialog) {
       const Element = currentDialog.component;
+      const backdropClasses = classnames(
+        classes.backdrop,
+        { [classes.backdropActive]: currentDialog.backdrop && !animatingOut },
+      );
 
       dialog = (
         <div
@@ -238,11 +240,6 @@ export class DialogContainer extends PureComponent {
             close={this.closeDialog}
           />
         </div>
-      );
-
-      const backdropClasses = classnames(
-        classes.backdrop,
-        { [classes.backdropActive]: currentDialog.backdrop && !animatingOut },
       );
 
       backdrop = (
