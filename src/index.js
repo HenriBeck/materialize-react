@@ -23,6 +23,7 @@ export Dialog from './components/dialog';
 export Snackbar from './components/snackbar';
 export Card from './components/card';
 export Typography from './components/typography';
+export Badge from './components/badge';
 
 // Styles
 export Theme from './styles/theme';
