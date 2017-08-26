@@ -6,7 +6,7 @@ export const schema = PropTypes.shape({
 });
 
 /**
- * The default theme for the modal component.
+ * The default theme for the dialog component.
  *
  * @private
  * @returns {Object} - Returns the theme.
@@ -16,7 +16,7 @@ export function defaultTheme() {
     backgroundColor: '#ffffff',
     backdropColor: 'rgba(0, 0, 0, 0.4)',
     padding: 24,
-    animationDuration: 333,
+    animationDuration: 280,
     zIndex: 2000,
     elevation: 24,
     borderRadius: 2,

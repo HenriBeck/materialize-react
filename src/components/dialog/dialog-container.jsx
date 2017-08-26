@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import elevation from '../../styles/elevation';
+import breakpoints from '../../styles/breakpoints';
 
 /**
  * A component to render a dialog.
@@ -50,25 +51,13 @@ export class DialogContainer extends PureComponent {
   static styles({ dialog: theme }) {
     return {
       '@keyframes dialog--animate-in': {
-        from: {
-          transform: 'translateY(40%)',
-          opacity: 0,
-        },
-        to: {
-          transform: 'translateY(0)',
-          opacity: 1,
-        },
+        from: { opacity: 0 },
+        to: { opacity: 1 },
       },
 
       '@keyframes dialog--animate-out': {
-        from: {
-          transform: 'translateY(0)',
-          opacity: 1,
-        },
-        to: {
-          transform: 'translateY(40%)',
-          opacity: 0,
-        },
+        from: { opacity: 1 },
+        to: { opacity: 0 },
       },
 
       dialogContainer: {
@@ -83,6 +72,9 @@ export class DialogContainer extends PureComponent {
         justifyContent: 'center',
         transform: 'scale(1)',
         zIndex: theme.zIndex,
+        padding: 32,
+
+        [breakpoints.up('tablet')]: { padding: 64 },
       },
 
       hideContainer: {
@@ -138,8 +130,10 @@ export class DialogContainer extends PureComponent {
     this.context.dialogController.removeContainer();
   }
 
+  isAnimatedIn = false;
+
   /**
-   * The callback for when a modal should be opened.
+   * The callback for when a dialog should be opened.
    *
    * @param {Object} dialog - The dialog object.
    * @returns {Boolean} - Returns whether or not the dialog will be opened.
@@ -161,6 +155,8 @@ export class DialogContainer extends PureComponent {
   closeDialog = () => {
     this.setState(({ currentDialog }) => {
       if (currentDialog) {
+        this.isAnimatedIn = false;
+
         return { animatingOut: true };
       }
 
@@ -173,13 +169,13 @@ export class DialogContainer extends PureComponent {
    * we close the dialog.
    */
   handleBackdropPress = () => {
-    if (this.state.currentDialog.closeOnOutsideClick) {
+    if (this.state.currentDialog.closeOnOutsideClick && this.isAnimatedIn) {
       this.closeDialog();
     }
   };
 
   /**
-   * When the out animation ends, we call the onClose handler of the modal
+   * When the out animation ends, we call the onClose handler of the dialog
    * and set the currentDialog state to null again.
    */
   handleAnimationEnd = () => {
@@ -195,6 +191,8 @@ export class DialogContainer extends PureComponent {
           animatingOut: false,
         };
       }
+
+      this.isAnimatedIn = true;
 
       return null;
     });
@@ -231,7 +229,7 @@ export class DialogContainer extends PureComponent {
       dialog = (
         <div
           role="dialog"
-          className={classes.modal}
+          className={classes.dialog}
           style={{ animationName: animatingOut ? animateOutName : animateInName }}
           onAnimationEnd={this.handleAnimationEnd}
         >
