@@ -1,4 +1,6 @@
 # components
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/HenriBeck/materialize-react.svg)](https://greenkeeper.io/)
 React Components for TF2Pickup Website and other stuff
 
 [![npm](https://img.shields.io/npm/v/materialize-react.svg)](NPM Version) [![npm](https://img.shields.io/npm/l/materialize-react.svg)](License) [![David](https://img.shields.io/david/materialize-react.svg)]()
