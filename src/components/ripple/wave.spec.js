@@ -35,13 +35,15 @@ test('animate the wave out', (t) => {
 });
 
 test('should call the onFinish handler', (t) => {
-  const props = {
-    ...defaultProps,
-    onFinish: sinon.spy(),
-  };
-  const wrapper = mount(<Wave {...props} />);
+  const onFinish = sinon.spy();
+  const wrapper = mount(
+    <Wave
+      {...defaultProps}
+      onFinish={onFinish}
+    />,
+  );
 
   wrapper.simulate('transitionEnd');
 
-  t.deepEqual(props.onFinish.callCount, 1);
+  t.deepEqual(onFinish.callCount, 1);
 });
