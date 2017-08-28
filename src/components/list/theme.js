@@ -12,6 +12,11 @@ export const schema = PropTypes.shape({
     secondaryContentFontSize: PropTypes.number.isRequired,
     rightItemWidth: PropTypes.number.isRequired,
     multiLineVerticalPadding: PropTypes.number.isRequired,
+
+    avatar: PropTypes.shape({
+      size: PropTypes.number.isRequired,
+      verticalPadding: PropTypes.number.isRequired,
+    }).isRequired,
   }).isRequired,
 
   subheader: PropTypes.shape({
@@ -40,6 +45,11 @@ export function defaultTheme(vars) {
       secondaryContentFontSize: 14,
       rightItemWidth: 24,
       multiLineVerticalPadding: 20,
+
+      avatar: {
+        size: 40,
+        verticalPadding: 8,
+      },
     },
 
     subheader: {

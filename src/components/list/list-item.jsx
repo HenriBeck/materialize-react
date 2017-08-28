@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import { commonBase } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import ListItemAvatar from './list-item-avatar';
 
 /**
  * A component to render a list item.
@@ -31,15 +32,14 @@ export function ListItem({
   className,
   ...props
 }) {
-  const classNames = classnames(
-    classes.item,
-    className,
+  const contentClassName = classnames(
+    classes.content,
     { [classes.withSecondaryContent]: secondaryContent },
   );
 
   return (
     <li
-      className={classNames}
+      className={`${classes.item} ${className}`}
       {...getNotDeclaredProps(props, ListItem)}
     >
       {inset && (
@@ -48,7 +48,7 @@ export function ListItem({
         </span>
       )}
 
-      <span className={classes.content}>
+      <span className={contentClassName}>
         {children}
 
         {secondaryContent && (
@@ -94,6 +94,7 @@ ListItem.defaultProps = {
 ListItem.LeftItem = ({ children }) => Children.only(children);
 ListItem.RightItem = ({ children }) => Children.only(children);
 ListItem.SecondaryContent = ({ children }) => Children.only(children);
+ListItem.Avatar = ListItemAvatar;
 
 ListItem.styles = ({ list: theme }) => {
   return {
@@ -105,14 +106,6 @@ ListItem.styles = ({ list: theme }) => {
       alignItems: 'center',
       paddingLeft: theme.item.horizontalPadding,
       paddingRight: theme.item.horizontalPadding,
-      paddingTop: theme.item.oneLineVerticalPadding,
-      paddingBottom: theme.item.oneLineVerticalPadding,
-    },
-
-    withSecondaryContent: {
-      composes: 'list--item-with-secondary-content',
-      paddingTop: theme.item.multiLineVerticalPadding,
-      paddingBottom: theme.item.multiLineVerticalPadding,
     },
 
     leftItem: {
@@ -131,6 +124,14 @@ ListItem.styles = ({ list: theme }) => {
       flex: 1,
       fontSize: theme.item.contentFontSize,
       lineHeight: '16px',
+      paddingTop: theme.item.oneLineVerticalPadding,
+      paddingBottom: theme.item.oneLineVerticalPadding,
+    },
+
+    withSecondaryContent: {
+      composes: 'list--item-with-secondary-content',
+      paddingTop: theme.item.multiLineVerticalPadding,
+      paddingBottom: theme.item.multiLineVerticalPadding,
     },
 
     secondaryContent: {
