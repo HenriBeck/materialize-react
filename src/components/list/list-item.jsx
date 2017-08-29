@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import classnames from 'classnames';
@@ -91,9 +91,6 @@ ListItem.defaultProps = {
   className: '',
 };
 
-ListItem.LeftItem = ({ children }) => Children.only(children);
-ListItem.RightItem = ({ children }) => Children.only(children);
-ListItem.SecondaryContent = ({ children }) => Children.only(children);
 ListItem.Avatar = ListItemAvatar;
 
 ListItem.styles = ({ list: theme }) => {
