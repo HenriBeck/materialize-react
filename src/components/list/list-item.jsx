@@ -81,7 +81,7 @@ ListItem.propTypes = {
   leftItem: PropTypes.node,
   rightItem: PropTypes.node,
   secondaryContent: PropTypes.node,
-  className: '',
+  className: PropTypes.string,
 };
 
 ListItem.defaultProps = {
