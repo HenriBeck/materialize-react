@@ -47,7 +47,10 @@ ListDivider.defaultProps = {
 
 ListDivider.styles = ({ list: theme }) => {
   return {
-    inset: { paddingLeft: theme.insetWidth },
+    inset: {
+      composes: 'list--divider-inset',
+      paddingLeft: theme.insetWidth,
+    },
 
     divider: { width: '100%' },
   };
