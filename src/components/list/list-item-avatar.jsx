@@ -40,6 +40,7 @@ ListItemAvatar.defaultProps = { className: '' };
 ListItemAvatar.styles = ({ list: theme }) => {
   return {
     avatar: {
+      composes: 'list--item-avatar',
       minWidth: theme.item.avatar.size,
       minHeight: theme.item.avatar.size,
       paddingTop: theme.item.avatar.verticalPadding,
