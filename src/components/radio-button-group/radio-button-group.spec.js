@@ -3,8 +3,9 @@ import test from 'ava';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import RadioButtonGroup from './radio-button-group';
 import RadioButton from '../radio-button';
+
+import RadioButtonGroup from './radio-button-group';
 
 /**
  * A utility function to render a radio button group with the required children.

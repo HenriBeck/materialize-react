@@ -1,11 +1,12 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
+import { mount } from 'enzyme';
+
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 import Ripple from './ripple';
 import Wave from './wave';
-import { mount } from 'enzyme';
-import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 const defaultProps = {
   waves: [],

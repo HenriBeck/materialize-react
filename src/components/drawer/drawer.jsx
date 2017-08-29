@@ -4,10 +4,11 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 import DrawerContainer from './drawer-container';
 import DrawerContent from './drawer-content';
 import MainContent from './main-content';
-import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which will render a SideNav and some content.

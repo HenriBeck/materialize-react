@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 
+import Button from '../button';
+
 import Snackbar from './snackbar';
-import Button from '../button/index';
 import SnackbarController from './snackbar-controller';
 import SnackbarContainer from './snackbar-container';
 

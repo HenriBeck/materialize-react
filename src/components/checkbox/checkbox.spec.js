@@ -1,10 +1,11 @@
 import React from 'react';
 import test from 'ava';
 
-import CheckboxWrapper from './checkbox';
 import { mount } from '../../../tests/helpers/enzyme';
 
-const defaultProps = {
+import CheckboxWrapper from './checkbox';
+
+const props = {
   checked: false,
   disabled: false,
   className: '',
@@ -19,7 +20,7 @@ const defaultProps = {
 };
 
 test('should render a span with a role of checkbox and a Jss HoC', (t) => {
-  const wrapper = mount(<CheckboxWrapper {...defaultProps} />);
+  const wrapper = mount(<CheckboxWrapper {...props} />);
 
   t.deepEqual(wrapper.find('Jss(Checkbox)').length, 1);
   t.deepEqual(wrapper.find({ role: 'checkbox' }).length, 1);
@@ -28,7 +29,7 @@ test('should render a span with a role of checkbox and a Jss HoC', (t) => {
 test('should animate the checkmark when the checked prop is initially passed', (t) => {
   const wrapper = mount(
     <CheckboxWrapper
-      {...defaultProps}
+      {...props}
       checked
     />,
   );
@@ -38,7 +39,7 @@ test('should animate the checkmark when the checked prop is initially passed', (
 });
 
 test('should change the animationName when the checked prop changes', (t) => {
-  const wrapper = mount(<CheckboxWrapper {...defaultProps} />);
+  const wrapper = mount(<CheckboxWrapper {...props} />);
   const checkmark = () => wrapper.find('.checkbox--checkmark').node;
 
   wrapper.setProps({ checked: true });
@@ -51,7 +52,7 @@ test('should change the animationName when the checked prop changes', (t) => {
 });
 
 test('should set the aria-disabled attribute on the root element', (t) => {
-  const wrapper = mount(<CheckboxWrapper {...defaultProps} />);
+  const wrapper = mount(<CheckboxWrapper {...props} />);
 
   wrapper.setProps({ disabled: true });
 
@@ -59,7 +60,7 @@ test('should set the aria-disabled attribute on the root element', (t) => {
 });
 
 test('should add the class checkbox--label-left when the labelPosition is left', (t) => {
-  const wrapper = mount(<CheckboxWrapper {...defaultProps} />);
+  const wrapper = mount(<CheckboxWrapper {...props} />);
 
   wrapper.setProps({ labelPosition: 'left' });
 

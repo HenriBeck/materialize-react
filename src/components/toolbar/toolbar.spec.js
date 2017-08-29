@@ -2,6 +2,7 @@ import React from 'react';
 import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
+
 import Toolbar from './toolbar';
 
 test('should render a Jss HoC and a div with the class of toolbar', (t) => {

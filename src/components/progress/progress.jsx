@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
+import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import { easeInOutCubic } from '../../styles/timings';
-import warning from 'warning';
 
 /**
  * A component to render a material design progress bar.

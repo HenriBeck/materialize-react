@@ -2,8 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import RadioButtonGroup from './radio-button-group';
 import RadioButton from '../radio-button';
+
+import RadioButtonGroup from './radio-button-group';
 
 storiesOf('RadioButtonGroup', module)
   .add('Default styles', () => (
