@@ -23,27 +23,6 @@ test('should have aria-valuemin and aria-valuemax and aria-valuenow on the root 
   t.deepEqual(root.prop('aria-valuemax'), 100);
 });
 
-test('should change the aria-valuenow when the progress prop changes', (t) => {
-  const wrapper = mount(<Progress progress={40} />);
-
-  wrapper.setProps({ progress: 100 });
-
-  const root = wrapper.find('.progress');
-
-  // Check if the aria-valuenow prop has changed
-  t.deepEqual(root.prop('aria-valuenow'), 100);
-});
-
-test('should animate the secondary progress bar', (t) => {
-  const wrapper = mount(<Progress secondaryProgress={40} />);
-
-  wrapper.setProps({ secondaryProgress: 80 });
-
-  const style = wrapper.find('.progress--secondary-bar').node.style;
-
-  t.deepEqual(style.transform, 'matrix(0.8, 0, 0, 1, 0, 0)');
-});
-
 test('should add the indeterminate class', (t) => {
   const wrapper = mount(<Progress indeterminate />);
   const elem = wrapper.find('.progress');
