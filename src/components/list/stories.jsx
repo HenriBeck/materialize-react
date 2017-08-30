@@ -1,10 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import List from './list';
-
 import Icon from '../icon';
 import Ripple from '../ripple';
+
+import List from './list';
 
 const styles = { minWidth: 250 };
 
@@ -105,13 +105,13 @@ storiesOf('List', module)
         leftItem={<List.Item.Avatar><Icon icon="account-circle" /></List.Item.Avatar>}
         rightItem={<Icon icon="information" />}
       >
-        List item 1
+        List item 2
       </List.Item>
       <List.Item
         leftItem={<List.Item.Avatar><Icon icon="account-circle" /></List.Item.Avatar>}
         rightItem={<Icon icon="information" />}
       >
-        List item 1
+        List item 3
       </List.Item>
     </List>
   ))

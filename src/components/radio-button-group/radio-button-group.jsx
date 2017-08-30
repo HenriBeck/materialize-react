@@ -4,13 +4,14 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
+import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
-import RadioButtonContainer from './radio-button-container';
-import warning from 'warning';
 import hasDuplicates from '../../utils/has-duplicates';
+
+import RadioButtonContainer from './radio-button-container';
 
 /**
  * A class that renders a group of radio buttons and handles all the logic.

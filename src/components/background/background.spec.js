@@ -1,8 +1,9 @@
 import React from 'react';
 import test from 'ava';
 
-import Background from './background';
 import { mount } from '../../../tests/helpers/enzyme';
+
+import Background from './background';
 
 test('should render a div and a JSS HOC Component', (t) => {
   const wrapper = mount(<Background>Hello</Background>);

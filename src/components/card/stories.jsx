@@ -1,9 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import Card from './card';
 import Button from '../button';
 import { blue500 } from '../../styles/colors';
+
+import Card from './card';
 
 const avatar = (
   <span style={{ backgroundColor: blue500 }}>

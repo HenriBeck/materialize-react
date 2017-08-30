@@ -2,6 +2,7 @@ import React from 'react';
 import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
+
 import Badge from './badge';
 
 test('should render a div with a span and a class name of badge inside', (t) => {

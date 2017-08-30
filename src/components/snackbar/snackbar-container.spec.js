@@ -6,6 +6,7 @@ import { mount } from 'enzyme';
 
 import { shallow } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
 import SnackbarContainerWrapper, { SnackbarContainer } from './snackbar-container';
 
 /**

@@ -1,8 +1,8 @@
 import React from 'react';
 import test from 'ava';
+import { mount } from 'enzyme';
 
 import RippleContainer from './ripple-container';
-import { mount } from 'enzyme';
 
 test('should add a wave when the addWave method get\'s called', (t) => {
   const wrapper = mount(<RippleContainer classes={{}} />);

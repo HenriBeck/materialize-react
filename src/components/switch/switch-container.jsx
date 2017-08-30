@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
+import warning from 'warning';
+
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 import Switch from './switch';
-import getNotDeclaredProps from '../../get-not-declared-props';
-import warning from 'warning';
 
 /**
  * A component to render a switch component.

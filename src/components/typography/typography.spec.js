@@ -2,6 +2,7 @@ import React from 'react';
 import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
+
 import Typography from './typography';
 
 test('should render a span with the class of typography', (t) => {

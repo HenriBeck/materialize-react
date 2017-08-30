@@ -5,10 +5,11 @@ import React, {
 import PropTypes from 'prop-types';
 
 import Tab from '../tab';
-import TabsContainer from './tabs-container';
 import hasDuplicates from '../../utils/has-duplicates';
 import getNextIndex from '../../utils/get-next-index';
 import getNotDeclaredProps from '../../get-not-declared-props';
+
+import TabsContainer from './tabs-container';
 
 /**
  * A component which hosts the logic for multiple tabs.

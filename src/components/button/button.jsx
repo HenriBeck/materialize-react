@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
-
 import warning from 'warning';
+
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import { button as buttonTypo } from '../../styles/typography';

@@ -3,8 +3,9 @@ import test from 'ava';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import Tabs from './tabs';
 import Tab from '../tab';
+
+import Tabs from './tabs';
 
 /**
  * A function that will render a set of tabs.

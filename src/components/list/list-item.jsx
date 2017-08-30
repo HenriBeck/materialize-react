@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import { commonBase } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
+
 import ListItemAvatar from './list-item-avatar';
 
 /**

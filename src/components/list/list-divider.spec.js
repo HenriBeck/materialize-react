@@ -1,8 +1,9 @@
 import React from 'react';
 import test from 'ava';
 
-import ListDivider from './list-divider';
 import { mount } from '../../../tests/helpers/enzyme';
+
+import ListDivider from './list-divider';
 
 test('should render a li and a Divider inside', (t) => {
   const wrapper = mount(<ListDivider />);

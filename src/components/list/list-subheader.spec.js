@@ -2,6 +2,7 @@ import React from 'react';
 import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
+
 import ListSubheader from './list-subheader';
 
 test('should render a li and have a class of list--subheader', (t) => {

@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
+import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
-import warning from 'warning';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';

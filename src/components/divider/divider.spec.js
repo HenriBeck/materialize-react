@@ -1,8 +1,9 @@
 import test from 'ava';
 import React from 'react';
 
-import Divider from './divider';
 import { mount } from '../../../tests/helpers/enzyme';
+
+import Divider from './divider';
 
 test('should render the a div', (t) => {
   const wrapper = mount(<Divider />);

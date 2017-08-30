@@ -1,8 +1,9 @@
 import React from 'react';
 import test from 'ava';
 
-import Icon from './icon';
 import { mount } from '../../../tests/helpers/enzyme';
+
+import Icon from './icon';
 
 test('should return an i tag if the icon isn\'t a custom icon', (t) => {
   const wrapper = mount(<Icon icon="github" />);

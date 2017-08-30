@@ -2,6 +2,7 @@ import React from 'react';
 import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
+
 import ListItemAvatar from './list-item-avatar';
 
 test('should render a div with the class of list--item-avatar and the children inside', (t) => {
