@@ -2,8 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import Tabs from './tabs';
 import Tab from '../tab';
+
+import Tabs from './tabs';
 
 storiesOf('Tabs', module)
   .add('Default styles', () => (

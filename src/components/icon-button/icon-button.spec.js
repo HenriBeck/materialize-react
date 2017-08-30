@@ -3,9 +3,10 @@ import test from 'ava';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import IconButtonWrapper, { IconButton } from './icon-button';
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
+import IconButtonWrapper, { IconButton } from './icon-button';
 
 const classes = createClassesFromStyles(IconButton.styles);
 

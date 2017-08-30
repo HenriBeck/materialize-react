@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 import Ripple from './ripple';
 import {
   getCoords,
   getCenter,
   getDistanceToFarthestCorner,
 } from './utils';
-import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The container for the ripple.

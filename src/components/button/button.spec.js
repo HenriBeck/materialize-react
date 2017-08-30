@@ -5,6 +5,7 @@ import { shallow } from 'enzyme';
 
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
 import ButtonWrapper, { Button } from './button';
 
 const classes = createClassesFromStyles(Button.styles);

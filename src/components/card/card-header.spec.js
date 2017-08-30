@@ -2,6 +2,7 @@ import React from 'react';
 import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
+
 import CardHeader from './card-header';
 
 test('should render a header element with the class card--header', (t) => {

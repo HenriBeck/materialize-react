@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 
-import Drawer from './drawer';
-import DrawerContent from './drawer-content';
-import MainContent from './main-content';
 import IconButton from '../icon-button';
+
+import Drawer from './drawer';
 
 /**
  * A component which creates a fully working drawer for the story.
@@ -33,7 +32,7 @@ class DrawerStory extends PureComponent {
         style={{ flex: 1 }}
         ref={(element) => { this.drawer = element; }}
       >
-        <DrawerContent>
+        <Drawer.DrawerContent>
           <div style={{ padding: 32 }}>
             Drawer Content
 
@@ -42,9 +41,9 @@ class DrawerStory extends PureComponent {
               onPress={this.handleDrawerClose}
             />
           </div>
-        </DrawerContent>
+        </Drawer.DrawerContent>
 
-        <MainContent>
+        <Drawer.MainContent>
           <div style={{ padding: 32 }}>
             Main Content
 
@@ -53,7 +52,7 @@ class DrawerStory extends PureComponent {
               onPress={this.handleDrawerOpen}
             />
           </div>
-        </MainContent>
+        </Drawer.MainContent>
       </Drawer>
     );
   }

@@ -3,9 +3,10 @@ import { storiesOf } from '@storybook/react';
 import injectSheet from 'react-jss';
 import { number } from '@storybook/addon-knobs';
 
-import Badge from './badge';
 import Icon from '../icon';
 import IconButton from '../icon-button';
+
+import Badge from './badge';
 
 storiesOf('Badge', module)
   .add('With icon', () => (

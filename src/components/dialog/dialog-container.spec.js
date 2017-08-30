@@ -4,8 +4,9 @@ import sinon from 'sinon';
 import { mount } from 'enzyme';
 
 import { shallow } from '../../../tests/helpers/enzyme';
-import DialogContainerWrapper, { DialogContainer } from './dialog-container';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
+import DialogContainerWrapper, { DialogContainer } from './dialog-container';
 
 const classes = createClassesFromStyles(DialogContainer.styles);
 

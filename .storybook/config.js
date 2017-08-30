@@ -54,4 +54,5 @@ configure(() => {
   require('../src/components/icon-button/stories');
   require('../src/components/badge/stories');
   require('../src/components/stepper/stories');
+  require('../src/components/list/stories');
 }, module);

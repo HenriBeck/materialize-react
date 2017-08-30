@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 
-import Dialog from './dialog';
 import Button from '../button/index';
+
+import Dialog from './dialog';
 
 /**
  * A component which creates a fully working drawer for the story.

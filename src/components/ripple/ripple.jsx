@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
-import Wave from './wave';
 import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
+
+import Wave from './wave';
 
 /**
  * The presentation container for the ripple.

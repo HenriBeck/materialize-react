@@ -3,9 +3,10 @@ import test from 'ava';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import FabWrapper, { Fab } from './fab';
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
+import FabWrapper, { Fab } from './fab';
 
 const classes = createClassesFromStyles(Fab.styles);
 

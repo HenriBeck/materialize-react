@@ -38,6 +38,7 @@ import { defaultTheme as card } from '../../components/card/theme';
 import { defaultTheme as typography } from '../../components/typography/theme';
 import { defaultTheme as badge } from '../../components/badge/theme';
 import { defaultTheme as stepper } from '../../components/stepper/theme';
+import { defaultTheme as list } from '../../components/list/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -89,4 +90,5 @@ export const defaultTheme = {
   typography,
   badge,
   stepper,
+  list,
 };
