@@ -1,10 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import List from './list';
-
 import Icon from '../icon';
 import Ripple from '../ripple';
+
+import List from './list';
 
 const styles = { minWidth: 250 };
 

@@ -2,10 +2,11 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 import ListSubheader from './list-subheader';
 import ListDivider from './list-divider';
 import ListItem from './list-item';
-import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The main list component.
