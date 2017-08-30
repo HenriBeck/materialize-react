@@ -25,7 +25,7 @@ export function Icon({
   return (
     <i
       {...getNotDeclaredProps(props, Icon)}
-      className={`mdi-${icon} ${className} ${classes.icon}`}
+      className={`${classes.icon} mdi-${icon} ${className}`}
       aria-disabled={disabled}
     />
   );
@@ -46,7 +46,7 @@ Icon.defaultProps = {
 Icon.styles = ({ icon: theme }) => {
   return {
     icon: {
-      composes: 'icon mdi mdi-24px',
+      composes: 'mdi mdi-24px icon',
       color: theme.color,
       lineHeight: 1,
 
