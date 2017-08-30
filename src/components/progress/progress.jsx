@@ -18,6 +18,7 @@ export class Progress extends PureComponent {
     classes: PropTypes.shape({
       progress: PropTypes.string.isRequired,
       container: PropTypes.string.isRequired,
+      bar: PropTypes.string.isRequired,
       primaryBar: PropTypes.string.isRequired,
       secondaryBar: PropTypes.string.isRequired,
     }).isRequired,
@@ -106,7 +107,7 @@ export class Progress extends PureComponent {
           animationDuration: theme.indeterminateDuration,
         },
 
-        '&.progress--indeterminate[data-active] $primaryBar': {
+        '&.progress--indeterminate[data-active=true] $primaryBar': {
           animationName: 'progress--bar',
 
           '&::after': { animationName: 'progress--splitter' },
@@ -125,8 +126,8 @@ export class Progress extends PureComponent {
         backgroundColor: theme.backgroundColor,
       },
 
-      primaryBar: {
-        composes: 'progress--primary-bar',
+      bar: {
+        composes: 'progress--bar',
         position: 'absolute',
         top: 0,
         right: 0,
@@ -134,40 +135,19 @@ export class Progress extends PureComponent {
         left: 0,
         transformOrigin: 'left center',
         willChange: 'transform',
-        transform: 'scaleX(0)',
-        transition: `transform ${easeInOutCubic}`,
+        transition: `transform 200ms ${easeInOutCubic}`,
+      },
+
+      primaryBar: {
+        composes: 'progress--primary-bar',
         backgroundColor: theme.primaryBarColor,
       },
 
       secondaryBar: {
         composes: 'progress--secondary-bar',
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        transformOrigin: 'left center',
-        willChange: 'transform',
-        transform: 'scaleX(0)',
-        transition: `transform ${easeInOutCubic}`,
         backgroundColor: theme.secondaryBarColor,
       },
     };
-  }
-
-  /**
-   * Animate the bars to initial values.
-   */
-  componentDidMount() {
-    if (!this.props.indeterminate) {
-      if (this.props.progress !== 0) {
-        this.animateBar(this.primaryBar, 0, this.props.progress);
-      }
-
-      if (this.props.secondaryProgress !== 0) {
-        this.animateBar(this.secondaryBar, 0, this.props.secondaryProgress);
-      }
-    }
   }
 
   /**
@@ -180,43 +160,6 @@ export class Progress extends PureComponent {
     );
   }
 
-  /**
-   * Animate the bars when the props changed.
-   */
-  componentDidUpdate(prevProps) {
-    if (!this.props.indeterminate) {
-      const { secondaryProgress } = this.props;
-
-      if (this.props.progress !== prevProps.progress) {
-        this.animateBar(this.primaryBar, prevProps.progress, this.props.progress);
-      }
-
-      if (secondaryProgress !== prevProps.secondaryProgress) {
-        this.animateBar(this.secondaryBar, prevProps.secondaryProgress, secondaryProgress);
-      }
-    }
-  }
-
-  /**
-   * Animate one of the bars.
-   *
-   * @private
-   * @param {Object} elem - The element to animate.
-   * @param {Number} prevProgress - The previous progress.
-   * @param {Number} newProgress - The new progress to animate too.
-   */
-  animateBar(elem, prevProgress, newProgress) {
-    const clampNewValue = Progress.clamp(newProgress);
-    const clampPrevValue = Progress.clamp(prevProgress);
-    const { fullAnimationDuration } = this.props.theme.progress;
-    const duration = Math.abs((clampPrevValue - clampNewValue) / 100) * fullAnimationDuration;
-
-    /* eslint-disable no-param-reassign */
-    elem.style.transitionDuration = `${duration}ms`;
-    elem.style.transform = `matrix(${clampNewValue / 100}, 0, 0, 1, 0, 0)`;
-    /* eslint-enable no-param-reassign */
-  }
-
   render() {
     const {
       classes,
@@ -224,6 +167,7 @@ export class Progress extends PureComponent {
       disabled,
       progress,
       active,
+      secondaryProgress,
       ...props
     } = this.props;
     const additionalProps = indeterminate ? { 'data-active': active } : {
@@ -248,13 +192,13 @@ export class Progress extends PureComponent {
       >
         <div className={classes.container}>
           <div
-            className={classes.secondaryBar}
-            ref={(element) => { this.secondaryBar = element; }}
+            className={`${classes.bar} ${classes.secondaryBar}`}
+            style={{ transform: `scaleX(${Progress.clamp(secondaryProgress) / 100})` }}
           />
 
           <div
-            className={classes.primaryBar}
-            ref={(element) => { this.primaryBar = element; }}
+            className={`${classes.bar} ${classes.primaryBar}`}
+            style={{ transform: `scaleX(${Progress.clamp(progress) / 100})` }}
           />
         </div>
       </span>
