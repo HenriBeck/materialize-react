@@ -30,7 +30,7 @@ export const schema = PropTypes.shape({
  */
 export function defaultTheme(vars) {
   return {
-    backgroundColor: vars.cardBackgroundColor,
+    backgroundColor: '#ffffff',
     borderRadius: 2,
     elevation: 4,
     gutter: 8,

@@ -14,7 +14,7 @@ import {
   grey100,
   grey50,
   grey300,
-  orange900, white500,
+  orange900,
 } from '../colors';
 import { defaultTheme as background } from '../../components/background/theme';
 import { defaultTheme as button } from '../../components/button/theme';
@@ -51,7 +51,6 @@ export const defaultVars = {
   statusBarColor: grey300,
   appBar: grey100,
   backgroundColor: grey50,
-  cardBackgroundColor: white500,
 
   textColor: blackText,
   secondaryTextColor: blackSecondaryText,
