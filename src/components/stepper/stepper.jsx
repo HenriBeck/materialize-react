@@ -8,31 +8,45 @@ import injectSheet from 'react-jss';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 import StepperSection from './stepper-section';
+import TextHeader from './text-header';
+import DotHeader from './dot-header';
+import ProgressHeader from './progress-header';
 
 export class Stepper extends PureComponent {
   static propTypes = {
+    classes: PropTypes.shape({
+      root: PropTypes.string.isRequired,
+      sectionContainer: PropTypes.string.isRequired,
+      sectionWrapper: PropTypes.string.isRequired,
+    }).isRequired,
     children({ children }) { // eslint-disable-line react/require-default-props
       const childrenArray = Children.toArray(children);
 
-      if (children.length === 0) {
-        return new Error();
+      if (children.length < 2) {
+        return new Error('The Stepper is required to have at least 2 children');
       }
 
       const hasNotSectionChild = childrenArray.some(child => child.type !== StepperSection);
 
       if (hasNotSectionChild) {
-        return new Error();
+        return new Error('The Stepper component only accepts StepperSection as children!');
       }
 
       return null;
     },
-    header: PropTypes.element,
+    header: PropTypes.element.isRequired,
     initialSection: PropTypes.number,
   };
 
   static defaultProps = { initialSection: 0 };
 
   static Section = StepperSection;
+
+  static Headers = {
+    Text: TextHeader,
+    Dot: DotHeader,
+    Progress: ProgressHeader,
+  };
 
   static styles = {
     root: {
@@ -82,18 +96,6 @@ export class Stepper extends PureComponent {
     return { transform: `translateX(${this.state.currentSection * -100}%)` };
   }
 
-  renderSections(children) {
-    return Children.map(children, (child) => {
-      const props = {
-        style: {
-          ...child.props.style,
-        },
-      };
-
-      return React.cloneElement(child, props);
-    });
-  }
-
   renderHeader() {
     return React.cloneElement(this.props.header, {
       sections: Children.map(this.props.children, child => child.props),
@@ -104,19 +106,25 @@ export class Stepper extends PureComponent {
   }
 
   render() {
+    const {
+      classes,
+      children,
+      ...props
+    } = this.props;
+
     return (
       <div
-        className={this.props.classes.root}
-        {...getNotDeclaredProps(this.props, Stepper)}
+        className={classes.root}
+        {...getNotDeclaredProps(props, Stepper)}
       >
         {this.renderHeader()}
 
-        <div className={this.props.classes.sectionContainer}>
+        <div className={classes.sectionContainer}>
           <div
-            className={this.props.classes.sectionWrapper}
+            className={classes.sectionWrapper}
             style={this.computeContainerStyles()}
           >
-            {this.renderSections(this.props.children)}
+            {children}
           </div>
         </div>
       </div>

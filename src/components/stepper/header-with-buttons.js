@@ -28,24 +28,20 @@ class HeaderWithButtons extends PureComponent {
 
     nextButton: (
       <Button>
-        <span>
-          Next
-          <Icon
-            icon="chevron-right"
-            style={{ color: 'inherit' }}
-          />
-        </span>
+        Next
+        <Icon
+          icon="chevron-right"
+          style={{ color: 'inherit' }}
+        />
       </Button>
     ),
     backButton: (
       <Button>
-        <span>
-          <Icon
-            icon="chevron-left"
-            style={{ color: 'inherit' }}
-          />
+        <Icon
+          icon="chevron-left"
+          style={{ color: 'inherit' }}
+        />
         Back
-        </span>
       </Button>
     ),
   };
