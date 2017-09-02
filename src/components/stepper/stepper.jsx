@@ -3,21 +3,19 @@ import React, {
   Children,
 } from 'react';
 import PropTypes from 'prop-types';
-import injectSheet from 'react-jss';
-
-import getNotDeclaredProps from '../../get-not-declared-props';
 
 import StepperSection from './stepper-section';
 import TextHeader from './text-header';
 import DotHeader from './dot-header';
 import ProgressHeader from './progress-header';
+import StepperContainer from './stepper-container';
 
 /**
  * A component which renders a material design stepper.
  *
  * @class
  */
-export class Stepper extends PureComponent {
+export default class Stepper extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       root: PropTypes.string.isRequired,
@@ -53,38 +51,7 @@ export class Stepper extends PureComponent {
     Progress: ProgressHeader,
   };
 
-  /**
-   * The styles for the stepper.
-   *
-   * @param {Object} theme - The theme for the component.
-   * @param {Object} theme.stepper - The actual stepper theme.
-   * @returns {Object} - Returns the styles object.
-   */
-  static styles({ stepper: theme }) {
-    return {
-      root: {
-        width: '100%',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-      },
-
-      sectionContainer: {
-        position: 'relative',
-        overflow: 'hidden',
-      },
-
-      sectionWrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        transition: `transform ${theme.transitionDuration}ms linear`,
-      },
-    };
-  }
-
   state = { currentSection: this.props.initialSection };
-
-  childrenCount = Children.count(this.props.children);
 
   /**
    * Move one step back.
@@ -104,7 +71,7 @@ export class Stepper extends PureComponent {
    */
   forward = () => {
     this.setState(({ currentSection }) => {
-      if (currentSection === this.childrenCount - 1) {
+      if (currentSection === Children.count(this.props.children) - 1) {
         return null;
       }
 
@@ -113,21 +80,13 @@ export class Stepper extends PureComponent {
   };
 
   /**
-   * Calculate how much the container should be translated to show the correct stepper sectiond.
-   *
-   * @returns {Object} - Returns the styles object.
-   */
-  computeContainerStyles() {
-    return { transform: `translateX(${this.state.currentSection * -100}%)` };
-  }
-
-  /**
    * Render the passed header with some additional attributes.
    *
+   * @param {JSX} header - The header element to clone.
    * @returns {JSX} - Returns the cloned header.
    */
-  renderHeader() {
-    return React.cloneElement(this.props.header, {
+  renderHeader(header) {
+    return React.cloneElement(header, {
       sections: Children.map(this.props.children, child => child.props),
       currentSection: this.state.currentSection,
       back: this.back,
@@ -137,29 +96,19 @@ export class Stepper extends PureComponent {
 
   render() {
     const {
-      classes,
       children,
+      header,
       ...props
     } = this.props;
 
     return (
-      <div
-        className={classes.root}
-        {...getNotDeclaredProps(props, Stepper)}
+      <StepperContainer
+        header={this.renderHeader(header)}
+        currentSection={this.state.currentSection}
+        {...props}
       >
-        {this.renderHeader()}
-
-        <div className={classes.sectionContainer}>
-          <div
-            className={classes.sectionWrapper}
-            style={this.computeContainerStyles()}
-          >
-            {children}
-          </div>
-        </div>
-      </div>
+        {children}
+      </StepperContainer>
     );
   }
 }
-
-export default injectSheet(Stepper.styles)(Stepper);
