@@ -29,6 +29,7 @@ export class DotHeader extends PureComponent {
   static styles({ stepper: theme }) {
     return {
       dot: {
+        composes: 'stepper--header-dots-dot',
         width: theme.headers.dots.dotSize,
         height: theme.headers.dots.dotSize,
         borderRadius: '50%',
@@ -37,7 +38,10 @@ export class DotHeader extends PureComponent {
         transition: `background-color ${theme.transitionDuration}ms linear`,
       },
 
-      activeDot: { backgroundColor: theme.headers.dots.activeColor },
+      activeDot: {
+        composes: 'stepper--header-dots-dot-active',
+        backgroundColor: theme.headers.dots.activeColor,
+      },
     };
   }
 

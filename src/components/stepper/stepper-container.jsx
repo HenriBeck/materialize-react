@@ -24,7 +24,7 @@ function StepperContainer({
 }) {
   return (
     <div
-      className={classes.root}
+      className={classes.stepper}
       {...getNotDeclaredProps(props, StepperContainer)}
     >
       {header}
@@ -43,7 +43,7 @@ function StepperContainer({
 
 StepperContainer.propTypes = {
   classes: PropTypes.shape({
-    root: PropTypes.string.isRequired,
+    stepper: PropTypes.string.isRequired,
     sectionContainer: PropTypes.string.isRequired,
     sectionWrapper: PropTypes.string.isRequired,
   }).isRequired,
@@ -54,7 +54,8 @@ StepperContainer.propTypes = {
 
 StepperContainer.styles = ({ stepper: theme }) => {
   return {
-    root: {
+    stepper: {
+      composes: 'stepper',
       width: '100%',
       overflow: 'hidden',
       display: 'flex',
@@ -62,11 +63,13 @@ StepperContainer.styles = ({ stepper: theme }) => {
     },
 
     sectionContainer: {
+      composes: 'stepper--section-container',
       position: 'relative',
       overflow: 'hidden',
     },
 
     sectionWrapper: {
+      composes: 'stepper--section-wrapper',
       display: 'flex',
       flexDirection: 'row',
       transition: `transform ${theme.transitionDuration}ms linear`,

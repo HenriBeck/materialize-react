@@ -53,6 +53,7 @@ class HeaderWithButtons extends PureComponent {
 
   static styles = {
     header: {
+      composes: 'stepper--header',
       display: 'flex',
       width: '100%',
       height: 64,
@@ -62,6 +63,7 @@ class HeaderWithButtons extends PureComponent {
     },
 
     content: {
+      composes: 'stepper--header-content',
       flex: 1,
       display: 'flex',
       flexDirection: 'row',

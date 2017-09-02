@@ -36,6 +36,7 @@ StepperSection.defaultProps = { className: '' };
 StepperSection.styles = ({ stepper: theme }) => {
   return {
     section: {
+      composes: 'stepper--section',
       minWidth: '100%',
       minHeight: '100%',
       boxSizing: 'border-box',
