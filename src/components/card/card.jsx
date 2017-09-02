@@ -51,6 +51,7 @@ Card.styles = ({ card: theme }) => {
       composes: 'card',
       position: 'relative',
       borderRadius: theme.borderRadius,
+      backgroundColor: theme.backgroundColor,
       boxShadow: elevation(theme.elevation),
       margin: theme.gutter,
       minWidth: theme.minWidth,
