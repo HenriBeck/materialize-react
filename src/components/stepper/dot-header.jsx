@@ -48,27 +48,27 @@ export class DotHeader extends PureComponent {
   /**
    * Render one dot for each of the sections.
    *
+   * @param {Object} classes - The classes for the component.
    * @returns {JSX} - Returns the JSX for the dots.
    */
-  renderDots() {
-    const {
-      sections,
-      classes,
-      currentSection,
-    } = this.props;
-
-    return sections.map((section, index) => (
+  renderDots(classes) {
+    return this.props.sections.map((section, index) => (
       <span
         key={section.name}
-        className={`${classes.dot} ${currentSection === index && classes.activeDot}`}
+        className={`${classes.dot} ${this.props.currentSection === index && classes.activeDot}`}
       />
     ));
   }
 
   render() {
+    const {
+      classes,
+      ...props
+    } = this.props;
+
     return (
-      <HeaderWithButtons {...this.props}>
-        {this.renderDots()}
+      <HeaderWithButtons {...props}>
+        {this.renderDots(classes)}
       </HeaderWithButtons>
     );
   }
