@@ -15,22 +15,16 @@ import StepperContainer from './stepper-container';
  */
 export default class Stepper extends PureComponent {
   static propTypes = {
-    classes: PropTypes.shape({
-      root: PropTypes.string.isRequired,
-      sectionContainer: PropTypes.string.isRequired,
-      sectionWrapper: PropTypes.string.isRequired,
-    }).isRequired,
     children({ children }) { // eslint-disable-line react/require-default-props
       const childrenArray = Children.toArray(children);
-
-      if (children.length < 2) {
-        return new Error('The Stepper is required to have at least 2 children');
-      }
-
       const hasNotSectionChild = childrenArray.some(child => child.type !== StepperSection);
 
       if (hasNotSectionChild) {
         return new Error('The Stepper component only accepts StepperSection as children!');
+      }
+
+      if (childrenArray.length < 2) {
+        return new Error('The Stepper is required to have at least 2 children');
       }
 
       return null;
