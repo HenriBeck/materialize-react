@@ -5,6 +5,11 @@ import injectSheet from 'react-jss';
 import Button from '../button';
 import Icon from '../icon';
 
+/**
+ * A utility component which renders a header with a back and forward button.
+ *
+ * @class
+ */
 class HeaderWithButtons extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
@@ -66,6 +71,11 @@ class HeaderWithButtons extends PureComponent {
     },
   };
 
+  /**
+   * Calculate whether or not the back button should be disabled.
+   *
+   * @returns {Boolean} - Returns whether or not the back button should be disabled.
+   */
   calculateDisabledForBackButton() {
     const { currentSection } = this.props;
 
@@ -76,6 +86,11 @@ class HeaderWithButtons extends PureComponent {
     return this.props.disableBackButton(currentSection, this.props.sections[currentSection]);
   }
 
+  /**
+   * Calculate whether or not the next button should be disabled.
+   *
+   * @returns {Boolean} - Returns whether or not the next button should be disabled.
+   */
   calculateDisabledForNextButton() {
     const {
       currentSection,
@@ -109,7 +124,7 @@ class HeaderWithButtons extends PureComponent {
           React.cloneElement(backButton, {
             disabled: disableBackButton,
             onPress: this.handleBackButtonPress,
-            className: `stepper--header-back-button ${backButton.props.className}`,
+            className: `stepper--header-back-button ${backButton.props.className || ''}`,
           })
         ) : null}
 
@@ -121,7 +136,7 @@ class HeaderWithButtons extends PureComponent {
           React.cloneElement(nextButton, {
             disabled: disableNextButton,
             onPress: this.handleNextButtonPress,
-            className: `stepper--header-next-button ${nextButton.props.className}`,
+            className: `stepper--header-next-button ${nextButton.props.className || ''}`,
           })
         ) : null}
       </header>

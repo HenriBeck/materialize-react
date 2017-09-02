@@ -1,35 +1,39 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Typography from '../typography';
 
 import HeaderWithButtons from './header-with-buttons';
 
-export default class TextHeader extends PureComponent {
-  static propTypes = {
-    sections: PropTypes.arrayOf(PropTypes.object).isRequired,
-    currentSection: PropTypes.number.isRequired,
-    generateText: PropTypes.func,
-  };
-
-  static defaultProps = {
-    generateText(currentStep, maxSteps) {
-      return `Step ${currentStep} of ${maxSteps}`;
-    },
-  };
-
-  render() {
-    const {
-      generateText,
-      ...props
-    } = this.props;
-
-    return (
-      <HeaderWithButtons {...props}>
-        <Typography typography="body1">
-          {generateText(this.props.currentSection + 1, this.props.sections.length)}
-        </Typography>
-      </HeaderWithButtons>
-    );
-  }
+/**
+ * A header for the stepper component which renders some computed text.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Function} props.generateText - A function to generate the text.
+ * The function will be called with the current step and the max steps.
+ * @returns {JSX} - Returns the JSX.
+ */
+export default function TextHeader({
+  generateText,
+  ...props
+}) {
+  return (
+    <HeaderWithButtons {...props}>
+      <Typography typography="body1">
+        {generateText(this.props.currentSection + 1, this.props.sections.length)}
+      </Typography>
+    </HeaderWithButtons>
+  );
 }
+
+TextHeader.defaultProps = {
+  generateText(currentStep, maxSteps) {
+    return `Step ${currentStep} of ${maxSteps}`;
+  },
+};
+
+TextHeader.propTypes = {
+  sections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentSection: PropTypes.number.isRequired,
+  generateText: PropTypes.func,
+};

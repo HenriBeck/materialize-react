@@ -16,6 +16,12 @@ export const schema = PropTypes.shape({
   }).isRequired,
 }).isRequired;
 
+/**
+ * Default theme for the stepper.
+ *
+ * @param {Object} vars - Variables passed by the theme compiler.
+ * @returns {Object} - Returns the theme.
+ */
 export function defaultTheme(vars) {
   return {
     headers: {

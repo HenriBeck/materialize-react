@@ -4,6 +4,11 @@ import injectSheet from 'react-jss';
 
 import HeaderWithButtons from './header-with-buttons';
 
+/**
+ * A header for the stepper which renders a dot for each section.
+ *
+ * @class
+ */
 export class DotHeader extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
@@ -14,6 +19,13 @@ export class DotHeader extends PureComponent {
     currentSection: PropTypes.number.isRequired,
   };
 
+  /**
+   * The styles for the header.
+   *
+   * @param {Object} theme - The theme for the component.
+   * @param {Object} theme.stepper - The actual stepper theme.
+   * @returns {Object} - Returns the styles object.
+   */
   static styles({ stepper: theme }) {
     return {
       dot: {
@@ -29,6 +41,11 @@ export class DotHeader extends PureComponent {
     };
   }
 
+  /**
+   * Render one dot for each of the sections.
+   *
+   * @returns {JSX} - Returns the JSX for the dots.
+   */
   renderDots() {
     const {
       sections,

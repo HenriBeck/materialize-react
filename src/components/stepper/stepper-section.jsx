@@ -4,6 +4,15 @@ import injectSheet from 'react-jss';
 
 import breakpoints from '../../styles/breakpoints';
 
+/**
+ * A section for a stepper component.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.classes - The classes for the component. Provided by Jss.
+ * @param {JSX} props.children - The content for the section.
+ * @param {String} props.className - An additional class name for the section.
+ * @returns {JSX} - Returns the JSX.
+ */
 export function StepperSection({
   classes,
   children,

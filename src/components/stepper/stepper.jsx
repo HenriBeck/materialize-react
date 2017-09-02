@@ -12,6 +12,11 @@ import TextHeader from './text-header';
 import DotHeader from './dot-header';
 import ProgressHeader from './progress-header';
 
+/**
+ * A component which renders a material design stepper.
+ *
+ * @class
+ */
 export class Stepper extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
@@ -72,6 +77,9 @@ export class Stepper extends PureComponent {
 
   childrenCount = Children.count(this.props.children);
 
+  /**
+   * Move one step back.
+   */
   back = () => {
     this.setState(({ currentSection }) => {
       if (currentSection === 0) {
@@ -82,6 +90,9 @@ export class Stepper extends PureComponent {
     });
   };
 
+  /**
+   * Move one step forward.
+   */
   forward = () => {
     this.setState(({ currentSection }) => {
       if (currentSection === this.childrenCount - 1) {
@@ -92,10 +103,20 @@ export class Stepper extends PureComponent {
     });
   };
 
+  /**
+   * Calculate how much the container should be translated to show the correct stepper sectiond.
+   *
+   * @returns {Object} - Returns the styles object.
+   */
   computeContainerStyles() {
     return { transform: `translateX(${this.state.currentSection * -100}%)` };
   }
 
+  /**
+   * Render the passed header with some additional attributes.
+   *
+   * @returns {JSX} - Returns the cloned header.
+   */
   renderHeader() {
     return React.cloneElement(this.props.header, {
       sections: Children.map(this.props.children, child => child.props),
