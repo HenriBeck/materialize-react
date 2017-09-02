@@ -34,7 +34,7 @@ export class DotHeader extends PureComponent {
         borderRadius: '50%',
         backgroundColor: theme.headers.dots.inactiveColor,
         margin: theme.headers.dots.margin,
-        transition: 'background-color 250ms linear',
+        transition: `background-color ${theme.transitionDuration}ms linear`,
       },
 
       activeDot: { backgroundColor: theme.headers.dots.activeColor },

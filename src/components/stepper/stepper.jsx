@@ -53,25 +53,34 @@ export class Stepper extends PureComponent {
     Progress: ProgressHeader,
   };
 
-  static styles = {
-    root: {
-      width: '100%',
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
-    },
+  /**
+   * The styles for the stepper.
+   *
+   * @param {Object} theme - The theme for the component.
+   * @param {Object} theme.stepper - The actual stepper theme.
+   * @returns {Object} - Returns the styles object.
+   */
+  static styles({ stepper: theme }) {
+    return {
+      root: {
+        width: '100%',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+      },
 
-    sectionContainer: {
-      position: 'relative',
-      overflow: 'hidden',
-    },
+      sectionContainer: {
+        position: 'relative',
+        overflow: 'hidden',
+      },
 
-    sectionWrapper: {
-      display: 'flex',
-      flexDirection: 'row',
-      transition: 'transform 250ms linear',
-    },
-  };
+      sectionWrapper: {
+        display: 'flex',
+        flexDirection: 'row',
+        transition: `transform ${theme.transitionDuration}ms linear`,
+      },
+    };
+  }
 
   state = { currentSection: this.props.initialSection };
 

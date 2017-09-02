@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
+  transitionDuration: PropTypes.number.isRequired,
+
   headers: PropTypes.shape({
     dots: PropTypes.shape({
       inactiveColor: PropTypes.string.isRequired,
@@ -24,6 +26,8 @@ export const schema = PropTypes.shape({
  */
 export function defaultTheme(vars) {
   return {
+    transitionDuration: 250,
+
     headers: {
       dots: {
         inactiveColor: vars.disabledColor,
