@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Typography from '../typography';
-
 import HeaderWithButtons from './header-with-buttons';
 
 /**
@@ -19,9 +17,9 @@ export default function TextHeader({
 }) {
   return (
     <HeaderWithButtons {...props}>
-      <Typography typography="body1">
-        {generateText(this.props.currentSection + 1, this.props.sections.length)}
-      </Typography>
+      <span>
+        {generateText(props.currentSection + 1, props.sections.length)}
+      </span>
     </HeaderWithButtons>
   );
 }
