@@ -3,58 +3,26 @@ import { storiesOf } from '@storybook/react';
 
 import Stepper from './stepper';
 
+const renderStepper = props => () => (
+  <Stepper
+    style={{ width: 400 }}
+    {...props}
+  >
+    <Stepper.Section name="first">
+      First Section
+    </Stepper.Section>
+
+    <Stepper.Section name="second">
+      Second Section
+    </Stepper.Section>
+
+    <Stepper.Section name="third">
+      Third Section
+    </Stepper.Section>
+  </Stepper>
+);
+
 storiesOf('Stepper', module)
-  .add('Progress Header', () => (
-    <Stepper
-      header={<Stepper.Headers.Progress />}
-      style={{ width: 400 }}
-    >
-      <Stepper.Section name="first">
-        First Section
-      </Stepper.Section>
-
-      <Stepper.Section name="second">
-        Second Section
-      </Stepper.Section>
-
-      <Stepper.Section name="third">
-        Third Section
-      </Stepper.Section>
-    </Stepper>
-  ))
-  .add('Dot Header', () => (
-    <Stepper
-      header={<Stepper.Headers.Dot />}
-      style={{ width: 400 }}
-    >
-      <Stepper.Section name="first">
-        First Section
-      </Stepper.Section>
-
-      <Stepper.Section name="second">
-        Second Section
-      </Stepper.Section>
-
-      <Stepper.Section name="third">
-        Third Section
-      </Stepper.Section>
-    </Stepper>
-  ))
-  .add('Text Header', () => (
-    <Stepper
-      header={<Stepper.Headers.Text />}
-      style={{ width: 400 }}
-    >
-      <Stepper.Section name="first">
-        First Section
-      </Stepper.Section>
-
-      <Stepper.Section name="second">
-        Second Section
-      </Stepper.Section>
-
-      <Stepper.Section name="third">
-        Third Section
-      </Stepper.Section>
-    </Stepper>
-  ));
+  .add('Progress Header', renderStepper({ header: (<Stepper.Headers.Progress />) }))
+  .add('Dot Header', renderStepper({ header: (<Stepper.Headers.Dot />) }))
+  .add('Text Header', renderStepper({ header: (<Stepper.Headers.Text />) }));
