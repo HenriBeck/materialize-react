@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Progress from '../progress';
+import Progress from '../../progress/index';
 
 import HeaderWithButtons from './header-with-buttons';
 

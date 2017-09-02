@@ -5,9 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import StepperSection from './stepper-section';
-import TextHeader from './text-header';
-import DotHeader from './dot-header';
-import ProgressHeader from './progress-header';
+import Headers from './headers';
 import StepperContainer from './stepper-container';
 
 /**
@@ -44,12 +42,7 @@ export default class Stepper extends PureComponent {
   static defaultProps = { initialSection: 0 };
 
   static Section = StepperSection;
-
-  static Headers = {
-    Text: TextHeader,
-    Dot: DotHeader,
-    Progress: ProgressHeader,
-  };
+  static Headers = Headers;
 
   state = { currentSection: this.props.initialSection };
 

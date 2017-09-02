@@ -2,14 +2,11 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import Stepper from './stepper';
-import DotHeader from './dot-header';
-import ProgressHeader from './progress-header';
-import TextHeader from './text-header';
 
 storiesOf('Stepper', module)
   .add('Progress Header', () => (
     <Stepper
-      header={<ProgressHeader />}
+      header={<Stepper.Headers.Progress />}
       style={{ width: 400 }}
     >
       <Stepper.Section name="first">
@@ -27,7 +24,7 @@ storiesOf('Stepper', module)
   ))
   .add('Dot Header', () => (
     <Stepper
-      header={<DotHeader />}
+      header={<Stepper.Headers.Dot />}
       style={{ width: 400 }}
     >
       <Stepper.Section name="first">
@@ -45,7 +42,7 @@ storiesOf('Stepper', module)
   ))
   .add('Text Header', () => (
     <Stepper
-      header={<TextHeader />}
+      header={<Stepper.Headers.Text />}
       style={{ width: 400 }}
     >
       <Stepper.Section name="first">

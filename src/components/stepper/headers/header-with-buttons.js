@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import Button from '../button';
-import Icon from '../icon';
+import Button from '../../button/index';
+import Icon from '../../icon/index';
 
 /**
  * A utility component which renders a header with a back and forward button.

@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'ava';
 
-import { mount } from '../../../tests/helpers/enzyme';
+import { mount } from '../../../../tests/helpers/enzyme';
 
 import DotHeader from './dot-header';
 
