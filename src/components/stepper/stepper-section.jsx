@@ -28,6 +28,7 @@ export function StepperSection({
 StepperSection.propTypes = {
   classes: PropTypes.shape({ section: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
+  name: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
   className: PropTypes.string,
 };
 
