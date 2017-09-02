@@ -25,6 +25,7 @@ export Card from './components/card';
 export Typography from './components/typography';
 export Badge from './components/badge';
 export List from './components/list';
+export Stepper from './components/stepper';
 
 // Styles
 export Theme from './styles/theme';
