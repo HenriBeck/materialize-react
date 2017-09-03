@@ -1,1 +1,1 @@
-export default from './dialog-container';
+export default from './dialog';
