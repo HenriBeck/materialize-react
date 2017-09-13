@@ -91,16 +91,14 @@ export default class Tabs extends PureComponent {
    * Animate the bar to it's initial position.
    */
   componentDidMount() {
-    if (!this.props.noBar) {
-      this.animateBar(this.props.initialTab);
-    }
+    this.animateBar(this.props.initialTab);
   }
 
   /**
    * Animate the bar to a new position when the selectedTab has changed.
    */
   componentDidUpdate(prevProps, prevState) {
-    if (!this.props.noBar && prevState.selectedTab !== this.state.selectedTab) {
+    if (prevState.selectedTab !== this.state.selectedTab) {
       this.animateBar(this.state.selectedTab);
     }
   }
@@ -143,6 +141,10 @@ export default class Tabs extends PureComponent {
    * @param {String} tabName - The new tab name.
    */
   animateBar(tabName) {
+    if (this.props.noBar) {
+      return;
+    }
+
     const containerRect = this.container.root.getBoundingClientRect();
     const tabRect = this.tabs[tabName].getBoundingClientRect();
     const relativeLeft = tabRect.left - containerRect.left;
@@ -171,6 +173,9 @@ export default class Tabs extends PureComponent {
     this.container = instance;
   };
 
+  /**
+   * Reposition the bar when the user resize's the window.
+   */
   handleResize = () => this.animateBar(this.state.selectedTab);
 
   handlePress = name => () => {
