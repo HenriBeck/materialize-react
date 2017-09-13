@@ -81,6 +81,13 @@ export default class Tabs extends PureComponent {
   };
 
   /**
+   * Add a resize event listener to reposition the bar when the user resize's the window.
+   */
+  componentWillMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  /**
    * Animate the bar to it's initial position.
    */
   componentDidMount() {
@@ -96,6 +103,13 @@ export default class Tabs extends PureComponent {
     if (!this.props.noBar && prevState.selectedTab !== this.state.selectedTab) {
       this.animateBar(this.state.selectedTab);
     }
+  }
+
+  /**
+   * Remove the resize event listener.
+   */
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   tabs = {};
@@ -156,6 +170,8 @@ export default class Tabs extends PureComponent {
   createRef = (instance) => {
     this.container = instance;
   };
+
+  handleResize = () => this.animateBar(this.state.selectedTab);
 
   handlePress = name => () => {
     this.setState({
