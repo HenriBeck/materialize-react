@@ -32,10 +32,14 @@ export default class Stepper extends PureComponent {
     header: PropTypes.element.isRequired,
     onChange: PropTypes.func,
     initialSection: PropTypes.number,
+    className: PropTypes.string,
+    headerAtBottom: PropTypes.bool,
   };
 
   static defaultProps = {
     initialSection: 0,
+    className: '',
+    headerAtBottom: false,
     onChange: () => {},
   };
 
@@ -116,6 +120,8 @@ export default class Stepper extends PureComponent {
     const {
       children,
       header,
+      className,
+      headerAtBottom,
       ...props
     } = this.props;
 
@@ -123,6 +129,8 @@ export default class Stepper extends PureComponent {
       <StepperContainer
         header={this.renderHeader(header)}
         currentSection={this.state.currentSection}
+        className={className}
+        headerAtBottom={headerAtBottom}
         {...props}
       >
         {children}

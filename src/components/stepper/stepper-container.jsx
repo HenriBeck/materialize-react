@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -13,18 +14,30 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {JSX} props.header - The header for the stepper.
  * @param {Number} props.currentSection - The current section
  * for calculating the section wrapper transform.
+ * @param {String} props.className - An additional class name for the root
+ * component.
+ * @param {Boolean} props.headerAtBottom - Whether or not the header should
+ * be at the bottom.
  * @returns {JSX} - Returns the JSX.
  */
 function StepperContainer({
   classes,
   children,
+  headerAtBottom,
   header,
+  className,
   currentSection,
   ...props
 }) {
+  const classNames = classnames(
+    classes.stepper,
+    headerAtBottom && classes.headerAtBottom,
+    className,
+  );
+
   return (
     <div
-      className={classes.stepper}
+      className={classNames}
       {...getNotDeclaredProps(props, StepperContainer)}
     >
       {header}
@@ -50,6 +63,8 @@ StepperContainer.propTypes = {
   header: PropTypes.element.isRequired,
   children: PropTypes.node.isRequired,
   currentSection: PropTypes.number.isRequired,
+  className: PropTypes.string.isRequired,
+  headerAtBottom: PropTypes.string.isRequired,
 };
 
 StepperContainer.styles = ({ stepper: theme }) => {
@@ -60,6 +75,11 @@ StepperContainer.styles = ({ stepper: theme }) => {
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
+    },
+
+    headerAtBottom: {
+      composes: 'stepper--header-at-bottom',
+      flexDirection: 'column-reverse',
     },
 
     sectionContainer: {
