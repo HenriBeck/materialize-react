@@ -30,15 +30,46 @@ export default class Stepper extends PureComponent {
       return null;
     },
     header: PropTypes.element.isRequired,
+    onChange: PropTypes.func,
     initialSection: PropTypes.number,
   };
 
-  static defaultProps = { initialSection: 0 };
+  static defaultProps = {
+    initialSection: 0,
+    onChange: () => {},
+  };
 
   static Section = StepperSection;
   static Headers = Headers;
 
   state = { currentSection: this.props.initialSection };
+
+  /**
+   * Call the onChange prop when the currentSection state has changed.
+   */
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentSection !== this.state.currentSection) {
+      this.props.onChange(this.state.currentSection);
+    }
+  }
+
+  /**
+   * Change the current section.
+   *
+   * @param {Number} currentSection - The index of the current section.
+   */
+  set currentSection(currentSection) {
+    this.setState({ currentSection });
+  }
+
+  /**
+   * Get the current section.
+   *
+   * @returns {Number} - Returns the index of the current section.
+   */
+  get currentSection() {
+    return this.state.currentSection;
+  }
 
   /**
    * Move one step back.
