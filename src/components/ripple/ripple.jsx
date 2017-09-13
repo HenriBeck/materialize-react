@@ -102,7 +102,10 @@ export class Ripple extends PureComponent {
       overflow: 'hidden',
     },
 
-    round: { borderRadius: '50%' },
+    round: {
+      composes: 'ripple--round',
+      borderRadius: '50%',
+    },
 
     wave: {
       composes: 'ripple--wave',
@@ -114,13 +117,12 @@ export class Ripple extends PureComponent {
       willChange: 'opacity, transform',
       animationFillMode: 'forwards',
       transition: 'opacity 140ms linear',
+      animationName: 'ripple--scale-in',
     },
   };
 
   state = { waves: [] };
-
   wavesCount = 0;
-  waves = {};
 
   /**
    * Create a new wave.
@@ -145,12 +147,13 @@ export class Ripple extends PureComponent {
 
     const newWave = {
       id: this.wavesCount,
-      radius,
+      animatingOut: false,
       style: {
         height: radius * 2,
         width: radius * 2,
         left: startPos.x - radius,
         top: startPos.y - radius,
+        animationDuration: `${140 + radius * 0.11}ms`,
         opacity: this.props.initialOpacity,
         backgroundColor: this.props.color,
       },
@@ -179,8 +182,8 @@ export class Ripple extends PureComponent {
    * @private
    */
   emitUpAction() {
-    this.state.waves.forEach((wave) => {
-      this.waves[wave.id].startFadeOutAnimation();
+    this.setState(({ waves }) => {
+      return { waves: waves.map(wave => Object.assign(wave, { animatingOut: true })) };
     });
   }
 
@@ -193,6 +196,9 @@ export class Ripple extends PureComponent {
     this.ripple = element;
   };
 
+  /**
+   * Add a wave when the user pressed the ripple.
+   */
   handlePress = ev => this.addWave(ev);
 
   /**
@@ -202,7 +208,10 @@ export class Ripple extends PureComponent {
    */
   handleRelease = () => this.emitUpAction();
 
-  handleOnFinishAnimation = id => this.removeWave(id);
+  /**
+   * When the fade out animation finishes for a ripple, we remove the ripple from the queue.
+   */
+  handleAnimationFinish = id => this.removeWave(id);
 
   /**
    * Emit up actions to all of the waves when the user moves the mouse away from the ripple.
@@ -225,8 +234,7 @@ export class Ripple extends PureComponent {
       <Wave
         key={wave.id}
         className={this.props.classes.wave}
-        ref={(element) => { this.waves[wave.id] = element; }}
-        onFinish={this.handleOnFinishAnimation}
+        onFinish={this.handleAnimationFinish}
         {...wave}
       />
     ));

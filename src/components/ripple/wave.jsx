@@ -17,27 +17,10 @@ export default class Wave extends PureComponent {
       width: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
       top: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
       left: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+      opacity: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
     }).isRequired,
-    radius: PropTypes.number.isRequired,
     onFinish: PropTypes.func.isRequired,
-  };
-
-  /**
-   * Start the scale animation.
-   */
-  componentDidMount() {
-    this.wave.style.animationDuration = `${140 + this.props.radius * 0.11}ms`;
-    this.wave.style.animationName = 'ripple--scale-in';
-  }
-
-  /**
-   * Start the fade out animation and call the onFinish prop when the animation has finished
-   * so we can remove the element from the dom.
-   *
-   * @private
-   */
-  startFadeOutAnimation = () => {
-    this.wave.style.opacity = 0;
+    animatingOut: PropTypes.bool.isRequired,
   };
 
   /**
@@ -53,7 +36,10 @@ export default class Wave extends PureComponent {
       <span
         role="presentation"
         className={this.props.className}
-        style={this.props.style}
+        style={{
+          ...this.props.style,
+          opacity: this.props.animatingOut ? 0 : this.props.style.opacity,
+        }}
         ref={(element) => { this.wave = element; }}
         onTransitionEnd={this.handleTransitionEnd}
       />
