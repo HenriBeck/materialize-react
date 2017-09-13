@@ -1,1 +1,1 @@
-export default from './ripple-container';
+export default from './ripple';
