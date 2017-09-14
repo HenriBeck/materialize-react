@@ -52,7 +52,7 @@
     "@storybook/addon-knobs": "3.2.8",
     "@storybook/addon-options": "3.2.6",
     "@storybook/react": "3.2.8",
-    "@tf2-pickup/eslint-config": "6.1.0",
+    "@tf2-pickup/eslint-config": "6.2.0",
     "ava": "0.22.0",
     "babel-cli": "6.26.0",
     "babel-plugin-transform-class-properties": "6.24.1",
