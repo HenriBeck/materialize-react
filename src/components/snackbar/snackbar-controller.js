@@ -48,7 +48,7 @@ export default class SnackbarController extends PureComponent {
    * @param {Function} addSnackbar - The callback for when a new snackbar should be added.
    * @param {Function} closeSnackbar - The callback for when a snackbar should be closed.
    */
-  initiateContainer(addSnackbar, closeSnackbar) {
+  initiateContainer = (addSnackbar, closeSnackbar) => {
     warning(
       !this.hasController,
       'A snackbar container is already registered. Only one container can be active at a time.',
@@ -58,23 +58,23 @@ export default class SnackbarController extends PureComponent {
 
     this.addSnackbarCallback = addSnackbar;
     this.closeSnackbarCallback = closeSnackbar;
-  }
+  };
 
   /**
    * Remove the current container and reset the state.
    */
-  removeContainer() {
+  removeContainer = () => {
     this.hasController = false;
     this.addSnackbarCallback = null;
     this.closeSnackbarCallback = null;
-  }
+  };
 
   /**
    * Add a snackbar to the container.
    *
    * @param {Object} component - The snackbar component.
    */
-  addSnackbar(component) {
+  addSnackbar = (component) => {
     warning(
       this.addSnackbarCallback,
       [
@@ -84,14 +84,14 @@ export default class SnackbarController extends PureComponent {
     );
 
     this.addSnackbarCallback(component);
-  }
+  };
 
   /**
    * Close a snackbar with the provided id.
    *
    * @param {String} id - The id of the snackbar.
    */
-  closeSnackbar(id) {
+  closeSnackbar = (id) => {
     warning(
       this.closeSnackbarCallback,
       [
@@ -101,7 +101,7 @@ export default class SnackbarController extends PureComponent {
     );
 
     this.closeSnackbarCallback(id);
-  }
+  };
 
   render() {
     return Children.only(this.props.children);

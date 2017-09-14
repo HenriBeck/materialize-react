@@ -7,6 +7,11 @@ import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 import Wave from './wave';
+import {
+  getCoords,
+  getCenter,
+  getDistanceToFarthestCorner,
+} from './utils';
 
 /**
  * The presentation container for the ripple.
@@ -17,29 +22,39 @@ import Wave from './wave';
  */
 export class Ripple extends PureComponent {
   static propTypes = {
-    waves: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     classes: PropTypes.shape({
       ripple: PropTypes.string.isRequired,
       focus: PropTypes.string.isRequired,
       waveContainer: PropTypes.string.isRequired,
       wave: PropTypes.string.isRequired,
+      round: PropTypes.string.isRequired,
       noWaves: PropTypes.string.isRequired,
     }).isRequired,
-    className: PropTypes.string.isRequired,
-    isFocused: PropTypes.bool.isRequired,
-    round: PropTypes.bool.isRequired,
-    onDownAction: PropTypes.func.isRequired,
-    onAnimationFinish: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired,
-    createRef: PropTypes.func.isRequired,
-    nowaves: PropTypes.bool.isRequired,
+    isFocused: PropTypes.bool,
+    focusOpacity: PropTypes.number,
+    focusColor: PropTypes.string,
+    initialOpacity: PropTypes.number,
+    className: PropTypes.string,
+    center: PropTypes.bool,
+    color: PropTypes.string,
+    round: PropTypes.bool,
+    nowaves: PropTypes.bool,
   };
 
-  static extraProps = [
-    'initialOpacity',
-    'focusColor',
-    'focusOpacity',
-  ];
+  static defaultProps = {
+    isFocused: false,
+    focusOpacity: 0.2,
+    focusColor: 'currentColor',
+    initialOpacity: 0.25,
+    className: '',
+    center: false,
+    color: 'currentColor',
+    round: false,
+    nowaves: false,
+  };
+
+  // Measured in pixels
+  static MAX_RADIUS = 300;
 
   static styles = {
     '@keyframes ripple--scale-in': {
@@ -58,17 +73,6 @@ export class Ripple extends PureComponent {
       borderRadius: 'inherit',
       overflow: 'hidden',
       cursor: 'pointer',
-
-      '&.ripple--round $focus': {
-        borderRadius: '50%',
-        transform: 'scale(0)',
-      },
-
-      '&.ripple--round $waveContainer': { borderRadius: '50%' },
-
-      '&.ripple--focused $focus': { opacity: props => props.focusOpacity },
-
-      '&.ripple--round.ripple--focused $focus': { transform: 'scale(1)' },
     },
 
     noWaves: {
@@ -83,8 +87,6 @@ export class Ripple extends PureComponent {
       right: 0,
       bottom: 0,
       left: 0,
-      opacity: 0,
-      backgroundColor: props => props.focusColor,
       transitionProperty: 'background-color, opacity, transform',
       transition: '140ms linear',
     },
@@ -100,22 +102,79 @@ export class Ripple extends PureComponent {
       overflow: 'hidden',
     },
 
+    round: {
+      composes: 'ripple--round',
+      borderRadius: '50%',
+    },
+
     wave: {
       composes: 'ripple--wave',
       position: 'absolute',
       pointerEvents: 'none',
-      opacity: props => props.initialOpacity,
       overflow: 'hidden',
       borderRadius: '50%',
       transform: 'scale(0)',
       willChange: 'opacity, transform',
       animationFillMode: 'forwards',
       transition: 'opacity 140ms linear',
-      backgroundColor: props => props.color,
+      animationName: 'ripple--scale-in',
     },
   };
 
-  waves = {};
+  state = { waves: [] };
+  wavesCount = 0;
+
+  /**
+   * Create a new wave.
+   *
+   * @private
+   * @param {Object} ev - The event the wave is created from.
+   */
+  addWave = (ev) => {
+    const rect = this.ripple.getBoundingClientRect();
+    const coords = getCoords(ev);
+    const isCentered = this.props.center || !coords;
+    const startPos = isCentered ? getCenter(rect) : {
+      x: coords.x - rect.left,
+      y: coords.y - rect.top,
+    };
+    const distanceToCorner = isCentered
+      ? (startPos.x ** 2 + startPos.y ** 2) ** 0.5
+      : getDistanceToFarthestCorner(startPos, rect);
+    const radius = Math.min(distanceToCorner, Ripple.MAX_RADIUS);
+
+    this.wavesCount += 1;
+
+    const newWave = {
+      id: this.wavesCount,
+      animatingOut: false,
+      style: {
+        height: radius * 2,
+        width: radius * 2,
+        left: startPos.x - radius,
+        top: startPos.y - radius,
+        animationDuration: `${140 + radius * 0.11}ms`,
+        opacity: this.props.initialOpacity,
+        backgroundColor: this.props.color,
+      },
+    };
+
+    this.setState(({ waves }) => {
+      return { waves: waves.concat([newWave]) };
+    });
+  };
+
+  /**
+   * Remove a wave when the wave is animated out.
+   *
+   * @private
+   * @param {Number} waveId - The id of the wave.
+   */
+  removeWave(waveId) {
+    this.setState(({ waves }) => {
+      return { waves: waves.filter(wave => wave.id !== waveId) };
+    });
+  }
 
   /**
    * Emit an event to all of the current active ripples.
@@ -123,31 +182,46 @@ export class Ripple extends PureComponent {
    * @private
    */
   emitUpAction() {
-    this.props.waves.forEach((wave) => {
-      this.waves[wave.id].startFadeOutAnimation();
+    this.setState(({ waves }) => {
+      return { waves: waves.map(wave => Object.assign(wave, { animatingOut: true })) };
     });
   }
+
+  /**
+   * Create a reference to the root element.
+   *
+   * @param {Object} element - The root element reference.
+   */
+  createRef = (element) => {
+    this.ripple = element;
+  };
+
+  /**
+   * Add a wave when the user pressed the ripple.
+   */
+  handlePress = ev => this.addWave(ev);
 
   /**
    * Emit up actions to all of the waves when the user removes the finger.
    *
    * @private
    */
-  handleRelease = () => {
-    this.emitUpAction();
-  };
+  handleRelease = () => this.emitUpAction();
+
+  /**
+   * When the fade out animation finishes for a ripple, we remove the ripple from the queue.
+   */
+  handleAnimationFinish = id => this.removeWave(id);
 
   /**
    * Emit up actions to all of the waves when the user moves the mouse away from the ripple.
    * This solves a bug where you click the ripple and move the mouse while still pressed down
    * and then release the mouse. This won't remove the ripple so we remove them when to user
    * moves the mouse away.
+   *
+   * @private
    */
-  handleMouseLeave = (ev) => {
-    this.props.onMouseLeave(ev);
-
-    this.emitUpAction();
-  };
+  handleMouseLeave = () => this.emitUpAction();
 
   /**
    * Render the waves with all of the required props.
@@ -156,12 +230,11 @@ export class Ripple extends PureComponent {
    * @returns {JSX[]} - Returns the waves as an array.
    */
   renderWaves() {
-    return this.props.waves.map(wave => (
+    return this.state.waves.map(wave => (
       <Wave
         key={wave.id}
         className={this.props.classes.wave}
-        ref={(element) => { this.waves[wave.id] = element; }}
-        onFinish={this.props.onAnimationFinish}
+        onFinish={this.handleAnimationFinish}
         {...wave}
       />
     ));
@@ -170,34 +243,36 @@ export class Ripple extends PureComponent {
   render() {
     const {
       classes,
-      round,
       nowaves,
       isFocused,
-      createRef,
-      onDownAction,
+      focusOpacity,
+      focusColor,
       className,
+      round,
       ...props
     } = this.props;
-    const classNames = classnames(className, classes.ripple, {
-      'ripple--round': round,
-      'ripple--focused': isFocused,
-      [classes.noWaves]: nowaves,
-    });
+    const classNames = classnames(className, classes.ripple, { [classes.noWaves]: nowaves });
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(props, Ripple, Ripple.extraProps)}
+        {...getNotDeclaredProps(props, Ripple)}
         component="span"
         role="presentation"
         className={classNames}
-        createRef={createRef}
-        onPress={onDownAction}
+        createRef={this.createRef}
+        onPress={this.handlePress}
         onRelease={this.handleRelease}
         onMouseLeave={this.handleMouseLeave}
       >
-        <span className={classes.focus} />
+        <span
+          className={`${classes.focus} ${round ? classes.round : ''}`}
+          style={{
+            backgroundColor: focusColor,
+            opacity: isFocused ? focusOpacity : 0,
+          }}
+        />
 
-        <span className={classes.waveContainer}>
+        <span className={`${classes.waveContainer} ${round ? classes.round : ''}`}>
           {this.renderWaves()}
         </span>
       </EventHandler>

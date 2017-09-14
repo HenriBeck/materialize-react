@@ -1,6 +1,7 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
+import is from 'is_js';
 import { shallow } from 'enzyme';
 
 import Tab from '../tab';
@@ -82,6 +83,35 @@ test('should render a TabsContainer', (t) => {
   t.deepEqual(wrapper.find('Jss(TabsContainer)').length, 1);
 });
 
+test('should add a resize event listener on mount', (t) => {
+  const addEventListener = sinon.spy(window, 'addEventListener');
+
+  renderTabs();
+
+  t.deepEqual(addEventListener.callCount, 1);
+});
+
+test('should remove a resize event listener when the component unmounts', (t) => {
+  const removeEventListener = sinon.spy(window, 'removeEventListener');
+
+  const wrapper = renderTabs();
+
+  wrapper.unmount();
+
+  t.deepEqual(removeEventListener.callCount, 1);
+});
+
+test('should call animateBar when the resize event handler is called', (t) => {
+  const wrapper = renderTabs();
+  const instance = wrapper.instance();
+
+  instance.animateBar = sinon.spy();
+
+  instance.handleResize();
+
+  t.deepEqual(instance.animateBar.callCount, 1);
+});
+
 test('should animate the bar to the initial tab', (t) => {
   const wrapper = renderTabs();
   const instance = wrapper.instance();
@@ -129,15 +159,10 @@ test('should change the state when the handlePress function get\'s called', (t) 
 test('should not animate the bar when the noBar prop is passed', (t) => {
   const wrapper = renderTabs({ noBar: true });
   const instance = wrapper.instance();
-  const animateBarSpy = sinon.spy();
 
-  instance.animateBar = animateBarSpy;
+  instance.animateBar();
 
-  instance.componentDidMount();
-
-  instance.currentTab = 'test2';
-
-  t.deepEqual(animateBarSpy.callCount, 0);
+  t.true(is.undefined(instance.container.bar.style.transform));
 });
 
 test('should set the focusedTab to the selectedTab when the tab list get\'s focused', (t) => {
