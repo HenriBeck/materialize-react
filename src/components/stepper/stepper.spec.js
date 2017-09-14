@@ -1,7 +1,8 @@
 import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
-import { shallow } from 'enzyme';
+
+import { shallow } from '../../../tests/helpers/enzyme';
 
 import Stepper from './stepper';
 
@@ -101,15 +102,15 @@ test('should call the onChange prop when the currentSection state is changed', (
   instance.forward();
 
   t.deepEqual(onChange.callCount, 1);
+
+  wrapper.setProps({ className: '' });
+
+  t.deepEqual(onChange.callCount, 1);
 });
 
 test('should get the current section via the currentSection property', (t) => {
-  const onChange = sinon.spy();
   const wrapper = shallow(
-    <Stepper
-      header={<header />}
-      onChange={onChange}
-    >
+    <Stepper header={<header />}>
       <Stepper.Section name="1">1</Stepper.Section>
       <Stepper.Section name="2">2</Stepper.Section>
     </Stepper>,
@@ -120,12 +121,8 @@ test('should get the current section via the currentSection property', (t) => {
 });
 
 test('should change the current section via the currentSection property', (t) => {
-  const onChange = sinon.spy();
   const wrapper = shallow(
-    <Stepper
-      header={<header />}
-      onChange={onChange}
-    >
+    <Stepper header={<header />}>
       <Stepper.Section name="1">1</Stepper.Section>
       <Stepper.Section name="2">2</Stepper.Section>
     </Stepper>,

@@ -64,7 +64,7 @@ StepperContainer.propTypes = {
   children: PropTypes.node.isRequired,
   currentSection: PropTypes.number.isRequired,
   className: PropTypes.string.isRequired,
-  headerAtBottom: PropTypes.string.isRequired,
+  headerAtBottom: PropTypes.bool.isRequired,
 };
 
 StepperContainer.styles = ({ stepper: theme }) => {
