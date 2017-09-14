@@ -13,6 +13,7 @@ const props = {
   backdropEnabled: false,
   isNarrow: false,
   opened: false,
+  className: '',
   drawerPosition: 'left',
   onBackdropPress: () => {},
   onTransitionEnd: () => {},
@@ -45,10 +46,10 @@ test('should add a backdrop active class when the drawer is narrow and opened', 
     />,
   );
 
-  t.deepEqual(wrapper.find('div.drawer--backdrop-active').length, 1);
+  t.deepEqual(wrapper.find('.drawer--backdrop-active').length, 1);
 });
 
-test('should add add a narrow-mode class to the root when the drawer is narrow', (t) => {
+test('should add add a drawer-content-narrow class when the drawer is narrow', (t) => {
   const wrapper = mount(
     <DrawerContainer
       {...props}
@@ -56,10 +57,10 @@ test('should add add a narrow-mode class to the root when the drawer is narrow',
     />,
   );
 
-  t.deepEqual(wrapper.find('.drawer--narrow-mode').length, 1);
+  t.deepEqual(wrapper.find('.drawer--drawer-content-narrow').length, 1);
 });
 
-test('should add add a opened class to the root when the drawer is narrow and opened', (t) => {
+test('should add add a class when the drawer is narrow and opened', (t) => {
   const wrapper = mount(
     <DrawerContainer
       {...props}
@@ -68,6 +69,6 @@ test('should add add a opened class to the root when the drawer is narrow and op
     />,
   );
 
-  t.deepEqual(wrapper.find('.drawer--opened').length, 1);
+  t.deepEqual(wrapper.find('.drawer--drawer-content-narrow-opened').length, 1);
 });
 
