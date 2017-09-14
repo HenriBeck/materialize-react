@@ -57,7 +57,7 @@ test('should change the state when an interaction happens', (t) => {
 test('should have a Ripple inside the button', (t) => {
   const wrapper = mount(<Button classes={classes} />);
 
-  t.deepEqual(wrapper.find('RippleContainer').length, 1);
+  t.deepEqual(wrapper.find('Ripple').length, 1);
 });
 
 test('should not call the onPress prop when no key code was passed to the handler', (t) => {
