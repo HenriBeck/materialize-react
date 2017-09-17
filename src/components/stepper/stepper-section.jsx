@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
 import breakpoints from '../../styles/breakpoints';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A section for a stepper component.
@@ -17,9 +18,13 @@ export function StepperSection({
   classes,
   children,
   className,
+  ...props
 }) {
   return (
-    <div className={`${classes.section} ${className}`}>
+    <div
+      className={`${classes.section} ${className}`}
+      {...getNotDeclaredProps(props, StepperSection)}
+    >
       {children}
     </div>
   );
@@ -39,8 +44,8 @@ StepperSection.styles = ({ stepper: theme }) => {
     section: {
       composes: 'stepper--section',
       minWidth: '100%',
-      minHeight: '100%',
       boxSizing: 'border-box',
+      flex: 1,
 
       paddingLeft: theme.section.mobilePadding,
       paddingRight: theme.section.mobilePadding,

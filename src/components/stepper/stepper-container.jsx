@@ -86,12 +86,16 @@ StepperContainer.styles = ({ stepper: theme }) => {
       composes: 'stepper--section-container',
       position: 'relative',
       overflow: 'hidden',
+      flex: 1,
+      display: 'flex',
     },
 
     sectionWrapper: {
       composes: 'stepper--section-wrapper',
       display: 'flex',
       flexDirection: 'row',
+      flex: 1,
+      width: '100%',
       transition: `transform ${theme.transitionDuration}ms linear`,
     },
   };
