@@ -60,7 +60,9 @@ test('should call the onClose prop when the onClose method get\'s called', (t) =
     <Dialog
       component={component}
       onClose={onClose}
-    />, { context });
+    />,
+    { context },
+  );
   const instance = wrapper.instance();
 
   instance.open();

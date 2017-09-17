@@ -12,10 +12,7 @@ import Icon from '../../icon/index';
  */
 class HeaderWithButtons extends PureComponent {
   static propTypes = {
-    classes: PropTypes.shape({
-      header: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-    }).isRequired,
+    classes: PropTypes.shape({}).isRequired,
     sections: PropTypes.arrayOf(PropTypes.object).isRequired,
     currentSection: PropTypes.number.isRequired,
     children: PropTypes.node.isRequired,

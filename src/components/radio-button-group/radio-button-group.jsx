@@ -146,9 +146,15 @@ export default class RadioButtonGroup extends PureComponent {
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    const children = Children.toArray(this.props.children);
+    this.setState(({ focused }) => {
+      if (focused) {
+        return null;
+      }
 
-    this.setState({ focused: children[0].props.name });
+      const children = Children.toArray(this.props.children);
+
+      return { focused: children[0].props.name };
+    });
   };
 
   /**

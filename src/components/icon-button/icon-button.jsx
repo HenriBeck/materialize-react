@@ -55,6 +55,7 @@ export class IconButton extends PureComponent {
         position: 'relative',
         borderRadius: '50%',
         boxSizing: 'border-box',
+        display: 'inline-block',
         outline: 0,
         border: 0,
         height: theme.size,

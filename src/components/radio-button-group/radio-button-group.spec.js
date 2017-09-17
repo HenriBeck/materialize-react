@@ -122,6 +122,7 @@ test('should change the focus state when the down arrow get\'s pressed', (t) => 
   const instance = wrapper.instance();
 
   wrapper.simulate('focus');
+  wrapper.simulate('focus');
 
   instance.handleKeyPress({ keyCode: 40 });
 
