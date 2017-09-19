@@ -2,19 +2,22 @@ import React from 'react';
 import test from 'ava';
 import { shallow } from 'enzyme';
 
-import RadioButtonContainer from './radio-button-container';
+import RadioButtonGroupContainer from './radio-button-group-container';
 
 const props = {
   checked: 'test',
   onKeyPress: () => {},
   onFocus: () => {},
   onBlur: () => {},
-  label: '',
   id: '',
 };
 
 test('should render a jss hoc', (t) => {
-  const wrapper = shallow(<RadioButtonContainer {...props}>Children</RadioButtonContainer>);
+  const wrapper = shallow(
+    <RadioButtonGroupContainer {...props}>
+      Children
+    </RadioButtonGroupContainer>,
+  );
   const containerWrapper = wrapper.find('RadioButtonContainer').dive();
   const className = containerWrapper.find('EventHandler').prop('className');
 
