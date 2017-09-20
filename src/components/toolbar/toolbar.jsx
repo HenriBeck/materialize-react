@@ -62,18 +62,30 @@ Toolbar.styles = ({ toolbar: theme }) => {
     toolbar: {
       composes: 'toolbar',
       position: 'relative',
-      overflow: 'hidden',
       width: '100%',
       padding: '0 16px',
+      boxSizing: 'border-box',
+      display: 'flex',
       backgroundColor: theme.backgroundColor,
 
       height: theme.mobileHeight,
 
-      '& > .row': { height: theme.mobileHeight },
+      '& > .row': {
+        height: theme.mobileHeight,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
 
-      '&.toolbar--medium-tall': { height: theme.mobileHeight * 2 },
+      '&.toolbar--medium-tall': {
+        height: theme.mobileHeight * 2,
+        flexDirection: 'column',
+      },
 
-      '&.toolbar--tall': { height: theme.mobileHeight * 3 },
+      '&.toolbar--tall': {
+        height: theme.mobileHeight * 3,
+        flexDirection: 'column',
+      },
 
       [breakpoints.up('tablet')]: {
         height: theme.height,
@@ -89,7 +101,7 @@ Toolbar.styles = ({ toolbar: theme }) => {
     shadow: {
       composes: 'toolbar--shadow',
       position: 'absolute',
-      bottom: 0,
+      bottom: -6,
       left: 0,
       right: 0,
       height: 6,

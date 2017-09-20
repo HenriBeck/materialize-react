@@ -1,5 +1,4 @@
 import test from 'ava';
-import is from 'is_js';
 
 import shadow from './elevation';
 
@@ -9,24 +8,23 @@ test('should return boxShadow none when elevation is 0', (t) => {
 
 test('should return an object with boxShadow property when elevation is between 1 and 7', (t) => {
   const elevations = [
-    1,
     2,
     3,
     4,
-    5,
     6,
-    7,
+    8,
+    12,
+    16,
+    24,
   ];
 
-  t.plan(7);
+  t.plan(elevations.length);
 
   elevations.forEach((number) => {
-    t.true(is.string(shadow(number)));
+    t.deepEqual(typeof shadow(number), 'string');
   });
 });
 
-test('should return boxShadow none when elevation is not a valid number/elevation', (t) => {
-  t.deepEqual(shadow('string'), 'none');
-
-  t.deepEqual(shadow(20), 'none');
+test('should throw an error if it\'s not a valid elevation', (t) => {
+  t.throws(() => shadow(100));
 });

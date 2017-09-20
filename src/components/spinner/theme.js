@@ -8,7 +8,7 @@ export const schema = PropTypes.shape({
   strokeWidth: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   fadeInOutDuration: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the spinner.

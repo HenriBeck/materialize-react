@@ -3,12 +3,13 @@ import test from 'ava';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import TabsContainerWrapper, { TabsContainer } from './tabs-container';
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
+import TabsContainerWrapper, { TabsContainer } from './tabs-container';
+
 const props = {
-  classes: createClassesFromStyles(TabsContainer.styles({ tabs: {} })),
+  classes: createClassesFromStyles(TabsContainer.styles),
   className: '',
   noBar: false,
   createRef: () => {},

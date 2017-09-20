@@ -3,8 +3,9 @@ import test from 'ava';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import RadioButtonGroup from './radio-button-group';
 import RadioButton from '../radio-button';
+
+import RadioButtonGroup from './radio-button-group';
 
 /**
  * A utility function to render a radio button group with the required children.
@@ -24,17 +25,6 @@ function renderWrapper() {
     </RadioButtonGroup>,
   );
 }
-
-test('should throw an error if we only pass 2 or less RadioButtons as the children', (t) => {
-  t.throws(() => shallow(
-    <RadioButtonGroup
-      name="test"
-      defaultSelected="test"
-    >
-      <RadioButton />
-    </RadioButtonGroup>,
-  ));
-});
 
 test('should throw an error if we pass a non RadioButton as a child', (t) => {
   t.throws(() => shallow(
@@ -120,6 +110,7 @@ test('should change the focus state when the down arrow get\'s pressed', (t) => 
   const wrapper = renderWrapper();
   const instance = wrapper.instance();
 
+  wrapper.simulate('focus');
   wrapper.simulate('focus');
 
   instance.handleKeyPress({ keyCode: 40 });

@@ -5,7 +5,7 @@ export const schema = PropTypes.shape({
   margin: PropTypes.number.isRequired,
   iconSize: PropTypes.number.isRequired,
   rippleColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * The default theme for the icon button component.

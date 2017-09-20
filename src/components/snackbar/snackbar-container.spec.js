@@ -5,6 +5,8 @@ import delay from 'delay';
 import { mount } from 'enzyme';
 
 import { shallow } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
 import SnackbarContainerWrapper, { SnackbarContainer } from './snackbar-container';
 
 /**
@@ -21,10 +23,7 @@ function getContext() {
   };
 }
 
-const classes = {
-  snackbarContainer: 'snackbar--container',
-  snackbar: 'snackbar',
-};
+const classes = createClassesFromStyles(SnackbarContainer.styles);
 
 test('should render a Jss HoC', (t) => {
   const wrapper = shallow(<SnackbarContainerWrapper />);

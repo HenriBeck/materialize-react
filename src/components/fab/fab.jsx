@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
+import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
-import warning from 'warning';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import { easeInOutCubic } from '../../styles/timings';
@@ -82,19 +82,21 @@ export class Fab extends PureComponent {
           backgroundColor: theme.disabledBackgroundColor,
           boxShadow: elevation(theme.disabledElevation),
         },
+      },
 
-        '&.fab--mini': {
-          width: theme.miniSize,
-          height: theme.miniSize,
-          padding: (theme.miniSize - theme.iconSize) / 2,
-        },
+      mini: {
+        composes: 'fab--mini',
+        width: theme.miniSize,
+        height: theme.miniSize,
+        padding: (theme.miniSize - theme.iconSize) / 2,
+      },
 
-        '&.fab--animate-in': {
-          animationName: 'fab--scale-rotate-in',
-          animationFillMode: 'forwards',
-          animationTimingFunction: easeInOutCubic,
-          animationDuration: theme.animationDuration,
-        },
+      animateIn: {
+        composes: 'fab--animate-in',
+        animationName: 'fab--scale-rotate-in',
+        animationFillMode: 'forwards',
+        animationTimingFunction: easeInOutCubic,
+        animationDuration: theme.animationDuration,
       },
 
       icon: {
@@ -177,11 +179,12 @@ export class Fab extends PureComponent {
       onPress,
       noink,
       icon,
+      className,
       ...props
     } = this.props;
-    const className = classnames(this.props.className, classes.fab, {
-      'fab--animate-in': animateIn,
-      'fab--mini': mini,
+    const classNames = classnames(className, classes.fab, {
+      [classes.animateIn]: animateIn,
+      [classes.mini]: mini,
     });
 
     return (
@@ -189,7 +192,7 @@ export class Fab extends PureComponent {
         {...getNotDeclaredProps(props, Fab)}
         component="span"
         role="button"
-        className={className}
+        className={classNames}
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
         onFocus={this.handleFocus}

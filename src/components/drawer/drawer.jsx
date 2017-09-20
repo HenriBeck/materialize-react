@@ -4,10 +4,11 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 import DrawerContainer from './drawer-container';
 import DrawerContent from './drawer-content';
 import MainContent from './main-content';
-import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * A component which will render a SideNav and some content.
@@ -38,6 +39,7 @@ export default class Drawer extends PureComponent {
       return null;
     },
     responsiveWidth: PropTypes.number,
+    className: PropTypes.string,
     backdrop: PropTypes.bool,
     drawerPosition: PropTypes.oneOf(['left', 'right']),
     onNarrowChange: PropTypes.func,
@@ -46,6 +48,7 @@ export default class Drawer extends PureComponent {
 
   static defaultProps = {
     children: '',
+    className: '',
     responsiveWidth: 640,
     backdrop: true,
     drawerPosition: 'left',
@@ -164,6 +167,7 @@ export default class Drawer extends PureComponent {
     const {
       backdrop,
       drawerPosition,
+      className,
       ...props
     } = this.props;
 
@@ -173,6 +177,7 @@ export default class Drawer extends PureComponent {
         drawerContent={Drawer.getDrawerContent(children)[0]}
         mainContent={Drawer.getMainContent(children)[0]}
         backdropEnabled={backdrop}
+        className={className}
         isNarrow={this.state.isNarrow}
         opened={this.state.opened}
         drawerPosition={drawerPosition}

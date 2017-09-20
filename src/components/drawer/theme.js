@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 
 export const schema = PropTypes.shape({
   drawerWidth: PropTypes.number.isRequired,
-  backdropActiveOpacity: PropTypes.number,
-  backdropBgColor: PropTypes.string,
-  transitionDuration: PropTypes.number,
+  backdropActiveOpacity: PropTypes.number.isRequired,
+  backdropBgColor: PropTypes.string.isRequired,
+  transitionDuration: PropTypes.number.isRequired,
   drawerBgColor: PropTypes.string.isRequired,
-});
+}).isRequired;
 
 /**
  * The default theme for the drawer component.
@@ -21,5 +21,7 @@ export function defaultTheme() {
     backdropBgColor: '#000000',
     transitionDuration: 250,
     drawerBgColor: '#ffffff',
+    drawerZIndex: 3000,
+    backdropZIndex: 1000,
   };
 }

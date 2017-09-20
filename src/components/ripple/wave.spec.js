@@ -13,9 +13,9 @@ const defaultProps = {
     width: 2,
     left: -2,
     top: -2,
+    opacity: 0.2,
   },
-  radius: 2,
-  initialOpacity: 0.25,
+  animatingOut: false,
   onFinish: () => {},
 };
 
@@ -27,21 +27,22 @@ test('should render an element with the class of wave', (t) => {
 
 test('animate the wave out', (t) => {
   const wrapper = mount(<Wave {...defaultProps} />);
-  const instance = wrapper.instance();
 
-  instance.startFadeOutAnimation();
+  wrapper.setProps({ animatingOut: true });
 
-  t.deepEqual(wrapper.find('.wave').node.style.opacity, '0');
+  t.deepEqual(wrapper.find('.wave').prop('style').opacity, 0);
 });
 
 test('should call the onFinish handler', (t) => {
-  const props = {
-    ...defaultProps,
-    onFinish: sinon.spy(),
-  };
-  const wrapper = mount(<Wave {...props} />);
+  const onFinish = sinon.spy();
+  const wrapper = mount(
+    <Wave
+      {...defaultProps}
+      onFinish={onFinish}
+    />,
+  );
 
   wrapper.simulate('transitionEnd');
 
-  t.deepEqual(props.onFinish.callCount, 1);
+  t.deepEqual(onFinish.callCount, 1);
 });

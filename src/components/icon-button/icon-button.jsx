@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import warning from 'warning';
 
 import Ripple from '../ripple';
 import Icon from '../icon';
-import warning from 'warning';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import EventHandler from '../event-handler';
 
@@ -53,8 +53,9 @@ export class IconButton extends PureComponent {
       iconButton: {
         composes: 'icon-button',
         position: 'relative',
-        backgroundColor: 'inherit',
         borderRadius: '50%',
+        boxSizing: 'border-box',
+        display: 'inline-block',
         outline: 0,
         border: 0,
         height: theme.size,
@@ -67,7 +68,6 @@ export class IconButton extends PureComponent {
 
       icon: {
         composes: 'icon-button--icon',
-        display: 'inline-flex',
         fontSize: theme.iconSize,
       },
 
@@ -86,7 +86,7 @@ export class IconButton extends PureComponent {
   componentWillReceiveProps(nextProps) {
     warning(
       nextProps.icon === this.props.icon,
-      'You should not change the icon prop of a FAB',
+      'You should not change the icon prop of a IconButton',
     );
   }
 

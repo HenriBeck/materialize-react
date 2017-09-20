@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import { body1 } from '../../styles/typography';
+import { label } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -54,7 +54,7 @@ Label.defaultProps = {
 Label.styles = ({ label: theme }) => {
   return {
     label: {
-      ...body1,
+      ...label,
       composes: 'label',
       userSelect: 'none',
       padding: '0 8px',

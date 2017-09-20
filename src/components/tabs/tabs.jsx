@@ -5,10 +5,11 @@ import React, {
 import PropTypes from 'prop-types';
 
 import Tab from '../tab';
-import TabsContainer from './tabs-container';
 import hasDuplicates from '../../utils/has-duplicates';
 import getNextIndex from '../../utils/get-next-index';
 import getNotDeclaredProps from '../../get-not-declared-props';
+
+import TabsContainer from './tabs-container';
 
 /**
  * A component which hosts the logic for multiple tabs.
@@ -80,21 +81,33 @@ export default class Tabs extends PureComponent {
   };
 
   /**
+   * Add a resize event listener to reposition the bar when the user resize's the window.
+   */
+  componentWillMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  /**
    * Animate the bar to it's initial position.
    */
   componentDidMount() {
-    if (!this.props.noBar) {
-      this.animateBar(this.props.initialTab);
-    }
+    this.animateBar(this.props.initialTab);
   }
 
   /**
    * Animate the bar to a new position when the selectedTab has changed.
    */
   componentDidUpdate(prevProps, prevState) {
-    if (!this.props.noBar && prevState.selectedTab !== this.state.selectedTab) {
+    if (prevState.selectedTab !== this.state.selectedTab) {
       this.animateBar(this.state.selectedTab);
     }
+  }
+
+  /**
+   * Remove the resize event listener.
+   */
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   tabs = {};
@@ -128,12 +141,16 @@ export default class Tabs extends PureComponent {
    * @param {String} tabName - The new tab name.
    */
   animateBar(tabName) {
+    if (this.props.noBar) {
+      return;
+    }
+
     const containerRect = this.container.root.getBoundingClientRect();
     const tabRect = this.tabs[tabName].getBoundingClientRect();
-    const relativeLeft = tabRect.left - containerRect.left;
-    const value = `matrix(${tabRect.width}, 0, 0, 1, ${relativeLeft}, 0)`;
+    const translate = tabRect.left - containerRect.left;
+    const scale = tabRect.width / containerRect.width;
 
-    this.container.bar.style.transform = value;
+    this.container.bar.style.transform = `translateX(${translate}px) scaleX(${scale})`;
   }
 
   /**
@@ -155,6 +172,11 @@ export default class Tabs extends PureComponent {
   createRef = (instance) => {
     this.container = instance;
   };
+
+  /**
+   * Reposition the bar when the user resize's the window.
+   */
+  handleResize = () => this.animateBar(this.state.selectedTab);
 
   handlePress = name => () => {
     this.setState({

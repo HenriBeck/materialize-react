@@ -41,5 +41,8 @@ export function mount(children, options = {}) {
  * @returns {Object} - Returns the object returned from the mount function.
  */
 export function shallow(children, options = {}) {
-  return eShallow(children, { context: getContext(options) });
+  return eShallow(children, {
+    context: getContext(options),
+    lifecycleExperimental: true,
+  });
 }

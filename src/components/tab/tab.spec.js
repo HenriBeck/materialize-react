@@ -2,13 +2,14 @@ import React from 'react';
 import test from 'ava';
 import { shallow } from 'enzyme';
 
-import TabWrapper, { Tab } from './tab';
 import { mount } from '../../../tests/helpers/enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
+import TabWrapper, { Tab } from './tab';
+
 const props = {
   name: 'test',
-  classes: createClassesFromStyles(Tab.styles({ tab: {} })),
+  classes: createClassesFromStyles(Tab.styles),
   onPress: () => {},
   tabStyle: 'text-and-icons',
   createRef: () => {},

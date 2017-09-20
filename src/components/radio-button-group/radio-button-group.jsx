@@ -4,13 +4,14 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
+import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
-import RadioButtonContainer from './radio-button-container';
-import warning from 'warning';
 import hasDuplicates from '../../utils/has-duplicates';
+
+import RadioButtonContainer from './radio-button-group-container';
 
 /**
  * A class that renders a group of radio buttons and handles all the logic.
@@ -28,10 +29,6 @@ export default class RadioButtonGroup extends PureComponent {
         return new Error('All Children of the RadioButtonGroup need to be RadioButtons');
       }
 
-      if (childrenArray.length <= 2) {
-        return new Error('There must at least be three RadioButtons inside a RadioButtonGroup');
-      }
-
       if (hasDuplicates(childrenArray.map(elem => elem.props.name))) {
         return new Error('Found duplicate names');
       }
@@ -39,7 +36,6 @@ export default class RadioButtonGroup extends PureComponent {
       return null;
     },
     defaultSelected: PropTypes.string.isRequired,
-    label: PropTypes.node.isRequired,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     onChange: () => {},
@@ -145,9 +141,15 @@ export default class RadioButtonGroup extends PureComponent {
   handleFocus = (ev) => {
     this.props.onFocus(ev);
 
-    const children = Children.toArray(this.props.children);
+    this.setState(({ focused }) => {
+      if (focused) {
+        return null;
+      }
 
-    this.setState({ focused: children[0].props.name });
+      const children = Children.toArray(this.props.children);
+
+      return { focused: children[0].props.name };
+    });
   };
 
   /**
@@ -205,7 +207,6 @@ export default class RadioButtonGroup extends PureComponent {
     return (
       <RadioButtonContainer
         {...getNotDeclaredProps(this.props, RadioButtonGroup)}
-        label={this.props.label}
         id={this.id}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}

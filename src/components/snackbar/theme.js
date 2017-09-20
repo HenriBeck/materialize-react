@@ -13,7 +13,7 @@ export const schema = PropTypes.shape({
   desktopBorderRadius: PropTypes.number.isRequired,
   desktopMinWidth: PropTypes.number.isRequired,
   desktopMaxWidth: PropTypes.number.isRequired,
-});
+}).isRequired;
 
 /**
  * Default theme for the snackbar component.
@@ -32,5 +32,6 @@ export function defaultTheme() {
     desktopBorderRadius: 2,
     desktopMinWidth: 288,
     desktopMaxWidth: 568,
+    zIndex: 500,
   };
 }

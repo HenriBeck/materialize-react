@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
+import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
+
 import Checkbox from './checkbox';
-import warning from 'warning';
 
 /**
  * A component to render a checkbox.

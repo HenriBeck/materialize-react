@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
+import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -13,7 +14,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} [props.className] - Additional className to be added.
  * @returns {JSX} - Returns the JSX.
  */
-function Background({
+export function Background({
   children,
   classes,
   className,
@@ -41,6 +42,7 @@ Background.styles = ({ background: theme }) => {
   return {
     background: {
       composes: 'background',
+      ...body1,
       color: theme.color,
       backgroundColor: theme.backgroundColor,
     },

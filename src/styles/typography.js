@@ -1,9 +1,9 @@
-const commonBase = {
+export const commonBase = {
   fontFamily: '\'Roboto\', \'Noto\', sans-serif',
   WebkitFontSmoothing: 'antialiased',
 };
 
-const commonCode = {
+export const commonCode = {
   fontFamily: '\'Roboto Mono\', \'Consolas\', \'Menlo\', monospace',
   WebkitFontSmoothing: 'antialiased',
 };
