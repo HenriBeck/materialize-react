@@ -147,10 +147,10 @@ export default class Tabs extends PureComponent {
 
     const containerRect = this.container.root.getBoundingClientRect();
     const tabRect = this.tabs[tabName].getBoundingClientRect();
-    const relativeLeft = tabRect.left - containerRect.left;
-    const value = `matrix(${tabRect.width}, 0, 0, 1, ${relativeLeft}, 0)`;
+    const translate = tabRect.left - containerRect.left;
+    const scale = tabRect.width / containerRect.width;
 
-    this.container.bar.style.transform = value;
+    this.container.bar.style.transform = `translateX(${translate}px) scaleX(${scale})`;
   }
 
   /**
