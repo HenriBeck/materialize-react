@@ -14,7 +14,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} [props.className] - Additional className to be added.
  * @returns {JSX} - Returns the JSX.
  */
-function Background({
+export function Background({
   children,
   classes,
   className,

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 /**
  * A component which renders a little badge in the top right corner.
  *
@@ -18,9 +20,13 @@ export function Badge({
   children,
   className,
   badgeContent,
+  ...props
 }) {
   return (
-    <div className={`${classes.root} ${className}`}>
+    <div
+      className={`${classes.root} ${className}`}
+      {...getNotDeclaredProps(props, Badge)}
+    >
       {children}
 
       <span className={classes.badge}>
@@ -50,6 +56,7 @@ Badge.styles = ({ badge: theme }) => {
 
       '& > *:not(.badge)': { display: 'inline-block' },
     },
+
     badge: {
       composes: 'badge',
       display: 'inline-flex',
