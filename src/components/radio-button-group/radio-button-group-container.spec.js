@@ -18,9 +18,8 @@ test('should render a jss hoc', (t) => {
       Children
     </RadioButtonGroupContainer>,
   );
-  const containerWrapper = wrapper.find('RadioButtonContainer').dive();
-  const className = containerWrapper.find('EventHandler').prop('className');
+  const container = wrapper.find('RadioButtonGroupContainer').dive();
 
-  t.deepEqual(wrapper.find('RadioButtonContainer').length, 1);
-  t.true(className.includes('radio-button-group'));
+  t.deepEqual(wrapper.find('RadioButtonGroupContainer').length, 1);
+  t.deepEqual(container.find('EventHandler').length, 1);
 });
