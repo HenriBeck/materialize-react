@@ -26,17 +26,6 @@ function renderWrapper() {
   );
 }
 
-test('should throw an error if we only pass 2 or less RadioButtons as the children', (t) => {
-  t.throws(() => shallow(
-    <RadioButtonGroup
-      name="test"
-      defaultSelected="test"
-    >
-      <RadioButton />
-    </RadioButtonGroup>,
-  ));
-});
-
 test('should throw an error if we pass a non RadioButton as a child', (t) => {
   t.throws(() => shallow(
     <RadioButtonGroup

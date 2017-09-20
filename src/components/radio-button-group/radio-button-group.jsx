@@ -11,7 +11,7 @@ import getNextIndex from '../../utils/get-next-index';
 import RadioButton from '../radio-button';
 import hasDuplicates from '../../utils/has-duplicates';
 
-import RadioButtonContainer from './radio-button-container';
+import RadioButtonContainer from './radio-button-group-container';
 
 /**
  * A class that renders a group of radio buttons and handles all the logic.
@@ -29,10 +29,6 @@ export default class RadioButtonGroup extends PureComponent {
         return new Error('All Children of the RadioButtonGroup need to be RadioButtons');
       }
 
-      if (childrenArray.length <= 2) {
-        return new Error('There must at least be three RadioButtons inside a RadioButtonGroup');
-      }
-
       if (hasDuplicates(childrenArray.map(elem => elem.props.name))) {
         return new Error('Found duplicate names');
       }
@@ -40,7 +36,6 @@ export default class RadioButtonGroup extends PureComponent {
       return null;
     },
     defaultSelected: PropTypes.string.isRequired,
-    label: PropTypes.node.isRequired,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     onChange: () => {},
@@ -212,7 +207,6 @@ export default class RadioButtonGroup extends PureComponent {
     return (
       <RadioButtonContainer
         {...getNotDeclaredProps(this.props, RadioButtonGroup)}
-        label={this.props.label}
         id={this.id}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}

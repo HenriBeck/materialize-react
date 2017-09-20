@@ -4,6 +4,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 import StepperSection from './stepper-section';
 import Headers from './headers';
 import StepperContainer from './stepper-container';
@@ -131,7 +133,7 @@ export default class Stepper extends PureComponent {
         currentSection={this.state.currentSection}
         className={className}
         headerAtBottom={headerAtBottom}
-        {...props}
+        {...getNotDeclaredProps(props, Stepper)}
       >
         {children}
       </StepperContainer>
