@@ -18,6 +18,7 @@ import { schema as card } from '../../components/card/theme';
 import { schema as typography } from '../../components/typography/theme';
 import { schema as badge } from '../../components/badge/theme';
 import { schema as stepper } from '../../components/stepper/theme';
+import { schema as slider } from '../../components/slider/theme';
 
 export default {
   background,
@@ -40,4 +41,5 @@ export default {
   typography,
   badge,
   stepper,
+  slider,
 };
