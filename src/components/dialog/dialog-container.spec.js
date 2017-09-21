@@ -142,3 +142,11 @@ test('should reset the state when the animation finishes and call the onClose ca
   t.deepEqual(onClose.callCount, 1);
 });
 
+test('should not render a backdrop when the dialog is fullscreen', (t) => {
+  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
+  const instance = wrapper.instance();
+
+  instance.openDialog(Object.assign({}, dialog, { fullscreen: true }));
+
+  t.deepEqual(wrapper.find('EventHandler').length, 0);
+});

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import warning from 'warning';
 import injectSheet from 'react-jss';
 import classnames from 'classnames';
+import { position } from 'polished';
 
 import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
@@ -22,16 +23,21 @@ export class DialogContainer extends PureComponent {
       backdrop: PropTypes.string.isRequired,
       backdropActive: PropTypes.string.isRequired,
       dialog: PropTypes.string.isRequired,
+      fullscreenDialog: PropTypes.string.isRequired,
     }).isRequired,
     className: PropTypes.string,
     animateInName: PropTypes.string,
     animateOutName: PropTypes.string,
+    animateInFullscreenName: PropTypes.string,
+    animateOutFullscreenName: PropTypes.string,
   };
 
   static defaultProps = {
     className: '',
     animateInName: 'dialog--animate-in',
     animateOutName: 'dialog--animate-out',
+    animateInFullscreenName: 'dialog--animate-in-fullscreen',
+    animateOutFullscreenName: 'dialog--animate-out-fullscreen',
   };
 
   static contextTypes = {
@@ -60,13 +66,19 @@ export class DialogContainer extends PureComponent {
         to: { opacity: 0 },
       },
 
+      '@keyframes dialog--animate-in-fullscreen': {
+        from: { transform: 'translateY(100%)' },
+        to: { transform: 'translateY(0)' },
+      },
+
+      '@keyframes dialog--animate-out-fullscreen': {
+        from: { transform: 'translateY(0)' },
+        to: { transform: 'translateY(100%)' },
+      },
+
       dialogContainer: {
         composes: 'dialog--container',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        ...position('fixed', '0', '0', '0', '0'),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -84,11 +96,7 @@ export class DialogContainer extends PureComponent {
 
       backdrop: {
         composes: 'dialog--backdrop',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        ...position('absolute', '0', '0', '0', '0'),
         opacity: 0,
         backgroundColor: theme.backdropColor,
         transition: `opacity ${theme.animationDuration}ms linear`,
@@ -107,6 +115,14 @@ export class DialogContainer extends PureComponent {
         animationDuration: theme.animationDuration,
         animationFillMode: 'forwards',
         opacity: 0,
+      },
+
+      fullscreenDialog: {
+        composes: 'dialog--fullscreen',
+        boxShadow: 'none',
+        borderRadius: 0,
+        opacity: 1,
+        ...position('absolute', '0', '0', '0', '0'),
       },
     };
   }
@@ -202,14 +218,9 @@ export class DialogContainer extends PureComponent {
     const {
       classes,
       className,
-      animateInName,
-      animateOutName,
       ...props
     } = this.props;
-    const {
-      currentDialog,
-      animatingOut,
-    } = this.state;
+    const { currentDialog } = this.state;
     const classNames = classnames(
       classes.dialogContainer,
       className,
@@ -221,16 +232,22 @@ export class DialogContainer extends PureComponent {
 
     if (currentDialog) {
       const Element = currentDialog.component;
-      const backdropClasses = classnames(
-        classes.backdrop,
-        { [classes.backdropActive]: currentDialog.backdrop && !animatingOut },
+      const dialogClasses = classnames(
+        classes.dialog,
+        currentDialog.fullscreen && classes.fullscreenDialog,
+        currentDialog.className,
       );
+      let name = this.state.animatingOut ? 'animateOut' : 'animateIn';
+
+      if (currentDialog.fullscreen) {
+        name += 'Fullscreen';
+      }
 
       dialog = (
         <div
           role="dialog"
-          className={classes.dialog}
-          style={{ animationName: animatingOut ? animateOutName : animateInName }}
+          className={dialogClasses}
+          style={{ animationName: this.props[`${name}Name`] }}
           onAnimationEnd={this.handleAnimationEnd}
         >
           <Element
@@ -240,13 +257,20 @@ export class DialogContainer extends PureComponent {
         </div>
       );
 
-      backdrop = (
-        <EventHandler
-          component="span"
-          className={backdropClasses}
-          onPress={this.handleBackdropPress}
-        />
-      );
+      if (!currentDialog.fullscreen) {
+        const backdropClasses = classnames(
+          classes.backdrop,
+          { [classes.backdropActive]: currentDialog.backdrop && !this.state.animatingOut },
+        );
+
+        backdrop = (
+          <EventHandler
+            component="span"
+            className={backdropClasses}
+            onPress={this.handleBackdropPress}
+          />
+        );
+      }
     }
 
     return (

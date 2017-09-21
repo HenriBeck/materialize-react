@@ -46,6 +46,7 @@ class DialogStory extends PureComponent {
             <Button onRelease={this.handlePress}>Open Dialog</Button>
 
             <Dialog
+              {...this.props}
               ref={(elem) => { this.dialog = elem; }}
               component={DialogStory.DialogElement}
             />
@@ -57,6 +58,9 @@ class DialogStory extends PureComponent {
 }
 
 storiesOf('Dialog', module)
-  .add('Story', () => (
+  .add('Default Styles', () => (
     <DialogStory />
+  ))
+  .add('Fullscreen dialog', () => (
+    <DialogStory fullscreen />
   ));
