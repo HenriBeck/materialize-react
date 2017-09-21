@@ -19,8 +19,10 @@ const props = {
   isDragging: false,
   value: 0,
   rootRef: () => {},
-  translateX: '',
+  translateX: 0,
   disabled: false,
+  min: 0,
+  max: 100,
 };
 
 test('should render a div', (t) => {
@@ -81,4 +83,20 @@ test('should add a class of .slider--thumb-active when the value is greater than
     .prop('className');
 
   t.deepEqual(thumbclassName.includes('slider--thumb-active'), true);
+});
+
+test('should add a class of .slider--thumb-focused when the slider is focused', (t) => {
+  const wrapper = mount(
+    <SliderContainer
+      {...props}
+      isFocused
+    />,
+  );
+
+  const thumbclassName = wrapper
+    .find('EventHandler')
+    .last()
+    .prop('className');
+
+  t.deepEqual(thumbclassName.includes('slider--thumb-focused'), true);
 });
