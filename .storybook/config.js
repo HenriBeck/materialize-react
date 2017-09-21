@@ -34,25 +34,8 @@ setOptions({
   url: 'https://github.com/HenriBeck/materialize-react',
 });
 
+const componentStories = require.context('../', true, /stories\.jsx$/);
+
 configure(() => {
-  require('../src/components/ripple/stories');
-  require('../src/components/button/stories');
-  require('../src/components/spinner/stories');
-  require('../src/components/progress/stories');
-  require('../src/components/fab/stories');
-  require('../src/components/checkbox/stories');
-  require('../src/components/switch/stories');
-  require('../src/components/radio-button-group/stories');
-  require('../src/components/tabs/stories');
-  require('../src/components/drawer/stories');
-  require('../src/components/toolbar/stories');
-  require('../src/components/snackbar/stories');
-  require('../src/components/dialog/stories');
-  require('../src/components/card/stories');
-  require('../src/components/typography/stories');
-  require('../src/components/icon/stories');
-  require('../src/components/icon-button/stories');
-  require('../src/components/badge/stories');
-  require('../src/components/stepper/stories');
-  require('../src/components/list/stories');
+  componentStories.keys().forEach(componentStories);
 }, module);

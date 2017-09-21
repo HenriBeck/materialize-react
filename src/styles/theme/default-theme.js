@@ -39,6 +39,7 @@ import { defaultTheme as typography } from '../../components/typography/theme';
 import { defaultTheme as badge } from '../../components/badge/theme';
 import { defaultTheme as stepper } from '../../components/stepper/theme';
 import { defaultTheme as list } from '../../components/list/theme';
+import { defaultTheme as slider } from '../../components/slider/theme';
 
 export const defaultVars = {
   primaryBase: blue500,
@@ -90,4 +91,5 @@ export const defaultTheme = {
   badge,
   stepper,
   list,
+  slider,
 };

@@ -48,7 +48,7 @@ export class SnackbarContainer extends PureComponent {
    * @param {Object} theme.snackbar - The actual theme for the snackbar.
    * @returns {Object} - Returns the styles.
    */
-  static styles = ({ snackbar: theme }) => {
+  static styles({ snackbar: theme }) {
     return {
       '@keyframes snackbar--animate-in': {
         from: { transform: 'translateY(0)' },
@@ -112,7 +112,7 @@ export class SnackbarContainer extends PureComponent {
         },
       },
     };
-  };
+  }
 
   state = {
     currentlyVisible: null,
