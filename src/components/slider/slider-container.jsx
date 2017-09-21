@@ -4,6 +4,7 @@ import injectSheet from 'react-jss';
 import classnames from 'classnames';
 
 import EventHandler from '../event-handler';
+import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
  * The actual renderer of the slider.
@@ -13,7 +14,7 @@ import EventHandler from '../event-handler';
 export class SliderContainer extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
-      container: PropTypes.string.isRequired,
+      slider: PropTypes.string.isRequired,
       track: PropTypes.string.isRequired,
       trackFocused: PropTypes.string.isRequired,
       trackDisabled: PropTypes.string.isRequired,
@@ -50,7 +51,8 @@ export class SliderContainer extends PureComponent {
    */
   static styles({ slider: theme }) {
     return {
-      container: {
+      slider: {
+        composes: 'slider',
         display: 'inline-block',
         position: 'relative',
         width: '100%',
@@ -63,6 +65,7 @@ export class SliderContainer extends PureComponent {
       },
 
       track: {
+        composes: 'slider--track',
         position: 'absolute',
         left: 0,
         right: 0,
@@ -85,15 +88,20 @@ export class SliderContainer extends PureComponent {
         },
       },
 
-      trackFocused: { backgroundColor: theme.focusedTrackColor },
+      trackFocused: {
+        composes: 'slider--track-focused',
+        backgroundColor: theme.focusedTrackColor,
+      },
 
       trackDisabled: {
+        composes: 'slider--track-disabled',
         backgroundColor: theme.disabledTrackColor,
 
         '&::after': { backgroundColor: 'transparent' },
       },
 
       thumb: {
+        composes: 'slider--thumb',
         width: theme.thumbSize,
         position: 'absolute',
         top: (theme.trackHeight - theme.thumbSize - theme.borderWidth * 2) / 2,
@@ -120,21 +128,29 @@ export class SliderContainer extends PureComponent {
       },
 
       thumbFocused: {
+        composes: 'slider--thumb-focused',
         borderColor: theme.focusedThumbBorderColor,
 
         '&::after': { opacity: 0.2 },
       },
 
       thumbActive: {
+        composes: 'slider--thumb-active',
         backgroundColor: theme.thumbActiveColor,
         borderColor: theme.thumbActiveColor,
 
         '&::after': { backgroundColor: theme.thumbActiveColor },
       },
 
-      thumbDisabled: { borderColor: theme.disabledThumbColor },
+      thumbDisabled: {
+        composes: 'slider--thumb-disabled',
+        borderColor: theme.disabledThumbColor,
+      },
 
-      thumbActiveDisabled: { backgroundColor: theme.disabledThumbColor },
+      thumbActiveDisabled: {
+        composes: 'slider--thumb-active-disabled',
+        backgroundColor: theme.disabledThumbColor,
+      },
     };
   }
 
@@ -180,8 +196,8 @@ export class SliderContainer extends PureComponent {
 
     return (
       <div
-        {...props}
-        className={`${classes.container} ${className}`}
+        {...getNotDeclaredProps(props, SliderContainer)}
+        className={`${classes.slider} ${className}`}
         ref={rootRef}
         role="slider"
         tabIndex={disabled ? -1 : 0}
