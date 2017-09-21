@@ -229,7 +229,7 @@ export class DialogContainer extends PureComponent {
       dialog = (
         <div
           role="dialog"
-          className={classes.dialog}
+          className={`${classes.dialog} ${currentDialog.className}`}
           style={{ animationName: animatingOut ? animateOutName : animateInName }}
           onAnimationEnd={this.handleAnimationEnd}
         >

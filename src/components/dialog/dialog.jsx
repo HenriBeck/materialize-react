@@ -22,11 +22,13 @@ export default class Dialog extends PureComponent {
     hasBackdrop: PropTypes.bool,
     closeOnOutsideClick: PropTypes.bool,
     onClose: PropTypes.func,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
     hasBackdrop: true,
     closeOnOutsideClick: true,
+    className: '',
     onClose: () => {},
   };
 
@@ -53,6 +55,7 @@ export default class Dialog extends PureComponent {
       component,
       hasBackdrop,
       closeOnOutsideClick,
+      className,
       ...props
     } = this.props;
 
@@ -60,6 +63,7 @@ export default class Dialog extends PureComponent {
       backdrop: hasBackdrop,
       closeOnOutsideClick,
       component,
+      className,
       additionalProps: getNotDeclaredProps(props, Dialog),
       onClose: this.onClose,
     });
