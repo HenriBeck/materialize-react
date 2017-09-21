@@ -37,9 +37,11 @@ export class SliderContainer extends PureComponent {
     isDragging: PropTypes.bool.isRequired,
     value: PropTypes.number.isRequired,
     rootRef: PropTypes.func.isRequired,
-    translateX: PropTypes.string.isRequired,
+    translateX: PropTypes.number.isRequired,
     theme: PropTypes.shape({}).isRequired,
     disabled: PropTypes.bool.isRequired,
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
   };
 
   /**
@@ -83,7 +85,7 @@ export class SliderContainer extends PureComponent {
           content: '""',
           transformOrigin: 'left center',
           backgroundColor: theme.trackActiveColor,
-          transform: props => `scaleX(${props.value / 100})`,
+          transform: props => `scaleX(${props.value / props.max})`,
           transition: 'transform 100ms linear',
         },
       },
@@ -177,7 +179,7 @@ export class SliderContainer extends PureComponent {
     } = this.props;
 
     const thumbClassNames = classnames(classes.thumb, {
-      [classes.thumbFocused]: isFocused,
+      [classes.thumbFocused]: isFocused && !isDragging,
       [classes.thumbActive]: value > 0,
       [classes.thumbDisabled]: disabled,
       [classes.thumbActiveDisabled]: value > 0 && disabled,
@@ -202,8 +204,8 @@ export class SliderContainer extends PureComponent {
         role="slider"
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled}
-        aria-valuemax="100"
-        aria-valuemin="0"
+        aria-valuemax={this.props.max}
+        aria-valuemin={this.props.min}
         aria-valuenow={value}
         onFocus={onFocus}
         onBlur={onBlur}

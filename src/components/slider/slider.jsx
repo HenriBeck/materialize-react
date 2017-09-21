@@ -16,6 +16,8 @@ export default class Slider extends PureComponent {
     disabled: PropTypes.bool,
     onChange: PropTypes.func,
     className: PropTypes.string,
+    min: PropTypes.number,
+    max: PropTypes.number,
   };
 
   static defaultProps = {
@@ -23,17 +25,9 @@ export default class Slider extends PureComponent {
     disabled: false,
     onChange: () => {},
     className: '',
+    min: 0,
+    max: 100,
   };
-
-  /**
-   * Clamp the value and round it down. Min 0. Max 100.
-   *
-   * @param {Number} value - The value to clamp.
-   * @returns {Number} - Returns the clamp value.
-   */
-  static clamp(value) {
-    return Math.max(0, Math.min(Math.floor(value), 100));
-  }
 
   static keyCodes = {
     37: -2,
@@ -43,7 +37,7 @@ export default class Slider extends PureComponent {
   };
 
   state = {
-    value: Slider.clamp(this.props.initialValue),
+    value: this.clamp(this.props.initialValue),
     isFocused: false,
     isDragging: false,
     translateX: 0,
@@ -54,7 +48,7 @@ export default class Slider extends PureComponent {
    */
   componentDidMount() {
     // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({ translateX: this.rootRect.width * this.state.value / 100 });
+    this.setState({ translateX: this.rootRect.width * this.state.value / this.props.max });
   }
 
   /**
@@ -73,8 +67,8 @@ export default class Slider extends PureComponent {
    */
   set value(value) {
     this.setState({
-      value: Slider.clamp(value),
-      translateX: this.rootRect.width * value / 100,
+      value: this.clamp(value),
+      translateX: this.rootRect.width * value / this.props.max,
     });
   }
 
@@ -85,6 +79,16 @@ export default class Slider extends PureComponent {
    */
   get value() {
     return this.state.value;
+  }
+
+  /**
+   * Clamp the value and round it down. Min 0. Max 100.
+   *
+   * @param {Number} value - The value to clamp.
+   * @returns {Number} - Returns the clamp value.
+   */
+  clamp(value) {
+    return Math.max(this.props.min, Math.min(Math.floor(value), this.props.max));
   }
 
   /**
@@ -133,8 +137,8 @@ export default class Slider extends PureComponent {
     if (Slider.keyCodes[keyCode]) {
       this.setState(({ value }) => {
         return {
-          value: value + Slider.keyCodes[keyCode],
-          translateX: this.rootRect.width * (value + Slider.keyCodes[keyCode]) / 100,
+          value: this.clamp(value + Slider.keyCodes[keyCode]),
+          translateX: this.rootRect.width * (value + Slider.keyCodes[keyCode]) / this.props.max,
         };
       });
     }
@@ -145,12 +149,13 @@ export default class Slider extends PureComponent {
    * This will be called when the user clicks the bar or when he drags the thumb.
    */
   handleMove = (ev) => {
-    const coords = getCoords(ev);
-    const value = Slider.clamp((coords.x - this.rootRect.left) / this.rootRect.width * 100);
+    const { max } = this.props;
+    const { x } = getCoords(ev);
+    const value = this.clamp((x - this.rootRect.left) / this.rootRect.width * max);
 
     this.setState({
       value,
-      translateX: this.rootRect.width * value / 100,
+      translateX: this.rootRect.width * value / max,
     });
   };
 
@@ -159,6 +164,8 @@ export default class Slider extends PureComponent {
       <SliderContainer
         {...this.state}
         disabled={this.props.disabled}
+        min={this.props.min}
+        max={this.props.max}
         className={this.props.className}
         rootRef={this.createRootRef}
         onFocus={this.handleFocus}
