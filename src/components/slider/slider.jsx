@@ -53,8 +53,6 @@ export default class Slider extends PureComponent {
    * Set the initial translateX state.
    */
   componentDidMount() {
-    this.rootRect = this.root.getBoundingClientRect();
-
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ translateX: this.rootRect.width * this.state.value / 100 });
   }
@@ -74,7 +72,10 @@ export default class Slider extends PureComponent {
    * @param {Number} value - The new value.
    */
   set value(value) {
-    this.setState({ value: Slider.clamp(value) });
+    this.setState({
+      value: Slider.clamp(value),
+      translateX: this.rootRect.width * value / 100,
+    });
   }
 
   /**
@@ -92,7 +93,7 @@ export default class Slider extends PureComponent {
    * @param {Object} element - The elements reference.
    */
   createRootRef = (element) => {
-    this.root = element;
+    this.rootRect = element.getBoundingClientRect();
   };
 
   /**
@@ -127,8 +128,6 @@ export default class Slider extends PureComponent {
    * Increment the current value when special keys are pressed.
    */
   handleKeyPress = (ev) => {
-    ev.persist();
-
     const keyCode = ev.keyCode;
 
     if (Slider.keyCodes[keyCode]) {
