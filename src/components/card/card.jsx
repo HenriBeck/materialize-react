@@ -54,8 +54,6 @@ Card.styles = ({ card: theme }) => {
       backgroundColor: theme.backgroundColor,
       boxShadow: elevation(theme.elevation),
       margin: theme.gutter,
-      minWidth: theme.minWidth,
-      maxWidth: theme.maxWidth,
 
       [breakpoints.only('tablet')]: { margin: theme.tabletGutter },
 
