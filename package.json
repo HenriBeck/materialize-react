@@ -1,6 +1,6 @@
 {
   "name": "materialize-react",
-  "version": "0.1.0-alpha.9",
+  "version": "0.1.0-alpha.11",
   "description": "React Components with materialize theme",
   "main": "lib/index.js",
   "options": {
@@ -77,7 +77,7 @@
     "react-dom": "15.6.2",
     "react-jss": "7.2.0",
     "react-test-renderer": "15.6.2",
-    "sinon": "3.3.0",
+    "sinon": "4.0.0",
     "style-loader": "0.18.2"
   },
   "peerDependencies": {
