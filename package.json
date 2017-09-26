@@ -65,7 +65,7 @@
     "coveralls": "2.13.1",
     "css-loader": "0.28.7",
     "delay": "2.0.0",
-    "enzyme": "2.9.1",
+    "enzyme": "3.0.0",
     "eslint": "4.7.2",
     "husky": "0.14.3",
     "is_js": "0.9.0",
