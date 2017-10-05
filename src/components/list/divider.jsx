@@ -45,15 +45,16 @@ ListDivider.defaultProps = {
   className: '',
 };
 
-ListDivider.styles = ({ list: theme }) => {
-  return {
-    inset: {
-      composes: 'list--divider-inset',
-      paddingLeft: theme.insetWidth,
-    },
+ListDivider.styles = {
+  inset: {
+    composes: 'list--divider-inset',
+    paddingLeft: 72,
+  },
 
-    divider: { width: '100%' },
-  };
+  divider: {
+    composes: 'list--divider-divider',
+    width: '100%',
+  },
 };
 
 export default injectSheet(ListDivider.styles)(ListDivider);

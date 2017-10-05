@@ -1,104 +1,133 @@
-import React from 'react';
+import React, {
+  PureComponent,
+  Children,
+} from 'react';
 import PropTypes from 'prop-types';
-import injectSheet from 'react-jss';
-import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
+import Section from './section';
+import Headers from './headers';
+import Stepper from './stepper';
+
 /**
- * Renders the actual markup for the stepper component.
+ * A component which renders a material design stepper.
  *
- * @param {Object} props - The props for the component.
- * @param {Object} props.classes - The classes for the component.
- * @param {JSX} props.children - The sections for the stepper.
- * @param {JSX} props.header - The header for the stepper.
- * @param {Number} props.currentSection - The current section
- * for calculating the section wrapper transform.
- * @param {String} props.className - An additional class name for the root
- * component.
- * @param {Boolean} props.headerAtBottom - Whether or not the header should
- * be at the bottom.
- * @returns {JSX} - Returns the JSX.
+ * @class
  */
-function StepperContainer({
-  classes,
-  children,
-  headerAtBottom,
-  header,
-  className,
-  currentSection,
-  ...props
-}) {
-  const classNames = classnames(
-    classes.stepper,
-    headerAtBottom && classes.headerAtBottom,
-    className,
-  );
+export default class StepperContainer extends PureComponent {
+  static propTypes = {
+    children({ children }) { // eslint-disable-line react/require-default-props
+      const childrenArray = Children.toArray(children);
+      const hasNotSectionChild = childrenArray.some(child => child.type !== Section);
 
-  return (
-    <div
-      className={classNames}
-      {...getNotDeclaredProps(props, StepperContainer)}
-    >
-      {header}
+      if (hasNotSectionChild) {
+        return new Error('The Stepper component only accepts StepperSection as children!');
+      }
 
-      <div className={classes.sectionContainer}>
-        <div
-          className={classes.sectionWrapper}
-          style={{ transform: `translateX(${currentSection * -100}%)` }}
-        >
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-}
+      if (childrenArray.length < 2) {
+        return new Error('The Stepper is required to have at least 2 children');
+      }
 
-StepperContainer.propTypes = {
-  classes: PropTypes.shape({
-    stepper: PropTypes.string.isRequired,
-    sectionContainer: PropTypes.string.isRequired,
-    sectionWrapper: PropTypes.string.isRequired,
-  }).isRequired,
-  header: PropTypes.element.isRequired,
-  children: PropTypes.node.isRequired,
-  currentSection: PropTypes.number.isRequired,
-  className: PropTypes.string.isRequired,
-  headerAtBottom: PropTypes.bool.isRequired,
-};
-
-StepperContainer.styles = ({ stepper: theme }) => {
-  return {
-    stepper: {
-      composes: 'stepper',
-      width: '100%',
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
+      return null;
     },
-
-    headerAtBottom: {
-      composes: 'stepper--header-at-bottom',
-      flexDirection: 'column-reverse',
-    },
-
-    sectionContainer: {
-      composes: 'stepper--section-container',
-      position: 'relative',
-      overflow: 'hidden',
-      flex: 1,
-      display: 'flex',
-    },
-
-    sectionWrapper: {
-      composes: 'stepper--section-wrapper',
-      display: 'flex',
-      flexDirection: 'row',
-      flex: 1,
-      width: '100%',
-      transition: `transform ${theme.transitionDuration}ms linear`,
-    },
+    header: PropTypes.element.isRequired,
+    onChange: PropTypes.func,
+    initialSection: PropTypes.number,
+    className: PropTypes.string,
+    headerAtBottom: PropTypes.bool,
   };
-};
 
-export default injectSheet(StepperContainer.styles)(StepperContainer);
+  static defaultProps = {
+    initialSection: 0,
+    className: '',
+    headerAtBottom: false,
+    onChange: () => {},
+  };
+
+  static Section = Section;
+  static Headers = Headers;
+
+  state = { currentSection: this.props.initialSection };
+
+  /**
+   * Change the current section.
+   *
+   * @param {Number} currentSection - The index of the current section.
+   */
+  set currentSection(currentSection) {
+    this.setState({ currentSection });
+  }
+
+  /**
+   * Get the current section.
+   *
+   * @returns {Number} - Returns the index of the current section.
+   */
+  get currentSection() {
+    return this.state.currentSection;
+  }
+
+  /**
+   * Move one step back.
+   */
+  back = () => {
+    this.setState(({ currentSection }) => {
+      if (currentSection === 0) {
+        return null;
+      }
+
+      return { currentSection: currentSection - 1 };
+    }, () => this.props.onChange(this.state.currentSection));
+  };
+
+  /**
+   * Move one step forward.
+   */
+  forward = () => {
+    this.setState(({ currentSection }) => {
+      if (currentSection === Children.count(this.props.children) - 1) {
+        return null;
+      }
+
+      return { currentSection: currentSection + 1 };
+    }, () => this.props.onChange(this.state.currentSection));
+  };
+
+  /**
+   * Render the passed header with some additional attributes.
+   *
+   * @param {JSX} header - The header element to clone.
+   * @returns {JSX} - Returns the cloned header.
+   */
+  renderHeader(header) {
+    return React.cloneElement(header, {
+      sections: Children.map(this.props.children, child => child.props),
+      currentSection: this.state.currentSection,
+      back: this.back,
+      forward: this.forward,
+    });
+  }
+
+  render() {
+    const {
+      children,
+      header,
+      className,
+      headerAtBottom,
+      ...props
+    } = this.props;
+
+    return (
+      <Stepper
+        header={this.renderHeader(header)}
+        currentSection={this.state.currentSection}
+        className={className}
+        headerAtBottom={headerAtBottom}
+        {...getNotDeclaredProps(props, StepperContainer)}
+      >
+        {children}
+      </Stepper>
+    );
+  }
+}

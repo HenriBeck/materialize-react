@@ -48,7 +48,9 @@ export class RadioButton extends PureComponent {
    * @param {Object} theme.radioButton - The actual theme for the radio button component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ radioButton: theme }) {
+  static styles(theme) {
+    const isDark = theme.type === 'dark';
+
     return {
       radioButton: {
         composes: 'radio-button',
@@ -56,7 +58,7 @@ export class RadioButton extends PureComponent {
         alignItems: 'center',
         padding: 4,
 
-        '&[aria-checked=true] $border': { borderColor: theme.checkedColor },
+        '&[aria-checked=true] $border': { borderColor: theme.primaryBase },
 
         '&[aria-checked=true] $circle': { transform: 'scale(0.5)' },
 
@@ -72,9 +74,9 @@ export class RadioButton extends PureComponent {
         position: 'relative',
         borderRadius: '50%',
         boxSizing: 'border-box',
-        margin: (theme.rippleSize - theme.size) / 2,
-        height: theme.size,
-        width: theme.size,
+        margin: '16px 24px ',
+        height: 16,
+        width: 16,
       },
 
       border: {
@@ -83,15 +85,14 @@ export class RadioButton extends PureComponent {
         borderRadius: '50%',
         borderStyle: 'solid',
         boxSizing: 'border-box',
-        transitionProperty: 'border-color',
         display: 'block',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        borderWidth: theme.borderWidth,
-        borderColor: theme.uncheckedColor,
-        transitionDuration: theme.transitionDuration,
+        borderWidth: 2,
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.54)',
+        transition: 'border-color 200ms',
       },
 
       circle: {
@@ -99,13 +100,12 @@ export class RadioButton extends PureComponent {
         position: 'absolute',
         transform: 'scale(0)',
         borderRadius: '50%',
-        transitionProperty: 'transform',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        transitionDuration: theme.transitionDuration,
-        backgroundColor: theme.checkedColor,
+        transition: 'transform 200ms',
+        backgroundColor: theme.primaryBase,
       },
 
       label: {
@@ -115,10 +115,10 @@ export class RadioButton extends PureComponent {
 
       ripple: {
         composes: 'radio-button--ripple',
-        top: (theme.rippleSize - theme.size) / -2,
-        left: (theme.rippleSize - theme.size) / -2,
-        right: (theme.rippleSize - theme.size) / -2,
-        bottom: (theme.rippleSize - theme.size) / -2,
+        top: -16,
+        left: -16,
+        right: -16,
+        bottom: -16,
       },
 
       labelLeft: {

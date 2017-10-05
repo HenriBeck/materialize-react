@@ -1,74 +1,218 @@
 import React from 'react';
 import test from 'ava';
-
-import { mount } from '../../../tests/helpers/enzyme';
+import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
 import DrawerContainer from './drawer-container';
-import MainContent from './main-content';
-import DrawerContent from './drawer-content';
 
-const props = {
-  drawerContent: <DrawerContent>Test</DrawerContent>,
-  mainContent: <MainContent>Test</MainContent>,
-  backdropEnabled: false,
-  isNarrow: false,
-  opened: false,
-  className: '',
-  drawerPosition: 'left',
-  onBackdropPress: () => {},
-  onTransitionEnd: () => {},
-};
+const {
+  MainContent,
+  DrawerContent,
+} = DrawerContainer;
 
-test('should render div with the class of drawer', (t) => {
-  const wrapper = mount(<DrawerContainer {...props} />);
-
-  t.deepEqual(wrapper.find('.drawer').length, 1);
+test('should throw an error if no MainContent child is passed', (t) => {
+  t.throws(() => shallow(
+    <DrawerContainer>
+      <div />
+    </DrawerContainer>,
+  ));
 });
 
-test('should an element when the backdrop is enabled', (t) => {
-  const wrapper = mount(
-    <DrawerContainer
-      {...props}
-      backdropEnabled
-    />,
+test('should throw an error if 2 MainContent children are passed', (t) => {
+  t.throws(() => shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+      <MainContent>Test</MainContent>
+    </DrawerContainer>,
+  ));
+});
+
+test('should throw an error if no DrawerContent child is passed', (t) => {
+  t.throws(() => shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+    </DrawerContainer>,
+  ));
+});
+
+test('should throw an error if 2 DrawerContent children are passed', (t) => {
+  t.throws(() => shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+
+      <DrawerContent>Test</DrawerContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  ));
+});
+
+test('should add/remove an resize event listener when the components mounts/unmounts', (t) => {
+  const addEventListener = sinon.spy(window, 'addEventListener');
+  const removeEventListener = sinon.spy(window, 'removeEventListener');
+  const wrapper = shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
   );
 
-  t.deepEqual(wrapper.find('.drawer--backdrop').length, 1);
+  t.deepEqual(addEventListener.callCount, 1);
+
+  wrapper.unmount();
+
+  t.deepEqual(removeEventListener.callCount, 1);
 });
 
-test('should add a backdrop active class when the drawer is narrow and opened', (t) => {
-  const wrapper = mount(
-    <DrawerContainer
-      {...props}
-      backdropEnabled
-      isNarrow
-      opened
-    />,
+test('should change the state when the open/close method get\'s called', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
   );
+  const instance = wrapper.instance();
 
-  t.deepEqual(wrapper.find('.drawer--backdrop-active').length, 1);
+  instance.open();
+
+  t.deepEqual(wrapper.state('opened'), true);
+
+  instance.handleTransitionEnd();
+
+  instance.close();
+
+  t.deepEqual(wrapper.state('opened'), false);
 });
 
-test('should add add a drawer-content-narrow class when the drawer is narrow', (t) => {
-  const wrapper = mount(
-    <DrawerContainer
-      {...props}
-      isNarrow
-    />,
+test('should toggle the state when the toggle method get\'s called', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
   );
+  const instance = wrapper.instance();
 
-  t.deepEqual(wrapper.find('.drawer--drawer-content-narrow').length, 1);
+  instance.toggle();
+
+  t.deepEqual(wrapper.state('opened'), true);
 });
 
-test('should add add a class when the drawer is narrow and opened', (t) => {
-  const wrapper = mount(
-    <DrawerContainer
-      {...props}
-      isNarrow
-      opened
-    />,
+test('should update the narrow state when the window resizes', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
   );
+  const instance = wrapper.instance();
 
-  t.deepEqual(wrapper.find('.drawer--drawer-content-narrow-opened').length, 1);
+  instance.handleResize();
+
+  window.innerWidth = DrawerContainer.defaultProps.responsiveWidth - 1;
+
+  instance.handleResize();
+
+  t.deepEqual(wrapper.state('isNarrow'), true);
 });
 
+test('should not close the drawer when the prop closeOnBackdropClick is false', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer closeOnBackdropClick={false}>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleBackdropPress();
+
+  t.deepEqual(wrapper.state('opened'), true);
+});
+
+test('should not close the drawer when the backdrop hasn\'t finished transitioning', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleBackdropPress();
+
+  t.deepEqual(wrapper.state('opened'), true);
+});
+
+test('should close the drawer when the backdrop has finished transitioning and is clicked', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleTransitionEnd();
+
+  instance.handleBackdropPress();
+
+  t.deepEqual(wrapper.state('opened'), false);
+});
+
+test('should not close the drawer when the drawer is still opening', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.close();
+
+  t.deepEqual(wrapper.state('opened'), true);
+});
+
+test('should not open the drawer when the drawer is still closing', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.handleTransitionEnd();
+
+  instance.close();
+
+  instance.open();
+
+  t.deepEqual(wrapper.state('opened'), false);
+});
+
+test('should not toggle the drawer when the animation hasn\'t finished', (t) => {
+  const wrapper = shallow(
+    <DrawerContainer closeOnBackdropClick>
+      <MainContent>Test</MainContent>
+      <DrawerContent>Test</DrawerContent>
+    </DrawerContainer>,
+  );
+  const instance = wrapper.instance();
+
+  instance.open();
+
+  instance.toggle();
+
+  t.deepEqual(wrapper.state('opened'), true);
+});

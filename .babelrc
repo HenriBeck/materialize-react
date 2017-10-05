@@ -15,6 +15,7 @@
   "plugins": [
     ["transform-object-rest-spread", { "useBuiltIns": true }],
     "transform-class-properties",
-    "transform-export-extensions"
+    "transform-export-extensions",
+    "external-helpers"
   ]
 }

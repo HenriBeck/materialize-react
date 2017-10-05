@@ -3,7 +3,7 @@ import {
   shallow as eShallow,
 } from 'enzyme';
 
-import { compileTheme } from '../../src/styles/theme/theme';
+import variables from '../../src/components/theme/variables';
 
 /**
  * Get the simulated context.
@@ -14,7 +14,12 @@ import { compileTheme } from '../../src/styles/theme/theme';
 function getContext(options) {
   return {
     __THEMING__: {
-      getState: () => compileTheme({}, {}),
+      getState() {
+        return {
+          type: options.themeType || 'light',
+          ...variables[options.themeType || 'light'],
+        };
+      },
       subscribe: () => {},
     },
     ...options.context,

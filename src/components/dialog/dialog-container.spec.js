@@ -8,22 +8,13 @@ import createClassesFromStyles from '../../../tests/helpers/create-classes-from-
 
 import DialogContainerWrapper, { DialogContainer } from './dialog-container';
 
+const context = {
+  dialogController: {
+    initiateContainer: () => {},
+    removeContainer: () => {},
+  },
+};
 const classes = createClassesFromStyles(DialogContainer.styles);
-
-/**
- * Simulate the context for the DialogContainer.
- *
- * @returns {Object} - Returns the context.
- */
-function getContext() {
-  return {
-    dialogController: {
-      initiateContainer: sinon.spy(),
-      removeContainer: sinon.spy(),
-    },
-  };
-}
-
 const dialog = { component: () => null };
 
 test('should render a DialogContainer', (t) => {
@@ -32,19 +23,39 @@ test('should render a DialogContainer', (t) => {
   t.deepEqual(wrapper.find('DialogContainer').length, 1);
 });
 
-test('should initiate the controller on mount and remove it on unmount', (t) => {
-  const context = getContext();
-  const wrapper = mount(<DialogContainer classes={classes} />, { context });
+test('should initiate the container when it mounts', (t) => {
+  const spy = sinon.spy();
 
-  t.deepEqual(context.dialogController.initiateContainer.callCount, 1);
+  mount(<DialogContainer classes={classes} />, {
+    context: {
+      dialogController: {
+        initiateContainer: spy,
+        removeContainer: () => {},
+      },
+    },
+  });
+
+  t.deepEqual(spy.callCount, 1);
+});
+
+test('should remove the container when it unmounts', (t) => {
+  const spy = sinon.spy();
+  const wrapper = mount(<DialogContainer classes={classes} />, {
+    context: {
+      dialogController: {
+        initiateContainer: () => {},
+        removeContainer: spy,
+      },
+    },
+  });
 
   wrapper.unmount();
 
-  t.deepEqual(context.dialogController.removeContainer.callCount, 1);
+  t.deepEqual(spy.callCount, 1);
 });
 
 test('should update the state when the openDialog method get\'s called', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
+  const wrapper = mount(<DialogContainer classes={classes} />, { context });
   const instance = wrapper.instance();
 
   instance.openDialog(dialog);
@@ -52,8 +63,8 @@ test('should update the state when the openDialog method get\'s called', (t) => 
   t.deepEqual(wrapper.state('currentDialog'), dialog);
 });
 
-test('should throw an error if we open a dialog when one is already opened', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
+test('should throw an error if we try to open a dialog when one is already opened', (t) => {
+  const wrapper = mount(<DialogContainer classes={classes} />, { context });
   const instance = wrapper.instance();
 
   instance.openDialog(dialog);
@@ -61,8 +72,8 @@ test('should throw an error if we open a dialog when one is already opened', (t)
   t.throws(() => instance.openDialog(dialog));
 });
 
-test('should set the animatingOut state to true when the closeDialog method get\'s called', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
+test('should change the animatingOut state when the dialog is being closed', (t) => {
+  const wrapper = mount(<DialogContainer classes={classes} />, { context });
   const instance = wrapper.instance();
 
   instance.openDialog(dialog);
@@ -72,16 +83,35 @@ test('should set the animatingOut state to true when the closeDialog method get\
   t.deepEqual(wrapper.state('animatingOut'), true);
 });
 
-test('should throw an error when the closeDialog method get\'s called with no open dialog', (t) => {
-  const context = getContext();
+test('should set the isAnimatedIn prop when the animation finishes', (t) => {
   const wrapper = mount(<DialogContainer classes={classes} />, { context });
   const instance = wrapper.instance();
 
-  t.throws(() => instance.closeDialog());
+  instance.handleAnimationEnd();
+
+  t.deepEqual(instance.isAnimatedIn, true);
 });
 
-test('should close the dialog when the backdrop is clicked', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
+test('should reset the state when the dialog is animating out and the animation finishes', (t) => {
+  const wrapper = mount(<DialogContainer classes={classes} />, { context });
+  const instance = wrapper.instance();
+  const onClose = sinon.spy();
+
+  instance.openDialog({
+    ...dialog,
+    onClose,
+  });
+
+  instance.closeDialog();
+
+  instance.handleAnimationEnd();
+
+  t.deepEqual(onClose.callCount, 1);
+  t.deepEqual(wrapper.state('currentDialog'), null);
+});
+
+test('should close the dialog when the backdrop is pressed and the dialog is animated in', (t) => {
+  const wrapper = mount(<DialogContainer classes={classes} />, { context });
   const instance = wrapper.instance();
   const spy = sinon.spy(instance, 'closeDialog');
 
@@ -97,8 +127,8 @@ test('should close the dialog when the backdrop is clicked', (t) => {
   t.deepEqual(spy.callCount, 1);
 });
 
-test('should not close the dialog when the closeOnOutsideClick prop is false', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
+test('should not close the dialog when the closeOnOutsideClick property is false', (t) => {
+  const wrapper = mount(<DialogContainer classes={classes} />, { context });
   const instance = wrapper.instance();
   const spy = sinon.spy(instance, 'closeDialog');
 
@@ -110,43 +140,4 @@ test('should not close the dialog when the closeOnOutsideClick prop is false', (
   instance.handleBackdropPress();
 
   t.deepEqual(spy.callCount, 0);
-});
-
-test('should add the dialog--backdrop-active class when the opened dialog has a backdrop', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-
-  instance.openDialog({
-    ...dialog,
-    backdrop: true,
-  });
-
-  t.deepEqual(wrapper.find('.dialog--backdrop-active').length, 1);
-});
-
-test('should reset the state when the animation finishes and call the onClose callback', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-  const onClose = sinon.spy();
-
-  instance.openDialog(Object.assign({}, dialog, { onClose }));
-
-  instance.handleAnimationEnd();
-
-  instance.closeDialog();
-
-  instance.handleAnimationEnd();
-
-  t.deepEqual(wrapper.state('currentDialog'), null);
-  t.deepEqual(wrapper.state('animatingOut'), false);
-  t.deepEqual(onClose.callCount, 1);
-});
-
-test('should not render a backdrop when the dialog is fullscreen', (t) => {
-  const wrapper = mount(<DialogContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-
-  instance.openDialog(Object.assign({}, dialog, { fullscreen: true }));
-
-  t.deepEqual(wrapper.find('EventHandler').length, 0);
 });

@@ -125,11 +125,3 @@ export const code2 = {
   fontWeight: 700,
   lineHeight: 20 / 14,
 };
-
-export const label = {
-  ...commonBase,
-  ...noWrap,
-  fontSize: 12,
-  fontWeight: 400,
-  lineHeight: 16 / 12,
-};

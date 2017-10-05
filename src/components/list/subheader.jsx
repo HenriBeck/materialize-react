@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import { commonBase } from '../../styles/typography';
+import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -17,7 +17,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name for the subheader.
  * @returns {JSX} - Returns the JSX.
  */
-export function ListSubheader({
+export function Subheader({
   classes,
   children,
   inset,
@@ -27,48 +27,46 @@ export function ListSubheader({
   return (
     <li
       className={`${classes.subheader} ${inset ? classes.inset : ''} ${className}`}
-      {...getNotDeclaredProps(props, ListSubheader)}
+      {...getNotDeclaredProps(props, Subheader)}
     >
       {children}
     </li>
   );
 }
 
-ListSubheader.propTypes = {
+Subheader.propTypes = {
   classes: PropTypes.shape({ subheader: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   inset: PropTypes.bool,
   className: PropTypes.string,
 };
 
-ListSubheader.defaultProps = {
+Subheader.defaultProps = {
   inset: false,
   className: '',
 };
 
-ListSubheader.styles = ({ list: theme }) => {
+Subheader.styles = (theme) => {
   return {
     subheader: {
       composes: 'list--subheader',
-      ...commonBase,
-      height: theme.item.minHeight,
+      ...body1,
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      paddingLeft: theme.item.horizontalPadding,
-      paddingRight: theme.item.horizontalPadding,
-      paddingTop: theme.item.oneLineVerticalPadding,
-      paddingBottom: theme.item.oneLineVerticalPadding,
-      color: theme.subheader.color,
-      fontSize: theme.subheader.fontSize,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 16,
+      paddingBottom: 16,
+      color: theme.secondaryTextColor,
       lineHeight: '16px',
     },
 
     inset: {
       composes: 'list--subheader-inset',
-      paddingLeft: theme.insetWidth,
+      paddingLeft: 72,
     },
   };
 };
 
-export default injectSheet(ListSubheader.styles)(ListSubheader);
+export default injectSheet(Subheader.styles)(Subheader);

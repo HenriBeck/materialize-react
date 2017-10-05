@@ -1,1 +1,1 @@
-export default from './tabs';
+export default from './tabs-container';

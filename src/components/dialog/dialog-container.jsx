@@ -54,7 +54,7 @@ export class DialogContainer extends PureComponent {
    * @param {Object} theme.dialog - The actual theme for the dialog component.
    * @returns {Object} - Returns the styles.
    */
-  static styles({ dialog: theme }) {
+  static styles(theme) {
     return {
       '@keyframes dialog--animate-in': {
         from: { opacity: 0 },
@@ -83,7 +83,7 @@ export class DialogContainer extends PureComponent {
         alignItems: 'center',
         justifyContent: 'center',
         transform: 'scale(1)',
-        zIndex: theme.zIndex,
+        zIndex: theme.zIndexes.dialog,
         padding: 32,
 
         [breakpoints.up('tablet')]: { padding: 64 },
@@ -98,21 +98,23 @@ export class DialogContainer extends PureComponent {
         composes: 'dialog--backdrop',
         ...position('absolute', '0', '0', '0', '0'),
         opacity: 0,
+        transform: 'scale(0)',
         backgroundColor: theme.backdropColor,
-        transition: `opacity ${theme.animationDuration}ms linear`,
+        transition: 'opacity 140ms',
       },
 
       backdropActive: {
         composes: 'dialog--backdrop-active',
         opacity: 1,
+        transform: 'scale(1)',
       },
 
       dialog: {
         composes: 'dialog',
-        backgroundColor: theme.backgroundColor,
-        borderRadius: theme.borderRadius,
-        boxShadow: elevation(theme.elevation),
-        animationDuration: theme.animationDuration,
+        backgroundColor: theme.sheetColor,
+        borderRadius: 2,
+        boxShadow: elevation(24),
+        animationDuration: 240,
         animationFillMode: 'forwards',
         opacity: 0,
       },
@@ -152,16 +154,14 @@ export class DialogContainer extends PureComponent {
    * The callback for when a dialog should be opened.
    *
    * @param {Object} dialog - The dialog object.
-   * @returns {Boolean} - Returns whether or not the dialog will be opened.
+   * @returns {Null} - Returns nothing.
    */
   openDialog = (dialog) => {
     if (this.state.currentDialog) {
       return warning(false, 'There is already a dialog currently opened!');
     }
 
-    this.setState({ currentDialog: dialog });
-
-    return true;
+    return this.setState({ currentDialog: dialog });
   };
 
   /**
@@ -176,7 +176,7 @@ export class DialogContainer extends PureComponent {
         return { animatingOut: true };
       }
 
-      return warning(false, 'There is currently no open dialog! This action will have no effect');
+      return null;
     });
   };
 
@@ -220,15 +220,11 @@ export class DialogContainer extends PureComponent {
       className,
       ...props
     } = this.props;
-    const { currentDialog } = this.state;
-    const classNames = classnames(
-      classes.dialogContainer,
-      className,
-      { [classes.hideContainer]: !currentDialog },
-    );
-
+    const {
+      currentDialog,
+      animatingOut,
+    } = this.state;
     let dialog = null;
-    let backdrop = null;
 
     if (currentDialog) {
       const Element = currentDialog.component;
@@ -237,7 +233,7 @@ export class DialogContainer extends PureComponent {
         currentDialog.fullscreen && classes.fullscreenDialog,
         currentDialog.className,
       );
-      let name = this.state.animatingOut ? 'animateOut' : 'animateIn';
+      let name = animatingOut ? 'animateOut' : 'animateIn';
 
       if (currentDialog.fullscreen) {
         name += 'Fullscreen';
@@ -256,30 +252,31 @@ export class DialogContainer extends PureComponent {
           />
         </div>
       );
-
-      if (!currentDialog.fullscreen) {
-        const backdropClasses = classnames(
-          classes.backdrop,
-          { [classes.backdropActive]: currentDialog.backdrop && !this.state.animatingOut },
-        );
-
-        backdrop = (
-          <EventHandler
-            component="span"
-            className={backdropClasses}
-            onPress={this.handleBackdropPress}
-          />
-        );
-      }
     }
+
+    const hasBackdrop = currentDialog
+      ? (currentDialog.backdrop && !currentDialog.fullscreen)
+      : false;
 
     return (
       <div
-        aria-modal
-        className={classNames}
+        aria-modal="true"
+        className={classnames(
+          classes.dialogContainer,
+          className,
+          { [classes.hideContainer]: !currentDialog },
+        )}
         {...getNotDeclaredProps(props, DialogContainer)}
       >
-        {backdrop}
+        <EventHandler
+          component="span"
+          className={classnames(
+            classes.backdrop,
+            { [classes.backdropActive]: hasBackdrop && !animatingOut },
+          )}
+          onPress={this.handleBackdropPress}
+        />
+
         {dialog}
       </div>
     );

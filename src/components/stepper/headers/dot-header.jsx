@@ -26,21 +26,21 @@ export class DotHeader extends PureComponent {
    * @param {Object} theme.stepper - The actual stepper theme.
    * @returns {Object} - Returns the styles object.
    */
-  static styles({ stepper: theme }) {
+  static styles(theme) {
     return {
       dot: {
         composes: 'stepper--header-dots-dot',
-        width: theme.headers.dots.dotSize,
-        height: theme.headers.dots.dotSize,
+        width: 8,
+        height: 8,
         borderRadius: '50%',
-        backgroundColor: theme.headers.dots.inactiveColor,
-        margin: theme.headers.dots.margin,
-        transition: `background-color ${theme.transitionDuration}ms linear`,
+        backgroundColor: theme.disabledColor,
+        margin: 4,
+        transition: 'background-color 200ms',
       },
 
       activeDot: {
         composes: 'stepper--header-dots-dot-active',
-        backgroundColor: theme.headers.dots.activeColor,
+        backgroundColor: theme.primaryBase,
       },
     };
   }

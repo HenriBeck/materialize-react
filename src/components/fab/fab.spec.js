@@ -13,8 +13,8 @@ const classes = createClassesFromStyles(Fab.styles);
 test('should render a button', (t) => {
   const wrapper = mount(<FabWrapper icon="build" />);
 
-  t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
   t.deepEqual(wrapper.find('Jss(Fab)').length, 1);
+  t.deepEqual(wrapper.find('EventHandler.fab').length, 1);
 });
 
 test('should warn against changing the icon and mini prop', (t) => {
@@ -39,22 +39,9 @@ test('should animate the fab in', (t) => {
       classes={classes}
     />,
   );
-  const root = wrapper.find({ role: 'button' });
+  const root = wrapper.find('EventHandler');
 
   t.true(root.prop('className').includes('fab--animate-in'));
-});
-
-test('should set the aria-disabled attribute on the root node', (t) => {
-  const wrapper = shallow(
-    <Fab
-      disabled
-      icon="build"
-      classes={classes}
-    />,
-  );
-  const root = wrapper.find({ role: 'button' });
-
-  t.deepEqual(root.prop('aria-disabled'), true);
 });
 
 test('should update the shadow when the fab receives / loses focus', (t) => {
@@ -63,11 +50,11 @@ test('should update the shadow when the fab receives / loses focus', (t) => {
 
   wrapper.simulate('focus');
 
-  t.deepEqual(shadow.node.style.opacity, '1');
+  t.deepEqual(shadow.getDOMNode().style.opacity, '1');
 
   wrapper.simulate('blur');
 
-  t.deepEqual(shadow.node.style.opacity, '0');
+  t.deepEqual(shadow.getDOMNode().style.opacity, '0');
 });
 
 test('should only call onPress when a key event happens with a valid keyCode', (t) => {

@@ -19,10 +19,10 @@ const defaultProps = {
   onFinish: () => {},
 };
 
-test('should render an element with the class of wave', (t) => {
+test('should render a span with the class of wave', (t) => {
   const wrapper = mount(<Wave {...defaultProps} />);
 
-  t.deepEqual(wrapper.find('.wave').length, 1);
+  t.deepEqual(wrapper.find('span.wave').length, 1);
 });
 
 test('animate the wave out', (t) => {
@@ -30,7 +30,7 @@ test('animate the wave out', (t) => {
 
   wrapper.setProps({ animatingOut: true });
 
-  t.deepEqual(wrapper.find('.wave').prop('style').opacity, 0);
+  t.deepEqual(wrapper.find('span.wave').prop('style').opacity, 0);
 });
 
 test('should call the onFinish handler', (t) => {

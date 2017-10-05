@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
-import { easeInOutCubic } from '../../styles/timings';
+
+const containerRotationDuration = 1568;
+const fullCycleDuration = 5332;
+const expandContractDuration = 1333;
 
 /**
  * A material design spinner.
@@ -34,10 +37,9 @@ export class Spinner extends PureComponent {
    * The styles for the component.
    *
    * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.spinner - The actual theme for the spinner component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ spinner: theme }) {
+  static styles(theme) {
     return {
       '@keyframes spinner--container-rotate': { to: { transform: 'rotate(360deg)' } },
 
@@ -68,12 +70,12 @@ export class Spinner extends PureComponent {
         composes: 'spinner',
         display: 'inline-block',
         position: 'relative',
-        width: theme.size,
-        height: theme.size,
+        width: 64,
+        height: 64,
         padding: 8,
         boxSizing: 'border-box',
         opacity: 0,
-        transition: `opacity ${theme.fadeInOutDuration / 2}ms ${easeInOutCubic}`,
+        transition: 'opacity 200ms',
 
         '&.spinner--active $container': { animationName: 'spinner--container-rotate' },
 
@@ -89,9 +91,8 @@ export class Spinner extends PureComponent {
         width: '100%',
         height: '100%',
         direction: 'ltr',
-        animationDuration: `${theme.containerRotationDuration}ms`,
+        animationDuration: containerRotationDuration,
         animationIterationCount: 'infinite',
-        animationTimingFunction: 'linear',
       },
 
       layer: {
@@ -102,8 +103,8 @@ export class Spinner extends PureComponent {
         whiteSpace: 'nowrap',
         animationTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
         animationIterationCount: 'infinite',
-        animationDuration: theme.fullCycleDuration,
-        borderColor: theme.color,
+        animationDuration: fullCycleDuration,
+        borderColor: theme.primaryBase,
 
         '&::after': {
           content: '""',
@@ -115,7 +116,7 @@ export class Spinner extends PureComponent {
           left: '45%',
           width: '10%',
           borderTopStyle: 'solid',
-          borderWidth: theme.strokeWidth,
+          borderWidth: 4,
         },
       },
 
@@ -141,8 +142,8 @@ export class Spinner extends PureComponent {
           borderBottomColor: 'transparent',
           animationTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
           animationIterationCount: 'infinite',
-          borderWidth: theme.strokeWidth,
-          animationDuration: theme.expandContractDuration,
+          borderWidth: 4,
+          animationDuration: expandContractDuration,
         },
       },
 
@@ -168,6 +169,11 @@ export class Spinner extends PureComponent {
     };
   }
 
+  state = {
+    active: false,
+    opacity: 0,
+  };
+
   /**
    * Fade the spinner in if the active prop is passed.
    */
@@ -180,9 +186,9 @@ export class Spinner extends PureComponent {
   /**
    * Fade the spinner in/out when the active prop changes.
    */
-  componentDidUpdate(prevProps) {
-    if (prevProps.active !== this.props.active) {
-      if (this.props.active) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.active !== this.props.active) {
+      if (nextProps.active) {
         this.fadeIn();
       } else {
         this.fadeOut();
@@ -190,7 +196,7 @@ export class Spinner extends PureComponent {
     }
   }
 
-  removeActiveClass = false;
+  isAnimatingOut = false;
 
   /**
    * Fade the spinner in.
@@ -198,9 +204,10 @@ export class Spinner extends PureComponent {
    * @private
    */
   fadeIn() {
-    this.root.classList.add('spinner--active');
-
-    this.root.style.opacity = 1;
+    this.setState({
+      active: true,
+      opacity: 1,
+    });
   }
 
   /**
@@ -209,9 +216,9 @@ export class Spinner extends PureComponent {
    * @private
    */
   fadeOut() {
-    this.removeActiveClass = true;
+    this.isAnimatingOut = true;
 
-    this.root.style.opacity = 0;
+    this.setState({ opacity: 0 });
   }
 
   /**
@@ -219,10 +226,10 @@ export class Spinner extends PureComponent {
    * and remove the .spinner--active class.
    */
   handleTransitionEnd = () => {
-    if (this.removeActiveClass) {
-      this.removeActiveClass = false;
+    if (this.isAnimatingOut) {
+      this.isAnimatingOut = false;
 
-      this.root.classList.remove('spinner--active');
+      this.setState({ active: false });
     }
   };
 
@@ -232,13 +239,17 @@ export class Spinner extends PureComponent {
       className,
       ...props
     } = this.props;
+    const {
+      active,
+      opacity,
+    } = this.state;
 
     return (
       <div
         {...getNotDeclaredProps(props, Spinner)}
         role="presentation"
-        className={`${classes.spinner} ${className}`}
-        ref={(element) => { this.root = element; }}
+        className={`${classes.spinner} ${active && 'spinner--active'} ${className}`}
+        style={{ opacity }}
         onTransitionEnd={this.handleTransitionEnd}
       >
         <div className={classes.container}>

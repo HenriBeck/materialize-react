@@ -26,7 +26,7 @@ function getContext() {
 const classes = createClassesFromStyles(SnackbarContainer.styles);
 
 test('should render a Jss HoC', (t) => {
-  const wrapper = shallow(<SnackbarContainerWrapper />);
+  const wrapper = shallow(<SnackbarContainerWrapper />, { themeType: 'dark' });
 
   t.deepEqual(wrapper.find('SnackbarContainer').length, 1);
 });

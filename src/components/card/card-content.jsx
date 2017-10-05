@@ -39,19 +39,17 @@ CardContent.propTypes = {
 
 CardContent.defaultProps = { className: '' };
 
-CardContent.styles = ({ card: theme }) => {
-  return {
-    content: {
-      composes: 'card--content',
-      ...body1,
-      padding: `0 ${theme.content.horizontalPadding}px`,
-      margin: `${theme.content.verticalMargin}px 0`,
+CardContent.styles = {
+  content: {
+    composes: 'card--content',
+    ...body1,
+    padding: '0 16px',
+    margin: '16px 0',
 
-      '&:last-child': { marginBottom: theme.content.bottomMarginForLastChild },
+    '&:last-child': { marginBottom: 24 },
 
-      [breakpoints.up('tablet')]: { padding: `0 ${theme.content.tabletHorizontalPadding}px` },
-    },
-  };
+    [breakpoints.up('tablet')]: { padding: '0 24px' },
+  },
 };
 
 export default injectSheet(CardContent.styles)(CardContent);

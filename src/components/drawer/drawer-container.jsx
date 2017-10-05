@@ -1,192 +1,202 @@
-import React from 'react';
+import React, {
+  PureComponent,
+  Children,
+} from 'react';
 import PropTypes from 'prop-types';
-import injectSheet from 'react-jss';
-import classnames from 'classnames';
 
-import { easeInOutQuad } from '../../styles/timings';
-import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
+import Drawer from './drawer';
+import DrawerContent from './drawer-content';
+import MainContent from './main-content';
+
 /**
- * The container for the component. This is will render all the dom elements
- * and apply the correct classes.
+ * A component which will render a SideNav and some content.
  *
- * @param {Object} props - The props for the component.
- * @param {Object} props.classes - Classnames provided by Jss.
- * @param {JSX} props.drawerContent - The content for the drawer.
- * @param {JSX} props.mainContent - The content for the always visible main area.
- * @param {Boolean} props.backdropEnabled - Whether or not it should fade in a backdrop
- * when the drawer is in narrow mode and opened.
- * @param {Boolean} props.isNarrow - Whether or not the drawer is currently in narrow mode.
- * @param {Boolean} props.opened - Whether or not the drawer is opened.
- * Only applies when the drawer is also in narrow mode.
- * @param {Function} props.onBackdropPress - A callback to when the backdrop is pressed.
- * @param {String} props.drawerPosition - The position of the drawer. Either left or right.
- * @param {String} props.className - An additional class name for the root component.
- * @param {Function} props.onTransitionEnd - When the transition of the backdrop has finished.
- * @returns {JSX} - Returns the jsx for the drawer.
+ * @class
  */
-export function DrawerContainer({
-  classes,
-  drawerContent,
-  mainContent,
-  backdropEnabled,
-  isNarrow,
-  opened,
-  className,
-  drawerPosition,
-  onBackdropPress,
-  onTransitionEnd,
-  ...props
-}) {
-  const rootClassName = classnames(
-    classes.drawer,
-    { 'drawer--position-right': drawerPosition === 'right' },
-    className,
-  );
-  const drawerContentClassName = classnames(classes.drawerContent, {
-    [classes.drawerContentNarrow]: isNarrow,
-    [classes.drawerContentNarrowOpened]: isNarrow && opened,
-  }, drawerContent.props.className);
-  const mainContentClassName = classnames(
-    classes.mainContent,
-    { [classes.mainContentNarrow]: isNarrow },
-    mainContent.props.className,
-  );
-  const backdropClassName = classnames(
-    classes.backdrop,
-    { [classes.backdropActive]: backdropEnabled && isNarrow && opened },
-  );
+export default class DrawerContainer extends PureComponent {
+  static propTypes = {
+    children(props) {
+      const children = Children.toArray(props.children);
+      const contentElements = DrawerContainer.getMainContent(children);
+      const drawerElements = DrawerContainer.getDrawerContent(children);
+      const missingElementMessage = elem => `Missing ${elem} element inside Drawer component`;
+      const multipleElementsMessage = elem => `Multiple ${elem} elements are not supported`;
 
-  return (
-    <div
-      {...getNotDeclaredProps(props, DrawerContainer)}
-      className={rootClassName}
-    >
-      {React.cloneElement(drawerContent, { className: drawerContentClassName })}
+      if (contentElements.length !== 1) {
+        return contentElements.length === 0
+          ? new Error(missingElementMessage('MainContent'))
+          : new Error(multipleElementsMessage('MainContent'));
+      }
 
-      {React.cloneElement(mainContent, { className: mainContentClassName })}
+      if (drawerElements.length !== 1) {
+        return drawerElements.length === 0
+          ? new Error(missingElementMessage('DrawerContent'))
+          : new Error(multipleElementsMessage('DrawerContent'));
+      }
 
-      {backdropEnabled && (
-        <EventHandler
-          component="span"
-          className={backdropClassName}
-          onPress={onBackdropPress}
-          onTransitionEnd={onTransitionEnd}
-        />
-      )}
-    </div>
-  );
-}
-
-DrawerContainer.propTypes = {
-  classes: PropTypes.shape({
-    drawer: PropTypes.string.isRequired,
-    drawerContent: PropTypes.string.isRequired,
-    mainContent: PropTypes.string.isRequired,
-    backdrop: PropTypes.string.isRequired,
-  }).isRequired,
-  drawerContent: PropTypes.node.isRequired,
-  mainContent: PropTypes.node.isRequired,
-  backdropEnabled: PropTypes.bool.isRequired,
-  isNarrow: PropTypes.bool.isRequired,
-  opened: PropTypes.bool.isRequired,
-  className: PropTypes.string.isRequired,
-  drawerPosition: PropTypes.string.isRequired,
-  onBackdropPress: PropTypes.func.isRequired,
-  onTransitionEnd: PropTypes.func.isRequired,
-};
-
-DrawerContainer.styles = ({ drawer: theme }) => {
-  return {
-    drawer: {
-      composes: 'drawer',
-      position: 'relative',
-      height: '100%',
-      width: '100%',
-      overflow: 'hidden',
-
-      // Drawer position right styles
-      '&.drawer--position-right $mainContent': {
-        paddingLeft: 0,
-        paddingRight: theme.drawerWidth,
-      },
-
-      '&.drawer--position-right $drawerContent': {
-        left: 'auto',
-        right: -theme.drawerWidth,
-        transform: 'translateX(-100%)',
-      },
-
-      '&.drawer--position-right.drawer--narrow-mode $drawerContent': { transform: 'translateX(0)' },
-
-      // eslint-disable-next-line max-len
-      '&.drawer--position-right.drawer--narrow-mode.drawer--opened $drawerContent': { transform: 'translateX(-100%)' },
-
-      '&.drawer--position-right.drawer--narrow-mode $mainContent': { paddingRight: 0 },
+      return null;
     },
-
-    drawerContent: {
-      composes: 'drawer--drawer-content',
-      height: '100%',
-      display: 'inline',
-      position: 'absolute',
-      boxSizing: 'border-box',
-      backgroundColor: theme.drawerBgColor,
-      top: 0,
-      left: -theme.drawerWidth,
-      bottom: 0,
-      width: theme.drawerWidth,
-      transform: 'translateX(100%)',
-      willChange: 'transform',
-      transition: `transform ${theme.transitionDuration}ms ${easeInOutQuad}`,
-    },
-
-    drawerContentNarrow: {
-      composes: 'drawer--drawer-content-narrow',
-      transform: 'translateX(0)',
-      zIndex: theme.drawerZIndex,
-    },
-
-    drawerContentNarrowOpened: {
-      composes: 'drawer--drawer-content-narrow-opened',
-      transform: 'translateX(100%)',
-    },
-
-    mainContent: {
-      composes: 'drawer--main-content',
-      boxSizing: 'border-box',
-      width: '100%',
-      height: '100%',
-      paddingLeft: theme.drawerWidth,
-    },
-
-    mainContentNarrow: {
-      composes: 'drawer--main-content-narrow',
-      paddingLeft: 0,
-    },
-
-    backdrop: {
-      composes: 'drawer--backdrop',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: theme.backdropBgColor,
-      zIndex: theme.backdropZIndex,
-      opacity: 0,
-      transform: 'scale(0)',
-      willChange: 'opacity',
-      transition: `opacity ${theme.transitionDuration}ms ${easeInOutQuad}`,
-    },
-
-    backdropActive: {
-      composes: 'drawer--backdrop-active',
-      opacity: theme.backdropActiveOpacity,
-      transform: 'scale(1)',
-    },
+    responsiveWidth: PropTypes.number,
+    className: PropTypes.string,
+    drawerPosition: PropTypes.oneOf(['left', 'right']),
+    onNarrowChange: PropTypes.func,
   };
-};
 
-export default injectSheet(DrawerContainer.styles)(DrawerContainer);
+  static defaultProps = {
+    children: '',
+    className: '',
+    responsiveWidth: 640,
+    drawerPosition: 'left',
+    onNarrowChange: () => {},
+  };
+
+  static MainContent = MainContent;
+  static DrawerContent = DrawerContent;
+
+  /**
+   * Get all the children which are the DrawerContent component.
+   *
+   * @param {JSX[]} elements - The elements as an array.
+   * @returns {JSX[]} - Returns the filtered elements.
+   */
+  static getDrawerContent(elements) {
+    return elements.filter(child => child.type === DrawerContent);
+  }
+
+  /**
+   * Get all the children which are the MainContent component.
+   *
+   * @param {JSX[]} elements - The elements as an array.
+   * @returns {JSX[]} - Returns the filtered elements.
+   */
+  static getMainContent(elements) {
+    return elements.filter(child => child.type === MainContent);
+  }
+
+  state = {
+    opened: false,
+    isNarrow: window.innerWidth < this.props.responsiveWidth,
+  };
+
+  /**
+   * Add a event listener to the resize event so we can change the narrow state.
+   *
+   * @private
+   */
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  /**
+   * Change the isAnimating property when the opened state has changed.
+   */
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.opened !== this.state.opened) {
+      this.isAnimating = true;
+    }
+  }
+
+  /**
+   * Remove the resize event handler.
+   *
+   * @private
+   */
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  isAnimating = false;
+
+  /**
+   * Open the SideNav when the drawer is in narrow mode.
+   */
+  open() {
+    if (this.isAnimating) {
+      return;
+    }
+
+    this.setState({ opened: true });
+  }
+
+  /**
+   * Close the SideNav when the drawer is in narrow mode.
+   */
+  close() {
+    if (this.isAnimating) {
+      return;
+    }
+
+    this.setState({ opened: false });
+  }
+
+  /**
+   * Toggle the open state of the drawer.
+   */
+  toggle() {
+    if (this.isAnimating) {
+      return;
+    }
+
+    this.setState(({ opened }) => {
+      return { opened: !opened };
+    });
+  }
+
+  /**
+   * Update the state whether or not the drawer is still in narrow mode.
+   *
+   * @private
+   */
+  handleResize = () => {
+    const isNarrow = window.innerWidth < this.props.responsiveWidth;
+
+    if (this.state.isNarrow !== isNarrow) {
+      this.setState({
+        isNarrow,
+        opened: false,
+      }, () => this.props.onNarrowChange(this.state.isNarrow));
+    }
+  };
+
+  /**
+   * Close the drawer upon backdrop press.
+   */
+  handleBackdropPress = () => {
+    this.close();
+  };
+
+  /**
+   * Toggle the backdropFinishedTransitioning when the backdrop finishes the transition.
+   * This fixes a bug we're on mobile the drawer would immediately close after opening it
+   * because the mouse event after the touch event would fire on the backdrop
+   * and not the actual clicked element.
+   */
+  handleTransitionEnd = () => {
+    this.isAnimating = false;
+  };
+
+  render() {
+    const children = Children.toArray(this.props.children);
+    const {
+      drawerPosition,
+      className,
+      ...props
+    } = this.props;
+
+    return (
+      <Drawer
+        {...getNotDeclaredProps(props, DrawerContainer)}
+        drawerContent={DrawerContainer.getDrawerContent(children)[0]}
+        mainContent={DrawerContainer.getMainContent(children)[0]}
+        className={className}
+        isNarrow={this.state.isNarrow}
+        opened={this.state.opened}
+        drawerPosition={drawerPosition}
+        onBackdropPress={this.handleBackdropPress}
+        onTransitionEnd={this.handleTransitionEnd}
+      />
+    );
+  }
+}

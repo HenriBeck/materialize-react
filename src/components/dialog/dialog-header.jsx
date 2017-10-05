@@ -38,17 +38,15 @@ DialogHeader.propTypes = {
 
 DialogHeader.defaultProps = { className: '' };
 
-DialogHeader.styles = ({ dialog: theme }) => {
-  return {
-    header: {
-      composes: 'dialog--header',
-      ...title,
-      padding: theme.padding,
-      paddingBottom: theme.headerBottomPadding,
-      width: '100%',
-      boxSizing: 'border-box',
-    },
-  };
+DialogHeader.styles = {
+  header: {
+    composes: 'dialog--header',
+    ...title,
+    padding: 24,
+    paddingBottom: 20,
+    width: '100%',
+    boxSizing: 'border-box',
+  },
 };
 
 export default injectSheet(DialogHeader.styles)(DialogHeader);

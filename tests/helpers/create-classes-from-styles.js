@@ -1,6 +1,4 @@
-import { compileTheme } from '../../src/styles/theme/theme';
-
-const defaultTheme = compileTheme({}, {});
+import variables from '../../src/components/theme/variables';
 
 /**
  * Create a classes object from the styles for testing purposes.
@@ -10,7 +8,7 @@ const defaultTheme = compileTheme({}, {});
  */
 export default function createClassesFromStyles(styles) {
   if (typeof styles === 'function') {
-    return createClassesFromStyles(styles(defaultTheme));
+    return createClassesFromStyles(styles(variables.light));
   }
 
   return Object

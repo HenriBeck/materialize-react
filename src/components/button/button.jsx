@@ -43,26 +43,17 @@ export class Button extends PureComponent {
     onBlur: () => {},
   };
 
-  static normalRippleProps = {
-    color: '#999999',
-    initialOpacity: 0.4,
-  };
-
-  static raisedRippleProps = {
-    focusColor: '#000000',
-    focusOpacity: 0.12,
-  };
-
   static keyCodes = [13, 32];
 
   /**
    * The styles for the component.
    *
    * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.button - The actual theme for the button component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ button: theme }) {
+  static styles(theme) {
+    const isDark = theme.type === 'dark';
+
     return {
       button: {
         ...buttonTypo,
@@ -80,33 +71,35 @@ export class Button extends PureComponent {
         borderRadius: 2,
         margin: '0 8px',
         cursor: 'pointer',
-        height: theme.height,
-        minWidth: theme.minWidth,
-        color: theme.color,
-        padding: theme.padding,
-        backgroundColor: theme.bgColor,
+        height: 36,
+        minWidth: 88,
+        color: theme.textColor,
+        padding: '0 8px',
 
         '&[aria-disabled=true]': {
           cursor: 'auto',
           pointerEvents: 'none',
           color: theme.disabledColor,
-          backgroundColor: theme.disabledBgColor,
         },
       },
 
       buttonRaised: {
         composes: 'button--raised',
-        backgroundColor: theme.raisedBgColor,
+        backgroundColor: isDark ? theme.primaryBase : null,
 
-        '&[aria-disabled=true]': { backgroundColor: theme.raisedAndDisabledBgColor },
-
-        '&[aria-disabled=false]': {
-          boxShadow: elevation(theme.elevation),
-
-          '&:hover': { boxShadow: elevation(theme.pressedElevation) },
+        '&[aria-disabled=true]': {
+          backgroundColor: isDark
+            ? 'rgba(255, 255, 255, 0.12)'
+            : 'rgba(0, 0, 0, 0.12)',
         },
 
-        '&[aria-pressed=true]': { boxShadow: elevation(theme.pressedElevation) },
+        '&[aria-disabled=false]': {
+          boxShadow: elevation(2),
+
+          '&:hover': { boxShadow: elevation(4) },
+        },
+
+        '&[aria-pressed=true]': { boxShadow: elevation(4) },
       },
     };
   }
@@ -134,7 +127,10 @@ export class Button extends PureComponent {
    * @returns {Object} - Returns the props.
    */
   get rippleProps() {
-    return this.props.raised ? Button.raisedRippleProps : Button.normalRippleProps;
+    return this.props.raised ? {
+      focusColor: '#000000',
+      focusOpacity: 0.12,
+    } : null;
   }
 
   /**

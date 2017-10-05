@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
-import { label } from '../../styles/typography';
+import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -51,16 +51,16 @@ Label.defaultProps = {
   disabled: false,
 };
 
-Label.styles = ({ label: theme }) => {
+Label.styles = (theme) => {
   return {
     label: {
-      ...label,
+      ...body1,
       composes: 'label',
       userSelect: 'none',
       padding: '0 8px',
-      color: theme.color,
+      color: theme.textColor,
 
-      '&[aria-disabled=true]': { color: theme.disabledColor },
+      '&[aria-disabled=true]': { color: theme.secondaryTextColor },
     },
   };
 };

@@ -1,7 +1,4 @@
-import {
-  PureComponent,
-  Children,
-} from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import warning from 'warning';
 
@@ -104,6 +101,6 @@ export default class SnackbarController extends PureComponent {
   };
 
   render() {
-    return Children.only(this.props.children);
+    return this.props.children;
   }
 }

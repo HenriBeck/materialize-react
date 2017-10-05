@@ -3,16 +3,21 @@ import { storiesOf } from '@storybook/react';
 
 import Toolbar from './toolbar';
 
+const style = { alignSelf: 'flex-start' };
+
 storiesOf('Toolbar', module)
   .add('Default styles', () => (
-    <Toolbar>
+    <Toolbar style={style}>
       <div className="row">
         Title
       </div>
     </Toolbar>
   ))
   .add('Medium tall', () => (
-    <Toolbar height="medium-tall">
+    <Toolbar
+      height="medium-tall"
+      style={style}
+    >
       <div className="row">
         Row 1
       </div>
@@ -23,7 +28,10 @@ storiesOf('Toolbar', module)
     </Toolbar>
   ))
   .add('Tall', () => (
-    <Toolbar height="tall">
+    <Toolbar
+      height="tall"
+      style={style}
+    >
       <div className="row">
         Row 1
       </div>
@@ -38,7 +46,10 @@ storiesOf('Toolbar', module)
     </Toolbar>
   ))
   .add('No shadow', () => (
-    <Toolbar noShadow>
+    <Toolbar
+      noShadow
+      style={style}
+    >
       <div>
         Title
       </div>

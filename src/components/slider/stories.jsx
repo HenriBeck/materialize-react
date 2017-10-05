@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import Slider from './slider';
+import Slider from './slider-container';
 
 const style = { width: 260 };
 

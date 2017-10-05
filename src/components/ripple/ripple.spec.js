@@ -5,7 +5,6 @@ import { mount } from 'enzyme';
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 import RippleWrapper, { Ripple } from './ripple';
-import Wave from './wave';
 
 test('should render a Jss HoC and a span with the ripple class', (t) => {
   const wrapper = mount(<RippleWrapper />);
@@ -23,9 +22,20 @@ test('should add a centered wave when the ripple is pressed', (t) => {
   );
   const instance = wrapper.instance();
 
+  instance.ripple.getBoundingClientRect = () => {
+    return {
+      width: 6,
+      height: 8,
+    };
+  };
+
   instance.handlePress();
 
-  t.deepEqual(wrapper.find(Wave).length, 1);
+  const wave = wrapper.state('waves')[0];
+
+  t.deepEqual(wrapper.state('waves').length, 1);
+  t.deepEqual(wave.style.left, -2);
+  t.deepEqual(wave.style.top, -1);
 });
 
 test('should add a wave when the ripple is pressed', (t) => {
@@ -37,7 +47,7 @@ test('should add a wave when the ripple is pressed', (t) => {
     y: 5,
   });
 
-  t.deepEqual(wrapper.find(Wave).length, 1);
+  t.deepEqual(wrapper.state('waves').length, 1);
 });
 
 test('should call startFadeOutAnimation on a wave when the handleRelease is called', (t) => {

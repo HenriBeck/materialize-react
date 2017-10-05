@@ -38,19 +38,19 @@ Divider.defaultProps = {
   vertical: false,
 };
 
-Divider.styles = ({ divider: theme }) => {
+Divider.styles = (theme) => {
   return {
     divider: {
       composes: 'divider',
-      height: theme.height,
+      height: 1,
       width: '100%',
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.dividerColor,
     },
 
     vertical: {
       composes: 'divider--vertical',
       height: '100%',
-      width: theme.height,
+      width: 1,
     },
   };
 };

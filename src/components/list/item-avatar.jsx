@@ -37,24 +37,24 @@ ListItemAvatar.propTypes = {
 
 ListItemAvatar.defaultProps = { className: '' };
 
-ListItemAvatar.styles = ({ list: theme }) => {
-  return {
-    avatar: {
-      composes: 'list--item-avatar',
-      minWidth: theme.item.avatar.size,
-      minHeight: theme.item.avatar.size,
-      paddingTop: theme.item.avatar.verticalPadding,
-      paddingBottom: theme.item.avatar.verticalPadding,
-      borderRadius: '50%',
+ListItemAvatar.styles = {
+  avatar: {
+    composes: 'list--item-avatar',
+    minWidth: 40,
+    minHeight: 40,
+    paddingTop: 8,
+    paddingBottom: 8,
+    position: 'relative',
+    borderRadius: '50%',
 
-      '& > *': {
-        width: '100%',
-        height: '100%',
-      },
-
-      '& > .icon:before': { fontSize: 40 },
+    '& > *': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
     },
-  };
+  },
 };
 
 export default injectSheet(ListItemAvatar.styles)(ListItemAvatar);

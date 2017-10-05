@@ -6,10 +6,10 @@ import elevation from '../../styles/elevation';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import breakpoints from '../../styles/breakpoints';
 
-import CardActions from './card-actions';
+import Actions from './card-actions';
 import CardContent from './card-content';
-import CardMedia from './card-media';
-import CardHeader from './card-header';
+import Media from './card-media';
+import Header from './card-header';
 
 /**
  * A component which renders a material design card.
@@ -44,27 +44,27 @@ Card.propTypes = {
 
 Card.defaultProps = { className: '' };
 
-Card.styles = ({ card: theme }) => {
+Card.styles = (theme) => {
   return {
     card: {
       overflow: 'hidden',
       composes: 'card',
       position: 'relative',
-      borderRadius: theme.borderRadius,
-      backgroundColor: theme.backgroundColor,
-      boxShadow: elevation(theme.elevation),
-      margin: theme.gutter,
+      borderRadius: 2,
+      backgroundColor: theme.sheetColor,
+      boxShadow: elevation(3),
+      margin: 8,
 
-      [breakpoints.only('tablet')]: { margin: theme.tabletGutter },
+      [breakpoints.only('tablet')]: { margin: 16 },
 
-      [breakpoints.only('desktop')]: { margin: theme.desktopGutter },
+      [breakpoints.only('desktop')]: { margin: 24 },
     },
   };
 };
 
-Card.Actions = CardActions;
+Card.Actions = Actions;
 Card.Content = CardContent;
-Card.Media = CardMedia;
-Card.Header = CardHeader;
+Card.Media = Media;
+Card.Header = Header;
 
 export default injectSheet(Card.styles)(Card);

@@ -3,10 +3,10 @@ import test from 'ava';
 
 import { mount } from '../../../tests/helpers/enzyme';
 
-import ListItem from './list-item';
+import Item from './item';
 
 test('should render a li with the class of list--item', (t) => {
-  const wrapper = mount(<ListItem inset={false}>Hello</ListItem>);
+  const wrapper = mount(<Item inset={false}>Hello</Item>);
   const li = wrapper.find('li');
 
   t.deepEqual(li.length, 1);
@@ -14,19 +14,19 @@ test('should render a li with the class of list--item', (t) => {
 });
 
 test('should render a span as the left item when the inset prop is passed', (t) => {
-  const wrapper = mount(<ListItem inset>Hello</ListItem>);
+  const wrapper = mount(<Item inset>Hello</Item>);
 
   t.deepEqual(wrapper.find('span.list--item-left-item').length, 1);
 });
 
 test('should render a span as the right item when the right item prop is passed', (t) => {
   const wrapper = mount(
-    <ListItem
+    <Item
       inset={false}
       rightItem="Right item"
     >
       Hello
-    </ListItem>,
+    </Item>,
   );
 
   t.deepEqual(wrapper.find('span.list--item-right-item').length, 1);
@@ -34,12 +34,12 @@ test('should render a span as the right item when the right item prop is passed'
 
 test('should render the secondary content inside the content when the prop is passed', (t) => {
   const wrapper = mount(
-    <ListItem
+    <Item
       inset={false}
       secondaryContent="Secondary"
     >
       Hello
-    </ListItem>,
+    </Item>,
   );
 
   t.deepEqual(

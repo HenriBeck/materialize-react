@@ -45,10 +45,9 @@ export class IconButton extends PureComponent {
    * The styles for the component.
    *
    * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.iconButton - The actual theme for the icon button component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ iconButton: theme }) {
+  static styles(theme) {
     return {
       iconButton: {
         composes: 'icon-button',
@@ -58,22 +57,22 @@ export class IconButton extends PureComponent {
         display: 'inline-block',
         outline: 0,
         border: 0,
-        height: theme.size,
-        width: theme.size,
-        margin: theme.margin,
-        padding: (theme.size - theme.iconSize) / 2,
+        height: 48,
+        width: 48,
+        margin: 4,
+        padding: 12,
 
         '&[aria-disabled=true]': { pointerEvents: 'none' },
       },
 
       icon: {
         composes: 'icon-button--icon',
-        fontSize: theme.iconSize,
+        fontSize: 24,
       },
 
       ripple: {
         composes: 'icon-button--ripple',
-        color: theme.rippleColor,
+        color: theme.iconColor,
       },
     };
   }

@@ -14,13 +14,6 @@ export const schema = PropTypes.shape({
 
   disabledThumbColor: PropTypes.string.isRequired,
   disabledTrackColor: PropTypes.string.isRequired,
-
-  thumbSize: PropTypes.number.isRequired,
-  thumbActiveSize: PropTypes.number.isRequired,
-  borderWidth: PropTypes.number.isRequired,
-  trackHeight: PropTypes.number.isRequired,
-  focusCircleSize: PropTypes.number.isRequired,
-  thumbDisabledSize: PropTypes.number.isRequired,
 }).isRequired;
 
 /**
@@ -42,12 +35,5 @@ export function defaultTheme(vars) {
 
     disabledThumbColor: grey400,
     disabledTrackColor: grey400,
-
-    thumbSize: 8,
-    thumbActiveSize: 12,
-    borderWidth: 2,
-    trackHeight: 3,
-    focusCircleSize: 32,
-    thumbDisabledSize: 6,
   };
 }
