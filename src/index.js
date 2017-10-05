@@ -1,4 +1,6 @@
 // Components
+import '../helpers';
+
 export Background from './components/background';
 export Button from './components/button';
 export Checkbox from './components/checkbox';
