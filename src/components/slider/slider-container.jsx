@@ -1,234 +1,196 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import injectSheet from 'react-jss';
-import classnames from 'classnames';
 
-import EventHandler from '../event-handler';
-import getNotDeclaredProps from '../../get-not-declared-props';
+import { getCoords } from '../ripple/utils';
+
+import Slider from './slider';
 
 /**
- * The actual renderer of the slider.
+ * The slider component.
  *
  * @class
  */
-export class SliderContainer extends PureComponent {
+export default class SliderContainer extends PureComponent {
   static propTypes = {
-    classes: PropTypes.shape({
-      slider: PropTypes.string.isRequired,
-      track: PropTypes.string.isRequired,
-      trackFocused: PropTypes.string.isRequired,
-      trackDisabled: PropTypes.string.isRequired,
-      thumb: PropTypes.string.isRequired,
-      thumbFocused: PropTypes.string.isRequired,
-      thumbActive: PropTypes.string.isRequired,
-      thumbDisabled: PropTypes.string.isRequired,
-      thumbActiveDisabled: PropTypes.string.isRequired,
-    }).isRequired,
-    className: PropTypes.string.isRequired,
-    onTrackPress: PropTypes.func.isRequired,
-    onThumbPress: PropTypes.func.isRequired,
-    onThumbRelease: PropTypes.func.isRequired,
-    onTouchMove: PropTypes.func.isRequired,
-    onMouseMove: PropTypes.func.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
-    onFocus: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
-    isFocused: PropTypes.bool.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    value: PropTypes.number.isRequired,
-    rootRef: PropTypes.func.isRequired,
-    translateX: PropTypes.number.isRequired,
-    theme: PropTypes.shape({}).isRequired,
-    disabled: PropTypes.bool.isRequired,
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
+    initialValue: PropTypes.number,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+    className: PropTypes.string,
+    min: PropTypes.number,
+    max: PropTypes.number,
+  };
+
+  static defaultProps = {
+    initialValue: 0,
+    disabled: false,
+    onChange: () => {},
+    className: '',
+    min: 0,
+    max: 100,
+  };
+
+  static keyCodes = {
+    37: -2,
+    38: 2,
+    39: 2,
+    40: -2,
+  };
+
+  state = {
+    value: this.clamp(this.props.initialValue),
+    isFocused: false,
+    isDragging: false,
+    translateX: 0,
   };
 
   /**
-   * The styles for the slider.
-   *
-   * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.slider - The actual theme object for the slider.
-   * @returns {Object} - Returns the styles for the component.
+   * Set the initial translateX state.
    */
-  static styles({ slider: theme }) {
-    return {
-      slider: {
-        composes: 'slider',
-        display: 'inline-block',
-        position: 'relative',
-        width: '100%',
-        height: theme.trackHeight,
-        margin: '20px 15px',
-
-        '&:focus': { outline: 0 },
-
-        '&[aria-disabled=true]': { pointerEvents: 'none' },
-      },
-
-      track: {
-        composes: 'slider--track',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: theme.trackColor,
-        transition: 'background-color 100ms linear',
-
-        '&::after': {
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          content: '""',
-          transformOrigin: 'left center',
-          backgroundColor: theme.trackActiveColor,
-          transform: props => `scaleX(${props.value / props.max})`,
-          transition: 'transform 100ms linear',
-        },
-      },
-
-      trackFocused: {
-        composes: 'slider--track-focused',
-        backgroundColor: theme.focusedTrackColor,
-      },
-
-      trackDisabled: {
-        composes: 'slider--track-disabled',
-        backgroundColor: theme.disabledTrackColor,
-
-        '&::after': { backgroundColor: 'transparent' },
-      },
-
-      thumb: {
-        composes: 'slider--thumb',
-        width: theme.thumbSize,
-        position: 'absolute',
-        top: (theme.trackHeight - theme.thumbSize - theme.borderWidth * 2) / 2,
-        bottom: (theme.trackHeight - theme.thumbSize - theme.borderWidth * 2) / 2,
-        left: -theme.thumbSize - theme.borderWidth * 2 + 0.5,
-        border: `solid ${theme.borderWidth}px`,
-        borderColor: theme.thumbBorderColor,
-        borderRadius: '50%',
-        cursor: 'drag',
-        transition: 'background-color, opacity, transform 100ms linear',
-
-        '&::after': {
-          position: 'absolute',
-          content: '""',
-          top: (theme.thumbSize + theme.borderWidth * 2 - theme.focusCircleSize) / 2,
-          left: (theme.thumbSize + theme.borderWidth * 2 - theme.focusCircleSize) / 2,
-          right: (theme.thumbSize + theme.borderWidth * 2 - theme.focusCircleSize) / 2,
-          bottom: (theme.thumbSize + theme.borderWidth * 2 - theme.focusCircleSize) / 2,
-          backgroundColor: theme.focusedThumbBorderColor,
-          opacity: 0,
-          transition: 'opacity 100ms linear',
-          borderRadius: '50%',
-        },
-      },
-
-      thumbFocused: {
-        composes: 'slider--thumb-focused',
-        borderColor: theme.focusedThumbBorderColor,
-
-        '&::after': { opacity: 0.2 },
-      },
-
-      thumbActive: {
-        composes: 'slider--thumb-active',
-        backgroundColor: theme.thumbActiveColor,
-        borderColor: theme.thumbActiveColor,
-
-        '&::after': { backgroundColor: theme.thumbActiveColor },
-      },
-
-      thumbDisabled: {
-        composes: 'slider--thumb-disabled',
-        borderColor: theme.disabledThumbColor,
-      },
-
-      thumbActiveDisabled: {
-        composes: 'slider--thumb-active-disabled',
-        backgroundColor: theme.disabledThumbColor,
-      },
-    };
+  componentDidMount() {
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ translateX: this.rootRect.width * this.state.value / this.props.max });
   }
 
-  render() {
-    const {
-      classes,
-      onTrackPress,
-      onThumbPress,
-      onThumbRelease,
-      onTouchMove,
-      onMouseMove,
-      onKeyPress,
-      onFocus,
-      onBlur,
-      className,
-      isFocused,
-      isDragging,
-      value,
-      rootRef,
-      translateX,
-      theme,
-      disabled,
-      ...props
-    } = this.props;
-
-    const thumbClassNames = classnames(classes.thumb, {
-      [classes.thumbFocused]: isFocused && !isDragging,
-      [classes.thumbActive]: value > 0,
-      [classes.thumbDisabled]: disabled,
-      [classes.thumbActiveDisabled]: value > 0 && disabled,
+  /**
+   * Change the current slider value.
+   *
+   * @param {Number} value - The new value.
+   */
+  set value(value) {
+    this.setState({
+      value: this.clamp(value),
+      translateX: this.rootRect.width * value / this.props.max,
     });
-    const trackClassNames = classnames(classes.track, {
-      [classes.trackFocused]: isFocused,
-      [classes.trackDisabled]: disabled,
-    });
-    let transform = `translateX(${translateX}px)`;
+  }
 
-    if (isDragging) {
-      transform += ` scale(${theme.slider.thumbActiveSize / theme.slider.thumbSize})`;
-    } else if (disabled) {
-      transform += ` scale(${theme.slider.thumbDisabledSize / theme.slider.thumbSize})`;
+  /**
+   * Get the current value of the slider.
+   *
+   * @returns {Number} - Returns the current value.
+   */
+  get value() {
+    return this.state.value;
+  }
+
+  /**
+   * Clamp the value and round it down. Min 0. Max 100.
+   *
+   * @param {Number} value - The value to clamp.
+   * @returns {Number} - Returns the clamp value.
+   */
+  clamp(value) {
+    return Math.max(this.props.min, Math.min(Math.floor(value), this.props.max));
+  }
+
+  /**
+   * Create a reference to the root element.
+   *
+   * @param {Object} element - The elements reference.
+   */
+  createRootRef = (element) => {
+    this.rootRect = element.getBoundingClientRect();
+  };
+
+  /**
+   * Set the isFocused state upon focus to true.
+   */
+  handleFocus = () => {
+    this.setState({ isFocused: true });
+  };
+
+  /**
+   * Set the isFocused state back to false.
+   */
+  handleBlur = () => {
+    this.setState({ isFocused: false });
+  };
+
+  /**
+   * Set the isDragging state to true when the user pressed the thumb.
+   */
+  handleThumbPress = () => {
+    window.addEventListener('mousemove', this.handleMove);
+    window.addEventListener('mouseup', this.handleThumbRelease);
+    window.addEventListener('touchmove', this.handleMove);
+    window.addEventListener('touchend', this.handleThumbRelease);
+
+    this.setState({ isDragging: true });
+  };
+
+  /**
+   * Set the isDragging state back to false when the user releases the thumb.
+   */
+  handleThumbRelease = () => {
+    window.removeEventListener('mousemove', this.handleMove);
+    window.removeEventListener('mouseup', this.handleThumbRelease);
+    window.removeEventListener('touchmove', this.handleMove);
+    window.removeEventListener('touchend', this.handleThumbRelease);
+
+    this.setState({ isDragging: false });
+  };
+
+  /**
+   * Increment the current value when special keys are pressed.
+   */
+  handleKeyPress = (ev) => {
+    const { keyCodes } = SliderContainer;
+    const keyCode = ev.keyCode;
+
+    if (keyCodes[keyCode]) {
+      this.setState(({ value }) => {
+        return {
+          value: this.clamp(value + keyCodes[keyCode]),
+          translateX: this.rootRect.width * (value + keyCodes[keyCode]) / this.props.max,
+        };
+      }, () => this.props.onChange(this.state.value));
     }
+  };
 
+  /**
+   * Change the current value when the user moves.
+   * This will be called when the user clicks the bar or when he drags the thumb.
+   */
+  handleMove = (ev) => {
+    const { max } = this.props;
+    const { x } = getCoords(ev);
+    const value = this.clamp((x - this.rootRect.left) / this.rootRect.width * max);
+
+    this.setState({
+      value,
+      translateX: this.rootRect.width * value / max,
+    }, () => this.props.onChange(this.state.value));
+  };
+
+  /**
+   * Change the value when the user presses the track.
+   */
+  handleTrackPress = (ev) => {
+    const { max } = this.props;
+    const { x } = getCoords(ev);
+    const value = this.clamp((x - this.rootRect.left) / this.rootRect.width * max);
+
+    this.setState({
+      value,
+      translateX: this.rootRect.width * value / max,
+    }, () => this.props.onChange(this.state.value));
+  };
+
+  render() {
     return (
-      <div
-        {...getNotDeclaredProps(props, SliderContainer)}
-        className={`${classes.slider} ${className}`}
-        ref={rootRef}
-        role="slider"
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled}
-        aria-valuemax={this.props.max}
-        aria-valuemin={this.props.min}
-        aria-valuenow={value}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onKeyDown={onKeyPress}
-      >
-        <EventHandler
-          component="span"
-          className={trackClassNames}
-          onPress={onTrackPress}
-        />
-
-        <EventHandler
-          component="span"
-          style={{ transform }}
-          className={thumbClassNames}
-          onPress={onThumbPress}
-          onRelease={onThumbRelease}
-          onMouseMove={onMouseMove}
-          onTouchMove={onTouchMove}
-        />
-      </div>
+      <Slider
+        {...this.state}
+        disabled={this.props.disabled}
+        min={this.props.min}
+        max={this.props.max}
+        className={this.props.className}
+        rootRef={this.createRootRef}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+        onKeyPress={this.handleKeyPress}
+        onTrackPress={this.handleTrackPress}
+        onThumbPress={this.handleThumbPress}
+        onThumbRelease={this.handleThumbRelease}
+      />
     );
   }
 }
-
-export default injectSheet(SliderContainer.styles)(SliderContainer);

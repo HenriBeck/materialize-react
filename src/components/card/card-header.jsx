@@ -71,18 +71,18 @@ CardHeader.defaultProps = {
   avatar: false,
 };
 
-CardHeader.styles = ({ card: theme }) => {
+CardHeader.styles = (theme) => {
   return {
     header: {
       composes: 'card--header',
       display: 'flex',
       flexDirection: 'row',
-      padding: `0 ${theme.content.horizontalPadding}px`,
-      margin: `${theme.content.verticalMargin}px 0`,
+      padding: '0 16px',
+      margin: '16px 0',
 
-      '&:last-child': { marginBottom: theme.content.bottomMarginForLastChild },
+      '&:last-child': { marginBottom: 24 },
 
-      [breakpoints.up('tablet')]: { padding: `0 ${theme.content.tabletHorizontalPadding}px` },
+      [breakpoints.up('tablet')]: { padding: '0 24px' },
     },
 
     container: {
@@ -104,15 +104,15 @@ CardHeader.styles = ({ card: theme }) => {
       ...body1,
       lineHeight: 1,
       paddingTop: 12,
-      color: theme.header.subtitleColor,
+      color: theme.secondaryTextColor,
     },
 
     avatar: {
       composes: 'card--header-avatar',
       ...body1,
-      height: theme.header.avatarSize,
-      width: theme.header.avatarSize,
-      marginRight: theme.header.avatarMarginRight,
+      height: 40,
+      width: 40,
+      marginRight: 16,
       position: 'relative',
 
       '& > *': {
@@ -123,7 +123,7 @@ CardHeader.styles = ({ card: theme }) => {
         bottom: 0,
         textAlign: 'center',
         borderRadius: '50%',
-        lineHeight: `${theme.header.avatarSize}px`,
+        lineHeight: '40px',
       },
     },
 
@@ -133,12 +133,12 @@ CardHeader.styles = ({ card: theme }) => {
 
       '& $title': {
         ...body1,
-        lineHeight: `${theme.header.avatarSize / 2}px`,
+        lineHeight: '20px',
       },
 
       '& $subtitle': {
         paddingTop: 0,
-        lineHeight: `${theme.header.avatarSize / 2}px`,
+        lineHeight: '20px',
       },
     },
   };

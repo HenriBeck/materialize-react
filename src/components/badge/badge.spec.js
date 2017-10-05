@@ -5,10 +5,8 @@ import { mount } from '../../../tests/helpers/enzyme';
 
 import Badge from './badge';
 
-test('should render a div with a span and a class name of badge inside', (t) => {
-  const wrapper = mount(<Badge badgeContent={1}>Hello</Badge>);
-  const div = wrapper.find('div');
+test('should a span with a class of badge', (t) => {
+  const wrapper = mount(<Badge>1</Badge>);
 
-  t.deepEqual(div.length, 1);
-  t.deepEqual(div.find('span.badge').length, 1);
+  t.deepEqual(wrapper.find('span.badge').length, 1);
 });

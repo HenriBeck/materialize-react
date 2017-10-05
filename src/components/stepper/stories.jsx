@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import Stepper from './stepper';
+import Stepper from './stepper-container';
 
 const renderStepper = props => () => (
   <Stepper

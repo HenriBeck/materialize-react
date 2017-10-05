@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
-import { easeInOutCubic } from '../../styles/timings';
 import Label from '../label';
 import Ripple from '../ripple';
 import EventHandler from '../event-handler';
@@ -46,8 +45,9 @@ export class Checkbox extends PureComponent {
    * @param {Object} theme.checkbox - The actual theme for the checkbox component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ checkbox: theme }) {
-    const { disabledCheckedBgColor } = theme;
+  static styles(theme) {
+    const isDark = theme.type === 'dark';
+    const disabledColor = isDark ? '#717171' : '#b0b0b0';
 
     return {
       '@keyframes checkbox--animate-in': {
@@ -80,28 +80,28 @@ export class Checkbox extends PureComponent {
         backgroundColor: 'inherit',
         display: 'inline-flex',
         alignItems: 'center',
-        padding: theme.padding,
-        height: theme.rippleSize + (theme.padding * 2),
+        padding: 8,
+        height: 48,
 
         '&[aria-disabled=false] $label': { cursor: 'pointer' },
 
         '&[aria-disabled=true]': {
           pointerEvents: 'none',
 
-          '&[aria-checked=true] $checkboxContainer': { backgroundColor: disabledCheckedBgColor },
+          '&[aria-checked=true] $checkboxContainer': { backgroundColor: disabledColor },
         },
 
         '&[aria-disabled=true] $checkboxContainer': {
-          borderColor: theme.disabledBorderColor,
-          backgroundColor: theme.disabledBgColor,
+          borderColor: disabledColor,
+          backgroundColor: disabledColor,
         },
 
         '&[aria-disabled=false][aria-checked=true] $checkboxContainer': {
-          borderColor: theme.checkedBorderColor,
-          backgroundColor: theme.checkedBgColor,
+          borderColor: theme.primaryBase,
+          backgroundColor: theme.primaryBase,
         },
 
-        '&[aria-checked=true] $ripple': { color: theme.checkedBorderColor },
+        '&[aria-checked=true] $ripple': { color: theme.primaryBase },
       },
 
       container: {
@@ -111,49 +111,46 @@ export class Checkbox extends PureComponent {
         cursor: 'pointer',
         borderRadius: '50%',
         boxSizing: 'border-box',
-        height: theme.rippleSize,
-        width: theme.rippleSize,
+        height: 48,
+        width: 48,
       },
 
       label: { composes: 'checkbox--label' },
 
       ripple: {
         composes: 'checkbox--ripple',
-        color: theme.uncheckedBorderColor,
+        color: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.54)',
       },
 
       checkboxContainer: {
         composes: 'checkbox--checkbox-container',
         display: 'inline-block',
         position: 'relative',
-        borderStyle: 'solid',
-        margin: (theme.rippleSize - theme.size) / 2,
-        height: theme.size - theme.borderWidth * 2,
-        width: theme.size - theme.borderWidth * 2,
-        borderWidth: theme.borderWidth,
-        borderRadius: theme.borderWidth,
-        borderColor: theme.uncheckedBorderColor,
-        backgroundColor: theme.uncheckedBgColor,
-        transitionDuration: theme.animationDuration,
-        transitionProperty: 'background-color, border-color',
+        border: 'solid 2px',
+        boxSizing: 'border-box',
+        margin: 15,
+        height: 18,
+        width: 18,
+        borderRadius: 2,
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.54)',
+        transition: 'background-color, border-color, 160ms',
       },
 
       checkmark: {
         composes: 'checkbox--checkmark',
         width: '36%',
         height: '70%',
-        left: -1,
         position: 'absolute',
-        border: `${8 / 3}px solid`,
+        border: '2.4px solid',
+        left: -0.5,
         borderTop: 0,
         borderLeft: 0,
         transformOrigin: '97% 86%',
-        boxSizing: 'content-box',
         willChange: 'opacity, transform',
         opacity: 0,
-        animationDuration: `${theme.animationDuration}ms`,
+        boxSizing: 'content-box',
+        animationDuration: 160,
         animationFillMode: 'forwards',
-        animationTimingFunction: easeInOutCubic,
       },
 
       labelLeft: {
@@ -168,26 +165,23 @@ export class Checkbox extends PureComponent {
    * If the checked props is initially true we want to animate the checkmark in.
    */
   componentDidMount() {
-    const bgColor = window.getComputedStyle(this.root)['background-color'];
-
-    this.checkmark.style.borderColor = bgColor;
-
-    if (this.props.checked) {
-      this.checkmark.style.animationName = 'checkbox--animate-in';
-    }
+    this.setBgColor();
   }
 
   /**
-   * Animate the checkmark when the checked prop changes.
+   * Animate the checkmark bg color when the component prop changes.
    */
-  componentDidUpdate(prevProps) {
-    if (prevProps.checked !== this.props.checked) {
-      if (this.props.checked) {
-        this.checkmark.style.animationName = 'checkbox--animate-in';
-      } else {
-        this.checkmark.style.animationName = 'checkbox--animate-out';
-      }
-    }
+  componentDidUpdate() {
+    this.setBgColor();
+  }
+
+  /**
+   * Set the bg color for the checkmark.
+   */
+  setBgColor() {
+    const bgColor = window.getComputedStyle(this.root)['background-color'];
+
+    this.checkmark.style.borderColor = bgColor;
   }
 
   /**
@@ -244,6 +238,7 @@ export class Checkbox extends PureComponent {
           >
             <span
               className={classes.checkmark}
+              style={{ animationName: `checkbox--animate-${checked ? 'in' : 'out'}` }}
               ref={(element) => { this.checkmark = element; }}
             />
           </span>

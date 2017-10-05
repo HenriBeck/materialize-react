@@ -27,9 +27,9 @@ export Badge from './components/badge';
 export List from './components/list';
 export Stepper from './components/stepper';
 export Slider from './components/slider';
+export Theme from './components/theme';
 
 // Styles
-export Theme from './styles/theme';
 export * as typography from './styles/typography';
 export elevation from './styles/elevation';
 export * as timings from './styles/timings';

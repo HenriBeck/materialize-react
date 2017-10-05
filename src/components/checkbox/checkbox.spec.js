@@ -20,35 +20,23 @@ const props = {
 };
 
 test('should render a span with a role of checkbox and a Jss HoC', (t) => {
-  const wrapper = mount(<CheckboxWrapper {...props} />);
+  const wrapper = mount(<CheckboxWrapper {...props} />, { themeType: 'dark' });
 
   t.deepEqual(wrapper.find('Jss(Checkbox)').length, 1);
-  t.deepEqual(wrapper.find({ role: 'checkbox' }).length, 1);
-});
-
-test('should animate the checkmark when the checked prop is initially passed', (t) => {
-  const wrapper = mount(
-    <CheckboxWrapper
-      {...props}
-      checked
-    />,
-  );
-  const checkmark = wrapper.find('.checkbox--checkmark').node;
-
-  t.deepEqual(checkmark.style.animationName, 'checkbox--animate-in');
+  t.deepEqual(wrapper.find('span[role="checkbox"]').length, 1);
 });
 
 test('should change the animationName when the checked prop changes', (t) => {
   const wrapper = mount(<CheckboxWrapper {...props} />);
-  const checkmark = () => wrapper.find('.checkbox--checkmark').node;
+  const checkmark = () => wrapper.find('.checkbox--checkmark');
 
   wrapper.setProps({ checked: true });
 
-  t.deepEqual(checkmark().style.animationName, 'checkbox--animate-in');
+  t.deepEqual(checkmark().prop('style').animationName, 'checkbox--animate-in');
 
   wrapper.setProps({ checked: false });
 
-  t.deepEqual(checkmark().style.animationName, 'checkbox--animate-out');
+  t.deepEqual(checkmark().prop('style').animationName, 'checkbox--animate-out');
 });
 
 test('should set the aria-disabled attribute on the root element', (t) => {
@@ -56,7 +44,7 @@ test('should set the aria-disabled attribute on the root element', (t) => {
 
   wrapper.setProps({ disabled: true });
 
-  t.deepEqual(wrapper.find({ role: 'checkbox' }).prop('aria-disabled'), true);
+  t.deepEqual(wrapper.find('span[role="checkbox"][aria-disabled=true]').length, 1);
 });
 
 test('should add the class checkbox--label-left when the labelPosition is left', (t) => {
@@ -64,7 +52,5 @@ test('should add the class checkbox--label-left when the labelPosition is left',
 
   wrapper.setProps({ labelPosition: 'left' });
 
-  const className = wrapper.find({ role: 'checkbox' }).prop('className');
-
-  t.deepEqual(className.includes('checkbox--label-left'), true);
+  t.deepEqual(wrapper.find('span[role="checkbox"].checkbox--label-left').length, 1);
 });

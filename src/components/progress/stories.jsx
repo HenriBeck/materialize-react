@@ -21,13 +21,6 @@ storiesOf('Progress', module)
           max: 100,
           step: 1,
         })}
-
-        secondaryProgress={number('Secondary Progress', 0, {
-          range: true,
-          min: 0,
-          max: 100,
-          step: 1,
-        })}
       />
     </div>
   ))

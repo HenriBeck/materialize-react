@@ -14,7 +14,7 @@ test('should render various elements and components', (t) => {
   const wrapper = mount(<IconButtonWrapper icon="github" />);
 
   t.deepEqual(wrapper.find('Jss(IconButton)').length, 1);
-  t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
+  t.deepEqual(wrapper.find('span[role="button"]').length, 1);
   t.deepEqual(wrapper.find('Icon').length, 1);
 });
 

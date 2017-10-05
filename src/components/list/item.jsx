@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { commonBase } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
-import ListItemAvatar from './list-item-avatar';
+import Avatar from './item-avatar';
 
 /**
  * A component to render a list item.
@@ -23,7 +23,7 @@ import ListItemAvatar from './list-item-avatar';
  * @param {String} props.className - An additional class name for the list.
  * @returns {JSX} - Returns the JSX.
  */
-export function ListItem({
+export function Item({
   classes,
   children,
   leftItem,
@@ -41,7 +41,7 @@ export function ListItem({
   return (
     <li
       className={`${classes.item} ${className}`}
-      {...getNotDeclaredProps(props, ListItem)}
+      {...getNotDeclaredProps(props, Item)}
     >
       {inset && (
         <span className={classes.leftItem}>
@@ -68,7 +68,7 @@ export function ListItem({
   );
 }
 
-ListItem.propTypes = {
+Item.propTypes = {
   classes: PropTypes.shape({
     item: PropTypes.string.isRequired,
     withSecondaryContent: PropTypes.string.isRequired,
@@ -85,16 +85,16 @@ ListItem.propTypes = {
   className: PropTypes.string,
 };
 
-ListItem.defaultProps = {
+Item.defaultProps = {
   leftItem: null,
   rightItem: null,
   secondaryContent: null,
   className: '',
 };
 
-ListItem.Avatar = ListItemAvatar;
+Item.Avatar = Avatar;
 
-ListItem.styles = ({ list: theme }) => {
+Item.styles = (theme) => {
   return {
     item: {
       composes: 'list--item',
@@ -102,15 +102,15 @@ ListItem.styles = ({ list: theme }) => {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      paddingLeft: theme.item.horizontalPadding,
-      paddingRight: theme.item.horizontalPadding,
+      paddingLeft: 16,
+      paddingRight: 16,
     },
 
     leftItem: {
       composes: 'list--item-left-item',
-      minWidth: theme.insetWidth - theme.item.horizontalPadding,
-      maxWidth: theme.insetWidth - theme.item.horizontalPadding,
-      paddingRight: theme.item.horizontalPadding,
+      minWidth: 56,
+      maxWidth: 56,
+      paddingRight: 16,
       boxSizing: 'border-box',
     },
 
@@ -120,29 +120,29 @@ ListItem.styles = ({ list: theme }) => {
       flexDirection: 'column',
       ...commonBase,
       flex: 1,
-      fontSize: theme.item.contentFontSize,
+      fontSize: 16,
       lineHeight: '16px',
-      paddingTop: theme.item.oneLineVerticalPadding,
-      paddingBottom: theme.item.oneLineVerticalPadding,
+      paddingTop: 16,
+      paddingBottom: 16,
     },
 
     withSecondaryContent: {
       composes: 'list--item-with-secondary-content',
-      paddingTop: theme.item.multiLineVerticalPadding,
-      paddingBottom: theme.item.multiLineVerticalPadding,
+      paddingTop: 20,
+      paddingBottom: 20,
     },
 
     secondaryContent: {
       composes: 'list--item-secondary-content',
-      color: theme.item.secondaryContentColor,
-      fontSize: theme.item.secondaryContentFontSize,
+      color: theme.secondaryTextColor,
+      fontSize: 14,
     },
 
     rightItem: {
       composes: 'list--item-right-item',
-      paddingLeft: theme.item.horizontalPadding,
-      maxWidth: theme.item.rightItemWidth,
-      minWidth: theme.item.rightItemWidth,
+      paddingLeft: 16,
+      maxWidth: 24,
+      minWidth: 24,
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -151,4 +151,4 @@ ListItem.styles = ({ list: theme }) => {
   };
 };
 
-export default injectSheet(ListItem.styles)(ListItem);
+export default injectSheet(Item.styles)(Item);

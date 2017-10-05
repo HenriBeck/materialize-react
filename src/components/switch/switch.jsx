@@ -2,11 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
+import { rgba } from 'polished';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import EventHandler from '../event-handler';
 import Ripple from '../ripple';
 import Label from '../label';
+import {
+  grey800,
+  grey600,
+  grey400,
+  grey50,
+} from '../../styles/colors';
 
 /**
  * A function that is used internally to render the elements for the switch.
@@ -44,10 +51,21 @@ export function Switch({
   labelPosition,
   ...props
 }) {
-  const classNames = classnames(
+  const switchClassName = classnames(
     className,
     classes.switch,
+    disabled && classes.switchDisabled,
     labelPosition === 'left' && classes.labelLeft,
+  );
+  const barClassName = classnames(
+    classes.bar,
+    toggled && classes.barChecked,
+    disabled && classes.barDisabled,
+  );
+  const thumbClassName = classnames(
+    classes.thumb,
+    toggled && classes.thumbChecked,
+    disabled && classes.thumbDisabled,
   );
 
   return (
@@ -55,7 +73,7 @@ export function Switch({
       {...getNotDeclaredProps(props, Switch)}
       component="span"
       role="switch"
-      className={classNames}
+      className={switchClassName}
       aria-checked={toggled}
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
@@ -66,9 +84,9 @@ export function Switch({
       onPress={onPress}
     >
       <span className={classes.container}>
-        <span className={classes.bar} />
+        <span className={barClassName} />
 
-        <span className={classes.thumb}>
+        <span className={thumbClassName}>
           <Ripple
             round
             center
@@ -82,7 +100,7 @@ export function Switch({
       <Label
         htmlFor={id}
         disabled={disabled}
-        className={classes.label}
+        className="switch--label"
       >
         {children}
       </Label>
@@ -97,7 +115,6 @@ Switch.propTypes = {
     thumb: PropTypes.string.isRequired,
     bar: PropTypes.string.isRequired,
     ripple: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
   }).isRequired,
   toggled: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
@@ -113,7 +130,9 @@ Switch.propTypes = {
   labelPosition: PropTypes.string.isRequired,
 };
 
-Switch.styles = ({ switch: theme }) => {
+Switch.styles = (theme) => {
+  const isDark = theme.type === 'dark';
+
   return {
     switch: {
       composes: 'switch',
@@ -121,24 +140,9 @@ Switch.styles = ({ switch: theme }) => {
       alignItems: 'center',
 
       '&:focus': { outline: 0 },
-
-      '&[aria-checked=true] $thumb': {
-        transform: 'translateX(16px)',
-        backgroundColor: theme.checkedThumbColor,
-      },
-
-      '&[aria-checked=true] $bar': { backgroundColor: theme.checkedBarColor },
-
-      '&[aria-checked=true] $ripple': { color: theme.checkedRippleColor },
-
-      '&[aria-disabled=true] $thumb': { backgroundColor: theme.disabledThumbColor },
-
-      '&[aria-disabled=true] $bar': { backgroundColor: theme.disabledBarColor },
-
-      '&[aria-disabled=true]': { pointerEvents: 'none' },
-
-      '&[aria-disabled=true] $label': { cursor: 'pointer' },
     },
+
+    switchDisabled: { pointerEvents: 'none' },
 
     labelLeft: {
       composes: 'switch--label-left',
@@ -148,9 +152,9 @@ Switch.styles = ({ switch: theme }) => {
     container: {
       composes: 'switch--container',
       position: 'relative',
-      height: theme.barHeight,
-      width: theme.barWidth,
-      margin: (theme.rippleSize - theme.barHeight) / 2 + 4,
+      height: 14,
+      width: 36,
+      margin: 20,
     },
 
     thumb: {
@@ -161,12 +165,21 @@ Switch.styles = ({ switch: theme }) => {
       transitionProperty: 'transform, background-color',
       willChange: 'transform',
       boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.6)',
-      transitionDuration: theme.transitionDuration,
-      top: (theme.barHeight - theme.thumbSize) / 2,
-      height: theme.thumbSize,
-      width: theme.thumbSize,
-      backgroundColor: theme.uncheckedThumbColor,
+      transitionDuration: 150,
+      top: -3,
+      height: 20,
+      width: 20,
+      backgroundColor: isDark ? grey400 : grey50,
+      color: isDark ? grey400 : grey600,
     },
+
+    thumbChecked: {
+      transform: 'translateX(16px)',
+      color: theme.primaryBase,
+      backgroundColor: theme.primaryBase,
+    },
+
+    thumbDisabled: { backgroundColor: isDark ? grey800 : grey400 },
 
     bar: {
       composes: 'switch--bar',
@@ -175,24 +188,21 @@ Switch.styles = ({ switch: theme }) => {
       width: '100%',
       pointerEvents: 'none',
       transitionProperty: 'background-color',
-      transitionDuration: theme.transitionDuration,
-      borderRadius: theme.barHeight / 2,
-      backgroundColor: theme.uncheckedBarColor,
+      transitionDuration: 150,
+      borderRadius: 7,
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.38)',
     },
+
+    barChecked: { backgroundColor: rgba(theme.primaryBase, 0.5) },
+
+    barDisabled: { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.12)' },
 
     ripple: {
       composes: 'switch--ripple',
-      position: 'absolute',
-      color: theme.uncheckedRippleColor,
-      top: (theme.thumbSize - theme.rippleSize) / 2,
-      left: (theme.thumbSize - theme.rippleSize) / 2,
-      right: (theme.thumbSize - theme.rippleSize) / 2,
-      bottom: (theme.thumbSize - theme.rippleSize) / 2,
-    },
-
-    label: {
-      composes: 'switch--label',
-      padding: 0,
+      top: -12,
+      left: -12,
+      right: -12,
+      bottom: -12,
     },
   };
 };

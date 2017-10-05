@@ -57,7 +57,7 @@ Toolbar.defaultProps = {
   noShadow: false,
 };
 
-Toolbar.styles = ({ toolbar: theme }) => {
+Toolbar.styles = (theme) => {
   return {
     toolbar: {
       composes: 'toolbar',
@@ -66,35 +66,35 @@ Toolbar.styles = ({ toolbar: theme }) => {
       padding: '0 16px',
       boxSizing: 'border-box',
       display: 'flex',
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.appBarColor,
 
-      height: theme.mobileHeight,
+      height: 56,
 
       '& > .row': {
-        height: theme.mobileHeight,
+        height: 56,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
       },
 
       '&.toolbar--medium-tall': {
-        height: theme.mobileHeight * 2,
+        height: 56 * 2,
         flexDirection: 'column',
       },
 
       '&.toolbar--tall': {
-        height: theme.mobileHeight * 3,
+        height: 56 * 3,
         flexDirection: 'column',
       },
 
       [breakpoints.up('tablet')]: {
-        height: theme.height,
+        height: 64,
 
-        '& > .row': { height: theme.height },
+        '& > .row': { height: 64 },
 
-        '&.toolbar--medium-tall': { height: theme.height * 2 },
+        '&.toolbar--medium-tall': { height: 64 * 2 },
 
-        '&.toolbar--tall': { height: theme.height * 3 },
+        '&.toolbar--tall': { height: 64 * 3 },
       },
     },
 

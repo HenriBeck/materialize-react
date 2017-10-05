@@ -11,10 +11,10 @@ import ButtonWrapper, { Button } from './button';
 const classes = createClassesFromStyles(Button.styles);
 
 test('should render the button', (t) => {
-  const wrapper = mount(<ButtonWrapper />);
+  const wrapper = mount(<ButtonWrapper />, { themeType: 'dark' });
 
   t.deepEqual(wrapper.find('Jss(Button)').length, 1);
-  t.deepEqual(wrapper.find({ role: 'button' }).length, 1);
+  t.deepEqual(wrapper.find('span[role="button"]').length, 1);
 });
 
 test('should warn when the user changes the raised prop', (t) => {

@@ -7,7 +7,6 @@ import warning from 'warning';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import Icon from '../icon';
-import { easeInOutCubic } from '../../styles/timings';
 import elevation from '../../styles/elevation';
 import EventHandler from '../event-handler';
 
@@ -27,8 +26,8 @@ export class Fab extends PureComponent {
     icon: PropTypes.string.isRequired,
     className: PropTypes.string,
     mini: PropTypes.bool,
+    accent: PropTypes.bool,
     noink: PropTypes.bool,
-    disabled: PropTypes.bool,
     animateIn: PropTypes.bool,
     onPress: PropTypes.func,
     onFocus: PropTypes.func,
@@ -38,7 +37,7 @@ export class Fab extends PureComponent {
   static defaultProps = {
     className: '',
     noink: false,
-    disabled: false,
+    accent: false,
     mini: false,
     animateIn: false,
     onPress: () => {},
@@ -55,7 +54,7 @@ export class Fab extends PureComponent {
    * @param {Object} theme.fab - The actual theme for the fab component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ fab: theme }) {
+  static styles(theme) {
     return {
       '@keyframes fab--scale-rotate-in': {
         from: { transform: 'scale(0) rotate(-45deg)' },
@@ -64,46 +63,41 @@ export class Fab extends PureComponent {
 
       fab: {
         composes: 'fab',
-        zIndex: 16,
+        zIndex: theme.zIndexes.fab,
         position: 'relative',
         boxSizing: 'border-box',
         borderRadius: '50%',
         border: 0,
         outline: 'none',
         color: theme.iconColor,
-        width: theme.normalSize,
-        height: theme.normalSize,
-        boxShadow: elevation(theme.elevation),
-        padding: (theme.normalSize - theme.iconSize) / 2,
-        backgroundColor: theme.backgroundColor,
-
-        '&[aria-disabled=true]': {
-          pointerEvents: 'none',
-          backgroundColor: theme.disabledBackgroundColor,
-          boxShadow: elevation(theme.disabledElevation),
-        },
+        width: 56,
+        height: 56,
+        boxShadow: elevation(6),
+        padding: 16,
+        backgroundColor: theme.primaryBase,
       },
+
+      accent: { backgroundColor: theme.accent },
 
       mini: {
         composes: 'fab--mini',
-        width: theme.miniSize,
-        height: theme.miniSize,
-        padding: (theme.miniSize - theme.iconSize) / 2,
+        width: 40,
+        height: 40,
+        padding: 8,
       },
 
       animateIn: {
         composes: 'fab--animate-in',
         animationName: 'fab--scale-rotate-in',
         animationFillMode: 'forwards',
-        animationTimingFunction: easeInOutCubic,
-        animationDuration: theme.animationDuration,
+        animationDuration: 160,
       },
 
       icon: {
         composes: 'fab--icon',
         userSelect: 'none',
-        height: theme.iconSize,
-        width: theme.iconSize,
+        height: 24,
+        width: 24,
         color: theme.iconColor,
       },
 
@@ -116,8 +110,8 @@ export class Fab extends PureComponent {
         left: 0,
         borderRadius: 'inherit',
         opacity: 0,
-        boxShadow: elevation(theme.focusedElevation),
-        transition: `opacity ${theme.animationDuration}ms linear`,
+        boxShadow: elevation(12),
+        transition: 'opacity 200ms linear',
       },
     };
   }
@@ -172,19 +166,20 @@ export class Fab extends PureComponent {
 
   render() {
     const {
-      disabled,
       classes,
       animateIn,
       mini,
       onPress,
       noink,
       icon,
+      accent,
       className,
       ...props
     } = this.props;
     const classNames = classnames(className, classes.fab, {
       [classes.animateIn]: animateIn,
       [classes.mini]: mini,
+      [classes.accent]: accent,
     });
 
     return (
@@ -193,8 +188,7 @@ export class Fab extends PureComponent {
         component="span"
         role="button"
         className={classNames}
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled}
+        tabIndex={0}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyPress={this.handleKeyPress}
@@ -215,7 +209,6 @@ export class Fab extends PureComponent {
         <Icon
           className={classes.icon}
           icon={icon}
-          disabled={disabled}
         />
       </EventHandler>
     );

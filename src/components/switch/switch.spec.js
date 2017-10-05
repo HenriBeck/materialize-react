@@ -21,10 +21,10 @@ const defaultProps = {
 };
 
 test('should render a Jss and a span with the role of a switch', (t) => {
-  const wrapper = mount(<Switch {...defaultProps} />);
+  const wrapper = mount(<Switch {...defaultProps} />, { themeType: 'dark' });
 
   t.deepEqual(wrapper.find('Jss(Switch)').length, 1);
-  t.deepEqual(wrapper.find({ role: 'switch' }).length, 1);
+  t.deepEqual(wrapper.find('span[role="switch"]').length, 1);
 });
 
 test('should set the aria-disabled attribute based on the disabled prop', (t) => {
@@ -34,7 +34,7 @@ test('should set the aria-disabled attribute based on the disabled prop', (t) =>
       disabled
     />,
   );
-  const root = wrapper.find({ role: 'switch' });
+  const root = wrapper.find('span[role="switch"]');
 
   t.deepEqual(root.prop('aria-disabled'), true);
 });
@@ -46,7 +46,7 @@ test('should set the aria-checked attribute based on the toggled prop', (t) => {
       toggled
     />,
   );
-  const root = wrapper.find({ role: 'switch' });
+  const root = wrapper.find('span[role="switch"]');
 
   t.deepEqual(root.prop('aria-checked'), true);
 });
@@ -58,7 +58,6 @@ test('should add the class .switch--label-left when the labelPosition is left', 
       labelPosition="left"
     />,
   );
-  const root = wrapper.find({ role: 'switch' });
 
-  t.deepEqual(root.prop('className').includes('switch--label-left'), true);
+  t.deepEqual(wrapper.find('span.switch--label-left').length, 1);
 });

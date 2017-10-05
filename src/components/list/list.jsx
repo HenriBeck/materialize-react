@@ -4,9 +4,9 @@ import injectSheet from 'react-jss';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
-import ListSubheader from './list-subheader';
-import ListDivider from './list-divider';
-import ListItem from './list-item';
+import Subheader from './subheader';
+import Divider from './divider';
+import Item from './item';
 
 /**
  * The main list component.
@@ -26,7 +26,7 @@ export function List({
   ...props
 }) {
   const clonedChildren = Children.map(children, (child) => {
-    if (child.type === ListSubheader) {
+    if (child.type === Subheader) {
       return child;
     }
 
@@ -44,9 +44,9 @@ export function List({
 }
 
 const validListChildren = [
-  ListSubheader,
-  ListDivider,
-  ListItem,
+  Subheader,
+  Divider,
+  Item,
 ];
 
 List.propTypes = {
@@ -75,19 +75,17 @@ List.defaultProps = {
   className: '',
 };
 
-List.styles = ({ list: theme }) => {
-  return {
-    list: {
-      composes: 'list',
-      margin: 0,
-      padding: `${theme.verticalPadding}px 0`,
-      listStyleType: 'none',
-    },
-  };
+List.styles = {
+  list: {
+    composes: 'list',
+    margin: 0,
+    padding: '8px 0',
+    listStyleType: 'none',
+  },
 };
 
-List.Subheader = ListSubheader;
-List.Divider = ListDivider;
-List.Item = ListItem;
+List.Subheader = Subheader;
+List.Divider = Divider;
+List.Item = Item;
 
 export default injectSheet(List.styles)(List);

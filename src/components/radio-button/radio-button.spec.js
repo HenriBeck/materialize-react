@@ -15,7 +15,7 @@ test('should render a jss hoc and a element with the role of radio', (t) => {
   const wrapper = mount(<RadioButton {...props}>Label</RadioButton>);
 
   t.deepEqual(wrapper.find('Jss(RadioButton)').length, 1);
-  t.deepEqual(wrapper.find({ role: 'radio' }).length, 1);
+  t.deepEqual(wrapper.find('span[role="radio"]').length, 1);
 });
 
 test('should have a class of radio-button--label-left when the labelPosition is left', (t) => {
@@ -26,7 +26,8 @@ test('should have a class of radio-button--label-left when the labelPosition is 
     >
       Label
     </RadioButton>,
+    { themeType: 'dark' },
   );
 
-  t.deepEqual(wrapper.find('.radio-button--label-left').length, 1);
+  t.deepEqual(wrapper.find('span.radio-button--label-left').length, 1);
 });

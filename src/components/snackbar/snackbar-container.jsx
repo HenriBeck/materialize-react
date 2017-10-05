@@ -7,6 +7,10 @@ import classnames from 'classnames';
 import { body1 } from '../../styles/typography';
 import breakpoints from '../../styles/breakpoints';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import {
+  whiteText,
+  blackText,
+} from '../../styles/colors';
 
 /**
  * A component which renders the currently active snackbar.
@@ -48,7 +52,9 @@ export class SnackbarContainer extends PureComponent {
    * @param {Object} theme.snackbar - The actual theme for the snackbar.
    * @returns {Object} - Returns the styles.
    */
-  static styles({ snackbar: theme }) {
+  static styles(theme) {
+    const isDark = theme.type === 'dark';
+
     return {
       '@keyframes snackbar--animate-in': {
         from: { transform: 'translateY(0)' },
@@ -63,9 +69,9 @@ export class SnackbarContainer extends PureComponent {
       snackbarContainer: {
         composes: 'snackbar--container',
         ...position('fixed', null, '0px', '0px', '0px'),
-        height: theme.height,
+        height: 48,
         display: 'flex',
-        zIndex: theme.zIndex,
+        zIndex: theme.zIndexes.snackbar,
 
         '&.snackbar--pos-start': { justifyContent: 'flex-start' },
         '&.snackbar--pos-center': { justifyContent: 'center' },
@@ -82,13 +88,13 @@ export class SnackbarContainer extends PureComponent {
       snackbar: {
         composes: 'snackbar',
         ...body1,
-        color: theme.color,
+        color: isDark ? blackText : whiteText,
         boxSizing: 'border-box',
-        padding: `${theme.verticalPadding}px ${theme.horizontalPadding}px`,
-        height: theme.height,
-        backgroundColor: theme.backgroundColor,
+        padding: '14px 24px',
+        height: 48,
+        backgroundColor: isDark ? '#ffffff' : '#323232',
         position: 'absolute',
-        bottom: -theme.height,
+        bottom: -48,
         display: 'flex',
         animationDuration: 300,
         animationFillMode: 'forwards',
@@ -98,17 +104,17 @@ export class SnackbarContainer extends PureComponent {
         [breakpoints.only('mobile')]: { width: '100%' },
 
         [breakpoints.up('tablet')]: {
-          borderRadius: theme.desktopBorderRadius,
-          minWidth: theme.desktopMinWidth,
-          maxWidth: theme.desktopMaxWidth,
+          borderRadius: 2,
+          minWidth: 288,
+          maxWidth: 568,
         },
 
         '& > .button': {
           margin: 0,
-          color: theme.color,
-          marginLeft: theme.mobileLeftButtonMargin,
+          color: isDark ? blackText : whiteText,
+          marginLeft: 24,
 
-          [breakpoints.up('tablet')]: { marginLeft: theme.desktopLeftButtonMargin },
+          [breakpoints.up('tablet')]: { marginLeft: 48 },
         },
       },
     };

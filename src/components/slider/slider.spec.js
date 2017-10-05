@@ -1,136 +1,90 @@
 import React from 'react';
 import test from 'ava';
-import sinon from 'sinon';
-import { shallow } from 'enzyme';
+
+import { mount } from '../../../tests/helpers/enzyme';
 
 import Slider from './slider';
 
-const elem = {
-  getBoundingClientRect() {
-    return {};
-  },
+const props = {
+  className: '',
+  onTrackPress: () => {},
+  onThumbPress: () => {},
+  onThumbRelease: () => {},
+  onTouchMove: () => {},
+  onMouseMove: () => {},
+  onKeyPress: () => {},
+  onFocus: () => {},
+  onBlur: () => {},
+  isFocused: false,
+  isDragging: false,
+  value: 0,
+  rootRef: () => {},
+  translateX: 0,
+  disabled: false,
+  min: 0,
+  max: 100,
 };
 
-test('should render a SliderContainer', (t) => {
-  const wrapper = shallow(<Slider />);
+test('should render a div', (t) => {
+  const wrapper = mount(<Slider {...props} />, { themeType: 'dark' });
 
-  t.deepEqual(wrapper.find('Jss(SliderContainer)').length, 1);
+  t.deepEqual(wrapper.find('div.slider').length, 1);
 });
 
-test('should get the current value by value property', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
+test('should render two EventHandlers', (t) => {
+  const wrapper = mount(<Slider {...props} />);
 
-  t.deepEqual(instance.value, 0);
+  t.deepEqual(wrapper.find('EventHandler').length, 2);
 });
 
-test('should set the initial translate on mount', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
+test('should scale the thumb up when the user is dragging it', (t) => {
+  const wrapper = mount(
+    <Slider
+      {...props}
+      isDragging
+    />,
+  );
 
-  instance.createRootRef(elem);
+  const thumbStyle = wrapper
+    .find('EventHandler.slider--thumb')
+    .prop('style');
 
-  instance.componentDidMount();
-
-  t.deepEqual(wrapper.state('translateX'), NaN);
+  t.deepEqual(thumbStyle.transform.includes('scale(1.5)'), true);
 });
 
-test('should be able to change the current value state with the value property', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
+test('should scale the thumb down when the slider is disabled', (t) => {
+  const wrapper = mount(
+    <Slider
+      {...props}
+      disabled
+    />,
+  );
 
-  instance.createRootRef(elem);
+  const thumbStyle = wrapper
+    .find('EventHandler.slider--thumb')
+    .prop('style');
 
-  instance.value = 50;
-
-  t.deepEqual(wrapper.state('value'), 50);
+  t.deepEqual(thumbStyle.transform.includes('scale(0.75)'), true);
 });
 
-test('should call onChange when the value state changes', (t) => {
-  const onChange = sinon.spy();
-  const wrapper = shallow(<Slider onChange={onChange} />);
-  const instance = wrapper.instance();
+test('should add a class of .slider--thumb-active when the value is greater than 0', (t) => {
+  const wrapper = mount(
+    <Slider
+      {...props}
+      value={40}
+    />,
+  );
 
-  instance.createRootRef(elem);
-
-  instance.value = 40;
-
-  t.deepEqual(onChange.callCount, 1);
-
-  wrapper.setProps({ className: 'test' });
-
-  t.deepEqual(onChange.callCount, 1);
+  t.deepEqual(wrapper.find('span.slider--thumb-active').length, 1);
 });
 
-test('should update the isFocused state when the handlers are called', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
+test('should add a class of .slider--thumb-focused when the slider is focused', (t) => {
+  const wrapper = mount(
+    <Slider
+      {...props}
+      isFocused
+    />,
+  );
 
-  instance.handleFocus();
-
-  t.deepEqual(wrapper.state('isFocused'), true);
-
-  instance.handleBlur();
-
-  t.deepEqual(wrapper.state('isFocused'), false);
-});
-
-test('should update the isDragging state when the thumb is pressed and released', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
-
-  instance.handleThumbPress();
-
-  t.deepEqual(wrapper.state('isDragging'), true);
-
-  instance.handleThumbRelease();
-
-  t.deepEqual(wrapper.state('isDragging'), false);
-});
-
-test('should update the state when the handleMove handler is called', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
-
-  instance.createRootRef(elem);
-
-  instance.handleMove({
-    x: 4,
-    y: 4,
-  });
-
-  t.deepEqual(wrapper.state('value'), NaN);
-});
-
-test('should decrement the value by 2 when the right arrow key is pressed', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
-
-  instance.createRootRef(elem);
-
-  instance.handleKeyPress({ keyCode: 38 });
-
-  t.deepEqual(wrapper.state('value'), 2);
-});
-
-test('should increment the value by 2 when the right arrow key is pressed', (t) => {
-  const wrapper = shallow(<Slider initialValue={40} />);
-  const instance = wrapper.instance();
-
-  instance.createRootRef(elem);
-
-  instance.handleKeyPress({ keyCode: 40 });
-
-  t.deepEqual(wrapper.state('value'), 38);
-});
-
-test('should not change the state when the keyCode isn\'t valid', (t) => {
-  const wrapper = shallow(<Slider />);
-  const instance = wrapper.instance();
-
-  instance.createRootRef(elem);
-
-  instance.handleKeyPress({ keyCode: 0 });
-
-  t.deepEqual(wrapper.state('value'), 0);
+  t.deepEqual(wrapper.find('span.slider--thumb-focused').length, 1);
 });

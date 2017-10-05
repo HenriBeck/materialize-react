@@ -31,7 +31,7 @@ export function Typography({
   const classNames = classnames(
     classes.typography,
     classes[typography],
-    secondary && classes.secondaryColor,
+    secondary && classes.secondary,
     className,
   );
 
@@ -48,7 +48,7 @@ export function Typography({
 Typography.propTypes = {
   classes: PropTypes.shape({
     typography: PropTypes.string.isRequired,
-    secondaryColor: PropTypes.string.isRequired,
+    secondary: PropTypes.string.isRequired,
   }).isRequired,
   typography: PropTypes.oneOf(Object.keys(typos)).isRequired,
   children: PropTypes.node.isRequired,
@@ -63,16 +63,16 @@ Typography.defaultProps = {
   secondary: false,
 };
 
-Typography.styles = ({ typography: theme }) => {
+Typography.styles = (theme) => {
   return {
     typography: {
       composes: 'typography',
-      color: theme.color,
+      color: theme.textColor,
     },
 
-    secondaryColor: {
+    secondary: {
       composes: 'typography--secondary',
-      color: theme.secondaryColor,
+      color: theme.secondaryTextColor,
     },
 
     ...typos,

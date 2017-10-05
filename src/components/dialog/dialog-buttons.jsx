@@ -37,19 +37,18 @@ DialogButtons.propTypes = {
 
 DialogButtons.defaultProps = { className: '' };
 
-DialogButtons.styles = ({ dialog: theme }) => {
-  return {
-    buttons: {
-      composes: 'dialog--buttons',
-      padding: theme.buttonPadding,
-      width: '100%',
-      boxSizing: 'border-box',
-      paddingLeft: theme.padding,
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-  };
+DialogButtons.styles = {
+  buttons: {
+    composes: 'dialog--buttons',
+    padding: 8,
+    width: '100%',
+    boxSizing: 'border-box',
+    paddingLeft: 24,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
 };
+
 export default injectSheet(DialogButtons.styles)(DialogButtons);

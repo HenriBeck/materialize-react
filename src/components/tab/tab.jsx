@@ -103,7 +103,7 @@ Tab.defaultProps = {
   noink: false,
 };
 
-Tab.styles = ({ tab: theme }) => {
+Tab.styles = (theme) => {
   return {
     tab: {
       composes: 'tab',
@@ -131,14 +131,14 @@ Tab.styles = ({ tab: theme }) => {
 
       '&.tab--focused $tabContent': {
         fontWeight: 700,
-        opacity: theme.focusedOpacity,
+        opacity: 1,
       },
 
-      '&.tab--focused $icon': { opacity: theme.focusedOpacity },
+      '&.tab--focused $icon': { opacity: 0.8 },
 
-      '&[aria-selected=true] $tabContent': { opacity: theme.selectedOpacity },
+      '&[aria-selected=true] $tabContent': { opacity: 1 },
 
-      '&[aria-selected=true] $icon': { opacity: theme.selectedOpacity },
+      '&[aria-selected=true] $icon': { opacity: 1 },
     },
 
     tabContent: {
@@ -149,7 +149,7 @@ Tab.styles = ({ tab: theme }) => {
       textAlign: 'center',
       lineHeight: 1,
       padding: '0 0 20px 0',
-      opacity: theme.unselectedOpacity,
+      opacity: 0.8,
     },
 
     icon: {
@@ -158,12 +158,12 @@ Tab.styles = ({ tab: theme }) => {
       height: 24,
       width: 24,
       fontSize: 24,
-      opacity: theme.unselectedOpacity,
+      opacity: 0.8,
     },
 
     ripple: {
       composes: 'tab--ripple',
-      color: theme.rippleColor,
+      color: theme.primaryBase,
     },
   };
 };

@@ -43,11 +43,11 @@ Icon.defaultProps = {
   disabled: false,
 };
 
-Icon.styles = ({ icon: theme }) => {
+Icon.styles = (theme) => {
   return {
     icon: {
       composes: 'mdi mdi-24px icon',
-      color: theme.color,
+      color: theme.iconColor,
       lineHeight: 1,
 
       '&[aria-disabled=true]': { color: theme.disabledColor },

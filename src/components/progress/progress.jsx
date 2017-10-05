@@ -5,7 +5,6 @@ import injectSheet from 'react-jss';
 import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
-import { easeInOutCubic } from '../../styles/timings';
 
 /**
  * A component to render a material design progress bar.
@@ -20,13 +19,9 @@ export class Progress extends PureComponent {
       container: PropTypes.string.isRequired,
       bar: PropTypes.string.isRequired,
       primaryBar: PropTypes.string.isRequired,
-      secondaryBar: PropTypes.string.isRequired,
     }).isRequired,
-    theme: PropTypes.shape({ progress: PropTypes.object.isRequired }).isRequired,
     indeterminate: PropTypes.bool,
-    disabled: PropTypes.bool,
     progress: PropTypes.number,
-    secondaryProgress: PropTypes.number,
     className: PropTypes.string,
     active: PropTypes.bool,
   };
@@ -36,8 +31,6 @@ export class Progress extends PureComponent {
     progress: 0,
     className: '',
     active: false,
-    secondaryProgress: 0,
-    disabled: false,
   };
 
   /**
@@ -55,10 +48,9 @@ export class Progress extends PureComponent {
    * The styles for the component.
    *
    * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.progress - The actual theme for the progress component.
    * @returns {Object} - Returns the styles which will be rendered.
    */
-  static styles({ progress: theme }) {
+  static styles(theme) {
     return {
       '@keyframes progress--bar': {
         '0%': { transform: 'scaleX(1) translateX(-100%)' },
@@ -90,7 +82,7 @@ export class Progress extends PureComponent {
         '&.progress--indeterminate $primaryBar': {
           transformOrigin: 'right center',
           animationIterationCount: 'infinite',
-          animationDuration: theme.indeterminateDuration,
+          animationDuration: 2 * 1000,
         },
 
         '&.progress--indeterminate $primaryBar::after': {
@@ -102,9 +94,9 @@ export class Progress extends PureComponent {
           content: '""',
           transformOrigin: 'center center',
           animationIterationCount: 'infinite',
-          height: theme.barHeight,
-          backgroundColor: theme.backgroundColor,
-          animationDuration: theme.indeterminateDuration,
+          height: 4,
+          backgroundColor: theme.primaryLight,
+          animationDuration: 2 * 1000,
         },
 
         '&.progress--indeterminate[data-active=true] $primaryBar': {
@@ -112,18 +104,14 @@ export class Progress extends PureComponent {
 
           '&::after': { animationName: 'progress--splitter' },
         },
-
-        '&[aria-disabled=true] $primaryBar': { backgroundColor: theme.disabledPrimaryBarColor },
-
-        '&[aria-disabled=true] $secondaryBar': { backgroundColor: theme.disabledSecondaryBarColor },
       },
 
       container: {
         composes: 'progress--container',
         position: 'relative',
         width: '100%',
-        height: theme.barHeight,
-        backgroundColor: theme.backgroundColor,
+        height: 4,
+        backgroundColor: theme.primaryLight,
       },
 
       bar: {
@@ -135,17 +123,12 @@ export class Progress extends PureComponent {
         left: 0,
         transformOrigin: 'left center',
         willChange: 'transform',
-        transition: `transform 200ms ${easeInOutCubic}`,
+        transition: 'transform 200ms',
       },
 
       primaryBar: {
         composes: 'progress--primary-bar',
-        backgroundColor: theme.primaryBarColor,
-      },
-
-      secondaryBar: {
-        composes: 'progress--secondary-bar',
-        backgroundColor: theme.secondaryBarColor,
+        backgroundColor: theme.primaryBase,
       },
     };
   }
@@ -164,10 +147,8 @@ export class Progress extends PureComponent {
     const {
       classes,
       indeterminate,
-      disabled,
       progress,
       active,
-      secondaryProgress,
       ...props
     } = this.props;
     const additionalProps = indeterminate ? { 'data-active': active } : {
@@ -185,17 +166,11 @@ export class Progress extends PureComponent {
       <span
         {...getNotDeclaredProps(props, Progress)}
         role="progressbar"
-        aria-disabled={disabled}
         className={className}
         ref={(element) => { this.root = element; }}
         {...additionalProps}
       >
         <div className={classes.container}>
-          <div
-            className={`${classes.bar} ${classes.secondaryBar}`}
-            style={{ transform: `scaleX(${Progress.clamp(secondaryProgress) / 100})` }}
-          />
-
           <div
             className={`${classes.bar} ${classes.primaryBar}`}
             style={{ transform: `scaleX(${Progress.clamp(progress) / 100})` }}

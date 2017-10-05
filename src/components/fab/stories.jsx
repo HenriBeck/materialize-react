@@ -8,9 +8,9 @@ storiesOf('FAB', module)
   .add('Default styles', () => (
     <Fab icon="pencil" />
   ))
-  .add('Disabled', () => (
+  .add('Accent', () => (
     <Fab
-      disabled
+      accent
       icon="pencil"
     />
   ))

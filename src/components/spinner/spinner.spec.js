@@ -2,57 +2,75 @@ import test from 'ava';
 import React from 'react';
 
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-import Spinner from './spinner';
+import SpinnerWrapper, { Spinner } from './spinner';
 
-test('should render a div with an svg inside', (t) => {
-  const wrapper = mount(<Spinner />);
+const classes = createClassesFromStyles(Spinner.styles);
+
+test('should render a Jss Hoc and a div with the class of progress', (t) => {
+  const wrapper = mount(<SpinnerWrapper />);
 
   t.deepEqual(wrapper.find('Jss(Spinner)').length, 1);
 });
 
 test('should fade in the animation when the active prop is passed', (t) => {
-  const wrapper = mount(<Spinner active />);
-  const root = wrapper.find('.spinner');
+  const wrapper = mount(
+    <Spinner
+      active
+      classes={classes}
+    />,
+  );
 
-  t.deepEqual(root.node.style.opacity, '1');
+  t.deepEqual(wrapper.state('opacity'), 1);
+  t.deepEqual(wrapper.state('active'), true);
 });
 
-test('should fade the spinner in/out when the active prop changes', (t) => {
-  const wrapper = mount(<Spinner />);
-  const root = () => wrapper.find('.spinner');
-
-  wrapper.setProps({ active: true });
-
-  t.deepEqual(root().node.style.opacity, '1');
+test('should change the opacity to 0 when the active prop is removed', (t) => {
+  const wrapper = mount(
+    <Spinner
+      active
+      classes={classes}
+    />,
+  );
 
   wrapper.setProps({ active: false });
 
-  t.deepEqual(root().node.style.opacity, '0');
+  t.deepEqual(wrapper.state('opacity'), 0);
+  t.deepEqual(wrapper.state('active'), true);
 });
 
-test('should remove the active class when the transition end handler get\'s called', (t) => {
-  const wrapper = mount(<Spinner />);
+test('should set the active state to false when the spinner has finished animating out', (t) => {
+  const wrapper = mount(
+    <Spinner
+      active
+      classes={classes}
+    />,
+  );
+
+  wrapper.setProps({ active: false });
+
+  wrapper.simulate('transitionEnd');
+
+  t.deepEqual(wrapper.state('active'), false);
+});
+
+test('should not change active state to false when the spinner has finished animating in', (t) => {
+  const wrapper = mount(<Spinner classes={classes} />);
 
   wrapper.setProps({ active: true });
 
   wrapper.simulate('transitionEnd');
 
-  wrapper.setProps({ active: false });
-
-  wrapper.simulate('transitionEnd');
-
-  const root = wrapper.find('.spinner');
-
-  t.true(!root.node.classList.contains('spinner--active'));
+  t.deepEqual(wrapper.state('active'), true);
 });
 
-test('should not update the opacity of the spinner when the active prop doesn\'t changes', (t) => {
-  const wrapper = mount(<Spinner />);
+test('should not change the active state when the active prop doesn\'t change', (t) => {
+  const wrapper = mount(<Spinner classes={classes} />);
 
-  wrapper.setProps({ className: 'spinner--test' });
+  const prevActive = wrapper.state('active');
 
-  const className = wrapper.find('.spinner').prop('className');
+  wrapper.setProps({ className: 'some' });
 
-  t.true(className.includes('spinner--test'));
+  t.deepEqual(wrapper.state('active'), prevActive);
 });

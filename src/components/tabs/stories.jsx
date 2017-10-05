@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import Tab from '../tab';
 
-import Tabs from './tabs';
+import Tabs from './tabs-container';
 
 storiesOf('Tabs', module)
   .add('Default styles', () => (

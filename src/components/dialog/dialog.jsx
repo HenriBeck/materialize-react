@@ -1,14 +1,13 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import warning from 'warning';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
-import DialogController from './dialog-controller';
-import DialogContainer from './dialog-container';
-import DialogHeader from './dialog-header';
-import DialogContent from './dialog-content';
-import DialogButtons from './dialog-buttons';
+import Controller from './dialog-controller';
+import Container from './dialog-container';
+import Header from './dialog-header';
+import Content from './dialog-content';
+import Buttons from './dialog-buttons';
 
 /**
  * Render a dialog in the dialog container.
@@ -41,13 +40,11 @@ export default class Dialog extends PureComponent {
     }).isRequired,
   };
 
-  static Controller = DialogController;
-  static Container = DialogContainer;
-  static Header = DialogHeader;
-  static Content = DialogContent;
-  static Buttons = DialogButtons;
-
-  isOpened = false;
+  static Controller = Controller;
+  static Container = Container;
+  static Header = Header;
+  static Content = Content;
+  static Buttons = Buttons;
 
   /**
    * Open the dialog.
@@ -59,17 +56,18 @@ export default class Dialog extends PureComponent {
       closeOnOutsideClick,
       className,
       fullscreen,
+      onClose,
       ...props
     } = this.props;
 
-    this.isOpened = this.context.dialogController.openDialog({
+    this.context.dialogController.openDialog({
       backdrop: hasBackdrop,
       closeOnOutsideClick,
       component,
       fullscreen,
       className,
       additionalProps: getNotDeclaredProps(props, Dialog),
-      onClose: this.onClose,
+      onClose,
     });
   }
 
@@ -77,22 +75,8 @@ export default class Dialog extends PureComponent {
    * Close the dialog.
    */
   close() {
-    warning(
-      this.isOpened,
-      'You are closing the current dialog from a different dialog which is not the opened one!',
-    );
-
     this.context.dialogController.closeDialog();
   }
-
-  /**
-   * When the dialog wants to be closed. This can happen when the user clicks on the backdrop.
-   */
-  onClose = () => {
-    this.isOpened = false;
-
-    this.props.onClose();
-  };
 
   render() {
     return null;

@@ -38,17 +38,15 @@ DialogContent.propTypes = {
 
 DialogContent.defaultProps = { className: '' };
 
-DialogContent.styles = ({ dialog: theme }) => {
-  return {
-    content: {
-      composes: 'dialog--content',
-      ...body1,
-      padding: theme.padding,
-      paddingTop: 0,
-      width: '100%',
-      boxSizing: 'border-box',
-    },
-  };
+DialogContent.styles = {
+  content: {
+    composes: 'dialog--content',
+    ...body1,
+    padding: 24,
+    paddingTop: 0,
+    width: '100%',
+    boxSizing: 'border-box',
+  },
 };
 
 export default injectSheet(DialogContent.styles)(DialogContent);

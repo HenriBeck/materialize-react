@@ -8,24 +8,16 @@ import getNotDeclaredProps from '../../get-not-declared-props';
 /**
  * A function to inherit some global styling like color and backgroundColor.
  *
- * @param {Object} props - Props object.
- * @param {JSX} props.children - The children to render inside.
- * @param {Object} props.classes - The object with the classNames inside.
- * @param {String} [props.className] - Additional className to be added.
+ * @param {Object} props - The props for the component.
  * @returns {JSX} - Returns the JSX.
  */
-export function Background({
-  children,
-  classes,
-  className,
-  ...props
-}) {
+export function Background(props) {
   return (
     <div
       {...getNotDeclaredProps(props, Background)}
-      className={`${classes.background} ${className}`}
+      className={`${props.classes.background} ${props.className}`}
     >
-      {children}
+      {props.children}
     </div>
   );
 }
@@ -38,13 +30,15 @@ Background.propTypes = {
 
 Background.defaultProps = { className: '' };
 
-Background.styles = ({ background: theme }) => {
+Background.styles = (theme) => {
   return {
     background: {
       composes: 'background',
       ...body1,
-      color: theme.color,
+      color: theme.textColor,
       backgroundColor: theme.backgroundColor,
+
+      '& *': { WebkitTapHighlightColor: 'transparent' },
     },
   };
 };
