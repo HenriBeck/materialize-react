@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "3.2.12",
-    "@storybook/addon-comments": "3.2.12",
+    "@storybook/addon-comments": "3.2.13",
     "@storybook/addon-info": "3.2.12",
     "@storybook/addon-knobs": "3.2.12",
     "@storybook/addon-options": "3.2.12",
