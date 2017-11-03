@@ -32,7 +32,10 @@ export class SnackbarContainer extends PureComponent {
     }).isRequired,
     snackbars: PropTypes.arrayOf(
       PropTypes.shape({
-        content: PropTypes.node,
+        content: PropTypes.oneOfType([
+          PropTypes.node,
+          PropTypes.func,
+        ]).isRequired,
         autoCloseTimer: PropTypes.number,
         className: PropTypes.string,
       }),
@@ -220,7 +223,11 @@ export class SnackbarContainer extends PureComponent {
         style={{ animationName: animatingOut ? animateOutName : animateInName }}
         onAnimationEnd={this.handleAnimationEnd}
       >
-        {snackbar.content}
+        {
+          typeof snackbar.content === 'function'
+            ? snackbar.content({ closeSnackbar: this.removeCurrentSnackbar })
+            : snackbar.content
+        }
       </span>
     );
   }

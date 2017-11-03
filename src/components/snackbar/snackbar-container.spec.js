@@ -45,6 +45,14 @@ test('should render the current snackbar', (t) => {
   t.deepEqual(wrapper.find('span.snackbar').length, 1);
 });
 
+test('should call the snackbar when a function is passed as the content', (t) => {
+  const content = sinon.spy();
+
+  mount(<SnackbarContainer snackbars={[{ content }]} />);
+
+  t.deepEqual(content.callCount, 1);
+});
+
 test('should change the animation name when the ', (t) => {
   const wrapper = mount(<SnackbarContainer snackbars={[{ content: 'Test' }]} />);
   const instance = wrapper.find('SnackbarContainer').instance();
