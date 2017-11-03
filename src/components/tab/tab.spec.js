@@ -1,15 +1,12 @@
 import React from 'react';
 import test from 'ava';
-import { shallow } from 'enzyme';
 
 import { mount } from '../../../tests/helpers/enzyme';
-import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-import TabWrapper, { Tab } from './tab';
+import Tab from './tab';
 
 const props = {
   name: 'test',
-  classes: createClassesFromStyles(Tab.styles),
   onPress: () => {},
   tabStyle: 'text-and-icons',
   createRef: () => {},
@@ -18,19 +15,19 @@ const props = {
 };
 
 test('should render a Jss hoc and the Tab component', (t) => {
-  const wrapper = mount(<TabWrapper {...props}>Children</TabWrapper>);
+  const wrapper = mount(<Tab {...props}>Children</Tab>);
 
   t.deepEqual(wrapper.find('Jss(Tab)').length, 1);
 });
 
 test('should render an element with the role of tab', (t) => {
-  const wrapper = shallow(<Tab {...props}>Children</Tab>);
+  const wrapper = mount(<Tab {...props}>Children</Tab>);
 
-  t.deepEqual(wrapper.find({ role: 'tab' }).length, 1);
+  t.deepEqual(wrapper.find('div[role="tab"]').length, 1);
 });
 
 test('should apply the tab--focused class when the focused prop is passed', (t) => {
-  const wrapper = shallow(
+  const wrapper = mount(
     <Tab
       {...props}
       focused
@@ -39,6 +36,6 @@ test('should apply the tab--focused class when the focused prop is passed', (t) 
     </Tab>,
   );
 
-  t.deepEqual(wrapper.find('.tab--focused').length, 1);
+  t.deepEqual(wrapper.find('div.tab--focused').length, 1);
 });
 

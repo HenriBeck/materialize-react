@@ -26,7 +26,7 @@ const props = {
 };
 
 test('should render a div', (t) => {
-  const wrapper = mount(<Slider {...props} />, { themeType: 'dark' });
+  const wrapper = mount(<Slider {...props} />, { type: 'dark' });
 
   t.deepEqual(wrapper.find('div.slider').length, 1);
 });

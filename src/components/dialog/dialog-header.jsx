@@ -14,7 +14,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {JSX} props.children - The content for the header.
  * @returns {JSX} - Returns the jsx.
  */
-export function DialogHeader({
+function DialogHeader({
   classes,
   className,
   children,

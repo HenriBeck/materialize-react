@@ -1,46 +1,44 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 
-import Checkbox from './checkbox-container';
+import Checkbox from './checkbox';
+
+/**
+ * Story component for the Checkbox component.
+ *
+ * @class
+ */
+class Story extends PureComponent {
+  static propTypes = { initialChecked: PropTypes.bool };
+
+  static defaultProps = { initialChecked: false };
+
+  state = { checked: this.props.initialChecked };
+
+  handleChange = () => this.setState({ checked: !this.state.checked });
+
+  render() {
+    return (
+      <Checkbox
+        checked={this.state.checked}
+        onChange={this.handleChange}
+        {...this.props}
+      />
+    );
+  }
+}
 
 storiesOf('Checkbox', module)
   .add('Default styles', () => (
-    <Checkbox name="name">Label</Checkbox>
+    <Story />
   ))
   .add('Default Checked', () => (
-    <Checkbox
-      defaultChecked
-      name="name"
-    >
-      Label
-    </Checkbox>
-  ))
-  .add('Right Label', () => (
-    <Checkbox name="name">Right Label</Checkbox>
-  ))
-  .add('Left Label', () => (
-    <Checkbox
-      labelPosition="left"
-      name="name"
-    >
-      Left Label
-    </Checkbox>
+    <Story initialChecked />
   ))
   .add('Disabled and Checked', () => (
-    <Checkbox
+    <Story
       disabled
-      defaultChecked
-      name="name"
-    >
-      Right Label
-    </Checkbox>
-  ))
-  .add('With callback', () => (
-    <Checkbox
-      name="name"
-      onChange={action('Toggled')}
-    >
-      Right Label
-    </Checkbox>
+      initialChecked
+    />
   ));

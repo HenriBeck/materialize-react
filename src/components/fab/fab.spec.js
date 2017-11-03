@@ -88,12 +88,3 @@ test('should not call onPress when a key event happens with an invalid keyCode',
 
   t.deepEqual(onPress.callCount, 0);
 });
-
-test('should be able to call the default event handlers', (t) => {
-  Fab.defaultProps.onPress();
-
-  Fab.defaultProps.onFocus();
-  Fab.defaultProps.onBlur();
-
-  t.pass();
-});

@@ -14,7 +14,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - Additional className to be added to the img element.
  * @returns {JSX} - Returns the JSX.
  */
-export function CardMedia({
+function CardMedia({
   classes,
   url,
   className,

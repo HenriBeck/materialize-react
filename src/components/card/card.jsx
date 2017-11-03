@@ -20,7 +20,7 @@ import Header from './card-header';
  * @param {String} props.className - Additional className for the card.
  * @returns {JSX} - Returns the JSX.
  */
-export function Card({
+function Card({
   classes,
   children,
   className,

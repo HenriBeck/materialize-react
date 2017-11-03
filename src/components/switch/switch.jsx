@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import injectSheet from 'react-jss';
 import classnames from 'classnames';
 import { rgba } from 'polished';
+import noop from 'lodash.noop';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import {
@@ -18,41 +20,55 @@ import Ripple from '../ripple';
  *
  * @class
  */
-export default class Switch extends PureComponent {
+export class Switch extends PureComponent {
   static propTypes = {
-    name: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    defaultToggled: PropTypes.bool,
+    toggled: PropTypes.bool.isRequired,
+    classes: PropTypes.shape({
+      switch: PropTypes.string.isRequired,
+      thumb: PropTypes.string.isRequired,
+      thumbToggled: PropTypes.string.isRequired,
+      thumbDisabled: PropTypes.string.isRequired,
+      bar: PropTypes.string.isRequired,
+      barToggled: PropTypes.string.isRequired,
+      barDisabled: PropTypes.string.isRequired,
+      ripple: PropTypes.string.isRequired,
+    }).isRequired,
+    onChange: PropTypes.func.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
-    labelPosition: PropTypes.string,
     noink: PropTypes.bool,
-    onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
   };
 
   static defaultProps = {
-    defaultToggled: false,
     className: '',
-    labelPosition: 'right',
     disabled: false,
     noink: false,
-    onChange: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
+    onFocus: noop,
+    onBlur: noop,
   };
 
+  /**
+   * The styles for the switch component.
+   *
+   * @param {Object} theme - The theme. Supplied by Jss.
+   * @returns {Object} - Returns the styles for the component.
+   */
   static styles(theme) {
     const isDark = theme.type === 'dark';
 
     return {
       switch: {
-        composes: 'switch--container',
+        composes: 'switch',
         position: 'relative',
+        boxSizing: 'border-box',
+        display: 'inline-block',
         height: 14,
         width: 36,
         margin: 21,
+
+        '&:focus': { outline: 0 },
 
         '&[aria-disabled=true]': { pointerEvents: 'none' },
       },
@@ -74,12 +90,16 @@ export default class Switch extends PureComponent {
       },
 
       thumbToggled: {
+        composes: 'switch--thumb-toggled',
         transform: 'translateX(16px)',
         color: theme.primaryBase,
         backgroundColor: theme.primaryBase,
       },
 
-      thumbDisabled: { backgroundColor: isDark ? grey800 : grey400 },
+      thumbDisabled: {
+        composes: 'switch--thumb-disabled',
+        backgroundColor: isDark ? grey800 : grey400,
+      },
 
       bar: {
         composes: 'switch--bar',
@@ -93,9 +113,15 @@ export default class Switch extends PureComponent {
         backgroundColor: isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.38)',
       },
 
-      barToggled: { backgroundColor: rgba(theme.primaryBase, 0.5) },
+      barToggled: {
+        composes: 'switch--bar-toggled',
+        backgroundColor: rgba(theme.primaryBase, 0.5),
+      },
 
-      barDisabled: { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.12)' },
+      barDisabled: {
+        composes: 'switch--bar-disabled',
+        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.12)',
+      },
 
       ripple: {
         composes: 'switch--ripple',
@@ -112,7 +138,7 @@ export default class Switch extends PureComponent {
   state = { isFocused: false };
 
   /**
-   * Toggle the state upon a press.
+   * Call the onChange prop when the switch get's clicked.
    *
    * @private
    */
@@ -121,18 +147,18 @@ export default class Switch extends PureComponent {
   };
 
   /**
-   * Check if the user pressed a key where we should toggle the state.
+   * Check if the user pressed a key where we should call the onChange prop.
    *
    * @private
    */
   handleKeyPress = (ev) => {
     if (Switch.keyCodes.includes(ev.keyCode)) {
-      this.toggle();
+      this.props.onChange();
     }
   };
 
   /**
-   * Change the isFocused state to true.
+   * Change the isFocused state when the component get's focused.
    *
    * @private
    */
@@ -143,7 +169,7 @@ export default class Switch extends PureComponent {
   };
 
   /**
-   * Set the isFocused state to false.
+   * Set the isFocused state when the component looses focus.
    *
    * @private
    */
@@ -202,3 +228,5 @@ export default class Switch extends PureComponent {
     );
   }
 }
+
+export default injectSheet(Switch.styles)(Switch);

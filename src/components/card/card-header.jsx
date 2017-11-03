@@ -19,7 +19,7 @@ import {
  * @param {JSX} props.avatar - An optional avatar element for the header.
  * @returns {JSX} - Returns the JSX.
  */
-export function CardHeader({
+function CardHeader({
   classes,
   children,
   subtitle,

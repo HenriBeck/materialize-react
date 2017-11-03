@@ -1,33 +1,61 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
+import PropTypes from 'prop-types';
 
 import RadioButton from '../radio-button';
+import Label from '../label';
 
 import RadioButtonGroup from './radio-button-group';
 
+/**
+ * The story component for the Radio Buttons.
+ *
+ * @class
+ */
+class Story extends PureComponent {
+  static propTypes = { initialSelected: PropTypes.string.isRequired };
+
+  state = { selected: this.props.initialSelected };
+
+  /**
+   * Change the state when the selected radio button changes.
+   *
+   * @param {String} name - The name of the radio button.
+   */
+  handleChange = (name) => {
+    this.setState({ selected: name });
+  };
+
+  render() {
+    return (
+      <RadioButtonGroup
+        selected={this.state.selected}
+        onChange={this.handleChange}
+      >
+        <Label disabled>
+          <RadioButton name="test1" />
+
+          Test 1
+        </Label>
+
+        <Label>
+          <RadioButton name="test2" />
+
+          Test 2
+        </Label>
+
+        <Label>
+          <RadioButton name="test3" />
+
+          Test 3
+        </Label>
+      </RadioButtonGroup>
+    );
+  }
+}
+
 storiesOf('RadioButtonGroup', module)
   .add('Default styles', () => (
-    <RadioButtonGroup
-      name="test"
-      defaultSelected="test2"
-      label="Test"
-    >
-      <RadioButton name="test1">Test 1</RadioButton>
-      <RadioButton name="test2">Test 2</RadioButton>
-      <RadioButton name="test3">Test 3</RadioButton>
-    </RadioButtonGroup>
-  ))
-  .add('With Action', () => (
-    <RadioButtonGroup
-      name="test"
-      defaultSelected="test2"
-      label="Test"
-      onChange={action('Changed selected button')}
-    >
-      <RadioButton name="test1">Test 1</RadioButton>
-      <RadioButton name="test2">Test 2</RadioButton>
-      <RadioButton name="test3">Test 3</RadioButton>
-    </RadioButtonGroup>
+    <Story initialSelected="" />
   ));
 

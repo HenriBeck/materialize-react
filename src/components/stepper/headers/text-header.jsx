@@ -11,14 +11,14 @@ import HeaderWithButtons from './header-with-buttons';
  * The function will be called with the current step and the max steps.
  * @returns {JSX} - Returns the JSX.
  */
-export default function TextHeader({
+function TextHeader({
   generateText,
   ...props
 }) {
   return (
     <HeaderWithButtons {...props}>
       <span>
-        {generateText(props.currentSection + 1, props.sections.length)}
+        {generateText(props.currentSection + 1, props.totalSections)}
       </span>
     </HeaderWithButtons>
   );
@@ -31,7 +31,9 @@ TextHeader.defaultProps = {
 };
 
 TextHeader.propTypes = {
-  sections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  totalSections: PropTypes.number.isRequired,
   currentSection: PropTypes.number.isRequired,
   generateText: PropTypes.func,
 };
+
+export default TextHeader;

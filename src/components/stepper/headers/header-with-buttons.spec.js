@@ -6,10 +6,8 @@ import sinon from 'sinon';
 import HeaderWithButtons from './header-with-buttons';
 
 const props = {
-  sections: [{}, {}, {}],
+  totalSections: 3,
   currentSection: 0,
-  forward: () => {},
-  back: () => {},
 };
 
 test('should render a header component', (t) => {
@@ -57,37 +55,6 @@ test('should disable the next button when the current section is the last sectio
   const backButton = wrapper.find('Jss(Button)').last();
 
   t.deepEqual(backButton.prop('disabled'), true);
-});
-
-test('should call the disableNextButton when the current section is not the last section', (t) => {
-  const disableNextButton = sinon.spy();
-
-  shallow(
-    <HeaderWithButtons
-      {...props}
-      disableNextButton={disableNextButton}
-    >
-      Test
-    </HeaderWithButtons>,
-  ).dive();
-
-  t.deepEqual(disableNextButton.callCount, 1);
-});
-
-test('should call the disableBackButton when the current section is not 0', (t) => {
-  const disableBackButton = sinon.spy();
-
-  shallow(
-    <HeaderWithButtons
-      {...props}
-      currentSection={1}
-      disableBackButton={disableBackButton}
-    >
-      Test
-    </HeaderWithButtons>,
-  ).dive();
-
-  t.deepEqual(disableBackButton.callCount, 1);
 });
 
 test('should call the back function when the back button is pressed', (t) => {

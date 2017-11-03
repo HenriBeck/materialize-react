@@ -1,69 +1,120 @@
-import React from 'react';
+import React, {
+  PureComponent,
+  Children,
+} from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 
 import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import Checkbox from '../checkbox';
+import RadioButton from '../radio-button';
+import Switch from '../switch';
 
 /**
- * A function to render a label tag with special material design stylings.
+ * The label component.
  *
- * @param {Object} props - The props for the component.
- * @param {Boolean} props.disabled - Whether or not the label is disabled.
- * It will apply a different text color.
- * @param {String} props.htmlFor - For which the element is a label.
- * Needed for better UX.
- * @param {Object} props.classes - Classes for the component. Provided by Jss.
- * @param {String} props.className - Additional className for the label component.
- * @param {JSX} props.children - Children to be rendered inside the Label.
- * @returns {JSX} - Returns the label component.
+ * @class
  */
-export function Label({
-  disabled,
-  htmlFor,
-  classes,
-  className,
-  children,
-  ...props
-}) {
-  return (
-    <label
-      aria-disabled={disabled}
-      htmlFor={htmlFor}
-      className={`${classes.label} ${className}`}
-      {...getNotDeclaredProps(props, Label)}
-    >
-      {children}
-    </label>
-  );
-}
-
-Label.propTypes = {
-  classes: PropTypes.shape({ label: PropTypes.string.isRequired }).isRequired,
-  children: PropTypes.node.isRequired,
-  htmlFor: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-Label.defaultProps = {
-  className: '',
-  disabled: false,
-};
-
-Label.styles = (theme) => {
-  return {
-    label: {
-      ...body1,
-      composes: 'label',
-      userSelect: 'none',
-      padding: '0 8px',
-      color: theme.textColor,
-
-      '&[aria-disabled=true]': { color: theme.secondaryTextColor },
-    },
+export class Label extends PureComponent {
+  static propTypes = {
+    classes: PropTypes.shape({ label: PropTypes.string.isRequired }).isRequired,
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
   };
-};
+
+  static defaultProps = {
+    className: '',
+    disabled: false,
+  };
+
+  static interactiveElements = [
+    Checkbox,
+    RadioButton,
+    Switch,
+  ];
+
+  /**
+   * Generate a unique id.
+   *
+   * @returns {String} - Returns the unique id.
+   */
+  static randomId() {
+    return Math
+      .random()
+      .toString(36)
+      .slice(2);
+  }
+
+  /**
+   * The styles for the Label component.
+   *
+   * @param {Object} theme - The theme supplied by Jss.
+   * @returns {Object} - Returns the styles for the component.
+   */
+  static styles(theme) {
+    return {
+      label: {
+        ...body1,
+        composes: 'label',
+        display: 'flex',
+        alignItems: 'center',
+        userSelect: 'none',
+        padding: '0 8px',
+        color: theme.textColor,
+
+        '&[aria-disabled=true]': { color: theme.secondaryTextColor },
+      },
+    };
+  }
+
+  id = Label.randomId();
+
+  /**
+   * Render the children.
+   *
+   * @returns {JSX} - Returns the children.
+   */
+  renderChildren() {
+    let isFirstInteractiveElement = true;
+    const { disabled } = this.props;
+
+    return Children.map(this.props.children, (child) => {
+      if (Label.interactiveElements.includes(child.type)) {
+        const newProps = { disabled };
+
+        if (isFirstInteractiveElement) {
+          isFirstInteractiveElement = false;
+
+          newProps.id = this.id;
+        }
+
+        return React.cloneElement(child, newProps);
+      }
+
+      return child;
+    });
+  }
+
+  render() {
+    const {
+      disabled,
+      className,
+    } = this.props;
+
+    return (
+      <label
+        htmlFor={this.id}
+        aria-disabled={disabled}
+        className={`${this.props.classes.label} ${className}`}
+        {...getNotDeclaredProps(this.props, Label)}
+      >
+        {this.renderChildren()}
+      </label>
+    );
+  }
+}
 
 export default injectSheet(Label.styles)(Label);
 

@@ -73,6 +73,8 @@ test('should add event listeners upon thumb press and set the isDragging state t
 
   t.deepEqual(wrapper.state('isDragging'), true);
   t.deepEqual(spy.callCount, 4);
+
+  window.addEventListener.restore();
 });
 
 test('should remove event listeners upon thumb release and reset the isDragging state', (t) => {
@@ -84,6 +86,8 @@ test('should remove event listeners upon thumb release and reset the isDragging 
 
   t.deepEqual(wrapper.state('isDragging'), false);
   t.deepEqual(spy.callCount, 4);
+
+  window.removeEventListener.restore();
 });
 
 test('should change the value of the slider when the track is pressed', (t) => {

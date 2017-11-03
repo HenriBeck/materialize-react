@@ -1,1 +1,1 @@
-export default from './snackbar';
+export default from './snackbar-container';

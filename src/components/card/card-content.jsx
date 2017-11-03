@@ -15,7 +15,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name to be applied to the element.
  * @returns {JSX} - Returns the JSX.
  */
-export function CardContent({
+function CardContent({
   classes,
   children,
   className,

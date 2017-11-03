@@ -3,25 +3,26 @@ import React, {
   Children,
 } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import injectSheet from 'react-jss';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 import Section from './section';
 import Headers from './headers';
-import Stepper from './stepper';
-import classnames from 'classnames';
 
 /**
  * A component which renders a material design stepper.
  *
  * @class
  */
-export default class StepperContainer extends PureComponent {
+export class Stepper extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       stepper: PropTypes.string.isRequired,
       sectionContainer: PropTypes.string.isRequired,
       sectionWrapper: PropTypes.string.isRequired,
+      headerAtBottom: PropTypes.string.isRequired,
     }).isRequired,
     children({ children }) { // eslint-disable-line react/require-default-props
       const childrenArray = Children.toArray(children);
@@ -37,20 +38,21 @@ export default class StepperContainer extends PureComponent {
 
       return null;
     },
-    header: PropTypes.element.isRequired,
+    header: PropTypes.func.isRequired,
     section: PropTypes.number.isRequired,
-    onChange: PropTypes.func,
+    headerProps: PropTypes.shape({}),
     className: PropTypes.string,
     headerAtBottom: PropTypes.bool,
   };
 
   static defaultProps = {
+    headerProps: {},
     className: '',
     headerAtBottom: false,
-    onChange: () => {},
   };
 
   static Section = Section;
+
   static Headers = Headers;
 
   static styles = {
@@ -86,23 +88,39 @@ export default class StepperContainer extends PureComponent {
   };
 
   /**
+   * Clamp the current section value.
+   *
+   * @returns {Number} - Returns the actual section.
+   */
+  clamp() {
+    const max = Children.toArray(this.props.children).length - 1;
+
+    return Math.max(0, Math.min(this.props.section, max));
+  }
+
+  /**
    * Render the passed header with some additional attributes.
    *
-   * @returns {JSX} - Returns the cloned header.
+   * @returns {JSX} - Returns the header.
    */
   renderHeader() {
-    return React.cloneElement(this.props.header, {
-      sections: Children.map(this.props.children, child => child.props),
-      currentSection: this.props.section,
-    });
+    const {
+      header: Header,
+      headerProps,
+    } = this.props;
+
+    return (
+      <Header
+        totalSections={Children.count(this.props.children)}
+        currentSection={this.clamp()}
+        {...headerProps}
+      />
+    );
   }
 
   render() {
     const {
-      header,
-      classes,
       className,
-      section,
       children,
       headerAtBottom,
       ...props
@@ -111,18 +129,18 @@ export default class StepperContainer extends PureComponent {
     return (
       <div
         className={classnames(
-          classes.stepper,
-          headerAtBottom && classes.headerAtBottom,
+          this.props.classes.stepper,
+          { [this.props.classes.headerAtBottom]: headerAtBottom },
           className,
         )}
         {...getNotDeclaredProps(props, Stepper)}
       >
-        {this.renderHeader(header)}
+        {this.renderHeader()}
 
-        <div className={classes.sectionContainer}>
+        <div className={this.props.classes.sectionContainer}>
           <div
-            className={classes.sectionWrapper}
-            style={{ transform: `translateX(${section * -100}%)` }}
+            className={this.props.classes.sectionWrapper}
+            style={{ transform: `translateX(${this.clamp() * -100}%)` }}
           >
             {children}
           </div>
@@ -131,3 +149,5 @@ export default class StepperContainer extends PureComponent {
     );
   }
 }
+
+export default injectSheet(Stepper.styles)(Stepper);

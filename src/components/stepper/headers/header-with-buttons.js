@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import noop from 'lodash.noop';
 
 import Button from '../../button/index';
 import Icon from '../../icon/index';
@@ -12,21 +13,26 @@ import Icon from '../../icon/index';
  */
 class HeaderWithButtons extends PureComponent {
   static propTypes = {
-    classes: PropTypes.shape({}).isRequired,
-    sections: PropTypes.arrayOf(PropTypes.object).isRequired,
+    classes: PropTypes.shape({
+      header: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+    }).isRequired,
+    totalSections: PropTypes.number.isRequired,
     currentSection: PropTypes.number.isRequired,
     children: PropTypes.node.isRequired,
-    back: PropTypes.func.isRequired,
-    forward: PropTypes.func.isRequired,
-    disableBackButton: PropTypes.func,
-    disableNextButton: PropTypes.func,
+    back: PropTypes.func,
+    forward: PropTypes.func,
+    backButtonProps: PropTypes.shape({}),
+    nextButtonProps: PropTypes.shape({}),
     nextButton: PropTypes.node,
     backButton: PropTypes.node,
   };
 
   static defaultProps = {
-    disableBackButton: () => false,
-    disableNextButton: () => false,
+    back: noop,
+    forward: noop,
+    backButtonProps: {},
+    nextButtonProps: {},
 
     nextButton: (
       <Button>
@@ -75,33 +81,14 @@ class HeaderWithButtons extends PureComponent {
    *
    * @returns {Boolean} - Returns whether or not the back button should be disabled.
    */
-  calculateDisabledForBackButton() {
-    const { currentSection } = this.props;
-
-    if (currentSection === 0) {
-      return true;
-    }
-
-    return this.props.disableBackButton(currentSection, this.props.sections[currentSection]);
-  }
+  disableBackButton = () => this.props.currentSection === 0;
 
   /**
    * Calculate whether or not the next button should be disabled.
    *
    * @returns {Boolean} - Returns whether or not the next button should be disabled.
    */
-  calculateDisabledForNextButton() {
-    const {
-      currentSection,
-      sections,
-    } = this.props;
-
-    if (currentSection === sections.length - 1) {
-      return true;
-    }
-
-    return this.props.disableNextButton(currentSection, sections[currentSection]);
-  }
+  disableNextButton = () => this.props.currentSection === this.props.totalSections - 1;
 
   handleBackButtonPress = () => this.props.back();
 
@@ -109,31 +96,32 @@ class HeaderWithButtons extends PureComponent {
 
   render() {
     const {
-      classes,
       nextButton,
       backButton,
+      nextButtonProps,
+      backButtonProps,
       children,
     } = this.props;
-    const disableBackButton = this.calculateDisabledForBackButton();
-    const disableNextButton = this.calculateDisabledForNextButton();
 
     return (
-      <header className={classes.header}>
+      <header className={this.props.classes.header}>
         {backButton ? (
           React.cloneElement(backButton, {
-            disabled: disableBackButton,
+            ...backButtonProps,
+            disabled: this.disableBackButton() || backButtonProps.disabled,
             onPress: this.handleBackButtonPress,
             className: `stepper--header-back-button ${backButton.props.className || ''}`,
           })
         ) : null}
 
-        <div className={classes.content}>
+        <div className={this.props.classes.content}>
           {children}
         </div>
 
         {nextButton ? (
           React.cloneElement(nextButton, {
-            disabled: disableNextButton,
+            ...nextButtonProps,
+            disabled: this.disableNextButton() || nextButtonProps.disabled,
             onPress: this.handleNextButtonPress,
             className: `stepper--header-next-button ${nextButton.props.className || ''}`,
           })

@@ -5,7 +5,7 @@ import injectSheet from 'react-jss';
  *
  * @returns {JSX} - Returns always null. Any children will be lost.
  */
-export function Animations() {
+function Animations() {
   return null;
 }
 

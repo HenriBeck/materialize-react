@@ -15,7 +15,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Boolean} props.disabled - If the icon is disabled. It will have a darker color then.
  * @returns {JSX} - Returns the element.
  */
-export function Icon({
+function Icon({
   icon,
   className,
   classes,

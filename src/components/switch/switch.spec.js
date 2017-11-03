@@ -1,90 +1,99 @@
 import React from 'react';
 import test from 'ava';
-import { shallow } from 'enzyme';
 import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
-import SwitchContainer from './switch-container';
+import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-test('should get the state with the toggled getter', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
-  const instance = wrapper.instance();
+import SwitchWrapper, { Switch } from './switch';
 
-  t.deepEqual(instance.toggled, false);
+const props = {
+  classes: createClassesFromStyles(Switch.styles),
+  toggled: false,
+  onChange: () => {},
+};
+
+test('should render a Switch component and a span with the role of switch', (t) => {
+  const wrapper = mount(<SwitchWrapper {...props} />);
+
+  t.deepEqual(wrapper.find('Switch').length, 1);
+  t.deepEqual(wrapper.find('span[role="switch"]').length, 1);
 });
 
-test('should warn against changing the name and the defaultToggled prop', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+test('should have the aria-disabled prop set to true when disabled', (t) => {
+  const wrapper = mount(
+    <SwitchWrapper
+      {...props}
+      disabled
+    />,
+    { type: 'dark' },
+  );
 
-  t.throws(() => wrapper.setProps({ defaultToggled: true }));
-
-  t.throws(() => wrapper.setProps({ name: 'name2' }));
+  t.deepEqual(wrapper.find('span[aria-disabled=true]').length, 1);
 });
 
-test('should set the state with the toggled getter', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
-  const instance = wrapper.instance();
-
-  instance.toggled = true;
-
-  t.deepEqual(instance.toggled, true);
-
-  instance.toggled = true;
-});
-
-test('should toggle the state when the onPress handler get\'s called', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+test('should call the onChange prop when the switch get\'s clicked', (t) => {
+  const onChange = sinon.spy();
+  const wrapper = shallow(
+    <Switch
+      {...props}
+      onChange={onChange}
+    />,
+  );
   const instance = wrapper.instance();
 
   instance.handlePress();
 
-  t.deepEqual(instance.toggled, true);
+  t.deepEqual(onChange.callCount, 1);
 });
 
-test('should call the onChange prop when the toggle method get\'s called', (t) => {
+test('should call the onChange handler when a key is pressed', (t) => {
   const onChange = sinon.spy();
   const wrapper = shallow(
-    <SwitchContainer
-      name="test"
+    <Switch
+      {...props}
       onChange={onChange}
-    >
-      Label
-    </SwitchContainer>,
+    />,
   );
   const instance = wrapper.instance();
 
-  instance.toggle();
+  instance.handleKeyPress({ keyCode: Switch.keyCodes[0] });
 
   t.deepEqual(onChange.callCount, 1);
 });
 
-test('should change the isFocused state when the focus and blur methods get called', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+test('should not call the onChange handler when no key code is specified', (t) => {
+  const onChange = sinon.spy();
+  const wrapper = shallow(
+    <Switch
+      {...props}
+      onChange={onChange}
+    />,
+  );
+  const instance = wrapper.instance();
+
+  instance.handleKeyPress({});
+
+  t.deepEqual(onChange.callCount, 0);
+});
+
+test('should change the state when the component get\'s focused', (t) => {
+  const wrapper = shallow(<Switch {...props} />);
   const instance = wrapper.instance();
 
   instance.handleFocus();
 
   t.deepEqual(wrapper.state('isFocused'), true);
+});
+
+test('should change the state when the component get\'s focused and blurred', (t) => {
+  const wrapper = shallow(<Switch {...props} />);
+  const instance = wrapper.instance();
+
+  instance.handleFocus();
 
   instance.handleBlur();
 
   t.deepEqual(wrapper.state('isFocused'), false);
 });
-
-test('should only toggle the state when a key event has the correct keyCode', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
-  const instance = wrapper.instance();
-
-  instance.handleKeyPress({ keyCode: SwitchContainer.keyCodes[0] });
-
-  t.deepEqual(instance.toggled, true);
-});
-
-test('should not toggle the state when a key event has no keyCode', (t) => {
-  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
-  const instance = wrapper.instance();
-
-  instance.handleKeyPress({});
-
-  t.deepEqual(instance.toggled, false);
-});
-

@@ -24,7 +24,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Function} props.onTransitionEnd - When the transition of the backdrop has finished.
  * @returns {JSX} - Returns the jsx for the drawer.
  */
-export function Drawer({
+function Drawer({
   classes,
   drawerContent,
   mainContent,

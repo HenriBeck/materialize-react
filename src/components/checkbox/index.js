@@ -1,1 +1,1 @@
-export default from './checkbox-container';
+export default from './checkbox';

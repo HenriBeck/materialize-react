@@ -17,7 +17,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name for the subheader.
  * @returns {JSX} - Returns the JSX.
  */
-function Subheader({
+function ListSubheader({
   classes,
   children,
   inset,
@@ -27,26 +27,26 @@ function Subheader({
   return (
     <li
       className={`${classes.subheader} ${inset ? classes.inset : ''} ${className}`}
-      {...getNotDeclaredProps(props, Subheader)}
+      {...getNotDeclaredProps(props, ListSubheader)}
     >
       {children}
     </li>
   );
 }
 
-Subheader.propTypes = {
+ListSubheader.propTypes = {
   classes: PropTypes.shape({ subheader: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
   inset: PropTypes.bool,
   className: PropTypes.string,
 };
 
-Subheader.defaultProps = {
+ListSubheader.defaultProps = {
   inset: false,
   className: '',
 };
 
-Subheader.styles = (theme) => {
+ListSubheader.styles = (theme) => {
   return {
     subheader: {
       composes: 'list--subheader',
@@ -69,4 +69,4 @@ Subheader.styles = (theme) => {
   };
 };
 
-export default injectSheet(Subheader.styles)(Subheader);
+export default injectSheet(ListSubheader.styles)(ListSubheader);

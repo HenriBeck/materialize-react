@@ -13,7 +13,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Boolean} props.vertical - Whether or not the divider should be vertical.
  * @returns {JSX} - Returns the element.
  */
-export function Divider({
+function Divider({
   classes,
   className,
   vertical,

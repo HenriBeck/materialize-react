@@ -19,7 +19,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Boolean} props.secondary - Whether or not the secondary text color should be applied.
  * @returns {JSX} - Returns the JSX.
  */
-export function Typography({
+function Typography({
   classes,
   typography,
   element: Element,

@@ -5,10 +5,8 @@ import { shallow } from 'enzyme';
 import ProgressHeader from './progress-header';
 
 const props = {
-  sections: [{ name: '1' }, { name: '2' }, { name: '3' }],
+  totalSections: 3,
   currentSection: 1,
-  back: () => {},
-  forward: () => {},
 };
 
 test('should render a HeaderWithButtons', (t) => {
