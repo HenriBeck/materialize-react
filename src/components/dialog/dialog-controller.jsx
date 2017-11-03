@@ -36,7 +36,9 @@ export default class DialogController extends PureComponent {
   }
 
   hasController = false;
+
   openDialogCallback = null;
+
   closeDialogCallback = null;
 
   /**

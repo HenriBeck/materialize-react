@@ -1,1 +1,1 @@
-export default from './switch-container';
+export default from './switch';

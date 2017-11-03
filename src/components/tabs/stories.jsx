@@ -1,84 +1,119 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
+import PropTypes from 'prop-types';
 
 import Tab from '../tab';
 
-import Tabs from './tabs-container';
+import Tabs from './tabs';
+
+/**
+ * The story container for the tabs container.
+ *
+ * @class
+ */
+class Story extends PureComponent {
+  static propTypes = {
+    initialTab: PropTypes.string.isRequired,
+    children: PropTypes.func.isRequired,
+  };
+
+  state = { selected: this.props.initialTab };
+
+  handleChange = name => this.setState({ selected: name });
+
+  render() {
+    return this.props.children({
+      onChange: this.handleChange,
+      selected: this.state.selected,
+    });
+  }
+}
 
 storiesOf('Tabs', module)
   .add('Default styles', () => (
-    <Tabs initialTab="test2">
-      <Tab name="test1">Test 1</Tab>
-      <Tab name="test2">Test 2</Tab>
-      <Tab name="test3">Test 3</Tab>
-    </Tabs>
+    <Story initialTab="test1">
+      {props => (
+        <Tabs
+          tab={props.selected}
+          onChange={props.onChange}
+        >
+          <Tab name="test1">Test 1</Tab>
+          <Tab name="test2">Test 2</Tab>
+          <Tab name="test3">Test 3</Tab>
+        </Tabs>
+      )}
+    </Story>
   ))
   .add('Icon tabs with text', () => (
-    <Tabs
-      initialTab="test2"
-      tabStyle="text-and-icons"
-    >
-      <Tab
-        name="test1"
-        icon="settings"
-      >
-        Test 1
-      </Tab>
+    <Story initialTab="test2">
+      {props => (
+        <Tabs
+          tab={props.selected}
+          tabStyle="text-and-icons"
+          onChange={props.onChange}
+        >
+          <Tab
+            name="test1"
+            icon="settings"
+          >
+            Test 1
+          </Tab>
 
-      <Tab
-        name="test2"
-        icon="bell"
-      >
-        Test 2
-      </Tab>
+          <Tab
+            name="test2"
+            icon="bell"
+          >
+            Test 2
+          </Tab>
 
-      <Tab
-        name="test3"
-        icon="account"
-      >
-        Test 3
-      </Tab>
-    </Tabs>
+          <Tab
+            name="test3"
+            icon="account"
+          >
+            Test 3
+          </Tab>
+        </Tabs>
+      )}
+    </Story>
   ))
   .add('Icon tabs', () => (
-    <Tabs
-      initialTab="test2"
-      tabStyle="icons"
-    >
-      <Tab
-        name="test1"
-        icon="settings"
-      />
+    <Story initialTab="test2">
+      {props => (
+        <Tabs
+          tab={props.selected}
+          tabStyle="icons"
+          onChange={props.onChange}
+        >
+          <Tab
+            name="test1"
+            icon="settings"
+          />
 
-      <Tab
-        name="test2"
-        icon="bell"
-      />
+          <Tab
+            name="test2"
+            icon="bell"
+          />
 
-      <Tab
-        name="test3"
-        icon="account"
-      />
-    </Tabs>
+          <Tab
+            name="test3"
+            icon="account"
+          />
+        </Tabs>
+      )}
+    </Story>
   ))
   .add('No Bar', () => (
-    <Tabs
-      noBar
-      initialTab="test2"
-    >
-      <Tab name="test1">Test 1</Tab>
-      <Tab name="test2">Test 2</Tab>
-      <Tab name="test3">Test 3</Tab>
-    </Tabs>
-  ))
-  .add('With onChange action', () => (
-    <Tabs
-      initialTab="test2"
-      onChange={action('Tab changed')}
-    >
-      <Tab name="test1">Test 1</Tab>
-      <Tab name="test2">Test 2</Tab>
-      <Tab name="test3">Test 3</Tab>
-    </Tabs>
+    <Story initialTab="test1">
+      {props => (
+        <Tabs
+          noBar
+          tab={props.selected}
+          onChange={props.onChange}
+        >
+          <Tab name="test1">Test 1</Tab>
+          <Tab name="test2">Test 2</Tab>
+          <Tab name="test3">Test 3</Tab>
+        </Tabs>
+      )}
+    </Story>
   ));

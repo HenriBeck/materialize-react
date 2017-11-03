@@ -11,7 +11,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Object} props - The props for the component.
  * @returns {JSX} - Returns the JSX.
  */
-export function Background(props) {
+function Background(props) {
   return (
     <div
       {...getNotDeclaredProps(props, Background)}

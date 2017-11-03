@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { position } from 'polished';
 import injectSheet from 'react-jss';
 import classnames from 'classnames';
+import noop from 'lodash.noop';
 
 import { body1 } from '../../styles/typography';
 import breakpoints from '../../styles/breakpoints';
@@ -12,37 +13,46 @@ import {
   blackText,
 } from '../../styles/colors';
 
+const uppercase = str => `${str[0].toUpperCase()}${str.slice(1)}`;
+
 /**
- * A component which renders the currently active snackbar.
+ * A component which renders an array of snackbars.
  *
  * @class
  */
 export class SnackbarContainer extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
-      snackbarContainer: PropTypes.string.isRequired,
+      container: PropTypes.string.isRequired,
       snackbar: PropTypes.string.isRequired,
+      positionStart: PropTypes.string.isRequired,
+      positionCenter: PropTypes.string.isRequired,
+      positionEnd: PropTypes.string.isRequired,
       hideContainer: PropTypes.string.isRequired,
     }).isRequired,
+    snackbars: PropTypes.arrayOf(
+      PropTypes.shape({
+        content: PropTypes.node,
+        autoCloseTimer: PropTypes.number,
+        className: PropTypes.string,
+      }),
+    ).isRequired,
     // eslint-disable-next-line react/no-unused-prop-types
-    horizontalPos: PropTypes.oneOf(['start', 'center', 'end']),
+    horizontalPosition: PropTypes.oneOf(['start', 'center', 'end']),
     animateInName: PropTypes.string,
     animateOutName: PropTypes.string,
     className: PropTypes.string,
+    createRef: PropTypes.func,
+    onRemoveSnackbar: PropTypes.func,
   };
 
   static defaultProps = {
-    horizontalPos: 'center',
+    horizontalPosition: 'center',
     animateInName: 'snackbar--animate-in',
     animateOutName: 'snackbar--animate-out',
     className: '',
-  };
-
-  static contextTypes = {
-    snackbarController: PropTypes.shape({
-      initiateContainer: PropTypes.func.isRequired,
-      removeContainer: PropTypes.func.isRequired,
-    }).isRequired,
+    createRef: noop,
+    onRemoveSnackbar: noop,
   };
 
   /**
@@ -66,10 +76,10 @@ export class SnackbarContainer extends PureComponent {
         to: { transform: 'translateY(0)' },
       },
 
-      snackbarContainer: {
+      container: {
         composes: 'snackbar--container',
         ...position('fixed', null, '0px', '0px', '0px'),
-        height: 48,
+        height: 80,
         display: 'flex',
         zIndex: theme.zIndexes.snackbar,
 
@@ -79,6 +89,10 @@ export class SnackbarContainer extends PureComponent {
 
         [breakpoints.up('tablet')]: { padding: '0 24px' },
       },
+
+      positionStart: { justifyContent: 'flex-start' },
+      positionCenter: { justifyContent: 'center' },
+      positionEnd: { justifyContent: 'flex-end' },
 
       hideContainer: {
         composes: 'snackbar--hide-container',
@@ -120,139 +134,109 @@ export class SnackbarContainer extends PureComponent {
     };
   }
 
-  state = {
-    currentlyVisible: null,
-    animatingOut: false,
-  };
-
   /**
-   * Initiate the container in the controller.
+   * Call the createRef prop because ref's don't work because of the Jss HoC.
+   *
+   * @param {Object} props - The props for the component.
    */
-  componentWillMount() {
-    this.context.snackbarController.initiateContainer(this.addSnackbar, this.closeSnackbar);
+  constructor(props) {
+    super(props);
+
+    props.createRef(this);
   }
 
+  state = { animatingOut: false };
+
   /**
-   * Create a new timeout to close the new snackbar when the currentlyVisible state changes.
+   * Change the animationOut state if we finished animating out
+   * and the length of the snackbars array has changed.
    */
-  componentDidUpdate(prevProps, prevState) {
-    const { currentlyVisible } = this.state;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.snackbars.length !== this.props.snackbars.length && this.finishedAnimatingOut) {
+      this.finishedAnimatingOut = false;
 
-    if (prevState.currentlyVisible !== currentlyVisible && currentlyVisible !== null) {
-      const snackbar = this.snackbars[0];
-
-      if (snackbar.autoCloseTimer) {
-        this.timeout = setTimeout(() => this.closeSnackbar(snackbar.id), snackbar.autoCloseTimer);
-      }
+      this.setState({ animatingOut: false });
     }
   }
 
   /**
-   * Remove the container from the controller.
+   * Clear the timeout if necessary.
    */
   componentWillUnmount() {
-    this.context.snackbarController.removeContainer();
+    clearTimeout(this.timeout);
   }
 
+  finishedAnimatingOut = false;
+
   timeout = null;
-  snackbars = [];
 
   /**
-   * When the controller adds an.
-   *
-   * @param {Object} snackbar - The snackbar.
+   * Set the animationOut state to true so the current snackbar leaves the visible viewport.
    */
-  addSnackbar = (snackbar) => {
-    if (this.snackbars.find(({ id }) => id === snackbar.id)) {
-      return;
-    }
+  removeCurrentSnackbar = () => {
+    this.setState({ animatingOut: true });
 
-    this.snackbars.push(snackbar);
-
-    if (this.state.currentlyVisible === null) {
-      this.setState({ currentlyVisible: snackbar.id });
-    }
+    clearTimeout(this.timeout);
   };
 
   /**
-   * Close the snackbar with the current id.
-   *
-   * @param {String} id - The id of the snackbar.
-   */
-  closeSnackbar = (id) => {
-    if (this.state.currentlyVisible === id) {
-      this.setState({ animatingOut: true });
-
-      clearTimeout(this.timeout);
-
-      return;
-    }
-
-    this.snackbars = this.snackbars.filter(elem => elem.id !== id);
-  };
-
-  /**
-   * When the snackbar finishes the animation,
-   * we need to change the currentlyVisible to the next snackbar.
+   * When the animation finishes we wan't to either start a timeout
+   * if the snackbar has an auto close timer
+   * or call the onRemoveSnackbar prop.
    */
   handleAnimationEnd = () => {
-    this.setState(({ animatingOut }) => {
-      if (animatingOut) {
-        const oldSnackbar = this.snackbars.shift();
+    if (this.state.animatingOut) {
+      this.finishedAnimatingOut = true;
 
-        oldSnackbar.onClose();
+      this.props.onRemoveSnackbar();
+    } else {
+      const snackbar = this.props.snackbars[0];
 
-        return {
-          currentlyVisible: this.snackbars.length > 0 ? this.snackbars[0].id : null,
-          animatingOut: false,
-        };
+      if (snackbar.autoCloseTimer) {
+        this.timeout = setTimeout(this.removeCurrentSnackbar, snackbar.autoCloseTimer);
       }
-
-      return null;
-    });
+    }
   };
 
-  render() {
+  /**
+   * Render the current snackbar.
+   *
+   * @returns {JSX} - Returns the snackbar element.
+   */
+  renderCurrentSnackbar() {
+    const snackbar = this.props.snackbars[0];
     const {
-      classes,
       animateInName,
       animateOutName,
-      horizontalPos,
-      className,
-      ...props
     } = this.props;
-    const {
-      currentlyVisible,
-      animatingOut,
-    } = this.state;
-    let content = null;
-    const classNames = classnames(
-      classes.snackbarContainer,
-      className,
-      `snackbar--pos-${horizontalPos}`,
-      { [classes.hideContainer]: !currentlyVisible },
-    );
-
-    if (currentlyVisible) {
-      const snackbar = this.snackbars[0];
-
-      content = (
-        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-          className={`${classes.snackbar} ${snackbar.className}`}
-          style={{ animationName: animatingOut ? animateOutName : animateInName }}
-          onAnimationEnd={this.handleAnimationEnd}
-        >
-          {snackbar.content}
-        </div>
-      );
-    }
+    const { animatingOut } = this.state;
 
     return (
-      <div
-        className={classNames}
-        {...getNotDeclaredProps(props, SnackbarContainer)}
+      <span // eslint-disable-line jsx-a11y/no-static-element-interactions
+        className={classnames(
+          this.props.classes.snackbar,
+          snackbar.className,
+        )}
+        style={{ animationName: animatingOut ? animateOutName : animateInName }}
+        onAnimationEnd={this.handleAnimationEnd}
       >
-        {content}
+        {snackbar.content}
+      </span>
+    );
+  }
+
+  render() {
+    return (
+      <div
+        className={classnames(
+          this.props.classes.container,
+          this.props.className,
+          this.props.classes[`position${uppercase(this.props.horizontalPosition)}`],
+          { [this.props.classes.hideContainer]: this.props.snackbars.length === 0 },
+        )}
+        {...getNotDeclaredProps(this.props, SnackbarContainer)}
+      >
+        {this.props.snackbars.length > 0 ? this.renderCurrentSnackbar() : null}
       </div>
     );
   }

@@ -1,3 +1,9 @@
+const noWrap = {
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+};
+
 export const commonBase = {
   fontFamily: '\'Roboto\', \'Noto\', sans-serif',
   WebkitFontSmoothing: 'antialiased',
@@ -6,12 +12,6 @@ export const commonBase = {
 export const commonCode = {
   fontFamily: '\'Roboto Mono\', \'Consolas\', \'Menlo\', monospace',
   WebkitFontSmoothing: 'antialiased',
-};
-
-const noWrap = {
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
 };
 
 export const display4 = {

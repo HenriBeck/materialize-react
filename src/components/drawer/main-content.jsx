@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @param {JSX} props.children - The children which will be rendered inside.
  * @returns {JSX} - Returns the wrapped children.
  */
-export default function MainContent({
+function MainContent({
   children,
   ...props
 }) {
@@ -20,4 +20,6 @@ export default function MainContent({
 }
 
 MainContent.propTypes = { children: PropTypes.node.isRequired };
+
+export default MainContent;
 

@@ -11,15 +11,17 @@ import HeaderWithButtons from './header-with-buttons';
  * @param {Object} props - The props for the component.
  * @returns {JSX} - Returns the JSX.
  */
-export default function ProgressHeader(props) {
+function ProgressHeader(props) {
   return (
     <HeaderWithButtons {...props}>
-      <Progress progress={props.currentSection / (props.sections.length - 1) * 100} />
+      <Progress progress={props.currentSection / (props.totalSections - 1) * 100} />
     </HeaderWithButtons>
   );
 }
 
 ProgressHeader.propTypes = {
-  sections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  totalSections: PropTypes.number.isRequired,
   currentSection: PropTypes.number.isRequired,
 };
+
+export default ProgressHeader;

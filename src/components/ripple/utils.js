@@ -1,4 +1,19 @@
 /**
+ * A function to calculate the euclidean distance between to points.
+ *
+ * @param {Object} pointA - The first point.
+ * @param {Number} pointA.x - The x coordinate of the point.
+ * @param {Number} pointA.y - The y coordinate of the point.
+ * @param {Object} pointB - The second point.
+ * @param {Number} pointB.x - The x coordinate of the point.
+ * @param {Number} pointB.y - The y coordinate of the point.
+ * @returns {Number} - Returns the distance between the points.
+ */
+function euclideanDistance(pointA, pointB) {
+  return ((pointA.x - pointB.x) ** 2 + (pointA.y - pointB.y) ** 2) ** 0.5;
+}
+
+/**
  * A function to get the various coords for an event.
  *
  * @param {Object} ev - The event.
@@ -44,21 +59,6 @@ export function getCenter(rect) {
     x: rect.width / 2,
     y: rect.height / 2,
   };
-}
-
-/**
- * A function to calculate the euclidean distance between to points.
- *
- * @param {Object} pointA - The first point.
- * @param {Number} pointA.x - The x coordinate of the point.
- * @param {Number} pointA.y - The y coordinate of the point.
- * @param {Object} pointB - The second point.
- * @param {Number} pointB.x - The x coordinate of the point.
- * @param {Number} pointB.y - The y coordinate of the point.
- * @returns {Number} - Returns the distance between the points.
- */
-function euclideanDistance(pointA, pointB) {
-  return ((pointA.x - pointB.x) ** 2 + (pointA.y - pointB.y) ** 2) ** 0.5;
 }
 
 /**

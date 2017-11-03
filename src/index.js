@@ -30,6 +30,7 @@ export List from './components/list';
 export Stepper from './components/stepper';
 export Slider from './components/slider';
 export Theme from './components/theme';
+export Layout from './components/layout';
 
 // Styles
 export * as typography from './styles/typography';

@@ -1,63 +1,99 @@
 import React from 'react';
 import test from 'ava';
+import sinon from 'sinon';
+import { shallow } from 'enzyme';
 
 import { mount } from '../../../tests/helpers/enzyme';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-import Switch from './switch';
+import SwitchWrapper, { Switch } from './switch';
 
-const defaultProps = {
+const props = {
+  classes: createClassesFromStyles(Switch.styles),
   toggled: false,
-  id: '',
-  onKeyPress: () => {},
-  onPress: () => {},
-  children: '',
-  isFocused: false,
-  onFocus: () => {},
-  onBlur: () => {},
-  disabled: false,
-  className: '',
-  noink: false,
-  labelPosition: 'right',
+  onChange: () => {},
 };
 
-test('should render a Jss and a span with the role of a switch', (t) => {
-  const wrapper = mount(<Switch {...defaultProps} />, { themeType: 'dark' });
+test('should render a Switch component and a span with the role of switch', (t) => {
+  const wrapper = mount(<SwitchWrapper {...props} />);
 
-  t.deepEqual(wrapper.find('Jss(Switch)').length, 1);
+  t.deepEqual(wrapper.find('Switch').length, 1);
   t.deepEqual(wrapper.find('span[role="switch"]').length, 1);
 });
 
-test('should set the aria-disabled attribute based on the disabled prop', (t) => {
+test('should have the aria-disabled prop set to true when disabled', (t) => {
   const wrapper = mount(
-    <Switch
-      {...defaultProps}
+    <SwitchWrapper
+      {...props}
       disabled
     />,
+    { type: 'dark' },
   );
-  const root = wrapper.find('span[role="switch"]');
 
-  t.deepEqual(root.prop('aria-disabled'), true);
+  t.deepEqual(wrapper.find('span[aria-disabled=true]').length, 1);
 });
 
-test('should set the aria-checked attribute based on the toggled prop', (t) => {
-  const wrapper = mount(
+test('should call the onChange prop when the switch get\'s clicked', (t) => {
+  const onChange = sinon.spy();
+  const wrapper = shallow(
     <Switch
-      {...defaultProps}
-      toggled
+      {...props}
+      onChange={onChange}
     />,
   );
-  const root = wrapper.find('span[role="switch"]');
+  const instance = wrapper.instance();
 
-  t.deepEqual(root.prop('aria-checked'), true);
+  instance.handlePress();
+
+  t.deepEqual(onChange.callCount, 1);
 });
 
-test('should add the class .switch--label-left when the labelPosition is left', (t) => {
-  const wrapper = mount(
+test('should call the onChange handler when a key is pressed', (t) => {
+  const onChange = sinon.spy();
+  const wrapper = shallow(
     <Switch
-      {...defaultProps}
-      labelPosition="left"
+      {...props}
+      onChange={onChange}
     />,
   );
+  const instance = wrapper.instance();
 
-  t.deepEqual(wrapper.find('span.switch--label-left').length, 1);
+  instance.handleKeyPress({ keyCode: Switch.keyCodes[0] });
+
+  t.deepEqual(onChange.callCount, 1);
+});
+
+test('should not call the onChange handler when no key code is specified', (t) => {
+  const onChange = sinon.spy();
+  const wrapper = shallow(
+    <Switch
+      {...props}
+      onChange={onChange}
+    />,
+  );
+  const instance = wrapper.instance();
+
+  instance.handleKeyPress({});
+
+  t.deepEqual(onChange.callCount, 0);
+});
+
+test('should change the state when the component get\'s focused', (t) => {
+  const wrapper = shallow(<Switch {...props} />);
+  const instance = wrapper.instance();
+
+  instance.handleFocus();
+
+  t.deepEqual(wrapper.state('isFocused'), true);
+});
+
+test('should change the state when the component get\'s focused and blurred', (t) => {
+  const wrapper = shallow(<Switch {...props} />);
+  const instance = wrapper.instance();
+
+  instance.handleFocus();
+
+  instance.handleBlur();
+
+  t.deepEqual(wrapper.state('isFocused'), false);
 });

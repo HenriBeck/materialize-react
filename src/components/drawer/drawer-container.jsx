@@ -3,6 +3,7 @@ import React, {
   Children,
 } from 'react';
 import PropTypes from 'prop-types';
+import noop from 'lodash.noop';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -49,10 +50,11 @@ export default class DrawerContainer extends PureComponent {
     className: '',
     responsiveWidth: 640,
     drawerPosition: 'left',
-    onNarrowChange: () => {},
+    onNarrowChange: noop,
   };
 
   static MainContent = MainContent;
+
   static DrawerContent = DrawerContent;
 
   /**

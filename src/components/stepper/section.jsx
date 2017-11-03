@@ -14,7 +14,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name for the section.
  * @returns {JSX} - Returns the JSX.
  */
-export function Section({
+function Section({
   classes,
   children,
   className,
@@ -33,7 +33,6 @@ export function Section({
 Section.propTypes = {
   classes: PropTypes.shape({ section: PropTypes.string.isRequired }).isRequired,
   children: PropTypes.node.isRequired,
-  name: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
   className: PropTypes.string,
 };
 
@@ -45,11 +44,7 @@ Section.styles = {
     minWidth: '100%',
     boxSizing: 'border-box',
     flex: 1,
-
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 8,
-    paddingBottom: 8,
+    padding: '8px 16px',
 
     [breakpoints.up('tablet')]: {
       paddingLeft: 24,

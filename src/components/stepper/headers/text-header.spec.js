@@ -5,10 +5,8 @@ import { mount } from 'enzyme';
 import TextHeader from './text-header';
 
 const props = {
-  sections: [{ name: 1 }, { name: 2 }, { name: 3 }],
+  totalSections: 3,
   currentSection: 0,
-  back: () => {},
-  forward: () => {},
   backButton: null,
   nextButton: null,
 };

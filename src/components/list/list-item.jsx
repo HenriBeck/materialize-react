@@ -4,9 +4,10 @@ import injectSheet from 'react-jss';
 import classnames from 'classnames';
 
 import { commonBase } from '../../styles/typography';
+import Typography from '../typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
-import Avatar from './item-avatar';
+import Avatar from './list-item-avatar';
 
 /**
  * A component to render a list item.
@@ -23,7 +24,7 @@ import Avatar from './item-avatar';
  * @param {String} props.className - An additional class name for the list.
  * @returns {JSX} - Returns the JSX.
  */
-export function Item({
+function ListItem({
   classes,
   children,
   leftItem,
@@ -41,7 +42,7 @@ export function Item({
   return (
     <li
       className={`${classes.item} ${className}`}
-      {...getNotDeclaredProps(props, Item)}
+      {...getNotDeclaredProps(props, ListItem)}
     >
       {inset && (
         <span className={classes.leftItem}>
@@ -53,9 +54,12 @@ export function Item({
         {children}
 
         {secondaryContent && (
-          <span className={classes.secondaryContent}>
+          <Typography
+            secondary
+            className={classes.secondaryContent}
+          >
             {secondaryContent}
-          </span>
+          </Typography>
         )}
       </span>
 
@@ -68,7 +72,7 @@ export function Item({
   );
 }
 
-Item.propTypes = {
+ListItem.propTypes = {
   classes: PropTypes.shape({
     item: PropTypes.string.isRequired,
     withSecondaryContent: PropTypes.string.isRequired,
@@ -85,70 +89,67 @@ Item.propTypes = {
   className: PropTypes.string,
 };
 
-Item.defaultProps = {
+ListItem.defaultProps = {
   leftItem: null,
   rightItem: null,
   secondaryContent: null,
   className: '',
 };
 
-Item.Avatar = Avatar;
+ListItem.Avatar = Avatar;
 
-Item.styles = (theme) => {
-  return {
-    item: {
-      composes: 'list--item',
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingLeft: 16,
-      paddingRight: 16,
-    },
+ListItem.styles = {
+  item: {
+    composes: 'list--item',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
 
-    leftItem: {
-      composes: 'list--item-left-item',
-      minWidth: 56,
-      maxWidth: 56,
-      paddingRight: 16,
-      boxSizing: 'border-box',
-    },
+  leftItem: {
+    composes: 'list--item-left-item',
+    minWidth: 56,
+    maxWidth: 56,
+    paddingRight: 16,
+    boxSizing: 'border-box',
+  },
 
-    content: {
-      composes: 'list--item-content',
-      display: 'flex',
-      flexDirection: 'column',
-      ...commonBase,
-      flex: 1,
-      fontSize: 16,
-      lineHeight: '16px',
-      paddingTop: 16,
-      paddingBottom: 16,
-    },
+  content: {
+    composes: 'list--item-content',
+    display: 'flex',
+    flexDirection: 'column',
+    ...commonBase,
+    flex: 1,
+    fontSize: 16,
+    lineHeight: '16px',
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
 
-    withSecondaryContent: {
-      composes: 'list--item-with-secondary-content',
-      paddingTop: 20,
-      paddingBottom: 20,
-    },
+  withSecondaryContent: {
+    composes: 'list--item-with-secondary-content',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
 
-    secondaryContent: {
-      composes: 'list--item-secondary-content',
-      color: theme.secondaryTextColor,
-      fontSize: 14,
-    },
+  secondaryContent: {
+    composes: 'list--item-secondary-content',
+    fontSize: 14,
+  },
 
-    rightItem: {
-      composes: 'list--item-right-item',
-      paddingLeft: 16,
-      maxWidth: 24,
-      minWidth: 24,
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  };
+  rightItem: {
+    composes: 'list--item-right-item',
+    paddingLeft: 16,
+    maxWidth: 24,
+    minWidth: 24,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 };
 
-export default injectSheet(Item.styles)(Item);
+export default injectSheet(ListItem.styles)(ListItem);

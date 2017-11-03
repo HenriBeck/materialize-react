@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @param {JSX} props.children - The children which will be rendered inside.
  * @returns {JSX} - Returns the wrapped children.
  */
-export default function DrawerContent({
+function DrawerContent({
   children,
   ...props
 }) {
@@ -20,3 +20,5 @@ export default function DrawerContent({
 }
 
 DrawerContent.propTypes = { children: PropTypes.node.isRequired };
+
+export default DrawerContent;

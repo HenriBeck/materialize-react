@@ -41,9 +41,13 @@ export default class Dialog extends PureComponent {
   };
 
   static Controller = Controller;
+
   static Container = Container;
+
   static Header = Header;
+
   static Content = Content;
+
   static Buttons = Buttons;
 
   /**

@@ -13,7 +13,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {JSX} props.children - The buttons for the row.
  * @returns {JSX} - Returns the jsx.
  */
-export function DialogButtons({
+function DialogButtons({
   classes,
   className,
   children,

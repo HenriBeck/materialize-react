@@ -1,65 +1,99 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
+import Aux from 'react-aux';
 
 import Button from '../button';
 
-import Snackbar from './snackbar';
-import SnackbarController from './snackbar-controller';
 import SnackbarContainer from './snackbar-container';
 
 /**
- * A component which creates a fully working drawer for the story.
+ * The story for the snackbars.
  *
  * @class
  */
-class SnackbarStory extends PureComponent {
-  /**
-   * When the menu icon button is pressed we want to open the drawer.
-   */
-  handlePress = name => () => {
-    this[name].show();
+class Story extends PureComponent {
+  state = { snackbars: [] };
+
+  snackbars = {
+    basic: {
+      content: 'A basic snackbar',
+      autoCloseTimer: 10 * 1000,
+    },
+    withAction: {
+      content: (
+        <Aux>
+          A Snackbar with an action!
+
+          <Button onPress={this.handleSnackbarAction}>
+            Action
+          </Button>
+        </Aux>
+      ),
+    },
   };
 
   /**
-   * Close the second snackbar.
+   * Create a reference to the snackbar container.
+   *
+   * @param {Object} instance - The instance of the snackbar container.
    */
-  handleAction = () => {
-    this.snackbar2.close();
+  createRef = (instance) => {
+    this.snackbarContainer = instance;
+  };
+
+  handlePress = name => () => {
+    this.setState((state) => {
+      return {
+        snackbars: []
+          .concat(state.snackbars)
+          .concat([ this.snackbars[name] ]),
+      };
+    });
+  };
+
+  /**
+   * Animate out the current snackbar when the action get's pressed.
+   */
+  handleSnackbarAction = () => {
+    this.snackbarContainer.removeCurrentSnackbar();
+  };
+
+  /**
+   * Remove the first snackbar from the state when the current snackbar animates out.
+   */
+  handleRemoveSnackbar = () => {
+    this.setState((state) => {
+      return { snackbars: state.snackbars.slice(0, 1) };
+    });
   };
 
   render() {
     return (
-      <SnackbarController>
-        <div
-          style={{
-            flex: 1,
-            alignSelf: 'stretch',
-          }}
-        >
-          <SnackbarContainer />
+      <div
+        style={{
+          flex: 1,
+          alignSelf: 'stretch',
+        }}
+      >
+        <SnackbarContainer
+          createRef={this.createRef}
+          snackbars={this.state.snackbars}
+          onRemoveSnackbar={this.handleRemoveSnackbar}
+        />
 
-          <div>
-            <Button onPress={this.handlePress('snackbar1')}>Add snackbar</Button>
+        <div>
+          <Button onPress={this.handlePress('basic')}>Add snackbar</Button>
 
-            <Snackbar ref={(elem) => { this.snackbar1 = elem; }}>Hello</Snackbar>
+          <Button onPress={this.handlePress('withAction')}>Add snackbar with action</Button>
 
-            <Button onPress={this.handlePress('snackbar2')}>Add snackbar with action</Button>
-
-            <Snackbar
-              autoCloseTimer={0}
-              ref={(elem) => { this.snackbar2 = elem; }}
-            >
-              Some action happened
-              <Button onRelease={this.handleAction}>Undo</Button>
-            </Snackbar>
-          </div>
+          <Button onPress={this.handleSnackbarAction}>Close current snackbar</Button>
         </div>
-      </SnackbarController>
+      </div>
     );
   }
 }
 
 storiesOf('Snackbar', module)
   .add('Story', () => (
-    <SnackbarStory />
+    <Story />
   ));

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import warning from 'warning';
+import noop from 'lodash.noop';
 
 import Ripple from '../ripple';
 import Icon from '../icon';
@@ -34,9 +35,9 @@ export class IconButton extends PureComponent {
     disabled: false,
     noink: false,
     className: '',
-    onPress: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
+    onPress: noop,
+    onFocus: noop,
+    onBlur: noop,
   };
 
   static keyCodes = [13, 32];

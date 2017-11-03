@@ -31,7 +31,9 @@ export default class EventHandler extends PureComponent {
   static ignoreMouseEventsAfterTouchFor = 750;
 
   isPressingKey = false;
+
   lastTouchStart = false;
+
   lastTouchEnd = false;
 
   /**

@@ -1,15 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import randomstring from 'randomstring';
 import injectSheet from 'react-jss';
+import noop from 'lodash.noop';
 
 import Ripple from '../ripple';
 import EventHandler from '../event-handler';
-import Label from '../label';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
- * A component to render a RadioButton.
+ * Render a radio button and connect it to the RadioButtonGroup.
  *
  * @class
  */
@@ -17,36 +16,38 @@ export class RadioButton extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       radioButton: PropTypes.string.isRequired,
-      container: PropTypes.string.isRequired,
       border: PropTypes.string.isRequired,
       circle: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
       ripple: PropTypes.string.isRequired,
-      labelLeft: PropTypes.string.isRequired,
     }).isRequired,
-    checked: PropTypes.bool.isRequired,
-    children: PropTypes.node.isRequired,
-    isFocused: PropTypes.bool.isRequired,
-    onPress: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
-    labelPosition: PropTypes.string,
     className: PropTypes.string,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
     disabled: false,
     noink: false,
-    labelPosition: 'right',
     className: '',
+    onFocus: noop,
+    onBlur: noop,
+  };
+
+  static contextTypes = {
+    radioButtonGroup: PropTypes.shape({
+      selected: PropTypes.shape({}).isRequired,
+      onChange: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   /**
-   * The styles for the component.
+   * The styles for the radio button component.
    *
-   * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.radioButton - The actual theme for the radio button component.
-   * @returns {Object} - Returns the styles which will be rendered.
+   * @param {Object} theme - The theme supplied by Jss.
+   * @returns {Object} - Returns the styles for the component.
    */
   static styles(theme) {
     const isDark = theme.type === 'dark';
@@ -54,9 +55,13 @@ export class RadioButton extends PureComponent {
     return {
       radioButton: {
         composes: 'radio-button',
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: 4,
+        position: 'relative',
+        boxSizing: 'border-box',
+        margin: '20px 24px',
+        height: 16,
+        width: 16,
+
+        '&:focus': { outline: 0 },
 
         '&[aria-checked=true] $border': { borderColor: theme.primaryBase },
 
@@ -67,16 +72,6 @@ export class RadioButton extends PureComponent {
         '&[aria-disabled=true] $border': { borderColor: theme.disabledColor },
 
         '&[aria-disabled=true] $circle': { backgroundColor: theme.disabledColor },
-      },
-
-      container: {
-        composes: 'radio-button--container',
-        position: 'relative',
-        borderRadius: '50%',
-        boxSizing: 'border-box',
-        margin: '16px 24px ',
-        height: 16,
-        width: 16,
       },
 
       border: {
@@ -108,11 +103,6 @@ export class RadioButton extends PureComponent {
         backgroundColor: theme.primaryBase,
       },
 
-      label: {
-        composes: 'radio-button--label',
-        padding: 4,
-      },
-
       ripple: {
         composes: 'radio-button--ripple',
         top: -16,
@@ -120,63 +110,115 @@ export class RadioButton extends PureComponent {
         right: -16,
         bottom: -16,
       },
-
-      labelLeft: {
-        composes: 'radio-button--label-left',
-        flexDirection: 'row-reverse',
-      },
     };
   }
 
-  id = randomstring.generate();
+  static changeOnKeyCodes = [13, 32];
+
+  state = {
+    selected: false,
+    isFocused: false,
+  };
+
+  /**
+   * Initially set the state and subscribe to changes.
+   */
+  componentWillMount() {
+    this.updateState(this.context.radioButtonGroup.selected.getState());
+
+    this.subId = this.context.radioButtonGroup.selected.subscribe(this.updateState);
+  }
+
+  /**
+   * Unsubscribe to the changes.
+   */
+  componentWillUnmount() {
+    this.context.radioButtonGroup.selected.unsubscribe(this.subId);
+  }
+
+  /**
+   * Update the selected state.
+   *
+   * @private
+   * @param {String} selected - The selected radio button name.
+   */
+  updateState = (selected) => {
+    this.setState({ selected });
+  };
+
+  /**
+   * Call the onChange context supplied by the RadioButtonGroup.
+   *
+   * @private
+   */
+  handlePress = () => {
+    this.context.radioButtonGroup.onChange(this.props.name);
+  };
+
+  /**
+   * Change the isFocused state to true when the button receives focus.
+   *
+   * @private
+   */
+  handleFocus = () => {
+    this.props.onFocus();
+
+    this.setState({ isFocused: true });
+  };
+
+  /**
+   * Change the isFocused state to false when the button looses focus.
+   *
+   * @private
+   */
+  handleBlur = () => {
+    this.props.onBlur();
+
+    this.setState({ isFocused: false });
+  };
+
+  /**
+   * Call the onChange context when a key with a special key code is pressed.
+   */
+  handleKeyPress = (ev) => {
+    if (RadioButton.changeOnKeyCodes.includes(ev.keyCode)) {
+      this.context.radioButtonGroup.onChange(this.props.name);
+    }
+  };
 
   render() {
     const {
-      classes,
-      checked,
       disabled,
-      children,
-      isFocused,
-      onPress,
-      noink,
       className,
-      labelPosition,
-      ...props
+      noink,
+      name,
     } = this.props;
-    const labelClass = labelPosition === 'left' && classes.labelLeft;
 
     return (
       <EventHandler
-        {...getNotDeclaredProps(props, RadioButton)}
+        {...getNotDeclaredProps(this.props, RadioButton)}
         component="span"
         role="radio"
-        id={this.id}
-        className={`${className} ${classes.radioButton} ${labelClass}`}
-        aria-checked={checked}
+        tabIndex={disabled ? -1 : 0}
+        className={`${className} ${this.props.classes.radioButton}`}
+        aria-checked={this.state.selected === name}
         aria-disabled={disabled}
-        onPress={onPress}
+        onPress={this.handlePress}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+        onKeyPress={this.handleKeyPress}
       >
-        <span className={classes.container}>
-          <span className={classes.border} />
+        <span className={this.props.classes.border} />
 
-          <span className={classes.circle} />
+        <span className={this.props.classes.circle} />
 
-          <Ripple
-            round
-            center
-            isFocused={isFocused}
-            nowaves={noink}
-            className={classes.ripple}
-          />
-        </span>
-
-        <Label
-          htmlFor={this.id}
-          disabled={disabled}
-          className={classes.label}
-        >
-          {children}
-        </Label>
+        <Ripple
+          round
+          center
+          isFocused={this.state.isFocused}
+          nowaves={noink}
+          className={this.props.classes.ripple}
+        />
       </EventHandler>
     );
   }

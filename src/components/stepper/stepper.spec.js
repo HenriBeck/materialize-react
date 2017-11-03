@@ -1,30 +1,51 @@
 import React from 'react';
 import test from 'ava';
-import { mount } from 'enzyme';
+import {
+  shallow,
+  mount,
+} from 'enzyme';
 
-import Stepper from './stepper';
+import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+
+import StepperWrapper, { Stepper } from './stepper';
 
 const props = {
-  header: (<header />),
-  children: (<div />),
-  currentSection: 0,
-  className: '',
-  headerAtBottom: false,
+  classes: createClassesFromStyles(Stepper.styles),
+  header: Stepper.Headers.Text,
+  section: 0,
 };
 
-test('should render a div with the class of stepper', (t) => {
-  const wrapper = mount(<Stepper {...props} />);
-
-  t.deepEqual(wrapper.find('div.stepper').length, 1);
+test('should throw an error if a non section child is passed', (t) => {
+  t.throws(() => shallow(
+    <Stepper {...props}>
+      <div />
+    </Stepper>,
+  ));
 });
 
-test('should add a class of stepper--header-at-bottom to the root', (t) => {
+test('should throw an error if only one section is passed', (t) => {
+  t.throws(() => shallow(
+    <Stepper {...props}>
+      <Stepper.Section>
+        Test
+      </Stepper.Section>
+    </Stepper>,
+  ));
+});
+
+test('should render a div with the class of stepper and the passed sections', (t) => {
+  const header = () => <header />;
   const wrapper = mount(
-    <Stepper
-      {...props}
-      headerAtBottom
-    />,
+    <StepperWrapper
+      section={0}
+      header={header}
+    >
+      <Stepper.Section>Test 1</Stepper.Section>
+      <Stepper.Section>Test 2</Stepper.Section>
+      <Stepper.Section>Test 3</Stepper.Section>
+    </StepperWrapper>,
   );
 
-  t.deepEqual(wrapper.find('.stepper--header-at-bottom').length, 1);
+  t.deepEqual(wrapper.find('div.stepper').length, 1);
+  t.deepEqual(wrapper.find('Section').length, 3);
 });

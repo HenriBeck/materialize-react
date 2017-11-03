@@ -27,7 +27,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.icon - An icon that will be render when the tabStyle has an icon.
  * @returns {JSX} - Returns the component.
  */
-export function Tab({
+function Tab({
   selected,
   className,
   classes,

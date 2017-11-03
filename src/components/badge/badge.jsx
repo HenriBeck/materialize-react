@@ -10,7 +10,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Object} props - The props for the component.
  * @returns {JSX} - Returns the JSX.
  */
-export function Badge(props) {
+function Badge(props) {
   return (
     <span
       className={`${props.classes.badge} ${props.className}`}

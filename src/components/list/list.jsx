@@ -4,9 +4,14 @@ import injectSheet from 'react-jss';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
-import Subheader from './subheader';
-import Divider from './divider';
-import Item from './item';
+import Subheader from './list-subheader';
+import Divider from './list-divider';
+import Item from './list-item';
+
+const validListChildren = [
+  Divider,
+  Item,
+];
 
 /**
  * The main list component.
@@ -18,7 +23,7 @@ import Item from './item';
  * @param {String} props.className - An additional class name for the list.
  * @returns {JSX} - Returns the JSX.
  */
-export function List({
+function List({
   classes,
   children,
   inset,
@@ -26,11 +31,11 @@ export function List({
   ...props
 }) {
   const clonedChildren = Children.map(children, (child) => {
-    if (child.type === Subheader) {
-      return child;
+    if (validListChildren.includes(child.type)) {
+      return React.cloneElement(child, { inset });
     }
 
-    return React.cloneElement(child, { inset });
+    return child;
   });
 
   return (
@@ -43,29 +48,9 @@ export function List({
   );
 }
 
-const validListChildren = [
-  Subheader,
-  Divider,
-  Item,
-];
-
 List.propTypes = {
   classes: PropTypes.shape({ list: PropTypes.string.isRequired }).isRequired,
-  children({ children }) { // eslint-disable-line react/require-default-props
-    const childrenArray = Children.toArray(children);
-
-    if (childrenArray.length === 0) {
-      return new Error('Children are required for the List component!');
-    }
-
-    const hasNonListChild = childrenArray.some(child => !validListChildren.includes(child.type));
-
-    if (hasNonListChild) {
-      return new Error('Found non valid children inside List!');
-    }
-
-    return null;
-  },
+  children: PropTypes.node.isRequired,
   inset: PropTypes.bool,
   className: PropTypes.string,
 };

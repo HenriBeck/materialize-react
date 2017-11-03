@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import noop from 'lodash.noop';
 
 import { getCoords } from '../ripple/utils';
 
@@ -23,7 +24,7 @@ export default class SliderContainer extends PureComponent {
   static defaultProps = {
     initialValue: 0,
     disabled: false,
-    onChange: () => {},
+    onChange: noop,
     className: '',
     min: 0,
     max: 100,

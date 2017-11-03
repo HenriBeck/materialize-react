@@ -1,44 +1,41 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
-import {
-  text,
-  boolean,
-} from '@storybook/addon-knobs';
 
-import Switch from './switch-container';
+import Switch from './switch';
+
+/**
+ * The story for the switch component.
+ *
+ * @class
+ */
+class Story extends PureComponent {
+  static propTypes = { initialToggled: PropTypes.bool };
+
+  static defaultProps = { initialToggled: false };
+
+  state = { toggled: this.props.initialToggled };
+
+  handleChange = () => this.setState({ toggled: !this.state.toggled });
+
+  render() {
+    return (
+      <Switch
+        toggled={this.state.toggled}
+        onChange={this.handleChange}
+        {...this.props}
+      />
+    );
+  }
+}
 
 storiesOf('Switch', module)
   .add('Default Styles', () => (
-    <Switch name="test" />
+    <Story />
   ))
   .add('Default Toggled', () => (
-    <Switch
-      defaultToggled
-      name="test"
-    />
+    <Story initialToggled />
   ))
   .add('Disabled', () => (
-    <Switch
-      disabled
-      name="test"
-    />
-  ))
-  .add('Label right', () => (
-    <Switch name="test">Label</Switch>
-  ))
-  .add('Label left', () => (
-    <Switch
-      labelPosition="left"
-      name="test"
-    >
-      Label
-    </Switch>
-  ))
-  .add('Interactive', () => (
-    <Switch
-      disabled={boolean('Disabled', false)}
-      name="test"
-    >
-      {text('Label', 'Label')}
-    </Switch>
+    <Story disabled />
   ));

@@ -122,6 +122,7 @@ export class Ripple extends PureComponent {
   };
 
   state = { waves: [] };
+
   wavesCount = 0;
 
   /**

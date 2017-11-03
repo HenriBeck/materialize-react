@@ -61,6 +61,9 @@ test('should add/remove an resize event listener when the components mounts/unmo
   wrapper.unmount();
 
   t.deepEqual(removeEventListener.callCount, 1);
+
+  window.addEventListener.restore();
+  window.removeEventListener.restore();
 });
 
 test('should change the state when the open/close method get\'s called', (t) => {

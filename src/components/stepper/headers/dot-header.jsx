@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
+import omit from 'lodash.omit';
 
 import HeaderWithButtons from './header-with-buttons';
 
@@ -9,13 +11,13 @@ import HeaderWithButtons from './header-with-buttons';
  *
  * @class
  */
-export class DotHeader extends PureComponent {
+class DotHeader extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       dot: PropTypes.string.isRequired,
       activeDot: PropTypes.string.isRequired,
     }).isRequired,
-    sections: PropTypes.arrayOf(PropTypes.object).isRequired,
+    totalSections: PropTypes.number.isRequired,
     currentSection: PropTypes.number.isRequired,
   };
 
@@ -48,27 +50,27 @@ export class DotHeader extends PureComponent {
   /**
    * Render one dot for each of the sections.
    *
-   * @param {Object} classes - The classes for the component.
-   * @returns {JSX} - Returns the JSX for the dots.
+   * @returns {JSX[]} - Returns the JSX for the dots.
    */
-  renderDots(classes) {
-    return this.props.sections.map((section, index) => (
-      <span
-        key={section.name}
-        className={`${classes.dot} ${this.props.currentSection === index && classes.activeDot}`}
-      />
-    ));
+  renderDots() {
+    return new Array(this.props.totalSections)
+      .fill(1)
+      .map((section, index) => (
+        <span
+          // eslint-disable-next-line react/no-array-index-key
+          key={index}
+          className={classnames(
+            this.props.classes.dot,
+            { [this.props.classes.activeDot]: this.props.currentSection === index },
+          )}
+        />
+      ));
   }
 
   render() {
-    const {
-      classes,
-      ...props
-    } = this.props;
-
     return (
-      <HeaderWithButtons {...props}>
-        {this.renderDots(classes)}
+      <HeaderWithButtons {...omit(this.props, 'classes')}>
+        {this.renderDots()}
       </HeaderWithButtons>
     );
   }

@@ -1,1 +1,1 @@
-export default from './stepper-container';
+export default from './stepper';

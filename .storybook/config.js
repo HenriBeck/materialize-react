@@ -17,6 +17,8 @@ import 'mdi/css/materialdesignicons.css';
 import Theme from '../src/components/theme';
 import Background from '../src/components/background';
 import Switch from '../src/components/switch';
+import Layout from '../src/components/layout';
+import Label from '../src/components/label';
 
 let darkThemeEnabled = false;
 
@@ -40,12 +42,11 @@ class Decorator extends PureComponent {
 
   /**
    * Change the state when the switch is being toggled.
-   *
-   * @param {String} name - The name of the switch.
-   * @param {Boolean} value - The new state of the switch.
    */
-  handleChange = (name, value) => {
-    this.setState({ darkTheme: value });
+  handleChange = () => {
+    this.setState(({ darkTheme }) => {
+      return { darkTheme: !darkTheme };
+    });
   };
 
   render() {
@@ -53,13 +54,11 @@ class Decorator extends PureComponent {
 
     return (
       <Theme type={darkTheme ? 'dark' : 'light'}>
-        <Background
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '100vh',
-          }}
+        <Layout
+          component={Background}
+          crossAlign="center"
+          mainAlign="center"
+          style={{ minHeight: '100vh' }}
         >
           <div
             style={{
@@ -69,17 +68,18 @@ class Decorator extends PureComponent {
               zIndex: 10,
             }}
           >
-            <Switch
-              name="dark-theme"
-              defaultToggled={darkThemeEnabled}
-              onChange={this.handleChange}
-            >
+            <Label>
+              <Switch
+                toggled={darkTheme}
+                onChange={this.handleChange}
+              />
+
               Dark Theme
-            </Switch>
+            </Label>
           </div>
 
           {this.props.children}
-        </Background>
+        </Layout>
       </Theme>
     );
   }

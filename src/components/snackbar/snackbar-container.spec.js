@@ -1,150 +1,112 @@
-import test from 'ava';
 import React from 'react';
+import test from 'ava';
 import sinon from 'sinon';
-import delay from 'delay';
-import { mount } from 'enzyme';
 
-import { shallow } from '../../../tests/helpers/enzyme';
-import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
+import { mount } from '../../../tests/helpers/enzyme';
 
-import SnackbarContainerWrapper, { SnackbarContainer } from './snackbar-container';
+import SnackbarContainer from './snackbar-container';
 
-/**
- * Simulate the context for the SnackbarContainer.
- *
- * @returns {Object} - Returns the context.
- */
-function getContext() {
-  return {
-    snackbarController: {
-      initiateContainer: sinon.spy(),
-      removeContainer: sinon.spy(),
-    },
-  };
-}
+test('should call createRef when the component get\'s constructed', (t) => {
+  const createRef = sinon.spy();
 
-const classes = createClassesFromStyles(SnackbarContainer.styles);
+  mount(
+    <SnackbarContainer
+      snackbars={[]}
+      createRef={createRef}
+    />,
+  );
 
-test('should render a Jss HoC', (t) => {
-  const wrapper = shallow(<SnackbarContainerWrapper />, { themeType: 'dark' });
-
-  t.deepEqual(wrapper.find('SnackbarContainer').length, 1);
+  t.deepEqual(createRef.callCount, 1);
 });
 
-test('should initiate the container on mount and remove it on unmount', (t) => {
-  const context = getContext();
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context });
+test('should render a div with the class of snackbar--container', (t) => {
+  const wrapper = mount(
+    <SnackbarContainer snackbars={[]} />,
+    { type: 'dark' },
+  );
 
-  t.deepEqual(context.snackbarController.initiateContainer.callCount, 1);
+  t.deepEqual(wrapper.find('div.snackbar--container').length, 1);
+});
+
+test('should clear the timeout when the component unmounts', (t) => {
+  const spy = sinon.spy(global, 'clearTimeout');
+  const wrapper = mount(<SnackbarContainer snackbars={[]} />);
 
   wrapper.unmount();
 
-  t.deepEqual(context.snackbarController.removeContainer.callCount, 1);
+  t.deepEqual(spy.callCount, 1);
+
+  clearTimeout.restore();
 });
 
-test('should set currentlyVisible when no snackbar is visible and addSnackbar is called', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
+test('should render the current snackbar', (t) => {
+  const wrapper = mount(<SnackbarContainer snackbars={[{ content: 'Test' }]} />);
 
-  instance.addSnackbar({ id: 1 });
-
-  t.deepEqual(wrapper.state('currentlyVisible'), 1);
+  t.deepEqual(wrapper.find('span.snackbar').length, 1);
 });
 
-test('should add the snackbar to the array when the addSnackbar is called', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
+test('should change the animation name when the ', (t) => {
+  const wrapper = mount(<SnackbarContainer snackbars={[{ content: 'Test' }]} />);
+  const instance = wrapper.find('SnackbarContainer').instance();
 
-  instance.addSnackbar({ id: 1 });
-  instance.addSnackbar({ id: 2 });
+  instance.removeCurrentSnackbar();
 
-  t.deepEqual(instance.snackbars.length, 2);
+  t.deepEqual(instance.state.animatingOut, true);
 });
 
-test('should not add a snackbar when a snackbar is already in the queue with the same id', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-
-  instance.addSnackbar({ id: 1 });
-  instance.addSnackbar({ id: 1 });
-
-  t.deepEqual(instance.snackbars.length, 1);
-});
-
-test('should filter the snackbars when the closeSnackbar is called', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-
-  instance.addSnackbar({ id: 1 });
-  instance.addSnackbar({ id: 2 });
-
-  instance.closeSnackbar(2);
-
-  t.deepEqual(instance.snackbars.length, 1);
-});
-
-test('should set the animatinOut state when the current snackbar is closed', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-
-  instance.addSnackbar({ id: 1 });
-
-  instance.closeSnackbar(1);
-
-  t.deepEqual(wrapper.state('animatingOut'), true);
-});
-
-test('should reset the animatingOut state when the animation finishes', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
-
-  instance.addSnackbar({
-    id: 1,
-    onClose: () => {},
-  });
+test('should create a timeout if the current snackbar has an autoCloseTimer', (t) => {
+  const wrapper = mount(
+    <SnackbarContainer
+      snackbars={[{
+        content: 'Test',
+        autoCloseTimer: 5 * 1000,
+      }]}
+    />,
+  );
+  const instance = wrapper.find('SnackbarContainer').instance();
 
   instance.handleAnimationEnd();
 
-  instance.closeSnackbar(1);
+  t.notDeepEqual(instance.timeout, null);
+});
+
+test('should not create a timeout if the snackbar doesn\'t have a autoCloseTimer', (t) => {
+  const wrapper = mount(<SnackbarContainer snackbars={[{ content: 'Test' }]} />);
+  const instance = wrapper.find('SnackbarContainer').instance();
 
   instance.handleAnimationEnd();
 
-  t.deepEqual(wrapper.state('animatingOut'), false);
+  t.deepEqual(instance.timeout, null);
 });
 
-test('should set the currentlyVisible to the next snackbar when the old got removed', (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
+test('should call onRemoveSnackbar when the current snackbar animates out', (t) => {
+  const onRemoveSnackbar = sinon.spy();
+  const wrapper = mount(
+    <SnackbarContainer
+      snackbars={[{ content: 'Test' }]}
+      onRemoveSnackbar={onRemoveSnackbar}
+    />,
+  );
+  const instance = wrapper.find('SnackbarContainer').instance();
 
-  instance.addSnackbar({
-    id: 1,
-    onClose: () => {},
-  });
-
-  instance.addSnackbar({
-    id: 2,
-    onClose: () => {},
-  });
-
-  instance.closeSnackbar(1);
+  instance.removeCurrentSnackbar();
 
   instance.handleAnimationEnd();
 
-  t.deepEqual(wrapper.state('currentlyVisible'), 2);
+  t.deepEqual(onRemoveSnackbar.callCount, 1);
 });
 
-test('should create a timeout after which the snackbar get\'s closed', async (t) => {
-  const wrapper = mount(<SnackbarContainer classes={classes} />, { context: getContext() });
-  const instance = wrapper.instance();
+test('should change the animatingOut state back to false', (t) => {
+  const wrapper = mount(<SnackbarContainer snackbars={[{ content: 'Test' }]} />);
+  const instance = wrapper.find('SnackbarContainer').instance();
 
-  instance.closeSnackbar = sinon.spy();
+  instance.removeCurrentSnackbar();
 
-  instance.addSnackbar({
-    id: 1,
-    autoCloseTimer: 1000,
-  });
+  instance.handleAnimationEnd();
 
-  await delay(1000);
+  wrapper.setProps({ snackbars: [] });
 
-  t.deepEqual(instance.closeSnackbar.callCount, 1);
+  wrapper.setProps({ className: 'tes' });
+
+  t.deepEqual(instance.state.animatingOut, false);
 });

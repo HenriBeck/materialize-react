@@ -14,7 +14,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {JSX} props.children - The actual content for the dialog.
  * @returns {JSX} - Returns the jsx.
  */
-export function DialogContent({
+function DialogContent({
   classes,
   className,
   children,
