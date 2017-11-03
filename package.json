@@ -1,6 +1,6 @@
 {
   "name": "materialize-react",
-  "version": "0.2.0-alpha.3",
+  "version": "0.2.0-alpha.4",
   "description": "React Components with materialize theme",
   "main": "lib/index.js",
   "options": {
@@ -13,7 +13,7 @@
     "test": "NODE_ENV=\"test\" ava",
     "test:watch": "yarn run test -- --watch",
     "test:coverage": "nyc yarn run test",
-    "build": "babel src --out-dir lib --ignore *.spec.js,stories.jsx --comments=false",
+    "build": "babel src --out-dir lib --ignore *.spec.js,stories.jsx",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
     "report-coverage": "yarn run generate-report:lcov | coveralls",
