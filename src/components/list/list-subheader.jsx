@@ -17,7 +17,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name for the subheader.
  * @returns {JSX} - Returns the JSX.
  */
-export function Subheader({
+function Subheader({
   classes,
   children,
   inset,

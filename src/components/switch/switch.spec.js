@@ -1,63 +1,90 @@
 import React from 'react';
 import test from 'ava';
+import { shallow } from 'enzyme';
+import sinon from 'sinon';
 
-import { mount } from '../../../tests/helpers/enzyme';
+import SwitchContainer from './switch-container';
 
-import Switch from './switch';
+test('should get the state with the toggled getter', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+  const instance = wrapper.instance();
 
-const defaultProps = {
-  toggled: false,
-  id: '',
-  onKeyPress: () => {},
-  onPress: () => {},
-  children: '',
-  isFocused: false,
-  onFocus: () => {},
-  onBlur: () => {},
-  disabled: false,
-  className: '',
-  noink: false,
-  labelPosition: 'right',
-};
-
-test('should render a Jss and a span with the role of a switch', (t) => {
-  const wrapper = mount(<Switch {...defaultProps} />, { themeType: 'dark' });
-
-  t.deepEqual(wrapper.find('Jss(Switch)').length, 1);
-  t.deepEqual(wrapper.find('span[role="switch"]').length, 1);
+  t.deepEqual(instance.toggled, false);
 });
 
-test('should set the aria-disabled attribute based on the disabled prop', (t) => {
-  const wrapper = mount(
-    <Switch
-      {...defaultProps}
-      disabled
-    />,
+test('should warn against changing the name and the defaultToggled prop', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+
+  t.throws(() => wrapper.setProps({ defaultToggled: true }));
+
+  t.throws(() => wrapper.setProps({ name: 'name2' }));
+});
+
+test('should set the state with the toggled getter', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+  const instance = wrapper.instance();
+
+  instance.toggled = true;
+
+  t.deepEqual(instance.toggled, true);
+
+  instance.toggled = true;
+});
+
+test('should toggle the state when the onPress handler get\'s called', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+  const instance = wrapper.instance();
+
+  instance.handlePress();
+
+  t.deepEqual(instance.toggled, true);
+});
+
+test('should call the onChange prop when the toggle method get\'s called', (t) => {
+  const onChange = sinon.spy();
+  const wrapper = shallow(
+    <SwitchContainer
+      name="test"
+      onChange={onChange}
+    >
+      Label
+    </SwitchContainer>,
   );
-  const root = wrapper.find('span[role="switch"]');
+  const instance = wrapper.instance();
 
-  t.deepEqual(root.prop('aria-disabled'), true);
+  instance.toggle();
+
+  t.deepEqual(onChange.callCount, 1);
 });
 
-test('should set the aria-checked attribute based on the toggled prop', (t) => {
-  const wrapper = mount(
-    <Switch
-      {...defaultProps}
-      toggled
-    />,
-  );
-  const root = wrapper.find('span[role="switch"]');
+test('should change the isFocused state when the focus and blur methods get called', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+  const instance = wrapper.instance();
 
-  t.deepEqual(root.prop('aria-checked'), true);
+  instance.handleFocus();
+
+  t.deepEqual(wrapper.state('isFocused'), true);
+
+  instance.handleBlur();
+
+  t.deepEqual(wrapper.state('isFocused'), false);
 });
 
-test('should add the class .switch--label-left when the labelPosition is left', (t) => {
-  const wrapper = mount(
-    <Switch
-      {...defaultProps}
-      labelPosition="left"
-    />,
-  );
+test('should only toggle the state when a key event has the correct keyCode', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+  const instance = wrapper.instance();
 
-  t.deepEqual(wrapper.find('span.switch--label-left').length, 1);
+  instance.handleKeyPress({ keyCode: SwitchContainer.keyCodes[0] });
+
+  t.deepEqual(instance.toggled, true);
 });
+
+test('should not toggle the state when a key event has no keyCode', (t) => {
+  const wrapper = shallow(<SwitchContainer name="test">Label</SwitchContainer>);
+  const instance = wrapper.instance();
+
+  instance.handleKeyPress({});
+
+  t.deepEqual(instance.toggled, false);
+});
+

@@ -13,7 +13,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name for the root component.
  * @returns {JSX} - Returns the JSX.
  */
-export function ListItemAvatar({
+function ListItemAvatar({
   classes,
   children,
   className,

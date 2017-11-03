@@ -15,7 +15,7 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional for the divider.
  * @returns {JSX} - Returns the JSX.
  */
-export function ListDivider({
+function ListDivider({
   classes,
   inset,
   className,

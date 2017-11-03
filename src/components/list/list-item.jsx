@@ -23,7 +23,7 @@ import Avatar from './item-avatar';
  * @param {String} props.className - An additional class name for the list.
  * @returns {JSX} - Returns the JSX.
  */
-export function Item({
+function Item({
   classes,
   children,
   leftItem,
