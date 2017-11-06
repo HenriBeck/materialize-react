@@ -59,7 +59,6 @@ export class Stepper extends PureComponent {
     stepper: {
       composes: 'stepper',
       width: '100%',
-      overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
     },
@@ -74,14 +73,14 @@ export class Stepper extends PureComponent {
       position: 'relative',
       overflow: 'hidden',
       flex: 1,
-      display: 'flex',
     },
 
     sectionWrapper: {
       composes: 'stepper--section-wrapper',
+      position: 'absolute',
+      height: '100%',
       display: 'flex',
       flexDirection: 'row',
-      flex: 1,
       width: '100%',
       transition: 'transform 200ms',
     },
