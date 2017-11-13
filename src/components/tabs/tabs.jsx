@@ -118,6 +118,21 @@ export class Tabs extends PureComponent {
   }
 
   /**
+   * Update the focused tab when the tab property changes.
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tab !== this.props.tab) {
+      this.setState((state) => {
+        if (state.focusedTab === null) {
+          return null;
+        }
+
+        return { focusedTab: nextProps.tab };
+      });
+    }
+  }
+
+  /**
    * Animate the bar when the tab prop has changed.
    */
   componentDidUpdate(prevProps) {
