@@ -80,7 +80,7 @@
     "react": "16.1.1",
     "react-aux": "1.1.0",
     "react-dom": "16.1.1",
-    "react-jss": "8.0.0",
+    "react-jss": "8.1.0",
     "react-test-renderer": "16.1.1",
     "sinon": "4.1.2",
     "style-loader": "0.19.0"
