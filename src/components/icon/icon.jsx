@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -15,25 +16,27 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Boolean} props.disabled - If the icon is disabled. It will have a darker color then.
  * @returns {JSX} - Returns the element.
  */
-function Icon({
-  icon,
-  className,
-  classes,
-  disabled,
-  ...props
-}) {
+function Icon(props) {
   return (
     <i
       {...getNotDeclaredProps(props, Icon)}
-      className={`${classes.icon} mdi-${icon} ${className}`}
-      aria-disabled={disabled}
+      className={classnames(
+        props.classes.icon,
+        `mdi-${props.icon}`,
+        { [props.classes.iconDisabled]: props.disabled },
+        props.className,
+      )}
+      aria-disabled={props.disabled}
     />
   );
 }
 
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
-  classes: PropTypes.shape({ icon: PropTypes.string.isRequired }).isRequired,
+  classes: PropTypes.shape({
+    icon: PropTypes.string.isRequired,
+    iconDisabled: PropTypes.string.isRequired,
+  }).isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
 };
@@ -49,9 +52,9 @@ Icon.styles = (theme) => {
       composes: 'mdi mdi-24px icon',
       color: theme.iconColor,
       lineHeight: 1,
-
-      '&[aria-disabled=true]': { color: theme.disabledColor },
     },
+
+    iconDisabled: { color: theme.disabledColor },
   };
 };
 

@@ -9,23 +9,15 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * A component which adds the appropriate styles for the header of a dialog.
  *
  * @param {Object} props - The props for the component.
- * @param {Object} props.classes - Classes provided by Jss.
- * @param {String} props.className - Additional className.
- * @param {JSX} props.children - The content for the header.
- * @returns {JSX} - Returns the jsx.
+ * @returns {JSX} - Returns the JSX.
  */
-function DialogHeader({
-  classes,
-  className,
-  children,
-  ...props
-}) {
+function DialogHeader(props) {
   return (
     <header
-      className={`${classes.header} ${className}`}
+      className={`${props.classes.header} ${props.className}`}
       {...getNotDeclaredProps(props, DialogHeader)}
     >
-      {children}
+      {props.children}
     </header>
   );
 }

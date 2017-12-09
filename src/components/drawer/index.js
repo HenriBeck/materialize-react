@@ -1,1 +1,1 @@
-export default from './drawer-container';
+export default from './drawer';

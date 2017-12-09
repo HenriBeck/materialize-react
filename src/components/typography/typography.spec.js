@@ -23,3 +23,29 @@ test('should add a class of typography--secondary when the secondary prop is pas
 
   t.deepEqual(wrapper.find('.typography--secondary').length, 1);
 });
+
+test('should add a class of typography--primary when the primary prop is passed', (t) => {
+  const wrapper = mount(
+    <Typography
+      primary
+      typography="body1"
+    >
+      Typo
+    </Typography>,
+  );
+
+  t.deepEqual(wrapper.find('.typography--primary').length, 1);
+});
+
+test('should add a class of typography--accent when the accent prop is passed', (t) => {
+  const wrapper = mount(
+    <Typography
+      accent
+      typography="body1"
+    >
+      Typo
+    </Typography>,
+  );
+
+  t.deepEqual(wrapper.find('.typography--accent').length, 1);
+});

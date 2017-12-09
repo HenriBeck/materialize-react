@@ -7,7 +7,9 @@ import noop from 'lodash.noop';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import getNotDeclaredProps from '../../get-not-declared-props';
-import EventHandler from '../event-handler';
+import { pipe } from '../../utils/functions';
+import withFocusedState from '../../utils/with-focused-state';
+import withKeyPress from '../../utils/with-key-press';
 
 /**
  * A component to render an icon button.
@@ -23,12 +25,15 @@ export class IconButton extends PureComponent {
       ripple: PropTypes.string.isRequired,
     }).isRequired,
     icon: PropTypes.string.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
     className: PropTypes.string,
     onPress: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
@@ -36,8 +41,6 @@ export class IconButton extends PureComponent {
     noink: false,
     className: '',
     onPress: noop,
-    onFocus: noop,
-    onBlur: noop,
   };
 
   static keyCodes = [13, 32];
@@ -78,8 +81,6 @@ export class IconButton extends PureComponent {
     };
   }
 
-  state = { isFocused: false };
-
   /**
    * Warn against changing the icon prop.
    */
@@ -90,81 +91,43 @@ export class IconButton extends PureComponent {
     );
   }
 
-  /**
-   * Handle the keyDown event.
-   * Check if the button is either the space bar or the enter key.
-   *
-   * @private
-   */
-  handleKeyPress = (ev) => {
-    if (IconButton.keyCodes.includes(ev.keyCode)) {
-      this.props.onPress();
-    }
-  };
-
-  /**
-   * Set the isFocused state to true.
-   *
-   * @private
-   */
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.setState({ isFocused: true });
-  };
-
-  /**
-   * Set the isFocused state to false.
-   *
-   * @private
-   */
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.setState({ isFocused: false });
-  };
+  handleKeyDown = this.props.createKeyDownHandler(this.props.onPress);
 
   render() {
-    const {
-      disabled,
-      classes,
-      className,
-      onPress,
-      noink,
-      icon,
-      ...props
-    } = this.props;
-
     return (
-      <EventHandler
-        {...getNotDeclaredProps(props, IconButton)}
-        component="span"
+      <span
+        {...getNotDeclaredProps(this.props, IconButton)}
         role="button"
-        className={`${classes.iconButton} ${className}`}
-        aria-disabled={disabled}
-        tabIndex={disabled ? -1 : 0}
-        onPress={onPress}
-        onKeyPress={this.handleKeyPress}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
+        className={`${this.props.classes.iconButton} ${this.props.className}`}
+        aria-disabled={this.props.disabled}
+        tabIndex={this.props.disabled ? -1 : 0}
+        onClick={this.props.onPress}
+        onKeyUp={this.props.onKeyUp}
+        onKeyDown={this.handleKeyDown}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
       >
         <Ripple
           round
           center
           className="icon-button--ripple"
           focusOpacity={0.12}
-          nowaves={noink}
-          isFocused={this.state.isFocused}
+          nowaves={this.props.noink}
+          isFocused={this.props.isFocused}
         />
 
         <Icon
-          className={classes.icon}
-          icon={icon}
-          disabled={disabled}
+          className={this.props.classes.icon}
+          icon={this.props.icon}
+          disabled={this.props.disabled}
         />
-      </EventHandler>
+      </span>
     );
   }
 }
 
-export default injectSheet(IconButton.styles)(IconButton);
+export default pipe(
+  injectSheet(IconButton.styles),
+  withFocusedState,
+  withKeyPress({ keyCodes: IconButton.keyCodes }),
+)(IconButton);

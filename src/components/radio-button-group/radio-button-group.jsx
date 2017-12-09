@@ -55,13 +55,11 @@ export default class RadioButtonGroup extends PureComponent {
   broadcast = brcast(this.props.selected);
 
   render() {
-    const { className } = this.props;
-
     return (
       <Layout
         inline
         direction="column"
-        className={`radio-button-group ${className}`}
+        className={`radio-button-group ${this.props.className}`}
         {...getNotDeclaredProps(this.props, RadioButtonGroup)}
       >
         {this.props.children}

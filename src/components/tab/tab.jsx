@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
-import EventHandler from '../event-handler';
 import Icon from '../icon';
 import { body1 } from '../../styles/typography';
 import Ripple from '../ripple';
@@ -13,67 +12,38 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * Renders a tab.
  *
  * @param {Object} props - The props for the component.
- * @param {String} props.name - The name for the tab.
- * @param {Object} props.classes - Classes for the component. Provided by Jss.
- * @param {JSX} props.children - The text for the tab.
- * @param {Boolean} props.focused - Whether or not the tab is in the focused state.
- * @param {Boolean} props.selected - Whether or not the tab is selected.
- * @param {String} props.className - Additional className to be applied to the root.
- * @param {String} props.tabStyle - The style of the tab. Provided by the TabsContainer.
- * @param {Function} props.createRef - A function which will create a reference
- * to the root component. Used by the TabsContainer.
- * @param {Function} props.onPress - A handler when the tab gets pressed to change the state.
- * @param {Boolean} props.noink - Whether or not the tab has no ripple effect.
- * @param {String} props.icon - An icon that will be render when the tabStyle has an icon.
  * @returns {JSX} - Returns the component.
  */
-function Tab({
-  selected,
-  className,
-  classes,
-  focused,
-  tabStyle,
-  createRef,
-  onPress,
-  name,
-  noink,
-  children,
-  icon,
-  ...props
-}) {
-  const classNames = classnames(
-    className,
-    classes.tab,
-    focused && 'tab--focused',
-    `tab--${tabStyle}`,
-  );
-
+function Tab(props) {
   return (
-    <EventHandler
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
+    <span // eslint-disable-line jsx-a11y/click-events-have-key-events
       {...getNotDeclaredProps(props, Tab)}
-      component="div"
       role="tab"
-      data-name={name}
-      aria-selected={selected}
-      createRef={createRef}
-      className={classNames}
-      onPress={onPress}
+      aria-selected={props.selected}
+      ref={props.createRef}
+      className={classnames(
+        props.classes.tab,
+        props.focused && 'tab--focused',
+        `tab--${props.tabStyle}`,
+        props.className,
+      )}
     >
-      {tabStyle.includes('icons') && (
+      {props.tabStyle.includes('icons') && (
         <Icon
-          icon={icon}
-          className={classes.icon}
+          icon={props.icon}
+          className={props.classes.icon}
         />
       )}
 
-      {tabStyle.includes('text') && (
-        <span className={classes.tabContent}>
-          {children}
+      {props.tabStyle.includes('text') && (
+        <span className={props.classes.tabContent}>
+          {props.children}
         </span>
       )}
 
-      {!noink && (<Ripple className={classes.ripple} />)}
-    </EventHandler>
+      {!props.noink && (<Ripple className={props.classes.ripple} />)}
+    </span>
   );
 }
 
@@ -85,7 +55,6 @@ Tab.propTypes = {
     icon: PropTypes.string.isRequired,
     ripple: PropTypes.string.isRequired,
   }).isRequired,
-  onPress: PropTypes.func.isRequired,
   tabStyle: PropTypes.string.isRequired,
   createRef: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,

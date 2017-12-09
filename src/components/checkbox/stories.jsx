@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 
+import getNotDeclaredProps from '../../get-not-declared-props';
+
 import Checkbox from './checkbox';
 
 /**
@@ -23,7 +25,7 @@ class Story extends PureComponent {
       <Checkbox
         checked={this.state.checked}
         onChange={this.handleChange}
-        {...this.props}
+        {...getNotDeclaredProps(this.props, Story)}
       />
     );
   }

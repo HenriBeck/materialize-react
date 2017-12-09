@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
@@ -18,7 +19,10 @@ import Switch from '../switch';
  */
 export class Label extends PureComponent {
   static propTypes = {
-    classes: PropTypes.shape({ label: PropTypes.string.isRequired }).isRequired,
+    classes: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      labelDisabled: PropTypes.string.isRequired,
+    }).isRequired,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
@@ -63,9 +67,9 @@ export class Label extends PureComponent {
         userSelect: 'none',
         padding: '0 8px',
         color: theme.textColor,
-
-        '&[aria-disabled=true]': { color: theme.secondaryTextColor },
       },
+
+      labelDisabled: { color: theme.secondaryTextColor },
     };
   }
 
@@ -87,7 +91,7 @@ export class Label extends PureComponent {
         if (isFirstInteractiveElement) {
           isFirstInteractiveElement = false;
 
-          newProps.id = this.id;
+          newProps['aria-labelledby'] = this.id;
         }
 
         return React.cloneElement(child, newProps);
@@ -98,16 +102,15 @@ export class Label extends PureComponent {
   }
 
   render() {
-    const {
-      disabled,
-      className,
-    } = this.props;
-
     return (
-      <label
-        htmlFor={this.id}
-        aria-disabled={disabled}
-        className={`${this.props.classes.label} ${className}`}
+      <label // eslint-disable-line jsx-a11y/label-has-for
+        id={this.id}
+        aria-disabled={this.props.disabled}
+        className={classnames(
+          this.props.classes.label,
+          { [this.props.classes.labelDisabled]: this.props.disabled },
+          this.props.className,
+        )}
         {...getNotDeclaredProps(this.props, Label)}
       >
         {this.renderChildren()}

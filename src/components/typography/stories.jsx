@@ -7,22 +7,23 @@ import Typography from './typography';
 
 const styles = {
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    '& > *': { padding: 16 },
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridGap: '16px',
   },
 };
 
 const Story = injectSheet(styles)(({
   classes,
   secondary,
+  primary,
+  accent,
 }) => {
   const TypoWrapper = props => (
     <Typography
       secondary={secondary}
+      accent={accent}
+      primary={primary}
       {...props}
     />
   );
@@ -44,16 +45,18 @@ const Story = injectSheet(styles)(({
       <TypoWrapper typography="caption">Caption</TypoWrapper>
       <TypoWrapper typography="menu">Menu</TypoWrapper>
       <TypoWrapper typography="button">Button</TypoWrapper>
-      <TypoWrapper typography="label">Label</TypoWrapper>
 
       <TypoWrapper typography="code1">Code 1</TypoWrapper>
       <TypoWrapper typography="code2">Code 2</TypoWrapper>
-
     </div>
   );
 });
 
 storiesOf('Typography', module)
   .add('Default styles', () => (
-    <Story secondary={boolean('Secondary', false)} />
+    <Story
+      secondary={boolean('Secondary', false)}
+      primary={boolean('Primary', false)}
+      accent={boolean('Accent', false)}
+    />
   ));

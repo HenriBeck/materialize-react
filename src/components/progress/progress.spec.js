@@ -15,25 +15,26 @@ test('should have a root node with the role of progressbar', (t) => {
 
 test('should have aria-valuemin and aria-valuemax and aria-valuenow on the root node', (t) => {
   const wrapper = mount(<Progress progress={40} />);
-  const root = wrapper.find('.progress');
+  const root = wrapper.find('[role="progressbar"]');
 
-  // Check if the valuemin and valuemax props are set
-  t.deepEqual(root.prop('aria-valuemin'), 0);
+  t.deepEqual(root.prop('aria-valuemin'), '0');
   t.deepEqual(root.prop('aria-valuenow'), 40);
-  t.deepEqual(root.prop('aria-valuemax'), 100);
+  t.deepEqual(root.prop('aria-valuemax'), '100');
 });
 
-test('should add the indeterminate class', (t) => {
-  const wrapper = mount(<Progress indeterminate />);
-  const elem = () => wrapper.find('span.progress');
+test('should have a class when the progress is indeterminate and active', (t) => {
+  const wrapper = mount(
+    <Progress
+      indeterminate
+      active
+    />,
+  );
 
-  // Check if the correct class has been applied
-  t.deepEqual(wrapper.find('.progress--indeterminate').length, 1);
+  t.deepEqual(wrapper.find('.progress--bar-indeterminate-active').length, 1);
+});
 
-  t.deepEqual(elem().prop('data-active'), false);
+test('should throw an error if the indeterminate prop is changed', (t) => {
+  const wrapper = mount(<Progress progress={40} />);
 
-  wrapper.setProps({ active: true });
-
-  // Check if the element got updated
-  t.true(elem().prop('data-active'));
+  t.throws(() => wrapper.setProps({ indeterminate: true }));
 });

@@ -5,7 +5,6 @@ export Background from './components/background';
 export Button from './components/button';
 export Checkbox from './components/checkbox';
 export Divider from './components/divider';
-export EventHandler from './components/event-handler';
 export Fab from './components/fab';
 export Icon from './components/icon';
 export IconButton from './components/icon-button';
@@ -19,9 +18,7 @@ export Tabs from './components/tabs';
 export Tab from './components/tab';
 export RadioButton from './components/radio-button';
 export RadioButtonGroup from './components/radio-button-group';
-export Animations from './components/animations';
 export Toolbar from './components/toolbar';
-export Dialog from './components/dialog';
 export Snackbar from './components/snackbar';
 export Card from './components/card';
 export Typography from './components/typography';
@@ -31,6 +28,10 @@ export Stepper from './components/stepper';
 export Slider from './components/slider';
 export Theme from './components/theme';
 export Layout from './components/layout';
+export Backdrop from './components/backdrop';
+export Collapse from './components/collapse';
+export ExpansionPanel from './components/expansion-panel';
+export Dialog from './components/dialog';
 
 // Styles
 export * as typography from './styles/typography';

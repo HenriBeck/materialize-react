@@ -15,18 +15,13 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - An additional class name to be applied to the element.
  * @returns {JSX} - Returns the JSX.
  */
-function CardContent({
-  classes,
-  children,
-  className,
-  ...props
-}) {
+function CardContent(props) {
   return (
     <div
-      className={`${classes.content} ${className}`}
+      className={`${props.classes.content} ${props.className}`}
       {...getNotDeclaredProps(props, CardContent)}
     >
-      {children}
+      {props.children}
     </div>
   );
 }

@@ -11,36 +11,26 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * A component to render a set of text with the specified typography.
  *
  * @param {Object} props - The props for the component.
- * @param {Object} props.classes - Classes provided by Jss.
- * @param {String} props.typography - The typography.
- * @param {String} props.element - The element to render.
- * @param {JSX} props.children - The content to render inside.
- * @param {String} props.className - An additional className for the rendered root component.
- * @param {Boolean} props.secondary - Whether or not the secondary text color should be applied.
  * @returns {JSX} - Returns the JSX.
  */
-function Typography({
-  classes,
-  typography,
-  element: Element,
-  children,
-  className,
-  secondary,
-  ...props
-}) {
-  const classNames = classnames(
-    classes.typography,
-    classes[typography],
-    secondary && classes.secondary,
-    className,
-  );
+function Typography(props) {
+  const Element = props.element;
 
   return (
     <Element
-      className={classNames}
+      className={classnames(
+        props.classes.typography,
+        props.classes[props.typography],
+        {
+          [props.classes.secondary]: props.secondary,
+          [props.classes.primary]: props.primary,
+          [props.classes.accent]: props.accent,
+        },
+        props.className,
+      )}
       {...getNotDeclaredProps(props, Typography)}
     >
-      {children}
+      {props.children}
     </Element>
   );
 }
@@ -49,18 +39,24 @@ Typography.propTypes = {
   classes: PropTypes.shape({
     typography: PropTypes.string.isRequired,
     secondary: PropTypes.string.isRequired,
+    primary: PropTypes.string.isRequired,
+    accent: PropTypes.string.isRequired,
   }).isRequired,
   typography: PropTypes.oneOf(Object.keys(typos)).isRequired,
   children: PropTypes.node.isRequired,
   element: PropTypes.string,
   className: PropTypes.string,
   secondary: PropTypes.bool,
+  primary: PropTypes.bool,
+  accent: PropTypes.bool,
 };
 
 Typography.defaultProps = {
   element: 'span',
   className: '',
   secondary: false,
+  primary: false,
+  accent: false,
 };
 
 Typography.styles = (theme) => {
@@ -73,6 +69,16 @@ Typography.styles = (theme) => {
     secondary: {
       composes: 'typography--secondary',
       color: theme.secondaryTextColor,
+    },
+
+    primary: {
+      composes: 'typography--primary',
+      color: theme.primaryBase,
+    },
+
+    accent: {
+      composes: 'typography--accent',
+      color: theme.accent,
     },
 
     ...typos,

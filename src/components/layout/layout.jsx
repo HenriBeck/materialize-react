@@ -12,19 +12,17 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @returns {JSX} - Returns the JSX.
  */
 function Layout(props) {
-  const className = classnames(
-    props.classes.layout,
-    {
-      [props.classes.layoutInline]: props.inline,
-      [props.classes.layoutReverse]: props.reverse,
-    },
-    props.className,
-  );
   const Component = props.component;
 
   return (
     <Component
-      className={className}
+      className={classnames(
+        props.classes.layout, {
+          [props.classes.layoutInline]: props.inline,
+          [props.classes.layoutReverse]: props.reverse,
+        },
+        props.className,
+      )}
       {...getNotDeclaredProps(props, Layout)}
     >
       {props.children}

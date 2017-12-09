@@ -1,90 +1,86 @@
 import React from 'react';
 import test from 'ava';
+import sinon from 'sinon';
 
 import { mount } from '../../../tests/helpers/enzyme';
 
 import Slider from './slider';
 
-const props = {
-  className: '',
-  onTrackPress: () => {},
-  onThumbPress: () => {},
-  onThumbRelease: () => {},
-  onTouchMove: () => {},
-  onMouseMove: () => {},
-  onKeyPress: () => {},
-  onFocus: () => {},
-  onBlur: () => {},
-  isFocused: false,
-  isDragging: false,
-  value: 0,
-  rootRef: () => {},
-  translateX: 0,
-  disabled: false,
-  min: 0,
-  max: 100,
-};
+test('should render a div with the role of slider', (t) => {
+  const wrapper = mount(<Slider value={0} />);
 
-test('should render a div', (t) => {
-  const wrapper = mount(<Slider {...props} />, { type: 'dark' });
-
-  t.deepEqual(wrapper.find('div.slider').length, 1);
+  t.deepEqual(wrapper.find('div[role="slider"]').length, 1);
 });
 
-test('should render two EventHandlers', (t) => {
-  const wrapper = mount(<Slider {...props} />);
+test('should add a EventListener when the thumb is being dragged', (t) => {
+  const wrapper = mount(<Slider value={0} />, { type: 'dark' });
 
-  t.deepEqual(wrapper.find('EventHandler').length, 2);
+  wrapper.find('.slider--thumb').simulate('mouseDown');
+
+  t.deepEqual(wrapper.find('EventListener').length, 1);
+
+  wrapper.find('EventListener').prop('onMouseUp')();
 });
 
-test('should scale the thumb up when the user is dragging it', (t) => {
+test('should set the aria disabled prop to true', (t) => {
+  const wrapper = mount(<Slider value={0} />);
+
+  wrapper.setProps({ disabled: true });
+
+  t.deepEqual(wrapper.find('.slider').prop('aria-disabled'), true);
+});
+
+test('should update the state when the value prop changes', (t) => {
+  const wrapper = mount(<Slider value={0} />);
+
+  wrapper.setProps({ value: 50 });
+
+  t.deepEqual(wrapper.find('.slider').prop('aria-valuenow'), 50);
+});
+
+test('should call the onChange prop when the track is clicked', (t) => {
+  const onChange = sinon.spy();
   const wrapper = mount(
     <Slider
-      {...props}
-      isDragging
+      value={0}
+      onChange={onChange}
     />,
   );
 
-  const thumbStyle = wrapper
-    .find('EventHandler.slider--thumb')
-    .prop('style');
+  wrapper
+    .find('.slider--track')
+    .simulate('click', {
+      x: 4,
+      y: 4,
+    });
 
-  t.deepEqual(thumbStyle.transform.includes('scale(1.5)'), true);
+  t.deepEqual(onChange.callCount, 1);
 });
 
-test('should scale the thumb down when the slider is disabled', (t) => {
+test('should call the onChange prop when the key is pressed', (t) => {
+  const onChange = sinon.spy();
   const wrapper = mount(
     <Slider
-      {...props}
-      disabled
+      value={0}
+      onChange={onChange}
     />,
   );
 
-  const thumbStyle = wrapper
-    .find('EventHandler.slider--thumb')
-    .prop('style');
+  wrapper
+    .find('.slider')
+    .simulate('keyDown', { keyCode: 37 });
 
-  t.deepEqual(thumbStyle.transform.includes('scale(0.75)'), true);
+  wrapper
+    .find('.slider')
+    .simulate('keyDown', { keyCode: null });
+
+  t.deepEqual(onChange.callCount, 1);
 });
 
-test('should add a class of .slider--thumb-active when the value is greater than 0', (t) => {
-  const wrapper = mount(
-    <Slider
-      {...props}
-      value={40}
-    />,
-  );
+test('should add focused classes when the isFocused prop is passed', (t) => {
+  const wrapper = mount(<Slider value={0} />);
 
-  t.deepEqual(wrapper.find('span.slider--thumb-active').length, 1);
-});
+  wrapper.find('.slider').simulate('focus');
 
-test('should add a class of .slider--thumb-focused when the slider is focused', (t) => {
-  const wrapper = mount(
-    <Slider
-      {...props}
-      isFocused
-    />,
-  );
-
-  t.deepEqual(wrapper.find('span.slider--thumb-focused').length, 1);
+  t.deepEqual(wrapper.find('.slider--thumb-focused').length, 1);
 });

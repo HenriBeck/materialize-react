@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import injectSheet from 'react-jss';
 
-import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 import Wave from './wave';
@@ -125,13 +124,26 @@ export class Ripple extends PureComponent {
 
   wavesCount = 0;
 
+  ignoreNextEvent = false;
+
   /**
-   * Create a new wave.
-   *
-   * @private
-   * @param {Object} ev - The event the wave is created from.
+   * Add a wave when the user pressed the ripple.
    */
-  addWave = (ev) => {
+  handlePress = (ev) => {
+    if (ev.type === 'mousedown' && ev.button !== 0) {
+      return;
+    }
+
+    if (this.ignoreNextEvent && ev.type === 'mousedown') {
+      this.ignoreNextEvent = false;
+
+      return;
+    }
+
+    if (ev.type === 'touchstart') {
+      this.ignoreNextEvent = true;
+    }
+
     const rect = this.ripple.getBoundingClientRect();
     const coords = getCoords(ev);
     const isCentered = this.props.center || !coords;
@@ -166,63 +178,24 @@ export class Ripple extends PureComponent {
   };
 
   /**
-   * Remove a wave when the wave is animated out.
-   *
-   * @private
-   * @param {Number} waveId - The id of the wave.
-   */
-  removeWave(waveId) {
-    this.setState(({ waves }) => {
-      return { waves: waves.filter(wave => wave.id !== waveId) };
-    });
-  }
-
-  /**
-   * Emit an event to all of the current active ripples.
-   *
-   * @private
-   */
-  emitUpAction() {
-    this.setState(({ waves }) => {
-      return { waves: waves.map(wave => Object.assign(wave, { animatingOut: true })) };
-    });
-  }
-
-  /**
-   * Create a reference to the root element.
-   *
-   * @param {Object} element - The root element reference.
-   */
-  createRef = (element) => {
-    this.ripple = element;
-  };
-
-  /**
-   * Add a wave when the user pressed the ripple.
-   */
-  handlePress = ev => this.addWave(ev);
-
-  /**
    * Emit up actions to all of the waves when the user removes the finger.
    *
    * @private
    */
-  handleRelease = () => this.emitUpAction();
+  handleRelease = () => {
+    this.setState(({ waves }) => {
+      return { waves: waves.map(wave => Object.assign(wave, { animatingOut: true })) };
+    });
+  };
 
   /**
    * When the fade out animation finishes for a ripple, we remove the ripple from the queue.
    */
-  handleAnimationFinish = id => this.removeWave(id);
-
-  /**
-   * Emit up actions to all of the waves when the user moves the mouse away from the ripple.
-   * This solves a bug where you click the ripple and move the mouse while still pressed down
-   * and then release the mouse. This won't remove the ripple so we remove them when to user
-   * moves the mouse away.
-   *
-   * @private
-   */
-  handleMouseLeave = () => this.emitUpAction();
+  handleAnimationFinish = (id) => {
+    this.setState(({ waves }) => {
+      return { waves: waves.filter(wave => wave.id !== id) };
+    });
+  };
 
   /**
    * Render the waves with all of the required props.
@@ -242,41 +215,42 @@ export class Ripple extends PureComponent {
   }
 
   render() {
-    const {
-      classes,
-      nowaves,
-      isFocused,
-      focusOpacity,
-      focusColor,
-      className,
-      round,
-      ...props
-    } = this.props;
-    const classNames = classnames(className, classes.ripple, { [classes.noWaves]: nowaves });
-
     return (
-      <EventHandler
-        {...getNotDeclaredProps(props, Ripple)}
-        component="span"
+      <span
+        {...getNotDeclaredProps(this.props, Ripple)}
         role="presentation"
-        className={classNames}
-        createRef={this.createRef}
-        onPress={this.handlePress}
-        onRelease={this.handleRelease}
-        onMouseLeave={this.handleMouseLeave}
+        className={classnames(
+          this.props.className,
+          this.props.classes.ripple,
+          { [this.props.classes.noWaves]: this.props.nowaves },
+        )}
+        ref={(element) => { this.ripple = element; }}
+        onMouseUp={this.handleRelease}
+        onMouseDown={this.handlePress}
+        onMouseLeave={this.handleRelease}
+        onTouchEnd={this.handleRelease}
+        onTouchStart={this.handlePress}
       >
         <span
-          className={`${classes.focus} ${round ? classes.round : ''}`}
+          className={classnames(
+            this.props.classes.focus,
+            { [this.props.classes.round]: this.props.round },
+          )}
           style={{
-            backgroundColor: focusColor,
-            opacity: isFocused ? focusOpacity : 0,
+            backgroundColor: this.props.focusColor,
+            opacity: this.props.isFocused ? this.props.focusOpacity : 0,
           }}
         />
 
-        <span className={`${classes.waveContainer} ${round ? classes.round : ''}`}>
+        <span
+          className={classnames(
+            this.props.classes.waveContainer,
+            { [this.props.classes.round]: this.props.round },
+          )}
+        >
           {this.renderWaves()}
         </span>
-      </EventHandler>
+      </span>
     );
   }
 }

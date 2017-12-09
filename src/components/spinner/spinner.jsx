@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -18,6 +19,7 @@ export class Spinner extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       spinner: PropTypes.string.isRequired,
+      spinnerActive: PropTypes.string.isRequired,
       container: PropTypes.string.isRequired,
       layer: PropTypes.string.isRequired,
       clipper: PropTypes.string.isRequired,
@@ -76,14 +78,18 @@ export class Spinner extends PureComponent {
         boxSizing: 'border-box',
         opacity: 0,
         transition: 'opacity 200ms',
+      },
 
-        '&.spinner--active $container': { animationName: 'spinner--container-rotate' },
+      spinnerActive: {
+        composes: 'spinner--active',
 
-        '&.spinner--active $layer': { animationName: 'spinner--fill-unfill-rotate' },
+        '& $container': { animationName: 'spinner--container-rotate' },
 
-        '&.spinner--active $clipperLeft::after': { animationName: 'spinner--left-spin' },
+        '& $layer': { animationName: 'spinner--fill-unfill-rotate' },
 
-        '&.spinner--active $clipperRight::after': { animationName: 'spinner--right-spin' },
+        '& $clipperLeft::after': { animationName: 'spinner--left-spin' },
+
+        '& $clipperRight::after': { animationName: 'spinner--right-spin' },
       },
 
       container: {
@@ -148,7 +154,7 @@ export class Spinner extends PureComponent {
       },
 
       clipperLeft: {
-        composes: 'left',
+        composes: '$clipper left',
 
         '&::after': {
           left: 0,
@@ -158,7 +164,7 @@ export class Spinner extends PureComponent {
       },
 
       clipperRight: {
-        composes: 'right',
+        composes: '$clipper right',
 
         '&::after': {
           left: '-100%',
@@ -234,28 +240,22 @@ export class Spinner extends PureComponent {
   };
 
   render() {
-    const {
-      classes,
-      className,
-      ...props
-    } = this.props;
-    const {
-      active,
-      opacity,
-    } = this.state;
-
     return (
       <div
-        {...getNotDeclaredProps(props, Spinner)}
+        {...getNotDeclaredProps(this.props, Spinner)}
         role="presentation"
-        className={`${classes.spinner} ${active && 'spinner--active'} ${className}`}
-        style={{ opacity }}
+        className={classnames(
+          this.props.classes.spinner,
+          { [this.props.classes.spinnerActive]: this.state.active },
+          this.props.className,
+        )}
+        style={{ opacity: this.state.opacity }}
         onTransitionEnd={this.handleTransitionEnd}
       >
-        <div className={classes.container}>
-          <div className={classes.layer}>
-            <div className={`${classes.clipper} ${classes.clipperLeft}`} />
-            <div className={`${classes.clipper} ${classes.clipperRight}`} />
+        <div className={this.props.classes.container}>
+          <div className={this.props.classes.layer}>
+            <div className={this.props.classes.clipperLeft} />
+            <div className={this.props.classes.clipperRight} />
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 
-import { body1 } from '../../styles/typography';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -14,18 +13,13 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {JSX} props.children - The actual content for the dialog.
  * @returns {JSX} - Returns the jsx.
  */
-function DialogContent({
-  classes,
-  className,
-  children,
-  ...props
-}) {
+function DialogContent(props) {
   return (
     <main
-      className={`${classes.content} ${className}`}
+      className={`${props.classes.content} ${props.className}`}
       {...getNotDeclaredProps(props, DialogContent)}
     >
-      {children}
+      {props.children}
     </main>
   );
 }
@@ -41,7 +35,6 @@ DialogContent.defaultProps = { className: '' };
 DialogContent.styles = {
   content: {
     composes: 'dialog--content',
-    ...body1,
     padding: 24,
     paddingTop: 0,
     width: '100%',

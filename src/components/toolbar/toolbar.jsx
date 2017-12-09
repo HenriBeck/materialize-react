@@ -1,6 +1,7 @@
 import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import breakpoints from '../../styles/breakpoints';
@@ -16,22 +17,19 @@ import breakpoints from '../../styles/breakpoints';
  * @param {Boolean} props.noShadow - Whether or not the AppBar should have no shadow.
  * @returns {JSX} - Returns the jsx for the component.
  */
-function Toolbar({
-  classes,
-  children,
-  height,
-  className,
-  noShadow,
-  ...props
-}) {
+function Toolbar(props) {
   return (
     <div
       {...getNotDeclaredProps(props, Toolbar)}
-      className={`${classes.toolbar} toolbar--${height} ${className}`}
+      className={classnames(
+        props.classes.toolbar,
+        props.classes[`${props.height}Height`],
+        props.className,
+      )}
     >
-      {children}
+      {props.children}
 
-      {!noShadow && <span className={classes.shadow} />}
+      {!props.noShadow && <span className={props.classes.shadow} />}
     </div>
   );
 }
@@ -45,7 +43,7 @@ Toolbar.propTypes = {
   className: PropTypes.string,
   height: PropTypes.oneOf([
     'normal',
-    'medium-tall',
+    'medium',
     'tall',
   ]),
   noShadow: PropTypes.bool,
@@ -67,35 +65,30 @@ Toolbar.styles = (theme) => {
       boxSizing: 'border-box',
       display: 'flex',
       backgroundColor: theme.appBarColor,
+    },
 
+    normalHeight: {
       height: 56,
-
-      '& > .row': {
-        height: 56,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-
-      '&.toolbar--medium-tall': {
-        height: 56 * 2,
-        flexDirection: 'column',
-      },
-
-      '&.toolbar--tall': {
-        height: 56 * 3,
-        flexDirection: 'column',
-      },
 
       [breakpoints.up('tablet')]: {
         height: 64,
 
         '& > .row': { height: 64 },
-
-        '&.toolbar--medium-tall': { height: 64 * 2 },
-
-        '&.toolbar--tall': { height: 64 * 3 },
       },
+    },
+
+    mediumHeight: {
+      height: 56 * 2,
+      flexDirection: 'column',
+
+      [breakpoints.up('tablet')]: { height: 64 * 2 },
+    },
+
+    tallHeight: {
+      height: 56 * 3,
+      flexDirection: 'column',
+
+      [breakpoints.up('tablet')]: { height: 64 * 3 },
     },
 
     shadow: {

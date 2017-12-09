@@ -1,114 +1,90 @@
 import React from 'react';
 import test from 'ava';
-import brcast from 'brcast';
 import sinon from 'sinon';
 import { mount } from 'enzyme';
+import brcast from 'brcast';
 
 import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
 import { RadioButton } from './radio-button';
 
-const props = {
-  classes: createClassesFromStyles(RadioButton.styles),
+const defaultProps = {
+  classes: createClassesFromStyles(RadioButton.styles, 'dark'),
   name: 'test',
+  isFocused: true,
+  onFocus: () => {},
+  onBlur: () => {},
+  createKeyDownHandler: () => {},
+  onKeyUp: () => {},
 };
 
 /**
- * Simulate a context of a radio button group.
+ * Render a radio button with the correct context.
  *
- * @returns {Object} - Returns the simulated context.
+ * @param {Object} props - Additional props for the RadioButton.
+ * @returns {Object} - Returns the enzyme wrapper.
  */
-function createContext() {
-  return {
-    radioButtonGroup: {
-      selected: brcast('test'),
-      onChange: () => {},
+function render(props) {
+  return mount(
+    <RadioButton
+      {...defaultProps}
+      {...props}
+    />,
+    {
+      context: {
+        radioButtonGroup: {
+          selected: brcast('test'),
+          onChange: () => {},
+        },
+      },
     },
-  };
+  );
 }
 
 test('should render a element with the role of radio', (t) => {
-  const wrapper = mount(<RadioButton {...props} />, { context: createContext() });
+  const wrapper = render({ classes: createClassesFromStyles(RadioButton.styles, 'dark') });
 
   t.deepEqual(wrapper.find('span[role="radio"]').length, 1);
 });
 
 test('should set the aria-disabled prop when the radio button is disabled', (t) => {
-  const wrapper = mount(
-    <RadioButton
-      disabled
-      name="test"
-      classes={createClassesFromStyles(RadioButton.styles, 'dark')}
-    />,
-    { context: createContext() },
-  );
+  const wrapper = render({ disabled: true });
 
   t.deepEqual(wrapper.find('span[role="radio"]').prop('aria-disabled'), true);
 });
 
-test('should update the state when the broadcast get\'s a new value', (t) => {
-  const context = createContext();
-  const wrapper = mount(<RadioButton {...props} />, { context });
+test('should initially set the state on mount', (t) => {
+  const wrapper = render();
 
-  context.radioButtonGroup.selected.setState('test2');
+  t.deepEqual(wrapper.state('selected'), 'test');
+});
+
+test('should unsubscribe to the broadcast when the component unmounts', (t) => {
+  const wrapper = render();
+  const context = wrapper.context('radioButtonGroup');
+  const unsubscribe = sinon.spy(context.selected, 'unsubscribe');
+
+  wrapper.unmount();
+
+  t.deepEqual(unsubscribe.callCount, 1);
+});
+
+test('should update the local state when the broadcast updates the state', (t) => {
+  const wrapper = render();
+  const context = wrapper.context('radioButtonGroup');
+
+  context.selected.setState('test2');
 
   t.deepEqual(wrapper.state('selected'), 'test2');
 });
 
-test('should unsubscribe when the component unmounts', (t) => {
-  const context = createContext();
-  const spy = sinon.spy(context.radioButtonGroup.selected, 'unsubscribe');
-  const wrapper = mount(<RadioButton {...props} />, { context });
+test('should call the onChange context when the radio button is pressed', (t) => {
+  const wrapper = render();
+  const context = wrapper.context('radioButtonGroup');
+  const onChange = sinon.spy(context, 'onChange');
 
-  wrapper.unmount();
+  wrapper.find('span[role="radio"]').simulate('click');
 
-  t.deepEqual(spy.callCount, 1);
+  t.deepEqual(onChange.callCount, 1);
 });
 
-test('should call the onChange context when the radio button get\'s pressed', (t) => {
-  const context = createContext();
-  const spy = sinon.spy(context.radioButtonGroup, 'onChange');
-  const wrapper = mount(<RadioButton {...props} />, { context });
-  const instance = wrapper.instance();
-
-  instance.handlePress();
-
-  t.deepEqual(spy.callCount, 1);
-});
-
-test('should update the isFocused state when the radio button get\'s focused', (t) => {
-  const context = createContext();
-  const wrapper = mount(<RadioButton {...props} />, { context });
-  const instance = wrapper.instance();
-
-  instance.handleFocus();
-
-  t.deepEqual(wrapper.state('isFocused'), true);
-});
-
-test('should update the isFocused state when the radio button looses focus', (t) => {
-  const context = createContext();
-  const wrapper = mount(<RadioButton {...props} />, { context });
-  const instance = wrapper.instance();
-
-  instance.handleFocus();
-
-  instance.handleBlur();
-
-  t.deepEqual(wrapper.state('isFocused'), false);
-});
-
-test('should call the onChange context when a key with a valid key code is pressed', (t) => {
-  const context = createContext();
-  const spy = sinon.spy(context.radioButtonGroup, 'onChange');
-  const wrapper = mount(<RadioButton {...props} />, { context });
-  const instance = wrapper.instance();
-
-  instance.handleKeyPress({ keyCode: RadioButton.changeOnKeyCodes[0] });
-
-  t.deepEqual(spy.callCount, 1);
-
-  instance.handleKeyPress({});
-
-  t.deepEqual(spy.callCount, 1);
-});

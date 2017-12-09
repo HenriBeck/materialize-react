@@ -1,61 +1,112 @@
 import React from 'react';
 import test from 'ava';
+import sinon from 'sinon';
 
 import { mount } from '../../../tests/helpers/enzyme';
 
 import Drawer from './drawer';
-import MainContent from './main-content';
-import DrawerContent from './drawer-content';
 
-const props = {
-  drawerContent: <DrawerContent>Test</DrawerContent>,
-  mainContent: <MainContent>Test</MainContent>,
-  isNarrow: false,
-  opened: false,
-  className: '',
-  drawerPosition: 'left',
-  onBackdropPress: () => {},
-  onTransitionEnd: () => {},
-};
-
-test('should render div with the class of drawer', (t) => {
-  const wrapper = mount(<Drawer {...props} />);
-
-  t.deepEqual(wrapper.find('.drawer').length, 1);
-});
-
-test('should add a backdrop active class when the drawer is narrow and opened', (t) => {
+test('should not call onNarrowChange when the narrow state doesn\'t change', (t) => {
+  const onNarrowChange = sinon.spy();
   const wrapper = mount(
     <Drawer
-      {...props}
-      isNarrow
-      opened
-    />,
-  );
+      open
+      onNarrowChange={onNarrowChange}
+    >
+      <Drawer.MainContent>Test</Drawer.MainContent>
 
-  t.deepEqual(wrapper.find('span.drawer--backdrop-active').length, 1);
+      <Drawer.DrawerContent>Test</Drawer.DrawerContent>
+    </Drawer>,
+  );
+  const onResize = wrapper.find('EventListener').prop('onResize');
+
+  onResize();
+
+  t.deepEqual(onNarrowChange.callCount, 0);
 });
 
-test('should add add a drawer-content-narrow class when the drawer is narrow', (t) => {
+test('should call onNarrowChange when the narrow state changes', (t) => {
+  const onNarrowChange = sinon.spy();
   const wrapper = mount(
     <Drawer
-      {...props}
-      isNarrow
-    />,
-  );
+      open
+      onNarrowChange={onNarrowChange}
+    >
+      <Drawer.MainContent>Test</Drawer.MainContent>
 
-  t.deepEqual(wrapper.find('aside.drawer--drawer-content-narrow').length, 1);
+      <Drawer.DrawerContent>Test</Drawer.DrawerContent>
+    </Drawer>,
+  );
+  const onResize = wrapper.find('EventListener').prop('onResize');
+
+  window.innerWidth = -1;
+
+  onResize();
+
+  t.deepEqual(onNarrowChange.callCount, 1);
 });
 
-test('should add add a class when the drawer is narrow and opened', (t) => {
+test('should call onCloseRequest when the backdrop is clicked', (t) => {
+  const onCloseRequest = sinon.spy();
   const wrapper = mount(
     <Drawer
-      {...props}
-      isNarrow
-      opened
-    />,
+      open
+      onCloseRequest={onCloseRequest}
+    >
+      <Drawer.MainContent>Test</Drawer.MainContent>
+
+      <Drawer.DrawerContent>Test</Drawer.DrawerContent>
+    </Drawer>,
   );
 
-  t.deepEqual(wrapper.find('aside.drawer--drawer-content-narrow-opened').length, 1);
+  wrapper
+    .find('Backdrop')
+    .simulate('click');
+
+  t.deepEqual(onCloseRequest.callCount, 1);
+});
+
+test('should not call onCloseRequest when the drawer is transitioning', (t) => {
+  const onCloseRequest = sinon.spy();
+  const wrapper = mount(
+    <Drawer
+      open
+      onCloseRequest={onCloseRequest}
+    >
+      <Drawer.MainContent>Test</Drawer.MainContent>
+
+      <Drawer.DrawerContent>Test</Drawer.DrawerContent>
+    </Drawer>,
+  );
+
+  wrapper.setProps({ open: false });
+
+  wrapper.setProps({ className: 'some' });
+
+  wrapper.find('Backdrop').simulate('click');
+
+  t.deepEqual(onCloseRequest.callCount, 0);
+});
+
+test('should reset after animation has finished', (t) => {
+  const onCloseRequest = sinon.spy();
+  const wrapper = mount(
+    <Drawer
+      open={false}
+      onCloseRequest={onCloseRequest}
+    >
+      <Drawer.MainContent>Test</Drawer.MainContent>
+
+      <Drawer.DrawerContent>Test</Drawer.DrawerContent>
+    </Drawer>,
+  );
+
+  wrapper.setProps({ open: true });
+
+  wrapper.find('Backdrop').simulate('animationEnd');
+
+  wrapper.find('Backdrop').simulate('click');
+
+  t.deepEqual(onCloseRequest.callCount, 1);
 });
 

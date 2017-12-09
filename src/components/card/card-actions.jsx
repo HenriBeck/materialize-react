@@ -1,6 +1,7 @@
 import React from 'react';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -14,19 +15,17 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {String} props.className - Additional className for the card.
  * @returns {JSX} - Returns the JSX.
  */
-function CardActions({
-  classes,
-  children,
-  className,
-  stacked,
-  ...props
-}) {
+function CardActions(props) {
   return (
     <div
-      className={`${classes.actions} ${className} ${stacked && classes.actionsStacked}`}
+      className={classnames(
+        props.classes.actions,
+        { [props.classes.actionsStacked]: props.stacked },
+        props.className,
+      )}
       {...getNotDeclaredProps(props, CardActions)}
     >
-      {children}
+      {props.children}
     </div>
   );
 }
@@ -55,6 +54,8 @@ CardActions.styles = {
     padding: '8px 0',
 
     '& > *': { margin: '0 8px' },
+
+    '& > .spacer': { flex: 1 },
   },
 
   actionsStacked: {

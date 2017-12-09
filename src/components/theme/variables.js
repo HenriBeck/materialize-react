@@ -29,7 +29,8 @@ const zIndexes = {
   fab: 100,
   snackbar: 1000,
   bottomNavigation: 1500,
-  dialog: 2000,
+  backdrop: 2000,
+  dialog: 2500,
   drawer: 3000,
 };
 

@@ -1,31 +1,41 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
+import { boolean } from '@storybook/addon-knobs';
 
-import Slider from './slider-container';
+import Slider from './slider';
 
 const style = { width: 260 };
 
+/**
+ * The story for the slider component.
+ *
+ * @class
+ */
+class Story extends PureComponent {
+  state = { value: 0 };
+
+  /**
+   * Change the state when the user interacts with the slider.
+   *
+   * @param {Number} value - The new value.
+   */
+  handleChange = (value) => {
+    this.setState({ value });
+  };
+
+  render() {
+    return (
+      <Slider
+        value={this.state.value}
+        style={style}
+        onChange={this.handleChange}
+        {...this.props}
+      />
+    );
+  }
+}
+
 storiesOf('Slider', module)
   .add('Default Styles', () => (
-    <div style={style}>
-      <Slider onChange={action('Changed value')} />
-    </div>
-  ))
-  .add('With min / max prop', () => (
-    <div style={style}>
-      <Slider
-        min={0}
-        max={256}
-        onChange={action('Changed value')}
-      />
-    </div>
-  ))
-  .add('Disabled', () => (
-    <div style={style}>
-      <Slider
-        disabled
-        initialValue={40}
-      />
-    </div>
+    <Story disabled={boolean('Disabled', false)} />
   ));

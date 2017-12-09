@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import classnames from 'classnames';
 import { rgba } from 'polished';
-import noop from 'lodash.noop';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 import {
@@ -12,8 +11,10 @@ import {
   grey600,
   grey800,
 } from '../../styles/colors';
-import EventHandler from '../event-handler';
 import Ripple from '../ripple';
+import { pipe } from '../../utils/functions';
+import withFocusedState from '../../utils/with-focused-state';
+import withKeyPress from '../../utils/with-key-press';
 
 /**
  * A component to render a switch component.
@@ -34,19 +35,20 @@ export class Switch extends PureComponent {
       ripple: PropTypes.string.isRequired,
     }).isRequired,
     onChange: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
     className: '',
     disabled: false,
     noink: false,
-    onFocus: noop,
-    onBlur: noop,
   };
 
   /**
@@ -135,98 +137,51 @@ export class Switch extends PureComponent {
 
   static keyCodes = [13, 32];
 
-  state = { isFocused: false };
-
-  /**
-   * Call the onChange prop when the switch get's clicked.
-   *
-   * @private
-   */
-  handlePress = () => {
-    this.props.onChange();
-  };
-
-  /**
-   * Check if the user pressed a key where we should call the onChange prop.
-   *
-   * @private
-   */
-  handleKeyPress = (ev) => {
-    if (Switch.keyCodes.includes(ev.keyCode)) {
-      this.props.onChange();
-    }
-  };
-
-  /**
-   * Change the isFocused state when the component get's focused.
-   *
-   * @private
-   */
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.setState({ isFocused: true });
-  };
-
-  /**
-   * Set the isFocused state when the component looses focus.
-   *
-   * @private
-   */
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.setState({ isFocused: false });
-  };
+  handleKeyDown = this.props.createKeyDownHandler(this.props.onChange);
 
   render() {
-    const {
-      classes,
-      disabled,
-      className,
-      toggled,
-      noink,
-      ...props
-    } = this.props;
-
     return (
-      <EventHandler
-        {...getNotDeclaredProps(props, Switch)}
-        component="span"
+      <span
+        {...getNotDeclaredProps(this.props, Switch)}
         role="switch"
-        className={classnames(classes.switch, className)}
-        aria-checked={toggled}
-        aria-disabled={disabled}
-        tabIndex={disabled ? -1 : 0}
-        onKeyPress={this.handleKeyPress}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        onPress={this.handlePress}
+        className={classnames(this.props.classes.switch, this.props.className)}
+        aria-checked={this.props.toggled}
+        aria-disabled={this.props.disabled}
+        tabIndex={this.props.disabled ? -1 : 0}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.props.onKeyUp}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
       >
         <span
-          className={classnames(classes.bar, {
-            [classes.barToggled]: toggled,
-            [classes.barDisabled]: disabled,
+          className={classnames(this.props.classes.bar, {
+            [this.props.classes.barToggled]: this.props.toggled,
+            [this.props.classes.barDisabled]: this.props.disabled,
           })}
         />
 
-        <span
-          className={classnames(classes.thumb, {
-            [classes.thumbToggled]: toggled,
-            [classes.thumbDisabled]: disabled,
+        <span // eslint-disable-line
+          className={classnames(this.props.classes.thumb, {
+            [this.props.classes.thumbToggled]: this.props.toggled,
+            [this.props.classes.thumbDisabled]: this.props.disabled,
           })}
+          onClick={this.props.onChange}
         >
           <Ripple
             round
             center
-            nowaves={noink}
-            isFocused={this.state.isFocused}
-            className={classes.ripple}
+            nowaves={this.props.noink}
+            isFocused={this.props.isFocused}
+            className={this.props.classes.ripple}
           />
         </span>
-      </EventHandler>
+      </span>
     );
   }
 }
 
-export default injectSheet(Switch.styles)(Switch);
+export default pipe(
+  injectSheet(Switch.styles),
+  withFocusedState,
+  withKeyPress({ keyCodes: Switch.keyCodes }),
+)(Switch);

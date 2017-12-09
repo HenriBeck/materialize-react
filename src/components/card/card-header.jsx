@@ -19,32 +19,26 @@ import {
  * @param {JSX} props.avatar - An optional avatar element for the header.
  * @returns {JSX} - Returns the JSX.
  */
-function CardHeader({
-  classes,
-  children,
-  subtitle,
-  avatar,
-  ...props
-}) {
+function CardHeader(props) {
   return (
     <header
-      className={`${classes.header} ${avatar && classes.withAvatar}`}
+      className={`${props.classes.header} ${props.avatar && props.classes.withAvatar}`}
       {...getNotDeclaredProps(props, CardHeader)}
     >
-      {avatar && (
-        <span className={classes.avatar}>
-          {avatar}
+      {props.avatar && (
+        <span className={props.classes.avatar}>
+          {props.avatar}
         </span>
       )}
 
-      <div className={classes.container}>
-        <span className={classes.title}>
-          {children}
+      <div className={props.classes.container}>
+        <span className={props.classes.title}>
+          {props.children}
         </span>
 
-        {subtitle && (
-          <span className={classes.subtitle}>
-            {subtitle}
+        {props.subtitle && (
+          <span className={props.classes.subtitle}>
+            {props.subtitle}
           </span>
         )}
       </div>

@@ -9,7 +9,9 @@ import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import { button as buttonTypo } from '../../styles/typography';
 import elevation from '../../styles/elevation';
-import EventHandler from '../event-handler';
+import withKeyPress from '../../utils/with-key-press';
+import { pipe } from '../../utils/functions';
+import withFocusedState from '../../utils/with-focused-state';
 
 /**
  * A material design button.
@@ -24,13 +26,16 @@ export class Button extends PureComponent {
       buttonRaised: PropTypes.string.isRequired,
     }).isRequired,
     children: PropTypes.node.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     raised: PropTypes.bool,
     noink: PropTypes.bool,
     className: PropTypes.string,
     onPress: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
@@ -40,8 +45,6 @@ export class Button extends PureComponent {
     noink: false,
     className: '',
     onPress: noop,
-    onFocus: noop,
-    onBlur: noop,
   };
 
   static keyCodes = [13, 32];
@@ -105,10 +108,7 @@ export class Button extends PureComponent {
     };
   }
 
-  state = {
-    pressed: false,
-    isFocused: false,
-  };
+  state = { pressed: false };
 
   /**
    * We should warn against changing the raised prop
@@ -139,10 +139,10 @@ export class Button extends PureComponent {
    *
    * @private
    */
-  handlePress = () => {
-    this.setState({ pressed: true });
+  handlePress = (ev) => {
+    this.props.onPress(ev);
 
-    this.props.onPress();
+    this.setState({ pressed: true });
   };
 
   /**
@@ -154,82 +154,43 @@ export class Button extends PureComponent {
     this.setState({ pressed: false });
   };
 
-  /**
-   * Check if the user pressed a key that where we should emit an action.
-   *
-   * @private
-   */
-  handleKeyPress = (ev) => {
-    if (Button.keyCodes.includes(ev.keyCode)) {
-      this.props.onPress();
-    }
-  };
-
-  /**
-   * When the button get's focused, we tell the ripple to visibly indicate that.
-   *
-   * @private
-   */
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.setState({ isFocused: true });
-  };
-
-  /**
-   * When the button loses focus we want to remove the visible focus from the button.
-   *
-   * @private
-   */
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.setState({ isFocused: false });
-  };
+  handleKeyDown = this.props.createKeyDownHandler(this.props.onPress);
 
   render() {
-    const {
-      disabled,
-      classes,
-      className,
-      children,
-      noink,
-      raised,
-      onPress,
-      ...props
-    } = this.props;
-    const classNames = classnames(classes.button, className, raised && classes.buttonRaised);
-    const events = { onPress: raised ? this.handlePress : onPress };
-
-    if (raised) {
-      events.onRelease = this.handleRelease;
-    }
-
     return (
-      <EventHandler
-        component="span"
-        {...getNotDeclaredProps(props, Button)}
+      <span
+        {...getNotDeclaredProps(this.props, Button)}
         role="button"
-        className={classNames}
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled}
-        aria-pressed={this.state.pressed && !disabled}
-        onKeyPress={this.handleKeyPress}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        {...events}
+        className={classnames(
+          this.props.classes.button,
+          { [this.props.classes.buttonRaised]: this.props.raised },
+          this.props.className,
+        )}
+        tabIndex={this.props.disabled ? -1 : 0}
+        aria-disabled={this.props.disabled}
+        aria-pressed={this.state.pressed && !this.props.disabled}
+        onClick={this.handlePress}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.props.onKeyUp}
+        onMouseUp={this.handleRelease}
       >
         <Ripple
           className="button--ripple"
-          isFocused={this.state.isFocused}
-          nowaves={noink}
+          isFocused={this.props.isFocused}
+          nowaves={this.props.noink}
           {...this.rippleProps}
         />
 
-        {children}
-      </EventHandler>
+        {this.props.children}
+      </span>
     );
   }
 }
 
-export default injectSheet(Button.styles)(Button);
+export default pipe(
+  injectSheet(Button.styles),
+  withFocusedState,
+  withKeyPress({ keyCodes: Button.keyCodes }),
+)(Button);

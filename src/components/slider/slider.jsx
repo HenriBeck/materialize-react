@@ -1,17 +1,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import injectSheet from 'react-jss';
+import noop from 'lodash.noop';
+import EventListener from 'react-event-listener';
 import classnames from 'classnames';
+import injectSheet from 'react-jss';
 
-import EventHandler from '../event-handler';
+import { getCoords } from '../ripple/utils';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import { pipe } from '../../utils/functions';
+import withFocusedState from '../../utils/with-focused-state';
+
+const clamp = value => Math.max(0, Math.min(Math.floor(value), 100));
 
 /**
- * The actual renderer of the slider.
+ * The slider component.
  *
  * @class
  */
-export class Slider extends PureComponent {
+class Slider extends PureComponent {
   static propTypes = {
     classes: PropTypes.shape({
       slider: PropTypes.string.isRequired,
@@ -21,22 +27,29 @@ export class Slider extends PureComponent {
       thumb: PropTypes.string.isRequired,
       thumbFocused: PropTypes.string.isRequired,
       thumbActive: PropTypes.string.isRequired,
+      thumbDisabled: PropTypes.string.isRequired,
+      thumbActiveDisabled: PropTypes.string.isRequired,
     }).isRequired,
-    className: PropTypes.string.isRequired,
-    onTrackPress: PropTypes.func.isRequired,
-    onThumbPress: PropTypes.func.isRequired,
-    onThumbRelease: PropTypes.func.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
+    value: PropTypes.number.isRequired,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
     isFocused: PropTypes.bool.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    value: PropTypes.number.isRequired,
-    rootRef: PropTypes.func.isRequired,
-    translateX: PropTypes.number.isRequired,
-    disabled: PropTypes.bool.isRequired,
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    disabled: false,
+    onChange: noop,
+    className: '',
+  };
+
+  static keyCodes = {
+    37: -2,
+    38: 2,
+    39: 2,
+    40: -2,
   };
 
   /**
@@ -48,6 +61,7 @@ export class Slider extends PureComponent {
    */
   static styles(theme) {
     const isDark = theme.type === 'dark';
+    const disabledColor = theme.type === 'dark' ? '#525252' : '#b6b6b6';
 
     return {
       slider: {
@@ -83,7 +97,7 @@ export class Slider extends PureComponent {
           content: '""',
           transformOrigin: 'left center',
           backgroundColor: theme.primaryBase,
-          transform: props => `scaleX(${props.value / props.max})`,
+          transform: props => `scaleX(${props.value / 100})`,
           transition: 'transform 100ms linear',
         },
       },
@@ -139,74 +153,134 @@ export class Slider extends PureComponent {
 
         '&::after': { opacity: 0.25 },
       },
+
+      thumbDisabled: {
+        composes: 'slider--thumb-disabled',
+
+        borderColor: disabledColor,
+      },
+
+      thumbActiveDisabled: {
+        composes: 'slider--thumb-disabled',
+
+        backgroundColor: disabledColor,
+      },
     };
   }
 
-  render() {
-    const {
-      classes,
-      onTrackPress,
-      onThumbPress,
-      onThumbRelease,
-      onKeyPress,
-      onFocus,
-      onBlur,
-      className,
-      isFocused,
-      isDragging,
-      value,
-      rootRef,
-      translateX,
-      disabled,
-      ...props
-    } = this.props;
-    let transform = `translateX(${translateX}px)`;
+  state = { isDragging: false };
 
-    if (isDragging) {
-      transform += ' scale(1.5)';
-    } else if (disabled) {
-      transform += ' scale(0.75)';
+  /**
+   * Recalculate the translateX for the thumb when the value prop changes.
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== this.props.value) {
+      const translateX = this.rootRect.width * clamp(nextProps.value) / 100;
+
+      this.setState({ translateX });
     }
+  }
+
+  /**
+   * Compute the transform for the thumb.
+   *
+   * @returns {String} - Returns the thumb transform.
+   */
+  get thumbTransform() {
+    return classnames(`translateX(${this.state.translateX}px)`, {
+      'scale(1.5)': this.state.isDragging,
+      'scale(0.75)': this.props.disabled,
+    });
+  }
+
+  /**
+   * Set the isDragging state to true when the user pressed the thumb.
+   */
+  handleThumbPress = () => {
+    this.setState({ isDragging: true });
+  };
+
+  /**
+   * Set the isDragging state back to false when the user releases the thumb.
+   */
+  handleThumbRelease = () => {
+    this.setState({ isDragging: false });
+  };
+
+  /**
+   * Increment the current value when special keys are pressed.
+   */
+  handleKeyDown = (ev) => {
+    if (Slider.keyCodes[ev.keyCode]) {
+      this.props.onChange(clamp(this.props.value + Slider.keyCodes[ev.keyCode]));
+    }
+  };
+
+  /**
+   * Change the current value when the user moves.
+   * This will be called when the user clicks the bar or when he drags the thumb.
+   */
+  handleMove = (ev) => {
+    const { x } = getCoords(ev);
+
+    this.props.onChange(
+      clamp((x - this.rootRect.left + 4) / this.rootRect.width * 100),
+    );
+  };
+
+  render() {
+    const value = clamp(this.props.value);
 
     return (
       <div
-        {...getNotDeclaredProps(props, Slider)}
-        className={`${classes.slider} ${className}`}
-        ref={rootRef}
+        {...getNotDeclaredProps(this.props, Slider)}
+        className={`${this.props.classes.slider} ${this.props.className}`}
+        ref={(element) => { this.rootRect = element ? element.getBoundingClientRect() : {}; }}
         role="slider"
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled}
-        aria-valuemax={this.props.max}
-        aria-valuemin={this.props.min}
+        tabIndex={this.props.disabled ? -1 : 0}
+        aria-disabled={this.props.disabled}
+        aria-valuemax={100}
+        aria-valuemin={0}
         aria-valuenow={value}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onKeyDown={onKeyPress}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
+        onKeyDown={this.handleKeyDown}
       >
-        <EventHandler
-          component="span"
-          className={classnames(classes.track, {
-            [classes.trackFocused]: isFocused,
-            [classes.trackDisabled]: disabled,
+        <span // eslint-disable-line
+          className={classnames(this.props.classes.track, {
+            [this.props.classes.trackFocused]: this.props.isFocused,
+            [this.props.classes.trackDisabled]: this.props.disabled,
           })}
-          onPress={onTrackPress}
+          onClick={this.handleMove}
         />
 
-        <EventHandler
-          component="span"
-          style={{ transform }}
-          className={classnames(classes.thumb, {
-            [classes.thumbFocused]: isFocused && !isDragging,
-            [classes.thumbActive]: value > 0,
-            [classes.thumbDisabled]: disabled,
-            [classes.thumbActiveDisabled]: value > 0 && disabled,
+        <span // eslint-disable-line jsx-a11y/no-static-element-interactions
+          className={classnames(this.props.classes.thumb, {
+            [this.props.classes.thumbFocused]: this.props.isFocused && !this.state.isDragging,
+            [this.props.classes.thumbActive]: value > 0,
+            [this.props.classes.thumbDisabled]: this.props.disabled,
+            [this.props.classes.thumbActiveDisabled]: value > 0 && this.props.disabled,
           })}
-          onPress={onThumbPress}
-          onRelease={onThumbRelease}
+          style={{ transform: this.thumbTransform }}
+          onMouseDown={this.handleThumbPress}
+          onTouchStart={this.handleThumbPress}
         />
+
+        {this.state.isDragging ? (
+          <EventListener
+            target="window"
+            onMouseMove={this.handleMove}
+            onMouseUp={this.handleThumbRelease}
+            onTouchMove={this.handleMove}
+            onTouchEnd={this.handleThumbRelease}
+          />
+        ) : null}
       </div>
     );
   }
 }
 
-export default injectSheet(Slider.styles)(Slider);
+export default pipe(
+  injectSheet(Slider.styles),
+  withFocusedState,
+)(Slider);

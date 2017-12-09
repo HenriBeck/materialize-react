@@ -1,66 +1,87 @@
 import React, { PureComponent } from 'react';
+import Aux from 'react-aux';
 import { storiesOf } from '@storybook/react';
 
-import Button from '../button/index';
+import Button from '../button';
 
+import DialogContainer from './dialog-container';
 import Dialog from './dialog';
 
 /**
- * A component which creates a fully working drawer for the story.
+ * Story component for the Checkbox component.
  *
  * @class
  */
-class DialogStory extends PureComponent {
-  static DialogElement = ({ close }) => (
-    <div>
-      <Dialog.Header>Dialog Header</Dialog.Header>
+class Story extends PureComponent {
+  state = { dialog: null };
 
-      <Dialog.Content>Dialog Content</Dialog.Content>
+  handleOpenDialog = name => () => this.setState({ dialog: name });
 
-      <Dialog.Buttons>
-        <Button onRelease={close}>Cancel</Button>
-        <Button onRelease={close}>Accept</Button>
-      </Dialog.Buttons>
-    </div>
-  );
-
-  /**
-   * Open the dialog when the button is pressed.
-   */
-  handlePress = () => {
-    this.dialog.open();
-  };
+  handleClose = () => this.setState({ dialog: null });
 
   render() {
     return (
-      <Dialog.Controller>
-        <div
-          style={{
-            flex: 1,
-            alignSelf: 'stretch',
-          }}
-        >
-          <Dialog.Container />
+      <Aux>
+        <div>
+          <Button onPress={this.handleOpenDialog('test1')}>
+            Open Dialog 1
+          </Button>
 
-          <div>
-            <Button onRelease={this.handlePress}>Open Dialog</Button>
-
-            <Dialog
-              {...this.props}
-              ref={(elem) => { this.dialog = elem; }}
-              component={DialogStory.DialogElement}
-            />
-          </div>
+          <Button onPress={this.handleOpenDialog('test2')}>
+            Open Dialog 2
+          </Button>
         </div>
-      </Dialog.Controller>
+
+        <DialogContainer
+          dialog={this.state.dialog}
+          onCloseRequest={this.handleClose}
+        >
+          <Dialog
+            backdrop
+            closeOnBackdropClick
+            name="test1"
+          >
+            <Dialog.Header>
+              First Dialog
+            </Dialog.Header>
+
+            <Dialog.Content>
+              The actual content of the dialog,
+              wooooo dialog are so coool
+            </Dialog.Content>
+
+            <Dialog.Actions>
+              <Button onPress={this.handleClose}>
+                Close
+              </Button>
+
+              <Button onPress={this.handleOpenDialog('test2')}>
+                Open Dialog 2
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+
+          <Dialog
+            backdrop
+            closeOnBackdropClick
+            name="test2"
+          >
+            <Dialog.Header>
+              Second Dialog
+            </Dialog.Header>
+
+            <Dialog.Content>
+              The actual content of the second dialog is much cooler,
+              wooooo dialog are so coool
+            </Dialog.Content>
+          </Dialog>
+        </DialogContainer>
+      </Aux>
     );
   }
 }
 
 storiesOf('Dialog', module)
-  .add('Default Styles', () => (
-    <DialogStory />
-  ))
-  .add('Fullscreen dialog', () => (
-    <DialogStory fullscreen />
+  .add('Default styles', () => (
+    <Story />
   ));

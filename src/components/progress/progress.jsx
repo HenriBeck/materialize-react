@@ -18,7 +18,8 @@ export class Progress extends PureComponent {
       progress: PropTypes.string.isRequired,
       container: PropTypes.string.isRequired,
       bar: PropTypes.string.isRequired,
-      primaryBar: PropTypes.string.isRequired,
+      indeterminate: PropTypes.string.isRequired,
+      indeterminateActive: PropTypes.string.isRequired,
     }).isRequired,
     indeterminate: PropTypes.bool,
     progress: PropTypes.number,
@@ -78,32 +79,6 @@ export class Progress extends PureComponent {
         position: 'relative',
         width: '100%',
         overflow: 'hidden',
-
-        '&.progress--indeterminate $primaryBar': {
-          transformOrigin: 'right center',
-          animationIterationCount: 'infinite',
-          animationDuration: 2 * 1000,
-        },
-
-        '&.progress--indeterminate $primaryBar::after': {
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          content: '""',
-          transformOrigin: 'center center',
-          animationIterationCount: 'infinite',
-          height: 4,
-          backgroundColor: theme.primaryLight,
-          animationDuration: 2 * 1000,
-        },
-
-        '&.progress--indeterminate[data-active=true] $primaryBar': {
-          animationName: 'progress--bar',
-
-          '&::after': { animationName: 'progress--splitter' },
-        },
       },
 
       container: {
@@ -124,11 +99,35 @@ export class Progress extends PureComponent {
         transformOrigin: 'left center',
         willChange: 'transform',
         transition: 'transform 200ms',
+        backgroundColor: theme.primaryBase,
       },
 
-      primaryBar: {
-        composes: 'progress--primary-bar',
-        backgroundColor: theme.primaryBase,
+      indeterminate: {
+        composes: 'progress--bar-indeterminate',
+        transformOrigin: 'right center',
+        animationIterationCount: 'infinite',
+        animationDuration: 2 * 1000,
+
+        '&::after': {
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          content: '""',
+          transformOrigin: 'center center',
+          animationIterationCount: 'infinite',
+          height: 4,
+          backgroundColor: theme.primaryLight,
+          animationDuration: 2 * 1000,
+        },
+      },
+
+      indeterminateActive: {
+        composes: 'progress--bar-indeterminate-active',
+        animationName: 'progress--bar',
+
+        '&::after': { animationName: 'progress--splitter' },
       },
     };
   }
@@ -144,36 +143,27 @@ export class Progress extends PureComponent {
   }
 
   render() {
-    const {
-      classes,
-      indeterminate,
-      progress,
-      active,
-      ...props
-    } = this.props;
-    const additionalProps = indeterminate ? { 'data-active': active } : {
-      'aria-valuenow': Progress.clamp(progress),
-      'aria-valuemin': 0,
-      'aria-valuemax': 100,
-    };
-    const className = classnames(
-      this.props.className,
-      classes.progress,
-      indeterminate && 'progress--indeterminate',
-    );
+    const { indeterminate } = this.props;
 
     return (
       <span
-        {...getNotDeclaredProps(props, Progress)}
+        {...getNotDeclaredProps(this.props, Progress)}
         role="progressbar"
-        className={className}
-        ref={(element) => { this.root = element; }}
-        {...additionalProps}
+        className={classnames(
+          this.props.classes.progress,
+          this.props.className,
+        )}
+        aria-valuenow={Progress.clamp(this.props.progress)}
+        aria-valuemax="100"
+        aria-valuemin="0"
       >
-        <div className={classes.container}>
+        <div className={this.props.classes.container}>
           <div
-            className={`${classes.bar} ${classes.primaryBar}`}
-            style={{ transform: `scaleX(${Progress.clamp(progress) / 100})` }}
+            className={classnames(this.props.classes.bar, {
+              [this.props.classes.indeterminate]: indeterminate,
+              [this.props.classes.indeterminateActive]: indeterminate && this.props.active,
+            })}
+            style={{ transform: `scaleX(${Progress.clamp(this.props.progress) / 100})` }}
           />
         </div>
       </span>

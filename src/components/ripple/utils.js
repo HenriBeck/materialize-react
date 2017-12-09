@@ -1,3 +1,5 @@
+const isNumber = number => typeof number === 'number';
+
 /**
  * A function to calculate the euclidean distance between to points.
  *
@@ -30,14 +32,14 @@ export function getCoords(ev) {
     }
 
     // Check for other common values in the event
-    if (ev.clientX && ev.clientY) {
+    if (isNumber(ev.clientX) && isNumber(ev.clientY)) {
       return {
         x: ev.clientX,
         y: ev.clientY,
       };
     }
 
-    if (ev.x && ev.y) {
+    if (isNumber(ev.x) && isNumber(ev.y)) {
       return {
         x: ev.x,
         y: ev.y,

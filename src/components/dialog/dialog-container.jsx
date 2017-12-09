@@ -1,283 +1,169 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import warning from 'warning';
+import React, {
+  PureComponent,
+  Children,
+} from 'react';
 import injectSheet from 'react-jss';
+import noop from 'lodash.noop';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { position } from 'polished';
 
-import EventHandler from '../event-handler';
-import getNotDeclaredProps from '../../get-not-declared-props';
-import elevation from '../../styles/elevation';
+import Backdrop from '../backdrop';
 import breakpoints from '../../styles/breakpoints';
 
 /**
- * A component to render a dialog.
+ * The component for the dialog container.
  *
  * @class
  */
-export class DialogContainer extends PureComponent {
+class DialogContainer extends PureComponent {
   static propTypes = {
+    children: PropTypes.node.isRequired,
     classes: PropTypes.shape({
       dialogContainer: PropTypes.string.isRequired,
-      hideContainer: PropTypes.string.isRequired,
-      backdrop: PropTypes.string.isRequired,
-      backdropActive: PropTypes.string.isRequired,
-      dialog: PropTypes.string.isRequired,
-      fullscreenDialog: PropTypes.string.isRequired,
+      showContainer: PropTypes.string.isRequired,
     }).isRequired,
+    dialog: PropTypes.string,
     className: PropTypes.string,
-    animateInName: PropTypes.string,
-    animateOutName: PropTypes.string,
-    animateInFullscreenName: PropTypes.string,
-    animateOutFullscreenName: PropTypes.string,
+    onCloseRequest: PropTypes.func,
   };
 
   static defaultProps = {
+    dialog: null,
     className: '',
-    animateInName: 'dialog--animate-in',
-    animateOutName: 'dialog--animate-out',
-    animateInFullscreenName: 'dialog--animate-in-fullscreen',
-    animateOutFullscreenName: 'dialog--animate-out-fullscreen',
-  };
-
-  static contextTypes = {
-    dialogController: PropTypes.shape({
-      initiateContainer: PropTypes.func.isRequired,
-      removeContainer: PropTypes.func.isRequired,
-    }).isRequired,
+    onCloseRequest: noop,
   };
 
   /**
-   * The styles for the dialog component.
+   * The styles for the Dialog Container.
    *
    * @param {Object} theme - The theme provided by Jss.
-   * @param {Object} theme.dialog - The actual theme for the dialog component.
    * @returns {Object} - Returns the styles.
    */
   static styles(theme) {
     return {
-      '@keyframes dialog--animate-in': {
-        from: { opacity: 0 },
-        to: { opacity: 1 },
-      },
-
-      '@keyframes dialog--animate-out': {
-        from: { opacity: 1 },
-        to: { opacity: 0 },
-      },
-
-      '@keyframes dialog--animate-in-fullscreen': {
-        from: { transform: 'translateY(100%)' },
-        to: { transform: 'translateY(0)' },
-      },
-
-      '@keyframes dialog--animate-out-fullscreen': {
-        from: { transform: 'translateY(0)' },
-        to: { transform: 'translateY(100%)' },
-      },
-
       dialogContainer: {
-        composes: 'dialog--container',
-        ...position('fixed', '0', '0', '0', '0'),
+        composes: 'dialog-container',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transform: 'scale(1)',
+        transform: 'scale(0)',
         zIndex: theme.zIndexes.dialog,
         padding: 32,
 
         [breakpoints.up('tablet')]: { padding: 64 },
       },
 
-      hideContainer: {
-        composes: 'dialog--container-hidden',
-        transform: 'scale(0)',
-      },
-
-      backdrop: {
-        composes: 'dialog--backdrop',
-        ...position('absolute', '0', '0', '0', '0'),
-        opacity: 0,
-        transform: 'scale(0)',
-        backgroundColor: theme.backdropColor,
-        transition: 'opacity 140ms',
-      },
-
-      backdropActive: {
-        composes: 'dialog--backdrop-active',
-        opacity: 1,
+      showContainer: {
+        composes: 'dialog-container--hidden',
         transform: 'scale(1)',
-      },
-
-      dialog: {
-        composes: 'dialog',
-        backgroundColor: theme.sheetColor,
-        borderRadius: 2,
-        boxShadow: elevation(24),
-        animationDuration: 240,
-        animationFillMode: 'forwards',
-        opacity: 0,
-      },
-
-      fullscreenDialog: {
-        composes: 'dialog--fullscreen',
-        boxShadow: 'none',
-        borderRadius: 0,
-        opacity: 1,
-        ...position('absolute', '0', '0', '0', '0'),
       },
     };
   }
 
   state = {
-    currentDialog: null,
+    currentDialog: this.props.dialog,
     animatingOut: false,
+    nextDialog: null,
   };
 
   /**
-   * Initiate the container in the controller.
+   * Update the state when the dialog prop changes.
    */
-  componentWillMount() {
-    this.context.dialogController.initiateContainer(this.openDialog, this.closeDialog);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.dialog !== this.props.dialog) {
+      this.setState((state) => {
+        if (state.currentDialog) {
+          return {
+            animatingOut: true,
+            nextDialog: nextProps.dialog,
+          };
+        }
+
+        return { currentDialog: nextProps.dialog };
+      });
+    }
   }
 
   /**
-   * Remove the container from the controller.
-   */
-  componentWillUnmount() {
-    this.context.dialogController.removeContainer();
-  }
-
-  isAnimatedIn = false;
-
-  /**
-   * The callback for when a dialog should be opened.
+   * Get the current dialog child.
    *
-   * @param {Object} dialog - The dialog object.
-   * @returns {Null} - Returns nothing.
+   * @returns {JSX} - Returns the child.
    */
-  openDialog = (dialog) => {
-    if (this.state.currentDialog) {
-      return warning(false, 'There is already a dialog currently opened!');
-    }
-
-    return this.setState({ currentDialog: dialog });
-  };
+  getDialog() {
+    return Children
+      .toArray(this.props.children)
+      .find(child => child.props.name === this.state.currentDialog);
+  }
 
   /**
-   * Close the current dialog.
-   * This will only change the animationOut state so the dialog animates out correctly.
+   * Calculate the active status of the dialog.
+   *
+   * @param {Object} dialog - The current dialog element.
+   * @returns {Boolean} - Returns whether we need to show the backdrop.
    */
-  closeDialog = () => {
-    this.setState(({ currentDialog }) => {
-      if (currentDialog) {
-        this.isAnimatedIn = false;
-
-        return { animatingOut: true };
-      }
-
-      return null;
-    });
-  };
+  isDialogActive(dialog) {
+    return dialog
+           && (dialog.props.backdrop && !dialog.props.fullscreen)
+           && (!this.state.animatingOut || this.state.nextDialog);
+  }
 
   /**
-   * When the backdrop is pressed and the dialog is supposed to close on that,
-   * we close the dialog.
-   */
-  handleBackdropPress = () => {
-    if (this.state.currentDialog.closeOnOutsideClick && this.isAnimatedIn) {
-      this.closeDialog();
-    }
-  };
-
-  /**
-   * When the out animation ends, we call the onClose handler of the dialog
-   * and set the currentDialog state to null again.
+   * Update the state when the animation ends on the current dialog.
+   * When the animatingOut state is set to true, we can animate the next dialog in.
    */
   handleAnimationEnd = () => {
-    this.setState(({
-      animatingOut,
-      currentDialog,
-    }) => {
-      if (animatingOut) {
-        currentDialog.onClose();
-
-        return {
-          currentDialog: null,
-          animatingOut: false,
-        };
+    this.setState((state) => {
+      if (!state.animatingOut) {
+        return null;
       }
 
-      this.isAnimatedIn = true;
-
-      return null;
+      return {
+        animatingOut: false,
+        currentDialog: state.nextDialog,
+        nextDialog: null,
+      };
     });
+  };
+
+  /**
+   * Call the onCloseRequest prop when the backdrop is clicked.
+   */
+  handleBackdropClick = () => {
+    const dialog = this.getDialog();
+
+    if (dialog.props.closeOnBackdropClick) {
+      this.props.onCloseRequest();
+    }
   };
 
   render() {
-    const {
-      classes,
-      className,
-      ...props
-    } = this.props;
-    const {
-      currentDialog,
-      animatingOut,
-    } = this.state;
-    let dialog = null;
-
-    if (currentDialog) {
-      const Element = currentDialog.component;
-      const dialogClasses = classnames(
-        classes.dialog,
-        currentDialog.fullscreen && classes.fullscreenDialog,
-        currentDialog.className,
-      );
-      let name = animatingOut ? 'animateOut' : 'animateIn';
-
-      if (currentDialog.fullscreen) {
-        name += 'Fullscreen';
-      }
-
-      dialog = (
-        <div
-          role="dialog"
-          className={dialogClasses}
-          style={{ animationName: this.props[`${name}Name`] }}
-          onAnimationEnd={this.handleAnimationEnd}
-        >
-          <Element
-            {...currentDialog.additionalProps}
-            close={this.closeDialog}
-          />
-        </div>
-      );
-    }
-
-    const hasBackdrop = currentDialog
-      ? (currentDialog.backdrop && !currentDialog.fullscreen)
-      : false;
+    const dialog = this.getDialog();
 
     return (
       <div
         aria-modal="true"
         className={classnames(
-          classes.dialogContainer,
-          className,
-          { [classes.hideContainer]: !currentDialog },
+          this.props.classes.dialogContainer,
+          { [this.props.classes.showContainer]: dialog },
+          this.props.className,
         )}
-        {...getNotDeclaredProps(props, DialogContainer)}
       >
-        <EventHandler
-          component="span"
-          className={classnames(
-            classes.backdrop,
-            { [classes.backdropActive]: hasBackdrop && !animatingOut },
-          )}
-          onPress={this.handleBackdropPress}
+        <Backdrop
+          className="dialog-container--backdrop"
+          active={this.isDialogActive(dialog)}
+          onClick={this.handleBackdropClick}
         />
 
-        {dialog}
+        {dialog ? React.cloneElement(dialog, {
+          role: 'dialog',
+          onAnimationEnd: this.handleAnimationEnd,
+          isAnimatingOut: this.state.animatingOut,
+        }) : null}
       </div>
     );
   }

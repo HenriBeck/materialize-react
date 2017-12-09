@@ -1,14 +1,17 @@
-import React, { Children, PureComponent } from 'react';
+import React, {
+  Children,
+  PureComponent,
+} from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import noop from 'lodash.noop';
+import EventListener from 'react-event-listener';
 
-import EventHandler from '../event-handler';
 import { easeInOutQuad } from '../../styles/timings';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import getNextIndex from '../../utils/get-next-index';
-import Tab from '../tab';
-import hasDuplicates from '../../utils/has-duplicates';
+import { pipe } from '../../utils/functions';
+import withKeyPress from '../../utils/with-key-press';
 
 /**
  * A component that renders a tablist.
@@ -19,28 +22,13 @@ export class Tabs extends PureComponent {
   static propTypes = {
     tab: PropTypes.string.isRequired,
     // eslint-disable-next-line react/require-default-props
-    children(props) {
-      const childrenArray = Children.toArray(props.children);
-      const allChildrenAreTabs = childrenArray.every(child => child.type === Tab);
-
-      if (!allChildrenAreTabs) {
-        return new Error('All Children of Tabs need to be a Tab component');
-      }
-
-      if (childrenArray.length < 2) {
-        return new Error('There must at least be two Tab components inside a Tabs component');
-      }
-
-      if (hasDuplicates(childrenArray.map(elem => elem.props.name))) {
-        return new Error('Found duplicate names for the Tabs component');
-      }
-
-      return null;
-    },
+    children: PropTypes.node.isRequired,
     classes: PropTypes.shape({
       tabs: PropTypes.string.isRequired,
       bar: PropTypes.string.isRequired,
     }).isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
     tabStyle: PropTypes.oneOf([
       'text',
       'text-and-icons',
@@ -85,10 +73,9 @@ export class Tabs extends PureComponent {
         right: 0,
         bottom: 0,
         height: 2,
-        transform: 'scaleX(0) translateX(0px)',
         transformOrigin: 'left center',
         willChange: 'transform',
-        transition: `transform 250ms ${easeInOutQuad}`,
+        transition: `transform 200ms ${easeInOutQuad}`,
         backgroundColor: theme.primaryBase,
       },
     };
@@ -101,119 +88,68 @@ export class Tabs extends PureComponent {
     39: 'right',
   };
 
-  state = { focusedTab: null };
-
-  /**
-   * Add a resize event listener to reposition the bar when the user resize's the window.
-   */
-  componentWillMount() {
-    window.addEventListener('resize', this.handleResize);
-  }
+  state = {
+    transform: 'scaleX(0) translateX(0px)',
+    focusedTab: null,
+  };
 
   /**
    * Animate the bar to it's initial position.
    */
   componentDidMount() {
-    this.animateBar();
+    this.handleResize();
   }
 
   /**
    * Update the focused tab when the tab property changes.
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.tab !== this.props.tab) {
+    if (nextProps.tab !== this.props.tab || nextProps.noBar !== this.props.noBar) {
       this.setState((state) => {
-        if (state.focusedTab === null) {
-          return null;
-        }
-
-        return { focusedTab: nextProps.tab };
+        return {
+          transform: this.getTransform(nextProps),
+          focusedTab: state.focusedTab === null ? null : nextProps.tab,
+        };
       });
     }
   }
 
-  /**
-   * Animate the bar when the tab prop has changed.
-   */
-  componentDidUpdate(prevProps) {
-    if (prevProps.tab !== this.props.tab) {
-      this.animateBar();
-    }
-  }
-
-  /**
-   * Remove the resize event listener.
-   */
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
-  }
-
   tabs = {};
 
-  /**
-   * Create a reference to the root element of the tablist.
-   *
-   * @private
-   * @param {Object} element - The root element.
-   */
-  createRootRef = (element) => {
-    this.root = element;
-  };
+  containerRect = null;
 
   /**
-   * Animate the bottom bar to the new tab.
+   * Get the transform for the bar.
    *
-   * @private
+   * @param {Object} props - The props to calculate the transform for.
+   * @returns {(Null|String)} - Returns null or the transform style.
    */
-  animateBar = () => {
-    if (this.props.noBar) {
-      return;
+  getTransform = (props) => {
+    if (props.noBar) {
+      return null;
     }
 
-    const containerRect = this.root.getBoundingClientRect();
-    const tabRect = this.tabs[this.props.tab].getBoundingClientRect();
-    const translate = tabRect.left - containerRect.left;
-    const scale = tabRect.width / containerRect.width;
+    const tabRect = this.tabs[props.tab].getBoundingClientRect();
+    const translate = tabRect.left - this.containerRect.left;
+    const scale = tabRect.width / this.containerRect.width;
 
-    this.bar.style.transform = `translateX(${translate}px) scaleX(${scale})`;
+    return `translateX(${translate}px) scaleX(${scale})`;
   };
 
-  /**
-   * A function which will be called with the root element of one tab.
-   *
-   * @private
-   * @param {String} name - The name of the tab as a reference later on.
-   * @returns {Function} - Returns a function that will take the element and creates a reference.
-   */
   createRefToTab = name => (element) => {
     this.tabs[name] = element;
   };
 
-  handleResize = this.animateBar;
+  /**
+   * Recalculate the transform and the containerRect.
+   */
+  handleResize = () => {
+    this.containerRect = this.root.getBoundingClientRect();
+
+    this.setState({ transform: this.getTransform(this.props) });
+  };
 
   handlePress = name => () => this.props.onChange(name);
-
-  /**
-   * Change the focused state back to null.
-   *
-   * @private
-   */
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.setState({ focusedTab: null });
-  };
-
-  /**
-   * Change the focused state to the at this point selected tab.
-   *
-   * @private
-   */
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.setState({ focusedTab: this.props.tab });
-  };
 
   /**
    * Handle different key presses.
@@ -239,6 +175,30 @@ export class Tabs extends PureComponent {
     }
   };
 
+  handleKeyDown = this.props.createKeyDownHandler(this.handleKeyPress);
+
+  /**
+   * Set the focused tab to the currently selected tab when the component receives focus.
+   *
+   * @private
+   */
+  handleFocus = (ev) => {
+    this.props.onFocus(ev);
+
+    this.setState({ focusedTab: this.props.tab });
+  };
+
+  /**
+   * Reset the focused tab to null when the tab looses focus.
+   *
+   * @private
+   */
+  handleBlur = (ev) => {
+    this.props.onBlur(ev);
+
+    this.setState({ focusedTab: null });
+  };
+
   /**
    * Clone the tabs with some additional props.
    *
@@ -248,43 +208,45 @@ export class Tabs extends PureComponent {
     return Children.map(this.props.children, elem => React.cloneElement(elem, {
       selected: this.props.tab === elem.props.name,
       focused: this.state.focusedTab === elem.props.name,
-      onPress: this.handlePress(elem.props.name),
+      onClick: this.handlePress(elem.props.name),
       createRef: this.createRefToTab(elem.props.name),
       tabStyle: this.props.tabStyle,
     }));
   }
 
   render() {
-    const {
-      classes,
-      className,
-      noBar,
-      ...props
-    } = this.props;
-
     return (
-      <EventHandler
-        {...getNotDeclaredProps(props, Tabs)}
-        component="div"
+      <span
+        {...getNotDeclaredProps(this.props, Tabs)}
         role="tablist"
         tabIndex="0"
-        createRef={this.createRootRef}
-        className={`${className} ${classes.tabs}`}
-        onKeyPress={this.handleKeyPress}
+        ref={(element) => { this.root = element; }}
+        className={`${this.props.classes.tabs} ${this.props.className}`}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.props.onKeyUp}
       >
+        <EventListener
+          target="window"
+          onResize={this.handleResize}
+        />
+
         {this.renderTabs()}
 
-        {!noBar && (
+        {!this.props.noBar && (
           <span
-            className={classes.bar}
+            className={this.props.classes.bar}
+            style={{ transform: this.state.transform }}
             ref={(element) => { this.bar = element; }}
           />
         )}
-      </EventHandler>
+      </span>
     );
   }
 }
 
-export default injectSheet(Tabs.styles)(Tabs);
+export default pipe(
+  injectSheet(Tabs.styles),
+  withKeyPress(),
+)(Tabs);

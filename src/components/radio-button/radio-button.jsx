@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
-import noop from 'lodash.noop';
 
 import Ripple from '../ripple';
-import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import { pipe } from '../../utils/functions';
+import withKeyPress from '../../utils/with-key-press';
+import withFocusedState from '../../utils/with-focused-state';
 
 /**
  * Render a radio button and connect it to the RadioButtonGroup.
@@ -21,19 +22,20 @@ export class RadioButton extends PureComponent {
       ripple: PropTypes.string.isRequired,
     }).isRequired,
     name: PropTypes.string.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     noink: PropTypes.bool,
     className: PropTypes.string,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
     disabled: false,
     noink: false,
     className: '',
-    onFocus: noop,
-    onBlur: noop,
   };
 
   static contextTypes = {
@@ -50,7 +52,10 @@ export class RadioButton extends PureComponent {
    * @returns {Object} - Returns the styles for the component.
    */
   static styles(theme) {
-    const isDark = theme.type === 'dark';
+    const offColor = {
+      light: 'rgba(0, 0, 0, 0.54)',
+      dark: 'rgba(255, 255, 255, 0.7)',
+    };
 
     return {
       radioButton: {
@@ -86,7 +91,7 @@ export class RadioButton extends PureComponent {
         right: 0,
         bottom: 0,
         borderWidth: 2,
-        borderColor: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.54)',
+        borderColor: offColor[theme.type],
         transition: 'border-color 200ms',
       },
 
@@ -115,10 +120,7 @@ export class RadioButton extends PureComponent {
 
   static changeOnKeyCodes = [13, 32];
 
-  state = {
-    selected: false,
-    isFocused: false,
-  };
+  state = { selected: false };
 
   /**
    * Initially set the state and subscribe to changes.
@@ -146,67 +148,24 @@ export class RadioButton extends PureComponent {
     this.setState({ selected });
   };
 
-  /**
-   * Call the onChange context supplied by the RadioButtonGroup.
-   *
-   * @private
-   */
-  handlePress = () => {
-    this.context.radioButtonGroup.onChange(this.props.name);
-  };
+  handlePress = () => this.context.radioButtonGroup.onChange(this.props.name);
 
-  /**
-   * Change the isFocused state to true when the button receives focus.
-   *
-   * @private
-   */
-  handleFocus = () => {
-    this.props.onFocus();
-
-    this.setState({ isFocused: true });
-  };
-
-  /**
-   * Change the isFocused state to false when the button looses focus.
-   *
-   * @private
-   */
-  handleBlur = () => {
-    this.props.onBlur();
-
-    this.setState({ isFocused: false });
-  };
-
-  /**
-   * Call the onChange context when a key with a special key code is pressed.
-   */
-  handleKeyPress = (ev) => {
-    if (RadioButton.changeOnKeyCodes.includes(ev.keyCode)) {
-      this.context.radioButtonGroup.onChange(this.props.name);
-    }
-  };
+  handleKeyDown = this.props.createKeyDownHandler(this.handlePress);
 
   render() {
-    const {
-      disabled,
-      className,
-      noink,
-      name,
-    } = this.props;
-
     return (
-      <EventHandler
+      <span
         {...getNotDeclaredProps(this.props, RadioButton)}
-        component="span"
         role="radio"
-        tabIndex={disabled ? -1 : 0}
-        className={`${className} ${this.props.classes.radioButton}`}
-        aria-checked={this.state.selected === name}
-        aria-disabled={disabled}
-        onPress={this.handlePress}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        onKeyPress={this.handleKeyPress}
+        tabIndex={this.props.disabled ? -1 : 0}
+        className={`${this.props.classes.radioButton} ${this.props.className}`}
+        aria-checked={this.state.selected === this.props.name}
+        aria-disabled={this.props.disabled}
+        onClick={this.handlePress}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.props.onKeyUp}
       >
         <span className={this.props.classes.border} />
 
@@ -215,13 +174,17 @@ export class RadioButton extends PureComponent {
         <Ripple
           round
           center
-          isFocused={this.state.isFocused}
-          nowaves={noink}
+          isFocused={this.props.isFocused}
+          nowaves={this.props.noink}
           className={this.props.classes.ripple}
         />
-      </EventHandler>
+      </span>
     );
   }
 }
 
-export default injectSheet(RadioButton.styles)(RadioButton);
+export default pipe(
+  injectSheet(RadioButton.styles),
+  withFocusedState,
+  withKeyPress({ keyCodes: RadioButton.changeOnKeyCodes }),
+)(RadioButton);

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import getNotDeclaredProps from '../../get-not-declared-props';
 
@@ -13,22 +14,24 @@ import getNotDeclaredProps from '../../get-not-declared-props';
  * @param {Boolean} props.vertical - Whether or not the divider should be vertical.
  * @returns {JSX} - Returns the element.
  */
-function Divider({
-  classes,
-  className,
-  vertical,
-  ...props
-}) {
+function Divider(props) {
   return (
     <div
       {...getNotDeclaredProps(props, Divider)}
-      className={`${classes.divider} ${vertical && classes.vertical}${className}`}
+      className={classnames(
+        props.classes.divider,
+        { [props.classes.vertical]: props.vertical },
+        props.className,
+      )}
     />
   );
 }
 
 Divider.propTypes = {
-  classes: PropTypes.shape({ divider: PropTypes.string.isRequired }).isRequired,
+  classes: PropTypes.shape({
+    divider: PropTypes.string.isRequired,
+    vertical: PropTypes.string.isRequired,
+  }).isRequired,
   className: PropTypes.string,
   vertical: PropTypes.bool,
 };

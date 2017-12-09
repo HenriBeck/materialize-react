@@ -9,7 +9,9 @@ import getNotDeclaredProps from '../../get-not-declared-props';
 import Ripple from '../ripple';
 import Icon from '../icon';
 import elevation from '../../styles/elevation';
-import EventHandler from '../event-handler';
+import { pipe } from '../../utils/functions';
+import withKeyPress from '../../utils/with-key-press';
+import withFocusedState from '../../utils/with-focused-state';
 
 /**
  * A component to render a floating action button.
@@ -23,16 +25,23 @@ export class Fab extends PureComponent {
       fab: PropTypes.string.isRequired,
       icon: PropTypes.string.isRequired,
       shadow: PropTypes.string.isRequired,
+      animateIn: PropTypes.string.isRequired,
+      mini: PropTypes.string.isRequired,
+      accent: PropTypes.string.isRequired,
+      activeShadow: PropTypes.string.isRequired,
     }).isRequired,
     icon: PropTypes.string.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
+    isFocused: PropTypes.bool.isRequired,
     className: PropTypes.string,
     mini: PropTypes.bool,
     accent: PropTypes.bool,
     noink: PropTypes.bool,
     animateIn: PropTypes.bool,
     onPress: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
@@ -42,8 +51,6 @@ export class Fab extends PureComponent {
     mini: false,
     animateIn: false,
     onPress: noop,
-    onFocus: noop,
-    onBlur: noop,
   };
 
   static keyCodes = [13, 32];
@@ -78,7 +85,10 @@ export class Fab extends PureComponent {
         backgroundColor: theme.primaryBase,
       },
 
-      accent: { backgroundColor: theme.accent },
+      accent: {
+        composes: 'fab--accent',
+        backgroundColor: theme.accent,
+      },
 
       mini: {
         composes: 'fab--mini',
@@ -114,6 +124,8 @@ export class Fab extends PureComponent {
         boxShadow: elevation(12),
         transition: 'opacity 200ms linear',
       },
+
+      activeShadow: { opacity: 1 },
     };
   }
 
@@ -132,88 +144,53 @@ export class Fab extends PureComponent {
     );
   }
 
-  /**
-   * Check if a key was pressed that we should handle.
-   *
-   * @private
-   */
-  handleKeyPress = (ev) => {
-    if (Fab.keyCodes.includes(ev.keyCode)) {
-      this.props.onPress();
-    }
-  };
-
-  /**
-   * Add the shadow for the FAB when it's focused.
-   *
-   * @private
-   */
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.shadow.style.opacity = 1;
-  };
-
-  /**
-   * Remove the shadow for the FAB when it's focused.
-   *
-   * @private
-   */
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.shadow.style.opacity = 0;
-  };
+  handleKeyDown = this.props.createKeyDownHandler(this.props.onPress);
 
   render() {
-    const {
-      classes,
-      animateIn,
-      mini,
-      onPress,
-      noink,
-      icon,
-      accent,
-      className,
-      ...props
-    } = this.props;
-    const classNames = classnames(className, classes.fab, {
-      [classes.animateIn]: animateIn,
-      [classes.mini]: mini,
-      [classes.accent]: accent,
-    });
-
     return (
-      <EventHandler
-        {...getNotDeclaredProps(props, Fab)}
-        component="span"
+      <span
+        {...getNotDeclaredProps(this.props, Fab)}
         role="button"
-        className={classNames}
+        className={classnames(
+          this.props.classes.fab, {
+            [this.props.classes.animateIn]: this.props.animateIn,
+            [this.props.classes.mini]: this.props.mini,
+            [this.props.classes.accent]: this.props.accent,
+          },
+          this.props.className,
+        )}
         tabIndex={0}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        onKeyPress={this.handleKeyPress}
-        onPress={onPress}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.props.onKeyUp}
+        onClick={this.props.onPress}
       >
         <span
-          className={classes.shadow}
-          ref={(element) => { this.shadow = element; }}
+          className={classnames(
+            this.props.classes.shadow,
+            { [this.props.classes.activeShadow]: this.props.isFocused },
+          )}
         />
 
         <Ripple
           round
           center
           className="fab--ripple"
-          nowaves={noink}
+          nowaves={this.props.noink}
         />
 
         <Icon
-          className={classes.icon}
-          icon={icon}
+          className={this.props.classes.icon}
+          icon={this.props.icon}
         />
-      </EventHandler>
+      </span>
     );
   }
 }
 
-export default injectSheet(Fab.styles)(Fab);
+export default pipe(
+  injectSheet(Fab.styles),
+  withFocusedState,
+  withKeyPress({ keyCodes: Fab.keyCodes }),
+)(Fab);

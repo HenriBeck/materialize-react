@@ -1,93 +1,33 @@
 import React from 'react';
 import test from 'ava';
-import sinon from 'sinon';
-import { shallow } from 'enzyme';
 
 import { mount } from '../../../tests/helpers/enzyme';
-import createClassesFromStyles from '../../../tests/helpers/create-classes-from-styles';
 
-import IconButtonWrapper, { IconButton } from './icon-button';
-
-const classes = createClassesFromStyles(IconButton.styles);
+import IconButton from './icon-button';
 
 test('should render various elements and components', (t) => {
-  const wrapper = mount(<IconButtonWrapper icon="github" />);
+  const wrapper = mount(<IconButton icon="github" />);
 
   t.deepEqual(wrapper.find('Jss(IconButton)').length, 1);
   t.deepEqual(wrapper.find('span[role="button"]').length, 1);
   t.deepEqual(wrapper.find('Icon').length, 1);
 });
 
-test('should warn against changing the icon prop', (t) => {
-  const wrapper = shallow(
-    <IconButton
-      classes={classes}
-      icon="github"
-    />,
-  );
-
-  t.throws(() => wrapper.setProps({ icon: 'some' }));
-});
-
 test('should have aria-disabled and tabIndex of -1 when disabled', (t) => {
-  const wrapper = shallow(
+  const wrapper = mount(
     <IconButton
       disabled
-      classes={classes}
       icon="github"
     />,
   );
-  const button = wrapper.find({ role: 'button' });
+  const button = wrapper.find('span.icon-button');
 
   t.deepEqual(button.prop('aria-disabled'), true);
   t.deepEqual(button.prop('tabIndex'), -1);
 });
 
-test('should add and remove the focus from the ripple', (t) => {
-  const onFocus = sinon.spy();
-  const onBlur = sinon.spy();
-  const wrapper = shallow(
-    <IconButton
-      classes={classes}
-      icon="github"
-      onFocus={onFocus}
-      onBlur={onBlur}
-    />,
-  );
+test('should warn against changing the icon prop', (t) => {
+  const wrapper = mount(<IconButton icon="github" />);
 
-  wrapper.simulate('focus');
-
-  t.deepEqual(onFocus.callCount, 1);
-
-  wrapper.simulate('blur');
-
-  t.deepEqual(onBlur.callCount, 1);
-});
-
-test('should only call onPress when a key event happens with a valid keyCode', (t) => {
-  const onPress = sinon.spy();
-  const wrapper = mount(
-    <IconButtonWrapper
-      icon="build"
-      onPress={onPress}
-    />,
-  );
-
-  wrapper.simulate('keyDown', { keyCode: IconButton.keyCodes[0] });
-
-  t.deepEqual(onPress.callCount, 1);
-});
-
-test('should not call onPress when a key event happens with an invalid keyCode', (t) => {
-  const onPress = sinon.spy();
-  const wrapper = mount(
-    <IconButtonWrapper
-      icon="build"
-      onPress={onPress}
-    />,
-  );
-
-  wrapper.simulate('keyDown', { keyCode: 0 });
-
-  t.deepEqual(onPress.callCount, 0);
+  t.throws(() => wrapper.setProps({ icon: 'some' }));
 });

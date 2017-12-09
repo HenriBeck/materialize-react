@@ -87,14 +87,34 @@ export class Stepper extends PureComponent {
   };
 
   /**
+   * Call the onShow and onHide prop of the new and old section.
+   */
+  componentWillReceiveProps(nextProps) {
+    if (this.props.section !== nextProps.section) {
+      const nextSection = this.clamp(nextProps);
+      const section = this.clamp();
+      const children = Children.toArray(nextProps.children);
+
+      if (children[section] && children[section].props.onHide) {
+        children[section].props.onHide();
+      }
+
+      if (children[nextSection] && children[nextSection].props.onShow) {
+        children[nextSection].props.onShow();
+      }
+    }
+  }
+
+  /**
    * Clamp the current section value.
    *
+   * @param {Object} [props] - The props to calculate the current section from.
    * @returns {Number} - Returns the actual section.
    */
-  clamp() {
-    const max = Children.toArray(this.props.children).length - 1;
+  clamp(props = this.props) {
+    const max = Children.toArray(props.children).length - 1;
 
-    return Math.max(0, Math.min(this.props.section, max));
+    return Math.max(0, Math.min(props.section, max));
   }
 
   /**

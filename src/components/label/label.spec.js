@@ -15,12 +15,6 @@ test('should render a label tag with the children inside', (t) => {
   t.deepEqual(wrapper.find('label').text(), 'Content');
 });
 
-test('should have a for attribute', (t) => {
-  const wrapper = mount(<Label>Content</Label>);
-
-  t.true(is.string(wrapper.find('label').prop('htmlFor')));
-});
-
 test('should add an id prop to a checkbox', (t) => {
   const wrapper = mount(
     <Label>
@@ -33,10 +27,10 @@ test('should add an id prop to a checkbox', (t) => {
   t.deepEqual(
     wrapper
       .find('Checkbox')
-      .prop('id'),
+      .prop('aria-labelledby'),
     wrapper
       .find('label')
-      .prop('htmlFor'),
+      .prop('id'),
   );
 });
 
@@ -51,22 +45,12 @@ test('should only add an id prop to the first checkbox', (t) => {
     </Label>,
   );
 
-  t.deepEqual(
-    wrapper
-      .find('Checkbox')
-      .first()
-      .prop('id'),
-    wrapper
-      .find('label')
-      .prop('htmlFor'),
-  );
-
   t.true(
     is.undefined(
       wrapper
         .find('Checkbox')
         .last()
-        .prop('id'),
+        .prop('aria-labelledby'),
     ),
   );
 });

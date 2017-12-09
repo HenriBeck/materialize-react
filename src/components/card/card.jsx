@@ -20,18 +20,13 @@ import Header from './card-header';
  * @param {String} props.className - Additional className for the card.
  * @returns {JSX} - Returns the JSX.
  */
-function Card({
-  classes,
-  children,
-  className,
-  ...props
-}) {
+function Card(props) {
   return (
     <div
-      className={`${classes.card} ${className}`}
+      className={`${props.classes.card} ${props.className}`}
       {...getNotDeclaredProps(props, Card)}
     >
-      {children}
+      {props.children}
     </div>
   );
 }

@@ -5,8 +5,10 @@ import injectSheet from 'react-jss';
 import noop from 'lodash.noop';
 
 import Ripple from '../ripple';
-import EventHandler from '../event-handler';
 import getNotDeclaredProps from '../../get-not-declared-props';
+import withKeyPress from '../../utils/with-key-press';
+import { pipe } from '../../utils/functions';
+import withFocusedState from '../../utils/with-focused-state';
 
 /**
  * The actual visual component of the checkbox.
@@ -24,19 +26,20 @@ export class Checkbox extends PureComponent {
       ripple: PropTypes.string.isRequired,
     }).isRequired,
     checked: PropTypes.bool.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    createKeyDownHandler: PropTypes.func.isRequired,
+    onKeyUp: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     disabled: PropTypes.bool,
     className: PropTypes.string,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
   };
 
   static defaultProps = {
     disabled: false,
     className: '',
     onChange: noop,
-    onFocus: noop,
-    onBlur: noop,
   };
 
   /**
@@ -52,7 +55,7 @@ export class Checkbox extends PureComponent {
     return {
       '@keyframes checkbox--animate-in': {
         from: {
-          opacity: 1,
+          opacity: 0,
           transform: 'scale(0) rotate(-45deg)',
         },
         to: {
@@ -62,8 +65,14 @@ export class Checkbox extends PureComponent {
       },
 
       '@keyframes checkbox--animate-out': {
-        from: { opacity: 1 },
-        to: { opacity: 0 },
+        from: {
+          opacity: 1,
+          transform: 'scale(1) rotate(45deg)',
+        },
+        to: {
+          opacity: 0,
+          transform: 'scale(1) rotate(45deg)',
+        },
       },
 
       checkbox: {
@@ -139,101 +148,43 @@ export class Checkbox extends PureComponent {
 
   static keyCodes = [32];
 
-  state = { isFocused: false };
-
   /**
    * Set the border color of the checkmark to the background-color from the root element.
-   * If the checked props is initially true we want to animate the checkmark in.
    */
   componentDidMount() {
-    this.setBgColor();
-  }
-
-  /**
-   * Animate the checkmark bg color when the component prop changes.
-   */
-  componentDidUpdate() {
-    this.setBgColor();
-  }
-
-  /**
-   * Set the bg color for the checkmark.
-   */
-  setBgColor() {
     const bgColor = window.getComputedStyle(this.root)['background-color'];
 
     this.checkmark.style.borderColor = bgColor;
   }
 
-  /**
-   * A function which will be called with the element from EventHandler.
-   *
-   * @param {Object} element - The root element from EventHandler.
-   */
-  createRef = (element) => {
-    this.root = element;
-  };
-
-  /**
-   * Change the isFocused state to true when the component get's focused.
-   */
-  handleFocus = (ev) => {
-    this.props.onFocus(ev);
-
-    this.setState({ isFocused: true });
-  };
-
-  /**
-   * Change the isFocused state to false when the component looses focus.
-   */
-  handleBlur = (ev) => {
-    this.props.onBlur(ev);
-
-    this.setState({ isFocused: false });
-  };
-
-  handlePress = () => this.props.onChange();
-
-  /**
-   * Call the onChange prop when a key is pressed.
-   */
-  handleKeyPress = (ev) => {
-    if (Checkbox.keyCodes.includes(ev.keyCode)) {
-      this.props.onChange();
-    }
-  };
+  handleKeyDown = this.props.createKeyDownHandler(this.props.onChange);
 
   render() {
-    const {
-      disabled,
-      classes,
-      checked,
-      className,
-      ...props
-    } = this.props;
-
     return (
-      <EventHandler
-        {...getNotDeclaredProps(props, Checkbox)}
-        component="span"
+      <span
+        {...getNotDeclaredProps(this.props, Checkbox)}
         role="checkbox"
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled}
-        aria-checked={checked}
-        className={classnames(classes.checkbox, className)}
-        createRef={this.createRef}
-        onKeyPress={this.handleKeyPress}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        onPress={this.handlePress}
+        tabIndex={this.props.disabled ? -1 : 0}
+        aria-disabled={this.props.disabled}
+        aria-checked={this.props.checked}
+        className={classnames(
+          this.props.classes.checkbox,
+          this.props.className,
+        )}
+        ref={(element) => { this.root = element; }}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.props.onKeyUp}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
+        onClick={this.props.onChange}
       >
         <span
-          className={classes.container}
+          className={this.props.classes.container}
           ref={(element) => { this.checkbox = element; }}
         >
           <span
-            className={classes.checkmark}
-            style={{ animationName: `checkbox--animate-${checked ? 'in' : 'out'}` }}
+            className={this.props.classes.checkmark}
+            style={{ animationName: `checkbox--animate-${this.props.checked ? 'in' : 'out'}` }}
             ref={(element) => { this.checkmark = element; }}
           />
         </span>
@@ -241,12 +192,16 @@ export class Checkbox extends PureComponent {
         <Ripple
           round
           center
-          className={classes.ripple}
-          isFocused={this.state.isFocused}
+          className={this.props.classes.ripple}
+          isFocused={this.props.isFocused}
         />
-      </EventHandler>
+      </span>
     );
   }
 }
 
-export default injectSheet(Checkbox.styles)(Checkbox);
+export default pipe(
+  injectSheet(Checkbox.styles),
+  withFocusedState,
+  withKeyPress({ keyCodes: Checkbox.keyCodes }),
+)(Checkbox);

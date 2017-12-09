@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 
 import IconButton from '../icon-button';
 
-import Drawer from './drawer-container';
+import Drawer from './drawer';
 
 /**
  * A component which creates a fully working drawer for the story.
@@ -11,18 +11,20 @@ import Drawer from './drawer-container';
  * @class
  */
 class DrawerStory extends PureComponent {
+  state = { open: false };
+
   /**
    * When the close icon inside the drawer is pressed we want to close the drawer.
    */
   handleDrawerClose = () => {
-    this.drawer.close();
+    this.setState({ open: false });
   };
 
   /**
    * When the menu icon button is pressed we want to open the drawer.
    */
   handleDrawerOpen = () => {
-    this.drawer.open();
+    this.setState({ open: true });
   };
 
   render() {
@@ -30,7 +32,9 @@ class DrawerStory extends PureComponent {
       <Drawer
         {...this.props}
         style={{ minHeight: '100vh' }}
-        ref={(element) => { this.drawer = element; }}
+        open={this.state.open}
+        onCloseRequest={this.handleDrawerClose}
+        onNarrowChange={this.handleDrawerClose}
       >
         <Drawer.DrawerContent>
           <div style={{ padding: 32 }}>
@@ -61,9 +65,6 @@ class DrawerStory extends PureComponent {
 storiesOf('Drawer', module)
   .add('Left Drawer', () => (
     <DrawerStory />
-  ))
-  .add('Right Drawer', () => (
-    <DrawerStory drawerPosition="right" />
   ))
   .add('Custom responsive width', () => (
     <DrawerStory responsiveWidth={1000} />

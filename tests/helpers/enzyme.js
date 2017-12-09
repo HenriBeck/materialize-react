@@ -1,4 +1,6 @@
+import React from 'react';
 import { mount as eMount } from 'enzyme';
+import { ThemeProvider } from 'react-jss';
 
 import variables from '../../src/components/theme/variables';
 
@@ -11,20 +13,30 @@ import variables from '../../src/components/theme/variables';
  * @returns {Object} - Returns the object returned from the mount function.
  */
 export function mount(children, options = {}) { // eslint-disable-line import/prefer-default-export
-  return eMount(children, {
-    context: {
-      __THEMING__: {
-        getState() {
-          const type = options.type || 'light';
+  const type = options.type || 'light';
 
-          return {
-            type,
-            ...variables[type],
-          };
-        },
-        subscribe: () => true,
-      },
-      ...options.context,
-    },
-  });
+  /**
+   * Render the children around the theme provider and pass any props down
+   * to the actual component that's being tested.
+   *
+   * @param {Object} props - Any additional props which will be passed down to the child.
+   * @returns {JSX} - Returns the JSX.
+   */
+  function Theme(props) {
+    return (
+      <ThemeProvider
+        theme={{
+          type,
+          ...variables[type],
+        }}
+      >
+        {React.cloneElement(children, props)}
+      </ThemeProvider>
+    );
+  }
+
+  return eMount(
+    <Theme />,
+    options,
+  );
 }

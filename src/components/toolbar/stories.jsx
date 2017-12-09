@@ -8,22 +8,18 @@ const style = { alignSelf: 'flex-start' };
 storiesOf('Toolbar', module)
   .add('Default styles', () => (
     <Toolbar style={style}>
-      <div className="row">
+      <div>
         Title
       </div>
     </Toolbar>
   ))
-  .add('Medium tall', () => (
+  .add('Medium', () => (
     <Toolbar
-      height="medium-tall"
+      height="medium"
       style={style}
     >
-      <div className="row">
-        Row 1
-      </div>
-
-      <div className="row">
-        Row 2
+      <div>
+        Title
       </div>
     </Toolbar>
   ))
@@ -32,16 +28,8 @@ storiesOf('Toolbar', module)
       height="tall"
       style={style}
     >
-      <div className="row">
-        Row 1
-      </div>
-
-      <div className="row">
-        Row 2
-      </div>
-
-      <div className="row">
-        Row 3
+      <div>
+        Title
       </div>
     </Toolbar>
   ))
