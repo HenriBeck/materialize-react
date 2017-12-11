@@ -45,7 +45,7 @@
     "prop-types": "15.6.0",
     "randomstring": "1.1.5",
     "react-display-name": "0.2.3",
-    "react-event-listener": "0.5.1",
+    "react-event-listener": "0.5.2",
     "react-get-not-declared-props": "0.2.0",
     "warning": "3.0.0"
   },
