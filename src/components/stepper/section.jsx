@@ -23,7 +23,7 @@ function Section({
   return (
     <div
       className={`${classes.section} ${className}`}
-      {...getNotDeclaredProps(props, Section)}
+      {...getNotDeclaredProps(props, Section, ['onShow', 'onHide'])}
     >
       {children}
     </div>
