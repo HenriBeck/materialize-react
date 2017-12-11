@@ -9,8 +9,6 @@ import classnames from 'classnames';
 import getNotDeclaredProps from '../../get-not-declared-props';
 import elevation from '../../styles/elevation';
 import Collapse from '../collapse';
-import withKeyPress from '../../utils/with-key-press';
-import withFocusedState from '../../utils/with-focused-state';
 import {
   filter,
   head,
@@ -35,11 +33,6 @@ class ExpansionPanel extends PureComponent {
     }).isRequired,
     expanded: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
-    isFocused: PropTypes.bool.isRequired,
-    createKeyDownHandler: PropTypes.func.isRequired,
-    onKeyUp: PropTypes.func.isRequired,
-    onFocus: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
 
@@ -50,8 +43,6 @@ class ExpansionPanel extends PureComponent {
   static Actions = ExpansionPanelActions;
 
   static Details = ExpansionPanelDetails;
-
-  static keyCodes = [13, 32];
 
   /**
    * Get the styles for the component.
@@ -110,8 +101,6 @@ class ExpansionPanel extends PureComponent {
     };
   }
 
-  handleKeyDown = this.props.createKeyDownHandler(this.props.onChange);
-
   render() {
     const children = Children.toArray(this.props.children);
     const summary = pipe(
@@ -121,7 +110,7 @@ class ExpansionPanel extends PureComponent {
     const content = filter(child => child.type !== ExpansionPanelSummary)(children);
 
     return (
-      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+      <div
         {...getNotDeclaredProps(this.props, ExpansionPanel)}
         className={classnames(
           this.props.classes.expansionPanel,
@@ -129,16 +118,10 @@ class ExpansionPanel extends PureComponent {
           this.props.className,
         )}
         aria-expanded={this.props.expanded}
-        tabIndex={0} // eslint-disable-line jsx-a11y/no-noninteractive-tabindex
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onKeyUp={this.props.onKeyUp}
-        onKeyDown={this.handleKeyDown}
       >
         {React.cloneElement(summary, {
           expanded: this.props.expanded,
           onClick: this.props.onChange,
-          isFocused: this.props.isFocused,
         })}
 
         <Collapse
@@ -152,8 +135,4 @@ class ExpansionPanel extends PureComponent {
   }
 }
 
-export default pipe(
-  injectSheet(ExpansionPanel.styles),
-  withFocusedState,
-  withKeyPress({ keyCodes: ExpansionPanel.keyCodes }),
-)(ExpansionPanel);
+export default injectSheet(ExpansionPanel.styles)(ExpansionPanel);

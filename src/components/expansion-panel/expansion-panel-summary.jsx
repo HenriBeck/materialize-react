@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import Icon from '../icon';
 import Ripple from '../ripple';
-import { grey200 } from '../../styles/colors';
 import getNotDeclaredProps from '../../get-not-declared-props';
 
 /**
@@ -17,10 +16,11 @@ import getNotDeclaredProps from '../../get-not-declared-props';
 function ExpansionPanelSummary(props) {
   return (
     <div
-      className={classnames(props.classes.expansionPanelSummary, {
-        [props.classes.expanded]: props.expanded,
-        [props.classes.focused]: props.isFocused,
-      }, props.className)}
+      className={classnames(
+        props.classes.expansionPanelSummary,
+        { [props.classes.expanded]: props.expanded },
+        props.className,
+      )}
       {...getNotDeclaredProps(props, ExpansionPanelSummary)}
     >
       <div
@@ -38,7 +38,10 @@ function ExpansionPanelSummary(props) {
           { [props.classes.expandIconExpanded]: props.expanded },
         )}
       >
-        <Ripple />
+        <Ripple
+          round
+          center
+        />
 
         <Icon icon="chevron-down" />
       </span>
@@ -82,11 +85,6 @@ ExpansionPanelSummary.styles = {
     minHeight: 64,
   },
 
-  focused: {
-    composes: 'expansion-panel--summary-focused',
-    backgroundColor: grey200,
-  },
-
   content: {
     composes: 'expansion-panel--summary-content',
     display: 'flex',
@@ -105,7 +103,6 @@ ExpansionPanelSummary.styles = {
     width: 40,
     height: 40,
     padding: 8,
-    borderRadius: '50%',
     boxSizing: 'border-box',
     transform: 'rotate(0deg)',
     transition: 'transform 140ms',
