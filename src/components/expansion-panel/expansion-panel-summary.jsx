@@ -54,14 +54,12 @@ ExpansionPanelSummary.propTypes = {
   classes: PropTypes.shape({
     expansionPanelSummary: PropTypes.string.isRequired,
     expanded: PropTypes.string.isRequired,
-    focused: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     contentExpanded: PropTypes.string.isRequired,
     expandIcon: PropTypes.string.isRequired,
     expandIconExpanded: PropTypes.string.isRequired,
   }).isRequired,
   expanded: PropTypes.bool.isRequired,
-  isFocused: PropTypes.bool.isRequired,
   className: PropTypes.string,
 };
 

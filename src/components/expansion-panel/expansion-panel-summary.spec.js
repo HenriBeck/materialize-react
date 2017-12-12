@@ -7,10 +7,7 @@ import ExpansionPanelSummary from './expansion-panel-summary';
 
 test('should render a div with the class of expansion-panel--summary', (t) => {
   const wrapper = mount(
-    <ExpansionPanelSummary
-      expanded
-      isFocused
-    >
+    <ExpansionPanelSummary expanded>
       Text
     </ExpansionPanelSummary>,
   );

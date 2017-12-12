@@ -34,10 +34,7 @@ class Drawer extends PureComponent {
     classes: PropTypes.shape({
       drawer: PropTypes.string.isRequired,
       drawerContent: PropTypes.string.isRequired,
-      drawerContentNarrow: PropTypes.string.isRequired,
-      drawerContentNarrowOpened: PropTypes.string.isRequired,
       mainContent: PropTypes.string.isRequired,
-      mainContentNarrow: PropTypes.string.isRequired,
     }).isRequired,
     open: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
@@ -87,32 +84,15 @@ class Drawer extends PureComponent {
         left: -256,
         bottom: 0,
         width: 256,
-        transform: 'translateX(100%)',
         willChange: 'transform',
         transition: `transform 200ms ${easeInOutQuad}`,
-      },
-
-      drawerContentNarrow: {
-        composes: 'drawer--drawer-content-narrow',
-        transform: 'translateX(0)',
         zIndex: theme.zIndexes.drawer,
-      },
-
-      drawerContentNarrowOpened: {
-        composes: 'drawer--drawer-content-narrow-opened',
-        transform: 'translateX(100%)',
       },
 
       mainContent: {
         composes: 'drawer--main-content',
         width: '100%',
         height: '100%',
-        paddingLeft: 256,
-      },
-
-      mainContentNarrow: {
-        composes: 'drawer--main-content-narrow',
-        paddingLeft: 0,
       },
     };
   }
@@ -193,17 +173,13 @@ class Drawer extends PureComponent {
         />
 
         {cloneChildrenWithClassName(getDrawerContent(children), {
-          className: classnames(this.props.classes.drawerContent, {
-            [this.props.classes.drawerContentNarrow]: this.state.isNarrow,
-            [this.props.classes.drawerContentNarrowOpened]: this.state.isNarrow && this.props.open,
-          }),
+          className: this.props.classes.drawerContent,
+          style: { transform: `translateX(${this.state.isNarrow && !this.props.open ? 0 : 100}%)` },
         })}
 
         {cloneChildrenWithClassName(getMainContent(children), {
-          className: classnames(
-            this.props.classes.mainContent,
-            { [this.props.classes.mainContentNarrow]: this.state.isNarrow },
-          ),
+          className: this.props.classes.mainContent,
+          style: { paddingLeft: this.state.isNarrow ? 0 : 256 },
         })}
       </div>
     );
