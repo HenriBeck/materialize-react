@@ -12,7 +12,7 @@ const style = { width: 260 };
  * @class
  */
 class Story extends PureComponent {
-  state = { value: 0 };
+  state = { value: 50 };
 
   /**
    * Change the state when the user interacts with the slider.

@@ -95,6 +95,7 @@ class Drawer extends PureComponent {
         composes: 'drawer--main-content',
         width: '100%',
         height: '100%',
+        boxSizing: 'border-box',
       },
     };
   }

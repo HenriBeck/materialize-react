@@ -102,16 +102,9 @@ class Slider extends PureComponent {
         },
       },
 
-      trackFocused: {
-        composes: 'slider--track-focused',
-        backgroundColor: !isDark && '#b1b1b1',
-      },
+      trackFocused: { backgroundColor: !isDark && '#b1b1b1' },
 
-      trackDisabled: {
-        composes: 'slider--track-disabled',
-
-        '&::after': { backgroundColor: 'transparent' },
-      },
+      trackDisabled: { '&::after': { backgroundColor: 'transparent' } },
 
       thumb: {
         composes: 'slider--thumb',
@@ -148,38 +141,39 @@ class Slider extends PureComponent {
         '&::after': { backgroundColor: theme.primaryBase },
       },
 
-      thumbFocused: {
-        composes: 'slider--thumb-focused',
+      thumbFocused: { '&::after': { opacity: 0.25 } },
 
-        '&::after': { opacity: 0.25 },
-      },
+      thumbDisabled: { borderColor: disabledColor },
 
-      thumbDisabled: {
-        composes: 'slider--thumb-disabled',
-
-        borderColor: disabledColor,
-      },
-
-      thumbActiveDisabled: {
-        composes: 'slider--thumb-disabled',
-
-        backgroundColor: disabledColor,
-      },
+      thumbActiveDisabled: { backgroundColor: disabledColor },
     };
   }
 
-  state = { isDragging: false };
+  state = {
+    isDragging: false,
+    translateX: 0,
+  };
+
+  /**
+   * Initially compute the translate.
+   */
+  componentDidMount() {
+    this.rootRect = this.root.getBoundingClientRect();
+
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ translateX: this.computeTranslate(this.props.value) });
+  }
 
   /**
    * Recalculate the translateX for the thumb when the value prop changes.
    */
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.props.value) {
-      const translateX = this.rootRect.width * clamp(nextProps.value) / 100;
-
-      this.setState({ translateX });
+      this.setState({ translateX: this.computeTranslate(nextProps.value) });
     }
   }
+
+  computeTranslate = value => this.rootRect.width * clamp(value) / 100;
 
   /**
    * Compute the transform for the thumb.
@@ -228,6 +222,15 @@ class Slider extends PureComponent {
     );
   };
 
+  /**
+   * Update the root rect and recalculate the translate when the browser is being resize.
+   */
+  handleResize = () => {
+    this.rootRect = this.root.getBoundingClientRect();
+
+    this.setState({ translateX: this.computeTranslate(this.props.value) });
+  };
+
   render() {
     const value = clamp(this.props.value);
 
@@ -235,7 +238,7 @@ class Slider extends PureComponent {
       <div
         {...getNotDeclaredProps(this.props, Slider)}
         className={`${this.props.classes.slider} ${this.props.className}`}
-        ref={(element) => { this.rootRect = element ? element.getBoundingClientRect() : {}; }}
+        ref={(element) => { this.root = element; }}
         role="slider"
         tabIndex={this.props.disabled ? -1 : 0}
         aria-disabled={this.props.disabled}
@@ -273,6 +276,7 @@ class Slider extends PureComponent {
             onMouseUp={this.handleThumbRelease}
             onTouchMove={this.handleMove}
             onTouchEnd={this.handleThumbRelease}
+            onResize={this.handleResize}
           />
         ) : null}
       </div>
