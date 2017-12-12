@@ -36,6 +36,9 @@ class Drawer extends PureComponent {
       drawerContent: PropTypes.string.isRequired,
       mainContent: PropTypes.string.isRequired,
     }).isRequired,
+    theme: PropTypes.shape(
+      { zIndexes: PropTypes.shape({ drawer: PropTypes.number.isRequired }).isRequired },
+    ).isRequired,
     open: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
     responsiveWidth: PropTypes.number,
@@ -86,7 +89,6 @@ class Drawer extends PureComponent {
         width: 256,
         willChange: 'transform',
         transition: `transform 200ms ${easeInOutQuad}`,
-        zIndex: theme.zIndexes.drawer,
       },
 
       mainContent: {
@@ -174,7 +176,10 @@ class Drawer extends PureComponent {
 
         {cloneChildrenWithClassName(getDrawerContent(children), {
           className: this.props.classes.drawerContent,
-          style: { transform: `translateX(${this.state.isNarrow && !this.props.open ? 0 : 100}%)` },
+          style: {
+            transform: `translateX(${this.state.isNarrow && !this.props.open ? 0 : 100}%)`,
+            zIndex: this.state.isNarrow ? this.props.theme.zIndexes.drawer : 0,
+          },
         })}
 
         {cloneChildrenWithClassName(getMainContent(children), {
