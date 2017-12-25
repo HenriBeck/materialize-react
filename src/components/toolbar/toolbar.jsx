@@ -64,6 +64,7 @@ Toolbar.styles = (theme) => {
       padding: '0 16px',
       boxSizing: 'border-box',
       display: 'flex',
+      zIndex: theme.zIndexes.appBar,
       backgroundColor: theme.appBarColor,
     },
 

@@ -32,6 +32,8 @@ export Backdrop from './components/backdrop';
 export Collapse from './components/collapse';
 export ExpansionPanel from './components/expansion-panel';
 export Dialog from './components/dialog';
+export TextField from './components/text-field';
+export TextArea from './components/text-area';
 
 // Styles
 export * as typography from './styles/typography';

@@ -23,9 +23,11 @@ import {
   whiteDivider,
   whiteIcons,
   whiteHint,
+  red500,
 } from '../../styles/colors';
 
 const zIndexes = {
+  appBar: 50,
   fab: 100,
   snackbar: 1000,
   bottomNavigation: 1500,
@@ -54,6 +56,8 @@ export default {
     iconColor: blackIcons,
     hintColor: blackHint,
     dividerColor: blackDivider,
+
+    errorColor: red500,
 
     zIndexes,
   },
