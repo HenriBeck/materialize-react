@@ -42,7 +42,6 @@ Card.defaultProps = { className: '' };
 Card.styles = (theme) => {
   return {
     card: {
-      overflow: 'hidden',
       composes: 'card',
       position: 'relative',
       borderRadius: 2,
