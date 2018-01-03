@@ -94,21 +94,23 @@ export class Tabs extends PureComponent {
   };
 
   /**
-   * Animate the bar to it's initial position.
+   * Calculate the initial transform of the bar.
    */
   componentDidMount() {
-    this.handleResize();
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ transform: this.getTransform() });
   }
 
   /**
-   * Update the focused tab when the tab property changes.
+   * Update the transform when the tab changes.
    */
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.tab !== this.props.tab || nextProps.noBar !== this.props.noBar) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.tab !== this.props.tab) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState((state) => {
         return {
-          transform: this.getTransform(nextProps),
-          focusedTab: state.focusedTab === null ? null : nextProps.tab,
+          transform: this.getTransform(),
+          focusedTab: state.focusedTab === null ? null : this.props.tab,
         };
       });
     }
@@ -121,17 +123,17 @@ export class Tabs extends PureComponent {
   /**
    * Get the transform for the bar.
    *
-   * @param {Object} props - The props to calculate the transform for.
    * @returns {(Null|String)} - Returns null or the transform style.
    */
-  getTransform = (props) => {
-    if (props.noBar) {
+  getTransform = () => {
+    if (this.props.noBar) {
       return null;
     }
 
-    const tabRect = this.tabs[props.tab].getBoundingClientRect();
-    const translate = tabRect.left - this.containerRect.left;
-    const scale = tabRect.width / this.containerRect.width;
+    const containerRect = this.root.getBoundingClientRect();
+    const tabRect = this.tabs[this.props.tab].getBoundingClientRect();
+    const translate = tabRect.left - containerRect.left;
+    const scale = tabRect.width / containerRect.width;
 
     return `translateX(${translate}px) scaleX(${scale})`;
   };
@@ -144,9 +146,7 @@ export class Tabs extends PureComponent {
    * Recalculate the transform and the containerRect.
    */
   handleResize = () => {
-    this.containerRect = this.root.getBoundingClientRect();
-
-    this.setState({ transform: this.getTransform(this.props) });
+    this.setState({ transform: this.getTransform() });
   };
 
   handlePress = name => () => this.props.onChange(name);

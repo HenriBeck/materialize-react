@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import classnames from 'classnames';
 
 import breakpoints from '../../styles/breakpoints';
 import getNotDeclaredProps from '../../get-not-declared-props';
@@ -13,16 +14,16 @@ import {
  * A component which renders a header for a card.
  *
  * @param {Object} props - The props for the component.
- * @param {Object} props.classes - The classes provided by Jss.
- * @param {JSX} props.children - The main title for the card.
- * @param {JSX} props.subtitle - An optional subtitle for the card.
- * @param {JSX} props.avatar - An optional avatar element for the header.
  * @returns {JSX} - Returns the JSX.
  */
 function CardHeader(props) {
   return (
     <header
-      className={`${props.classes.header} ${props.avatar && props.classes.withAvatar}`}
+      className={classnames(
+        props.classes.header,
+        { [props.classes.withAvatar]: props.avatar },
+        props.className,
+      )}
       {...getNotDeclaredProps(props, CardHeader)}
     >
       {props.avatar && (
@@ -58,11 +59,13 @@ CardHeader.propTypes = {
   children: PropTypes.node.isRequired,
   subtitle: PropTypes.node,
   avatar: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+  className: PropTypes.string,
 };
 
 CardHeader.defaultProps = {
   subtitle: '',
   avatar: false,
+  className: '',
 };
 
 CardHeader.styles = (theme) => {
