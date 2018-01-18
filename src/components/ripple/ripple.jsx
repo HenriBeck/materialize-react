@@ -184,6 +184,10 @@ export class Ripple extends PureComponent {
    */
   handleRelease = () => {
     this.setState(({ waves }) => {
+      if (waves.length === 0) {
+        return null;
+      }
+
       return { waves: waves.map(wave => Object.assign(wave, { animatingOut: true })) };
     });
   };
