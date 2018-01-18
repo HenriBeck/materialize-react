@@ -1,6 +1,6 @@
 {
   "name": "materialize-react",
-  "version": "0.2.0-alpha.18",
+  "version": "0.2.0-alpha.19",
   "description": "React Components with materialize theme",
   "main": "lib/index.js",
   "options": {
