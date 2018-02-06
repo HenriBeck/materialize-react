@@ -69,7 +69,7 @@
     "babel-preset-env": "1.6.1",
     "babel-preset-react": "6.24.1",
     "babel-register": "6.26.0",
-    "browser-env": "3.2.4",
+    "browser-env": "3.2.5",
     "coveralls": "3.0.0",
     "css-loader": "0.28.7",
     "delay": "2.0.0",
