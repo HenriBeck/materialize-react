@@ -36,7 +36,7 @@
   "dependencies": {
     "brcast": "3.0.1",
     "classnames": "2.2.5",
-    "hoist-non-react-statics": "2.3.1",
+    "hoist-non-react-statics": "2.5.0",
     "lodash.merge": " 4.6.0",
     "lodash.noop": "3.0.1",
     "lodash.omit": "4.5.0",
