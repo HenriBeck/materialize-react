@@ -52,7 +52,7 @@
     "warning": "3.0.0"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "3.2.16",
+    "@storybook/addon-actions": "3.4.0",
     "@storybook/addon-comments": "3.2.16",
     "@storybook/addon-info": "3.2.16",
     "@storybook/addon-knobs": "3.2.16",
