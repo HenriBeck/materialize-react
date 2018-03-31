@@ -47,7 +47,7 @@
     "react": "16.2.0",
     "react-display-name": "0.2.3",
     "react-event-listener": "0.5.1",
-    "react-get-not-declared-props": "0.2.0",
+    "react-get-not-declared-props": "1.0.0",
     "react-jss": "8.2.1",
     "warning": "3.0.0"
   },
