@@ -57,7 +57,7 @@
     "@storybook/addon-info": "3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/addon-options": "3.2.16",
-    "@storybook/react": "3.2.16",
+    "@storybook/react": "3.4.0",
     "@tf2-pickup/eslint-config": "6.4.0",
     "ava": "0.24.0",
     "babel-cli": "6.26.0",
