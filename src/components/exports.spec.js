@@ -8,8 +8,8 @@ import path from 'path';
 import * as exportedComponents from '.';
 
 test('should export all components', (t) => {
-  const dirNames = fs.readdirSync('./')
-    .filter(name => fs.lstatSync(path.join('./', name)).isDirectory());
+  const dirNames = fs.readdirSync(__dirname)
+    .filter(name => fs.lstatSync(path.join(__dirname, name)).isDirectory());
 
   dirNames.forEach((dir: string) => {
     if (!exportedComponents[dir]) { // eslint-disable-line import/namespace

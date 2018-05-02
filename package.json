@@ -10,7 +10,7 @@
   "scripts": {
     "start-storybook": "start-storybook -p 9001",
     "build-storybook": "build-storybook -o docs/",
-    "test": "NODE_ENV=\"test\" ava",
+    "test": "NODE_ENV=\"test\" ava --no-cache",
     "test:coverage": "nyc yarn run test",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
