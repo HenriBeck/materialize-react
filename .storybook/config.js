@@ -1,103 +1,75 @@
-/* eslint-disable global-require */
-
-import '../helpers';
+// @flow strict
 
 import {
   configure,
   addDecorator,
 } from '@storybook/react';
-import PropTypes from 'prop-types';
 import { setOptions } from '@storybook/addon-options';
 import { withKnobs } from '@storybook/addon-knobs';
-import React, { PureComponent } from 'react';
+// $FlowFixMe: Waiting for typing support for StrictMode
+import React, { StrictMode } from 'react';
+import whyDidYouUpdate from 'why-did-you-update';
 
 import 'normalize.css';
-import 'mdi/css/materialdesignicons.css';
 
-import Theme from '../src/components/theme';
-import Background from '../src/components/background';
-import Switch from '../src/components/switch';
-import Layout from '../src/components/layout';
-import Label from '../src/components/label';
+import Decorator from './Decorator';
 
-let darkThemeEnabled = false;
+whyDidYouUpdate(React, { exclude: /^Sheet$/ });
 
-/**
- * The Decorator for the story for switching between light and dark theme.
- *
- * @class
- */
-class Decorator extends PureComponent {
-  static propTypes = { children: PropTypes.node.isRequired };
-
-  state = { darkTheme: darkThemeEnabled };
-
-  /**
-   * The component will unmount when we change the story.
-   * We save the last state so the dark theme doesn't get reset after every change.
-   */
-  componentWillUnmount() {
-    darkThemeEnabled = this.state.darkTheme;
-  }
-
-  /**
-   * Change the state when the switch is being toggled.
-   */
-  handleChange = () => {
-    this.setState(({ darkTheme }) => {
-      return { darkTheme: !darkTheme };
-    });
-  };
-
-  render() {
-    const { darkTheme } = this.state;
-
-    return (
-      <Theme type={darkTheme ? 'dark' : 'light'}>
-        <Layout
-          component={Background}
-          crossAlign="center"
-          mainAlign="center"
-          style={{ minHeight: '100vh' }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              zIndex: 10,
-            }}
-          >
-            <Label>
-              <Switch
-                toggled={darkTheme}
-                onChange={this.handleChange}
-              />
-
-              Dark Theme
-            </Label>
-          </div>
-
-          {this.props.children}
-        </Layout>
-      </Theme>
-    );
-  }
-}
-
-addDecorator((story, info) => withKnobs(() => (
-  <Decorator>
-    {story()}
-  </Decorator>
-), info));
+addDecorator((story, info) => (
+  <StrictMode>
+    <Decorator info={info}>
+      {withKnobs(story, info)}
+    </Decorator>
+  </StrictMode>
+));
 
 setOptions({
   name: 'Materialize React',
   url: 'https://github.com/HenriBeck/materialize-react',
 });
 
-const componentStories = require.context('../', true, /stories\.jsx$/);
-
 configure(() => {
-  componentStories.keys().forEach(componentStories);
+  // Basic Components
+  require('../src/components/Typography/stories');
+  require('../src/components/Icon/stories');
+  require('../src/components/Divider/stories');
+
+  // App Layout Elements
+  require('../src/components/Drawer/stories');
+  require('../src/components/Backdrop/stories');
+  require('../src/components/Layout/stories');
+
+  // Button Elements
+  require('../src/components/Button/stories');
+  require('../src/components/IconButton/stories');
+  require('../src/components/Fab/stories');
+
+  // Selection Elements
+  require('../src/components/Checkbox/stories');
+  require('../src/components/Switch/stories');
+  require('../src/components/RadioButtonGroup/stories');
+
+  // Interactive Elements
+  require('../src/components/Tabs/stories');
+  require('../src/components/Slider/stories');
+  require('../src/components/Ripple/stories');
+
+  // Text Field Elements
+  require('../src/components/TextArea/stories');
+  require('../src/components/TextField/stories');
+
+  // Progress & Activity
+  require('../src/components/Progress/stories');
+  require('../src/components/Spinner/stories');
+
+  require('../src/components/Badge/stories');
+  require('../src/components/List/stories');
+  require('../src/components/Collapse/stories');
+  require('../src/components/ExpansionPanel/stories');
+  require('../src/components/Card/stories');
+  require('../src/components/Avatar/stories');
+  require('../src/components/Snackbar/stories');
+
+  require('../src/components/Dialog/stories');
 }, module);
