@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  test-node6:
+  lint:
     working_directory: ~/materialize-react
     docker:
       - image: circleci/node:6
@@ -13,13 +13,21 @@ jobs:
       - run:
           name: Lint
           command: yarn run lint
+
+  flow:
+    working_directory: ~/materialize-react
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout
       - run:
-          name: Run Tests & Check Coverage
-          command: yarn run test:coverage
+          name: Install Packages
+          command: yarn install
       - run:
-          name: Report Coverage
-          command: yarn run report-coverage
-  test-node8:
+          name: Lint
+          command: yarn run flow
+
+  test:
     working_directory: ~/materialize-react
     docker:
       - image: circleci/node:8
@@ -29,16 +37,28 @@ jobs:
           name: Install Packages
           command: yarn install
       - run:
-          name: Lint
-          command: yarn run lint
-      - run:
           name: Run Tests & Check Coverage
           command: yarn run test:coverage
+
+  build:
+    working_directory: ~/materialize-react
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run:
+          name: Install Packages
+          command: yarn install
+      - run:
+          name: Build
+          command: yarn run build
 
 workflows:
   version: 2
 
   test:
     jobs:
-      - test-node6
-      - test-node8
+      - lint
+      - flow
+      - test
+      - build
