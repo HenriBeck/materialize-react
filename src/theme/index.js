@@ -17,7 +17,6 @@ import { defaultTypography } from './typography';
 import { defaultElevations } from './elevation';
 import { defaultZIndexes } from './z-indexes';
 import { defaultBreakpoints } from './breakpoints';
-import createComponentThemes from './create-component-themes';
 
 type ThemeOptions = {
   type: ThemeType,
@@ -72,20 +71,17 @@ function createTheme({
   primary,
   accent,
 }: ThemeOptions, theme?: {} = {}): Theme {
-  const baseTheme = {
+  return merge({
+    type,
+    ...themes[type],
+
     zIndexes: defaultZIndexes,
     typography: defaultTypography,
     elevation: defaultElevations,
     breakpoints: defaultBreakpoints,
-
-    type,
-
-    ...themes[type],
     primary: getPrimaryColors(primary),
     accent: getAccentColors(accent),
-  };
-
-  return merge({}, baseTheme, { components: createComponentThemes(baseTheme) }, theme);
+  }, theme);
 }
 
 export {
