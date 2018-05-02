@@ -74,7 +74,7 @@ export default class Tabs extends React.PureComponent<Props, State> {
     this.setState({ transform: this.getTransform() });
   };
 
-  render() {
+  render(): Node {
     const data: Data = {
       transform: this.state.transform,
       color: this.props.color,
