@@ -10,9 +10,9 @@ export type Data = {
   color: 'primary' | 'accent',
 };
 
-export default createSheet('RadioButton', (theme: Theme): {} => {
+export default createSheet('Radio', (theme: Theme): {} => {
   return {
-    radioButton: {
+    radio: {
       position: 'relative',
       boxSizing: 'border-box',
       margin: '20px 16px',

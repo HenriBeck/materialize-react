@@ -15,12 +15,12 @@ const Context = React.createContext({
   onChange: () => null,
 });
 
-function RadioButtonGroup({
+function RadioGroup({
   selected,
   onChange,
   children,
   ...props
-}: Props): Node {
+}: Props) {
   return (
     <Layout
       inline
@@ -41,4 +41,4 @@ function RadioButtonGroup({
 
 export { Context };
 
-export default RadioButtonGroup;
+export default RadioGroup;

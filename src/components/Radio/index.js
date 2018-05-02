@@ -5,7 +5,7 @@ import getNotDeclaredProps from 'react-get-not-declared-props';
 import subscribeToContext from 'react-context-subscriber';
 
 import Ripple from '../Ripple';
-import { Context } from '../RadioButtonGroup';
+import { Context } from '../RadioGroup';
 import {
   ENTER,
   SPACE_BAR,
@@ -26,7 +26,7 @@ type Props = {
 };
 type State = { isFocused: boolean };
 
-class RadioButton extends React.PureComponent<Props, State> {
+class Radio extends React.PureComponent<Props, State> {
   static defaultProps = {
     disabled: false,
     noink: false,
@@ -75,10 +75,10 @@ class RadioButton extends React.PureComponent<Props, State> {
       <Sheet data={data}>
         {({ classes }) => (
           <span
-            {...getNotDeclaredProps(this.props, RadioButton)}
+            {...getNotDeclaredProps(this.props, Radio)}
             role="radio"
             tabIndex={this.props.disabled ? -1 : 0}
-            className={`${classes.radioButton} ${this.props.className}`}
+            className={`${classes.radio} ${this.props.className}`}
             aria-checked={selected}
             aria-disabled={this.props.disabled}
             onFocus={this.handleFocus}
@@ -105,4 +105,4 @@ class RadioButton extends React.PureComponent<Props, State> {
   }
 }
 
-export default subscribeToContext(Context.Consumer)(RadioButton);
+export default subscribeToContext(Context.Consumer)(Radio);

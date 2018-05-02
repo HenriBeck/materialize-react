@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
 
-import RadioButton from '../RadioButton';
+import Radio from '../Radio';
 import Label from '../Label';
 
-import RadioButtonGroup from '.';
+import RadioGroup from '.';
 
 type Props = { color: 'primary' | 'accent' };
 type State = { selected: string };
@@ -24,14 +24,14 @@ class Story extends React.PureComponent<Props, State> {
 
   render(): Node {
     return (
-      <RadioButtonGroup
+      <RadioGroup
         selected={this.state.selected}
         onChange={this.handleChange}
       >
         <Label
           disabled
           control={(
-            <RadioButton
+            <Radio
               color={this.props.color}
               name="test1"
             />
@@ -42,7 +42,7 @@ class Story extends React.PureComponent<Props, State> {
 
         <Label
           control={(
-            <RadioButton
+            <Radio
               color={this.props.color}
               name="test2"
             />
@@ -53,7 +53,7 @@ class Story extends React.PureComponent<Props, State> {
 
         <Label
           control={(
-            <RadioButton
+            <Radio
               color={this.props.color}
               name="test3"
             />
@@ -61,13 +61,13 @@ class Story extends React.PureComponent<Props, State> {
         >
           Test 3
         </Label>
-      </RadioButtonGroup>
+      </RadioGroup>
     );
   }
 }
 
 storiesOf('Selection Elements', module)
-  .add('RadioButtons', () => (
+  .add('RadioGroup', () => (
     <Story
       color={select('Color', {
         primary: 'Primary',

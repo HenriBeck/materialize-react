@@ -20,8 +20,8 @@ import Label from './Label';
 import Layout from './Layout';
 import List from './List';
 import Progress from './Progress';
-import RadioButton from './RadioButton';
-import RadioButtonGroup from './RadioButtonGroup';
+import Radio from './Radio';
+import RadioGroup from './RadioGroup';
 import Ripple from './Ripple';
 import Slider from './Slider';
 import Snackbar from './Snackbar';
@@ -56,8 +56,8 @@ export {
   Layout,
   List,
   Progress,
-  RadioButton,
-  RadioButtonGroup,
+  Radio,
+  RadioGroup,
   Ripple,
   Slider,
   Snackbar,

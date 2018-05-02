@@ -48,7 +48,7 @@ configure(() => {
   // Selection Elements
   require('../src/components/Checkbox/stories');
   require('../src/components/Switch/stories');
-  require('../src/components/RadioButtonGroup/stories');
+  require('../src/components/RadioGroup/stories');
 
   // Interactive Elements
   require('../src/components/Tabs/stories');
