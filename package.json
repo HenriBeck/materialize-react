@@ -15,7 +15,7 @@
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
     "prebuild": "rimraf lib/",
-    "build": "babel src --out-dir lib",
+    "build": "NODE_ENV=\"build\" babel src --out-dir lib",
     "lint": "eslint src/ .storybook/ tests/ --ext .js,.jsx",
     "flow": "flow check src/",
     "prepare": "yarn run build"
