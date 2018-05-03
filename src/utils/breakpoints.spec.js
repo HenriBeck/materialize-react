@@ -46,7 +46,7 @@ test('down: should not have a min-width query when the maximal value for a devic
 
 test('only: should create a media query with a min-width and max-width query', (t) => {
   const minTablet = theme.breakpoints.tablet[0];
-  const maxTablet = theme.breakpoints.tablet[0];
+  const maxTablet = theme.breakpoints.tablet[1];
 
   t.deepEqual(
     only(theme, 'tablet'),
