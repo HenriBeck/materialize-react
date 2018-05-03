@@ -8,7 +8,7 @@ module.exports = {
         ios: 11
       },
       useBuiltIns: false,
-      debug: true,
+      debug: process.env.NODE_ENV === 'build',
     }],
     '@babel/preset-flow',
   ],
