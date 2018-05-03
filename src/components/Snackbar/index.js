@@ -10,10 +10,8 @@ import getNotDeclaredProps from 'react-get-not-declared-props';
 import EventListener from 'react-event-listener';
 
 import createSheet from '../../styles/create-sheet';
-import {
-  cloneElement,
-  isDescendant,
-} from '../../utils/react';
+import { cloneElement } from '../../utils/react';
+import isDescendant from '../../utils/is-descendant';
 import {
   only,
   up,
