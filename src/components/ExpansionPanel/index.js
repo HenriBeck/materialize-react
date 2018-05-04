@@ -8,7 +8,7 @@ import React, {
 
 import Collapse from '../Collapse';
 import createSheet from '../../styles/create-sheet';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 import Summary from './Summary';
 import Actions from './Actions';

@@ -1,12 +1,6 @@
 // @flow strict
 
-import {
-  shape,
-  string,
-} from 'prop-types';
-
 type Elevation = '0' | '2' | '3' | '4' | '6' | '8' | '12' | '16' | '24';
-
 type Elevations = { [key: Elevation]: string };
 
 const generateShadow = color => (...values) => values
@@ -16,18 +10,6 @@ const generateShadow = color => (...values) => values
 const keyUmbra = generateShadow('rgba(0, 0, 0, 0.14)');
 const keyPenumbra = generateShadow('rgba(0, 0, 0, 0.12)');
 const ambientShadow = generateShadow('rgba(0, 0, 0, 0.4)');
-
-const schema = shape({
-  '0': string.isRequired, // eslint-disable-line quote-props
-  '2': string.isRequired, // eslint-disable-line quote-props
-  '3': string.isRequired, // eslint-disable-line quote-props
-  '4': string.isRequired, // eslint-disable-line quote-props
-  '6': string.isRequired, // eslint-disable-line quote-props
-  '8': string.isRequired, // eslint-disable-line quote-props
-  '12': string.isRequired, // eslint-disable-line quote-props
-  '16': string.isRequired, // eslint-disable-line quote-props
-  '24': string.isRequired, // eslint-disable-line quote-props
-}).isRequired;
 
 const defaultElevations: Elevations = {
   '0': 'none', // eslint-disable-line quote-props
@@ -78,7 +60,4 @@ export type {
   Elevations,
 };
 
-export {
-  defaultElevations,
-  schema,
-};
+export { defaultElevations };

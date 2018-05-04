@@ -4,7 +4,7 @@ import React, { type Node } from 'react';
 
 import createSheet from '../../styles/create-sheet';
 import { up } from '../../utils/breakpoints';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 type Props = {
   children: Node,

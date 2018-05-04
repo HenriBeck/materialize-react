@@ -9,7 +9,7 @@ import Backdrop from '../Backdrop';
 import createSheet from '../../styles/create-sheet';
 import { up } from '../../utils/breakpoints';
 import { cloneChildren } from '../../utils/react';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 import Dialog from '.';
 

@@ -1,7 +1,5 @@
 // @flow strict
 
-import { shape } from 'prop-types';
-
 type Typography = {|
   headline: { [key: string]: string | number },
   title: { [key: string]: string | number },
@@ -19,13 +17,6 @@ const commonBase = {
   fontFamily: '\'Roboto\', \'Noto\', sans-serif',
   WebkitFontSmoothing: 'antialiased',
 };
-
-const schema = shape({
-  headline: shape({}).isRequired,
-  title: shape({}).isRequired,
-  body: shape({}).isRequired,
-  button: shape({}).isRequired,
-}).isRequired;
 
 const defaultTypography: Typography = {
   headline: {
@@ -65,7 +56,4 @@ const defaultTypography: Typography = {
 
 export type { Typography };
 
-export {
-  defaultTypography,
-  schema,
-};
+export { defaultTypography };
