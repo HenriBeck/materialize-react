@@ -20,8 +20,8 @@ function cloneElement<E: Element<ElementType>>(
 
 function cloneChildren<E: Element<ElementType>>(
   children: ChildrenArray<E>,
-  props: Props | (element: E) => Props,
-): ChildrenArray<E> {
+  props: Props | (child: E) => Props,
+) {
   return React.Children.map(children, (child: E): E => {
     if (React.isValidElement(child)) {
       return typeof props === 'function'
