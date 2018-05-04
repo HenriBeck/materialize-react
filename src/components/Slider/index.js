@@ -1,13 +1,11 @@
 // @flow strict
 
 import React from 'react';
+import clamp from 'clamp';
 import EventListener from 'react-event-listener';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
-import {
-  getCoords,
-  clamp, mergeClassNames,
-} from '../../utils/react';
+import getCoords from '../../utils/get-coords';
 
 import Sheet, { type Data } from './Sheet';
 
@@ -36,14 +34,6 @@ export default class Slider extends React.PureComponent<Props, State> {
     [40, -2],
   ]);
 
-  static clamp(value: number): number {
-    return clamp({
-      value,
-      min: 0,
-      max: 100,
-    });
-  }
-
   state = {
     isDragging: false,
     translateX: 0,
@@ -71,10 +61,10 @@ export default class Slider extends React.PureComponent<Props, State> {
   rootRect: ClientRect;
 
   computeTranslate(): number {
-    return this.rootRect.width * Slider.clamp(this.props.value) / 100;
+    return this.rootRect.width * clamp(this.props.value, 0, 100) / 100;
   }
 
-  computeNewValue(ev: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>): number {
+  computeNewValue(ev: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>) {
     const coords = getCoords(ev);
 
     return coords
@@ -82,12 +72,11 @@ export default class Slider extends React.PureComponent<Props, State> {
       : this.props.value;
   }
 
-  get thumbTransform(): string {
-    return mergeClassNames(
-      `translateX(${this.state.translateX}px)`,
-      this.state.isDragging && 'scale(1.5)',
-      this.props.disabled && 'scale(0.75)',
-    );
+  get thumbTransform() {
+    const draggingScale = this.state.isDragging ? ' scale(1.5)' : '';
+    const disabledScale = this.props.disabled ? ' scale(0.75)' : '';
+
+    return `translateX(${this.state.translateX}px)${draggingScale}${disabledScale}`;
   }
 
   handleThumbPress = () => {
@@ -100,7 +89,9 @@ export default class Slider extends React.PureComponent<Props, State> {
 
   handleKeyDown = (ev: SyntheticKeyboardEvent<HTMLDivElement>) => {
     if (Slider.keyCodes.has(ev.keyCode)) {
-      this.props.onChange(Slider.clamp(this.props.value + Slider.keyCodes.get(ev.keyCode)));
+      this.props.onChange(
+        clamp(this.props.value + Slider.keyCodes.get(ev.keyCode), 0, 100)
+      );
     }
   };
 
@@ -133,7 +124,7 @@ export default class Slider extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const value = Slider.clamp(this.props.value);
+    const value = clamp(this.props.value, 0, 100);
     const data: Data = {
       thumbTransform: this.thumbTransform,
       isActive: this.props.value > 0,

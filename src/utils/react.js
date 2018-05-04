@@ -6,48 +6,7 @@ import React, {
   type ChildrenArray,
 } from 'react';
 
-type Event = SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>;
 type Props = { className?: string };
-
-function mergeClassNames(...classNames: $ReadOnlyArray<?mixed>): string {
-  return classNames
-    .filter((className: mixed) => typeof className === 'string')
-    .join(' ');
-}
-
-function clamp({
-  value,
-  min,
-  max,
-}: {
-  value: number,
-  min: number,
-  max: number,
-}): number {
-  return Math.max(min, Math.min(Math.floor(value), max));
-}
-
-function getCoords(ev: Event): { x: number, y: number } | null {
-  // Check for touch positions
-  if (Array.isArray(ev.touches) && ev.touches.length > 0) {
-    return {
-      // $FlowFixMe
-      x: ev.touches[0].clientX,
-      // $FlowFixMe
-      y: ev.touches[0].clientY,
-    };
-  }
-
-  // Check for other common values in the event
-  if (typeof ev.clientX === 'number' && typeof ev.clientY === 'number') {
-    return {
-      x: ev.clientX,
-      y: ev.clientY,
-    };
-  }
-
-  return null;
-}
 
 function cloneElement<E: Element<ElementType>>(
   element: E,
@@ -55,10 +14,7 @@ function cloneElement<E: Element<ElementType>>(
 ): E {
   return React.cloneElement(element, {
     ...props,
-    className: mergeClassNames(
-      props.className,
-      element.props.className,
-    ),
+    className: `${props.className || ''} ${element.props.className || ''}`,
   });
 }
 
@@ -78,9 +34,6 @@ function cloneChildren<E: Element<ElementType>>(
 }
 
 export {
-  mergeClassNames,
-  clamp,
   cloneElement,
   cloneChildren,
-  getCoords,
 };
