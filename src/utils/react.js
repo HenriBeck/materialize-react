@@ -14,7 +14,7 @@ function cloneElement<E: Element<ElementType>>(
 ): E {
   return React.cloneElement(element, {
     ...props,
-    className: `${props.className || ''} ${element.props.className || ''}`,
+    className: `${props.className || ''} ${element.props.className || ''}`.trim(),
   });
 }
 
