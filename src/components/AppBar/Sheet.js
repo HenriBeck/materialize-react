@@ -1,7 +1,7 @@
 // @flow strict
 
 import createSheet from '../../styles/create-sheet';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 export type Data = {
   tall: boolean,

@@ -16,7 +16,7 @@ import {
   only,
   up,
 } from '../../utils/breakpoints';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 import { themes } from '../../theme';
 
 type Data = {

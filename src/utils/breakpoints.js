@@ -1,7 +1,7 @@
 // @flow strict
 
 import { type Device } from '../theme/breakpoints';
-import { type Theme } from '../theme/schema';
+import { type Theme } from '../theme/types';
 
 function getMinWidthQuery({ breakpoints }: Theme, device: Device): string {
   return typeof breakpoints[device][0] === 'number'

@@ -1,14 +1,7 @@
 // @flow strict
 
 import {
-  oneOf,
-  shape,
-  string,
-} from 'prop-types';
-
-import {
   type Color,
-  colors,
   getColor,
 } from '../styles/colors';
 import { getContrastColor } from '../styles/utils';
@@ -24,16 +17,6 @@ type AccentColor = {
   contrastTextColor: string,
   contrastIconColor: string,
 };
-
-const schema = shape({
-  color: oneOf(Object.keys(colors)).isRequired,
-  light: string.isRequired,
-  base: string.isRequired,
-  dark: string.isRequired,
-
-  contrastTextColor: string.isRequired,
-  contrastIconColor: string.isRequired,
-}).isRequired;
 
 function getAccentColors(accentColor: Color): AccentColor {
   return {
@@ -58,7 +41,4 @@ function getAccentColors(accentColor: Color): AccentColor {
 
 export type { AccentColor };
 
-export {
-  getAccentColors,
-  schema,
-};
+export { getAccentColors };

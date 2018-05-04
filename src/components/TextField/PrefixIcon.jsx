@@ -7,7 +7,7 @@ import React, {
 
 import createSheet from '../../styles/create-sheet';
 import { cloneElement } from '../../utils/react';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 import { getActiveColor } from '../../theme/utils';
 
 type Props = {

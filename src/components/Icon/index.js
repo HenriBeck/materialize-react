@@ -7,7 +7,7 @@ import {
 import { withTheme } from 'react-jss';
 
 import { cloneElement } from '../../utils/react';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 type Props = {
   size: number,
