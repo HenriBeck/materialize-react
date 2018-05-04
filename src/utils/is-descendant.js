@@ -1,7 +1,7 @@
 // @flow strict
 
-export default function isDescendant(el: HTMLElement, target?: HTMLElement) {
-  if (target !== null && target.parentNode) {
+export default function isDescendant(el: HTMLElement, target: ?HTMLElement) {
+  if (target) {
     return el === target || isDescendant(el, target.parentNode);
   }
 
