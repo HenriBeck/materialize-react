@@ -3,7 +3,7 @@
 import { rgba } from 'polished';
 
 import createSheet from '../../styles/create-sheet';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 import { getActiveColor } from '../../theme/utils';
 import { getColor } from '../../styles/colors';
 

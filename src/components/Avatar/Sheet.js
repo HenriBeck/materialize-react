@@ -2,7 +2,7 @@
 
 import createSheet from '../../styles/create-sheet';
 import { getContrastColor } from '../../styles/utils';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 export type Data = {
   size: string | number,

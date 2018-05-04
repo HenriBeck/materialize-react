@@ -4,7 +4,7 @@ import React, { type Node } from 'react';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 import { getActiveColor } from '../../theme/utils';
 
 import Label from './Label';

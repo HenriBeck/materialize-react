@@ -8,7 +8,7 @@ import { ThemeProvider } from 'react-jss';
 import merge from 'lodash.merge';
 
 import { createTheme } from '../../theme';
-import { type Theme as ThemeType } from '../../theme/schema';
+import { type Theme as ThemeType } from '../../theme/types';
 
 type Props = {
   children: Element<ElementType>,
