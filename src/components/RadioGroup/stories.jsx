@@ -1,7 +1,6 @@
 // @flow strict
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
 
@@ -14,8 +13,6 @@ type Props = { color: 'primary' | 'accent' };
 type State = { selected: string };
 
 class Story extends React.PureComponent<Props, State> {
-  static propTypes = { color: PropTypes.string.isRequired };
-
   state = { selected: 'test2' };
 
   handleChange = (name: string) => {

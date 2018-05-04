@@ -3,7 +3,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
-import PropTypes from 'prop-types';
 
 import Tab from '../Tab';
 import Icon from '../Icon';
@@ -21,14 +20,6 @@ type Props = {
 type State = { tab: string };
 
 class Story extends React.PureComponent<Props, State> {
-  static propTypes = {
-    tabs: PropTypes.arrayOf(
-      PropTypes.shape({ name: PropTypes.string.isRequired }).isRequired,
-    ).isRequired,
-    color: PropTypes.string.isRequired,
-    tabStyle: PropTypes.string.isRequired,
-  };
-
   state = { tab: this.props.tabs[0].name };
 
   handleChange = name => this.setState({ tab: name });

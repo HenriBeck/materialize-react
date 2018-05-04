@@ -1,7 +1,6 @@
 // @flow strict
 
 import React, { type Node } from 'react';
-import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 import {
   select,
@@ -19,11 +18,6 @@ type Props = {
 type State = { toggled: boolean };
 
 class Story extends React.PureComponent<Props, State> {
-  static propTypes = {
-    disabled: PropTypes.bool.isRequired,
-    color: PropTypes.string.isRequired,
-  };
-
   state = { toggled: false };
 
   handleChange = () => {
