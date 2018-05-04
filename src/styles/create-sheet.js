@@ -1,7 +1,6 @@
 // @flow strict
 
 import React, { type Node } from 'react';
-import PropTypes from 'prop-types';
 import { jss as jssNs } from 'react-jss/lib/ns';
 import defaultTheming from 'theming';
 import {
@@ -41,11 +40,6 @@ export default function createSheet(name: string, styles: Styles) {
   indexCounter += 1;
 
   class Sheet extends React.Component<Props, State> {
-    static propTypes = {
-      children: PropTypes.func.isRequired,
-      data: PropTypes.shape({}),
-    };
-
     static defaultProps = { data: null };
 
     static contextTypes = Object.assign(
