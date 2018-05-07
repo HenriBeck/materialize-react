@@ -20,7 +20,7 @@ type Props = {
 };
 type Data = { hasActiveDialog: boolean };
 
-const Sheet = createSheet('DialogContainer', (theme: Theme): { container: {} } => {
+const Sheet = createSheet('DialogContainer', (theme: Theme) => {
   return {
     container: {
       position: 'fixed',
@@ -58,7 +58,7 @@ export default class Container extends React.PureComponent<Props> {
     }
   };
 
-  renderDialogs(): ChildrenArray<DialogElement> {
+  renderDialogs() {
     let isFirstOpenDialog = true; // eslint-disable-line fp/no-let
 
     return cloneChildren(

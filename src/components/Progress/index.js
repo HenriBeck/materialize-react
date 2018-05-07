@@ -1,8 +1,7 @@
 // @flow strict
 
 import React from 'react';
-
-import { clamp } from '../../utils/react';
+import clamp from 'clamp';
 
 import Sheet, { type Data } from './Sheet';
 
@@ -20,11 +19,7 @@ function Progress({
   className,
   ...props
 }: Props) {
-  const progress = clamp({
-    value: progressProp,
-    min: 0,
-    max: 100,
-  });
+  const progress = clamp(progressProp, 0, 100);
   const data: Data = {
     indeterminate,
     active,
