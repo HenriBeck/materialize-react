@@ -1,6 +1,6 @@
 // @flow strict
 
-import { type Theme } from './schema';
+import { type Theme } from './types';
 
 export function getActiveColor(theme: Theme, color: 'primary' | 'accent'): string {
   switch (color) {

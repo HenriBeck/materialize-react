@@ -1,7 +1,5 @@
 // @flow strict
 
-import { mergeClassNames } from '../utils/react';
-
 type DecomposedColor = {
   type: string,
   values: $ReadOnlyArray<number>,
@@ -119,7 +117,7 @@ function mergeClassObjects(classes1: Classes, classes2: Classes) {
   return keys.reduce((acc: Classes, key: string): Classes => {
     return {
       ...acc,
-      [key]: mergeClassNames(classes1[key], classes2[key]),
+      [key]: `${classes1[key] || ''} ${classes2[key] || ''}`,
     };
   }, {});
 }

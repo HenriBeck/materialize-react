@@ -5,7 +5,7 @@ import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
-import { getCoords } from '../../utils/react';
+import getCoords from '../../utils/get-coords';
 
 import Wave from './Wave';
 import {

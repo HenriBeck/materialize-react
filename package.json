@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/HenriBeck/materialize-react#readme",
   "dependencies": {
+    "clamp": "1.0.1",
     "jss": "9.8.1",
     "lodash.merge": " 4.6.1",
     "lodash.noop": "3.0.1",
@@ -72,7 +73,7 @@
     "eslint": "4.19.1",
     "eslint-config-henribeck": "4.19.3",
     "flow-bin": "0.71.0",
-    "jss-preset-default": "4.3.0",
+    "jss-preset-default": "4.5.0",
     "normalize.css": "8.0.0",
     "nyc": "11.7.1",
     "prop-types": "15.6.1",
@@ -82,7 +83,7 @@
     "react-dom": "16.3.2",
     "react-test-renderer": "16.3.2",
     "rimraf": "2.6.2",
-    "sinon": "5.0.3",
+    "sinon": "5.0.6",
     "style-loader": "0.21.0",
     "why-did-you-update": "0.1.1"
   },

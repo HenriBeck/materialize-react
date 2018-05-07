@@ -1,15 +1,8 @@
 // @flow strict
 
-import {
-  oneOf,
-  shape,
-  string,
-} from 'prop-types';
-
 import { getContrastColor } from '../styles/utils';
 import {
   type Color,
-  colors,
   getColor,
 } from '../styles/colors';
 
@@ -24,16 +17,6 @@ type PrimaryColor = {
   contrastTextColor: string,
   contrastIconColor: string,
 };
-
-const schema = shape({
-  color: oneOf(Object.keys(colors)).isRequired,
-  base: string.isRequired,
-  light: string.isRequired,
-  dark: string.isRequired,
-
-  contrastTextColor: string.isRequired,
-  contrastIconColor: string.isRequired,
-}).isRequired;
 
 function getPrimaryColors(primaryColor: Color): PrimaryColor {
   return {
@@ -58,7 +41,4 @@ function getPrimaryColors(primaryColor: Color): PrimaryColor {
 
 export type { PrimaryColor };
 
-export {
-  getPrimaryColors,
-  schema,
-};
+export { getPrimaryColors };

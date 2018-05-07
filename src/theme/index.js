@@ -7,10 +7,10 @@ import {
   getColor,
 } from '../styles/colors';
 
-import schema, {
+import {
   type ThemeType,
   type Theme,
-} from './schema';
+} from './types';
 import { getPrimaryColors } from './primary-colors';
 import { getAccentColors } from './accent-colors';
 import { defaultTypography } from './typography';
@@ -87,5 +87,4 @@ function createTheme({
 export {
   createTheme,
   themes,
-  schema,
 };

@@ -4,7 +4,7 @@ import React, { type Node } from 'react';
 import noop from 'lodash.noop';
 
 import createSheet from '../../styles/create-sheet';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 import Container from './Container';
 import Header from './Header';

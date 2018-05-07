@@ -9,7 +9,7 @@ import Backdrop from '../Backdrop';
 import createSheet from '../../styles/create-sheet';
 import { up } from '../../utils/breakpoints';
 import { cloneChildren } from '../../utils/react';
-import { type Theme } from '../../theme/schema';
+import { type Theme } from '../../theme/types';
 
 import Dialog from '.';
 
@@ -20,7 +20,7 @@ type Props = {
 };
 type Data = { hasActiveDialog: boolean };
 
-const Sheet = createSheet('DialogContainer', (theme: Theme): { container: {} } => {
+const Sheet = createSheet('DialogContainer', (theme: Theme) => {
   return {
     container: {
       position: 'fixed',
@@ -58,7 +58,7 @@ export default class Container extends React.PureComponent<Props> {
     }
   };
 
-  renderDialogs(): ChildrenArray<DialogElement> {
+  renderDialogs() {
     let isFirstOpenDialog = true; // eslint-disable-line fp/no-let
 
     return cloneChildren(
