@@ -72,7 +72,7 @@
     "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
     "eslint-config-henribeck": "4.19.3",
-    "flow-bin": "0.71.0",
+    "flow-bin": "0.72.0",
     "jss-preset-default": "4.5.0",
     "normalize.css": "8.0.0",
     "nyc": "11.7.2",
