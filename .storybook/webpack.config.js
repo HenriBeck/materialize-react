@@ -1,10 +1,7 @@
-// eslint-disable-line import/unambiguous, flowtype/require-valid-file-annotation
-
-const path = require("path");
 const babelConfig = require('../.babelrc');
 
-module.exports = (storybookBaseConfig) => {
-  return Object.assign({}, storybookBaseConfig, {
+module.exports = function config(baseConfig) {
+  return Object.assign({}, baseConfig, {
     module: {
       rules: [{
         test: /\.jsx?$/,
@@ -14,10 +11,8 @@ module.exports = (storybookBaseConfig) => {
             babelrc: false,
             presets: babelConfig.presets,
             plugins: babelConfig.plugins,
-          }
+          },
         },
-        include: [ path.resolve(__dirname, '..') ],
-        exclude: [ path.resolve(__dirname, '../node_modules') ],
       }, {
         test: /\.(ttf|eot|svg|woff(2)?)(\?.+)?$/, // eslint-disable-line unicorn/no-unsafe-regex
         loader: 'file-loader',
@@ -28,6 +23,6 @@ module.exports = (storybookBaseConfig) => {
           'css-loader',
         ],
       }],
-    }
+    },
   });
 };
