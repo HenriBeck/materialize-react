@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet from './Sheet';
 
@@ -9,24 +10,22 @@ type Props = {
   className: string,
 };
 
-function Background({
-  className,
-  children,
-  ...props
-}: Props) {
+function Background(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div
-          className={`${classes.background} ${className}`}
-          {...props}
+          className={`${classes.background} ${props.className}`}
+          {...getNotDeclaredProps(props, Background)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Background.propTypes = {};
 
 Background.defaultProps = { className: '' };
 

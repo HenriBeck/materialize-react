@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
@@ -15,7 +16,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('Card', (theme: Theme): { card: {} } => {
+const Sheet = createSheet('Card', (theme: Theme) => {
   return {
     card: {
       borderRadius: 2,
@@ -25,24 +26,22 @@ const Sheet = createSheet('Card', (theme: Theme): { card: {} } => {
   };
 });
 
-function Card({
-  className,
-  children,
-  ...props
-}: Props): Node {
+function Card(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div
-          className={`${classes.card} ${className}`}
-          {...props}
+          className={`${classes.card} ${props.className}`}
+          {...getNotDeclaredProps(props, Card)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Card.propTypes = {};
 
 Card.defaultProps = { className: '' };
 

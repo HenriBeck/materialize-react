@@ -1,6 +1,6 @@
 // @flow strict
 
-import React, { type Node } from 'react';
+import React from 'react';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -51,7 +51,7 @@ export default class Checkbox extends React.PureComponent<Props, State> {
     }
   };
 
-  render(): Node {
+  render() {
     const data: Data = {
       disabled: this.props.disabled,
       checked: this.props.checked,

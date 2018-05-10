@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import Typography from '../Typography';
@@ -48,26 +49,20 @@ const Sheet = createSheet('Header', {
   },
 });
 
-function Header({
-  className,
-  avatar,
-  children,
-  subtitle,
-  ...props
-}: Props): Node {
-  const withAvatar = Boolean(avatar);
+function Header(props: Props) {
+  const withAvatar = Boolean(props.avatar);
   const data: Data = { withAvatar };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <header
-          className={`${classes.header} ${className}`}
-          {...props}
+          className={`${classes.header} ${props.className}`}
+          {...getNotDeclaredProps(props, Header)}
         >
           {withAvatar && (
             <span className={classes.avatar}>
-              {avatar}
+              {props.avatar}
             </span>
           )}
 
@@ -76,16 +71,16 @@ function Header({
               typography={withAvatar ? 'body' : 'headline'}
               className={classes.title}
             >
-              {children}
+              {props.children}
             </Typography>
 
-            {Boolean(subtitle) && (
+            {props.subtitle && (
               <Typography
                 color="secondary"
                 typography="body"
                 className={classes.subtitle}
               >
-                {subtitle}
+                {props.subtitle}
               </Typography>
             )}
           </div>
@@ -94,6 +89,8 @@ function Header({
     </Sheet>
   );
 }
+
+Header.propTypes = {};
 
 Header.defaultProps = {
   subtitle: '',

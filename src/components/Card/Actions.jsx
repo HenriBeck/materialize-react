@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -20,25 +21,24 @@ const Sheet = createSheet('Actions', {
   },
 });
 
-function Actions({
-  children,
-  className,
-  stacked,
-  ...props
-}: Props) {
+function Actions(props: Props) {
+  const data: Data = { stacked: props.stacked };
+
   return (
-    <Sheet data={{ stacked }}>
+    <Sheet data={data}>
       {({ classes }) => (
         <div
-          className={`${classes.actions} ${className}`}
-          {...props}
+          className={`${classes.actions} ${props.className}`}
+          {...getNotDeclaredProps(props, Actions)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Actions.propTypes = {};
 
 Actions.defaultProps = {
   stacked: false,

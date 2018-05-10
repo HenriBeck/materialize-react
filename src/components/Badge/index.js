@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
 
@@ -10,27 +11,24 @@ type Props = {
   className: string,
 };
 
-function Badge({
-  children,
-  color,
-  className,
-  ...props
-}: Props) {
-  const data: Data = { color };
+function Badge(props: Props) {
+  const data: Data = { color: props.color };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <span
-          className={`${classes.badge} ${className}`}
-          {...props}
+          className={`${classes.badge} ${props.className}`}
+          {...getNotDeclaredProps(props, Badge)}
         >
-          {children}
+          {props.children}
         </span>
       )}
     </Sheet>
   );
 }
+
+Badge.propTypes = {};
 
 Badge.defaultProps = {
   className: '',
