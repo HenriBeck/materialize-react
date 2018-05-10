@@ -1,13 +1,21 @@
-// @flow strict
+// eslint-disable-line import/unambiguous, flowtype/require-valid-file-annotation
 
 const path = require("path");
+const babelConfig = require('../.babelrc');
 
 module.exports = (storybookBaseConfig) => {
   return Object.assign({}, storybookBaseConfig, {
     module: {
       rules: [{
         test: /\.jsx?$/,
-        loader: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: babelConfig.presets,
+            plugins: babelConfig.plugins,
+          }
+        },
         include: [ path.resolve(__dirname, '..') ],
         exclude: [ path.resolve(__dirname, '../node_modules') ],
       }, {
