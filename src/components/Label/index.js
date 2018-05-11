@@ -5,6 +5,7 @@ import React, {
   type ComponentType,
   type Node,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Typography from '../Typography';
@@ -19,6 +20,13 @@ type Props = {
 };
 
 export default class Label extends React.PureComponent<Props> {
+  static propTypes = {
+    control: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+  };
+
   static defaultProps = {
     className: '',
     disabled: false,
