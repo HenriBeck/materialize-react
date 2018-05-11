@@ -37,7 +37,7 @@
     "lodash.noop": "3.0.1",
     "polished": "1.9.2",
     "randomstring": "1.1.5",
-    "react-context-subscriber": "0.3.0",
+    "react-context-subscriber": "0.4.0",
     "react-event-listener": "0.5.3",
     "react-get-not-declared-props": "1.0.0",
     "react-jss": "8.4.0",
