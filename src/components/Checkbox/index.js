@@ -28,6 +28,8 @@ export default class Checkbox extends React.PureComponent<Props, State> {
     color: 'primary',
   };
 
+  state = { isFocused: false };
+
   handleFocus = () => {
     this.setState({ isFocused: true });
   };

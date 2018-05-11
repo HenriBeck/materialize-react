@@ -12,7 +12,7 @@ type Color = 'secondary' | 'primary' | 'hint' | 'disabled' | 'accent' | 'error' 
 type Props = {
   typography: string,
   children: Node,
-  element: ElementType,
+  element: string,
   color: Color,
   className: string,
 };

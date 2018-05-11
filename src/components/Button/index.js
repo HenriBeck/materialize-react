@@ -60,7 +60,7 @@ export default class Button extends React.PureComponent<Props, State> {
             typography="button"
             role="button"
             element="button"
-            color={this.props.disabled ? 'disabled' : 'text'}
+            color={this.props.disabled ? 'disabled' : null}
             className={`${classes.button} ${this.props.className}`}
             tabIndex={this.props.disabled ? -1 : 0}
             aria-disabled={this.props.disabled}
