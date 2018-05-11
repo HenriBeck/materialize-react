@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -21,6 +22,12 @@ const Sheet = createSheet('Collapse', {
 });
 
 export default class Collapse extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+  };
+
   static defaultProps = { className: '' };
 
   componentDidMount() {
