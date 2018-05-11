@@ -75,6 +75,7 @@
     "eslint-config-henribeck": "4.19.4",
     "flow-bin": "0.72.0",
     "jss-preset-default": "4.5.0",
+    "mdi": "2.2.43",
     "normalize.css": "8.0.0",
     "nyc": "11.7.3",
     "prop-types": "15.6.1",
