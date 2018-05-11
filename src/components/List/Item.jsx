@@ -48,27 +48,19 @@ const Sheet = createSheet('Item', {
   },
 });
 
-function Item({
-  children,
-  secondaryContent,
-  inset,
-  className,
-  rightItem,
-  leftItem,
-  ...props
-}: Props) {
-  const data: Data = { withSecondaryContent: Boolean(secondaryContent) };
+function Item(props: Props) {
+  const data: Data = { withSecondaryContent: Boolean(props.secondaryContent) };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <li
-          className={`${classes.item} ${className}`}
+          className={`${classes.item} ${props.className}`}
           {...props}
         >
-          {(inset || leftItem) && (
+          {(props.inset || props.leftItem) && (
             <span className={classes.leftItem}>
-              {leftItem}
+              {props.leftItem}
             </span>
           )}
 
@@ -77,23 +69,23 @@ function Item({
               typography="body"
               className={classes.mainText}
             >
-              {children}
+              {props.children}
             </Typography>
 
-            {secondaryContent && (
+            {props.secondaryContent && (
               <Typography
                 typography="body"
                 color="secondary"
                 className={classes.secondaryContent}
               >
-                {secondaryContent}
+                {props.secondaryContent}
               </Typography>
             )}
           </span>
 
-          {rightItem && (
+          {props.rightItem && (
             <span className={classes.rightItem}>
-              {rightItem}
+              {props.rightItem}
             </span>
           )}
         </li>

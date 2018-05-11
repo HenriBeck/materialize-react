@@ -4,10 +4,11 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
 
-type Color = 'secondary' | 'primary' | 'hint' | 'disabled' | 'accent' | 'error' | 'text';
+type Color = 'secondary' | 'primary' | 'hint' | 'disabled' | 'accent' | 'error' | 'text' | null;
 type Props = {
   typography: string,
   children: Node,
@@ -16,37 +17,33 @@ type Props = {
   className: string,
 };
 
-function Typography({
-  element: Element,
-  color = 'text',
-  typography,
-  className = '',
-  children,
-  ...props
-}: Props) {
+function Typography(props: Props) {
   const data: Data = {
-    typography,
-    color,
+    typography: props.typography,
+    color: props.color,
   };
+  const Element = props.element;
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <Element
-          className={`${classes.typography} ${className}`}
-          {...props}
+          className={`${classes.typography} ${props.className}`}
+          {...getNotDeclaredProps(props, Typography)}
         >
-          {children}
+          {props.children}
         </Element>
       )}
     </Sheet>
   );
 }
 
+Typography.propTypes = {};
+
 Typography.defaultProps = {
   element: 'span',
   className: '',
-  color: 'text',
+  color: null,
 };
 
 export type { Color };

@@ -34,11 +34,6 @@ function getColor({
   hasError,
   isFocused,
   color,
-}: {
-  disabled: boolean,
-  hasError: boolean,
-  isFocused: boolean,
-  color: 'primary' | 'accent',
 }) {
   if (disabled) {
     return 'disabled';
@@ -51,32 +46,25 @@ function getColor({
   return 'secondary';
 }
 
-function Label({
-  disabled,
-  hasError,
-  isFocused,
-  hasValue,
-  id,
-  children,
-  color,
-}: Props): Node {
-  const data: Data = { expanded: !isFocused && !hasValue };
+function Label(props: Props): Node {
+  const data: Data = { expanded: !props.isFocused && !props.hasValue };
+  const color = getColor({
+    color: props.color,
+    disabled: props.disabled,
+    hasError: props.hasError,
+    isFocused: props.isFocused,
+  });
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <Typography
           typography="body"
-          color={getColor({
-            disabled,
-            hasError,
-            isFocused,
-            color,
-          })}
-          htmlFor={id}
+          color={color}
+          htmlFor={props.id}
           className={classes.label}
         >
-          {children}
+          {props.children}
         </Typography>
       )}
     </Sheet>

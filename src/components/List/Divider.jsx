@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 // eslint-disable-next-line import/no-named-default
 import { default as DividerComponent } from '../Divider';
@@ -13,12 +14,8 @@ type Props = {
 
 const Sheet = createSheet('Divider', { divider: { paddingLeft: 72 } });
 
-function Divider({
-  inset,
-  className,
-  ...props
-}: Props) {
-  if (!inset) {
+function Divider(props: Props) {
+  if (!props.inset) {
     return (
       <DividerComponent />
     );
@@ -28,8 +25,8 @@ function Divider({
     <Sheet>
       {({ classes }) => (
         <li
-          className={`${classes.divider} ${className}`}
-          {...props}
+          className={`${classes.divider} ${props.className}`}
+          {...getNotDeclaredProps(props, Divider)}
         >
           <DividerComponent />
         </li>
@@ -37,6 +34,8 @@ function Divider({
     </Sheet>
   );
 }
+
+Divider.propTypes = {};
 
 Divider.defaultProps = {
   inset: false,

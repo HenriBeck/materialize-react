@@ -1,39 +1,45 @@
 // @flow strict
 
-import {
-  type Element,
-  type ElementType,
-} from 'react';
-import { withTheme } from 'react-jss';
+import React from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
-import { cloneElement } from '../../utils/react';
-import { type Theme } from '../../theme/types';
+import Sheet, { type Data } from './Sheet';
 
 type Props = {
-  size: number,
+  size: number | string,
   disabled: boolean,
-  children: Element<ElementType>,
-  theme: Theme,
+  children: Node,
+  color: 'light' | 'dark' | null,
+  className: string,
 };
 
-function Icon({
-  theme,
-  size,
-  disabled,
-  children,
-  ...props
-}: Props) {
-  return cloneElement(children, {
-    size,
-    color: disabled ? theme.disabled : theme.icon,
-    ...props,
-  });
+function Icon(props: Props) {
+  const data: Data = {
+    disabled: props.disabled,
+    size: props.size,
+    color: props.color,
+  };
+
+  return (
+    <Sheet data={data}>
+      {({ classes }) => (
+        <i
+          {...getNotDeclaredProps(props, Icon)}
+          className={`mdi mdi-${props.children} ${classes.icon} ${props.className}`}
+          aria-disabled={props.disabled}
+        />
+      )}
+    </Sheet>
+  );
 }
+
+Icon.propTypes = {};
 
 Icon.defaultProps = {
   className: '',
   size: 24,
   disabled: false,
+  color: null,
 };
 
-export default withTheme(Icon);
+export default Icon;

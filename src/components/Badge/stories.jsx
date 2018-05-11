@@ -31,7 +31,7 @@ const Sheet = createSheet('Badge-Story', styles);
 storiesOf('Badge', module)
   .add('With Icon', () => (
     <div style={{ position: 'relative' }}>
-      <Icon icon="bell" />
+      <Icon>Bell</Icon>
 
       <Badge color={select('Color', colorOptions, 'primary')}>
         {number('Badge content', 10)}
@@ -43,7 +43,7 @@ storiesOf('Badge', module)
       {props => (
         <div style={{ position: 'relative' }}>
           <IconButton onPress={noop}>
-            <Icon icon="bell" />
+            <Icon>bell</Icon>
           </IconButton>
 
           <Badge

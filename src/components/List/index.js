@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -21,24 +22,22 @@ const Sheet = createSheet('List', {
   },
 });
 
-function List({
-  children,
-  className,
-  ...props
-}: Props) {
+function List(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <ul
-          className={`${classes.list} ${className}`}
-          {...props}
+          className={`${classes.list} ${props.className}`}
+          {...getNotDeclaredProps(props, List)}
         >
-          {children}
+          {props.children}
         </ul>
       )}
     </Sheet>
   );
 }
+
+List.propTypes = {};
 
 List.defaultProps = { className: '' };
 

@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
@@ -31,24 +32,22 @@ const Sheet = createSheet('ExpansionPanelActions', (theme: Theme) => {
   };
 });
 
-function Actions({
-  className,
-  children,
-  ...props
-}: Props) {
+function Actions(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div
-          className={`${classes.actions} ${className}`}
-          {...props}
+          className={`${classes.actions} ${props.className}`}
+          {...getNotDeclaredProps(props, Actions)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Actions.propTypes = {};
 
 Actions.defaultProps = { className: '' };
 

@@ -1,6 +1,6 @@
 // @flow strict
 
-import React, { type Node } from 'react';
+import React from 'react';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -51,7 +51,7 @@ export default class Checkbox extends React.PureComponent<Props, State> {
     }
   };
 
-  render(): Node {
+  render() {
     const data: Data = {
       disabled: this.props.disabled,
       checked: this.props.checked,
@@ -74,10 +74,11 @@ export default class Checkbox extends React.PureComponent<Props, State> {
             onClick={this.handleClick}
           >
             <Icon
-              icon={this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
               size={24}
               className={classes.icon}
-            />
+            >
+              {this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
+            </Icon>
 
             <Ripple
               round

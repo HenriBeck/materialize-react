@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import Typography from '../Typography';
@@ -26,30 +27,27 @@ const Sheet = createSheet('Subheader', {
   },
 });
 
-function Subheader({
-  children,
-  inset,
-  className,
-  ...props
-}: Props) {
-  const data: Data = { inset };
+function Subheader(props: Props) {
+  const data: Data = { inset: props.inset };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <Typography
-          {...props}
+          {...getNotDeclaredProps(props, Subheader)}
           element="li"
           color="secondary"
           typography="body"
-          className={`${classes.subheader} ${className}`}
+          className={`${classes.subheader} ${props.className}`}
         >
-          {children}
+          {props.children}
         </Typography>
       )}
     </Sheet>
   );
 }
+
+Subheader.propTypes = {};
 
 Subheader.defaultProps = {
   inset: false,

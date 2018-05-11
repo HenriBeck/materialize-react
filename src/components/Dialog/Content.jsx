@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -18,24 +19,22 @@ const Sheet = createSheet('DialogContent', {
   },
 });
 
-function Content({
-  children,
-  className,
-  ...props
-}: Props): Node {
+function Content(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <main
-          className={`${classes.content} ${className}`}
-          {...props}
+          className={`${classes.content} ${props.className}`}
+          {...getNotDeclaredProps(props, Content)}
         >
-          {children}
+          {props.children}
         </main>
       )}
     </Sheet>
   );
 }
+
+Content.propTypes = {};
 
 Content.defaultProps = { className: '' };
 

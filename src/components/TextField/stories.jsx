@@ -32,9 +32,7 @@ class Story extends React.PureComponent<Props, State> {
         {...this.props}
         value={this.state.value}
         counter={`${this.state.value.length} / 20`}
-        prefixIcon={(
-          <Icon icon="phone" />
-        )}
+        prefixIcon={(<Icon>phone</Icon>)}
         error={hasError ? 'Maximal 20 Characters' : this.props.error}
         onChange={this.handleChange}
       />
