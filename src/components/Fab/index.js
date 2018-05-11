@@ -4,6 +4,7 @@ import React, {
   type Element,
   type ElementType,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import IconButton from '../IconButton';
@@ -38,7 +39,13 @@ function Fab(props: Props) {
   );
 }
 
-Fab.propTypes = {};
+Fab.propTypes = {
+  children: PropTypes.element.isRequired,
+  onPress: PropTypes.func.isRequired,
+  mini: PropTypes.bool,
+  className: PropTypes.string,
+  color: PropTypes.oneOf(['primary', 'accent']),
+};
 
 Fab.defaultProps = {
   mini: false,
