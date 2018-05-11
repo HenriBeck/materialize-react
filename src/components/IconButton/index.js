@@ -4,6 +4,7 @@ import React, {
   type Element,
   type ElementType,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -25,6 +26,15 @@ type Props = {
 type State = { isFocused: boolean };
 
 export default class IconButton extends React.PureComponent<Props, State> {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    onPress: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    noink: PropTypes.bool,
+    className: PropTypes.string,
+    size: PropTypes.number,
+  };
+
   static defaultProps = {
     disabled: false,
     noink: false,
