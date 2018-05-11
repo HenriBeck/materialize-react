@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
@@ -32,7 +33,12 @@ function AppBar(props: Props) {
   );
 }
 
-AppBar.propTypes = {};
+AppBar.propTypes = {
+  children: PropTypes.node.isRequired,
+  color: PropTypes.oneOf(['primary', 'default']),
+  tall: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 AppBar.defaultProps = {
   color: 'default',
