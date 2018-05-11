@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -33,7 +34,11 @@ function Media(props: Props) {
   );
 }
 
-Media.propTypes = {};
+Media.propTypes = {
+  url: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+  className: PropTypes.string,
+};
 
 Media.defaultProps = {
   className: '',
