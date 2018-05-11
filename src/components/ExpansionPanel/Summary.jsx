@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
@@ -69,7 +70,11 @@ function Summary(props: Props) {
   );
 }
 
-Summary.propTypes = {};
+Summary.propTypes = {
+  expanded: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Summary.defaultProps = {
   expanded: false,
