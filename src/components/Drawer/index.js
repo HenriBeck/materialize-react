@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
@@ -20,6 +21,17 @@ type Props = {
 };
 
 export default class Drawer extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    drawerContent: PropTypes.node.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    isNarrow: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+    width: PropTypes.number,
+    position: PropTypes.oneOf(['left', 'right']),
+    onCloseRequest: PropTypes.func,
+  };
+
   static defaultProps = {
     className: '',
     position: 'left',
