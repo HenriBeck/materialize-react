@@ -2,6 +2,7 @@
 
 import React, { type Node } from 'react';
 import noop from 'lodash.noop';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Icon from '../Icon';
 import createSheet from '../../styles/create-sheet';
@@ -41,23 +42,18 @@ const Sheet = createSheet('ExpansionPanelSummary', {
   },
 });
 
-function Summary({
-  expanded,
-  className,
-  children,
-  ...props
-}: Props): Node {
-  const data: Data = { expanded };
+function Summary(props: Props) {
+  const data: Data = { expanded: props.expanded };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <div
-          className={`${classes.summary} ${className}`}
-          {...props}
+          className={`${classes.summary} ${props.className}`}
+          {...getNotDeclaredProps(props, Summary)}
         >
           <div className={classes.content}>
-            {children}
+            {props.children}
           </div>
 
           <IconButton
@@ -65,13 +61,15 @@ function Summary({
             className={classes.expandIcon}
             onPress={noop}
           >
-            <Icon icon="chevron-down" />
+            <Icon>chevron-down</Icon>
           </IconButton>
         </div>
       )}
     </Sheet>
   );
 }
+
+Summary.propTypes = {};
 
 Summary.defaultProps = {
   expanded: false,

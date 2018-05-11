@@ -19,11 +19,8 @@ const Sheet = createSheet('HelperText', {
   },
 });
 
-function HelperText({
-  error,
-  children,
-}: Props) {
-  if (!error && !children) {
+function HelperText(props: Props) {
+  if (!props.error && !props.children) {
     return null;
   }
 
@@ -31,11 +28,11 @@ function HelperText({
     <Sheet>
       {({ classes }) => (
         <Typography
-          color={error ? 'error' : 'secondary'}
+          color={props.error ? 'error' : 'secondary'}
           typography="body"
           className={classes.helperText}
         >
-          {error ? error : children}
+          {props.error ? props.error : props.children}
         </Typography>
       )}
     </Sheet>

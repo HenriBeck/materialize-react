@@ -1,7 +1,6 @@
 // @flow strict
 
 import React, {
-  type Node,
   type Element,
   type ElementType,
 } from 'react';
@@ -47,7 +46,7 @@ export default class IconButton extends React.PureComponent<Props, State> {
     }
   };
 
-  render(): Node {
+  render() {
     const data: Data = {
       disabled: this.props.disabled,
       size: this.props.size,

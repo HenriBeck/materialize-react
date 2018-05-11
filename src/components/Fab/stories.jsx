@@ -22,6 +22,6 @@ storiesOf('Buttons', module)
       mini={boolean('Mini', false)}
       onPress={action('Press')}
     >
-      <Icon icon="plus" />
+      <Icon>plus</Icon>
     </Fab>
   ));

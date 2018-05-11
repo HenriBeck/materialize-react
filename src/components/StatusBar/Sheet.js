@@ -3,7 +3,7 @@
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
 
-type Data = { color: 'primary' | 'default' };
+export type Data = { color: 'primary' | 'default' };
 
 export default createSheet('StatusBar', (theme: Theme): { statusBar: {} } => {
   return {

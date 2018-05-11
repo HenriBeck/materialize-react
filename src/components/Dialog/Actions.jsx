@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -22,24 +23,22 @@ const Sheet = createSheet('DialogActions', {
   },
 });
 
-function Actions({
-  children,
-  className,
-  ...props
-}: Props) {
+function Actions(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div
-          className={`${classes.actions} ${className}`}
-          {...props}
+          className={`${classes.actions} ${props.className}`}
+          {...getNotDeclaredProps(props, Actions)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Actions.propTypes = {};
 
 Actions.defaultProps = { className: '' };
 

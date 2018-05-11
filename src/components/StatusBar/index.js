@@ -1,8 +1,9 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
-import Sheet from './Sheet';
+import Sheet, { type Data } from './Sheet';
 
 type Props = {
   children: Node,
@@ -10,25 +11,24 @@ type Props = {
   className: string,
 };
 
-function StatusBar({
-  color,
-  children,
-  className,
-  ...props
-}: Props) {
+function StatusBar(props: Props) {
+  const data: Data = { color: props.color };
+
   return (
-    <Sheet data={{ color }}>
+    <Sheet data={data}>
       {({ classes }) => (
         <div
-          className={`${classes.statusBar} ${className}`}
-          {...props}
+          className={`${classes.statusBar} ${props.className}`}
+          {...getNotDeclaredProps(props, StatusBar)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+StatusBar.propTypes = {};
 
 StatusBar.defaultProps = {
   color: 'default',

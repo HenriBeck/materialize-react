@@ -5,6 +5,7 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Collapse from '../Collapse';
 import createSheet from '../../styles/create-sheet';
@@ -31,9 +32,7 @@ const Sheet = createSheet('ExpansionPanel', (theme: Theme) => {
       backgroundColor: theme.sheet,
       boxShadow: theme.elevation['2'],
       outline: 0,
-      margin(data: Data): string | number {
-        return data.expanded ? '16px 0' : 0;
-      },
+      margin: (data: Data) => (data.expanded ? '16px 0' : 0),
 
       '&::before': {
         position: 'absolute',
@@ -43,9 +42,7 @@ const Sheet = createSheet('ExpansionPanel', (theme: Theme) => {
         height: 1,
         content: '""',
         backgroundColor: theme.divider,
-        opacity(data: Data): number {
-          return data.expanded ? 0 : 1;
-        },
+        opacity: (data: Data) => (data.expanded ? 0 : 1),
       },
 
       '&:first-child': {
@@ -67,37 +64,32 @@ const Sheet = createSheet('ExpansionPanel', (theme: Theme) => {
   };
 });
 
-function ExpansionPanel({
-  expanded,
-  className,
-  summary,
-  onChange,
-  children,
-  ...props
-}: Props) {
-  const data: Data = { expanded };
+function ExpansionPanel(props: Props) {
+  const data: Data = { expanded: props.expanded };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <div
-          {...props}
-          className={`${classes.expansionPanel} ${className}`}
-          aria-expanded={expanded}
+          {...getNotDeclaredProps(props, ExpansionPanel)}
+          className={`${classes.expansionPanel} ${props.className}`}
+          aria-expanded={props.expanded}
         >
-          {React.cloneElement(summary, {
-            expanded,
-            onClick: onChange,
+          {React.cloneElement(props.summary, {
+            expanded: props.expanded,
+            onClick: props.onChange,
           })}
 
-          <Collapse isOpen={expanded}>
-            {children}
+          <Collapse isOpen={props.expanded}>
+            {props.children}
           </Collapse>
         </div>
       )}
     </Sheet>
   );
 }
+
+ExpansionPanel.propTypes = {};
 
 ExpansionPanel.defaultProps = { className: '' };
 

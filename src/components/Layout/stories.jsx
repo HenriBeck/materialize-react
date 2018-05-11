@@ -23,18 +23,11 @@ const Sheet = createSheet('LayoutStory', {
   },
 });
 
-storiesOf('App Elements', module)
-  .add('Layout', () => (
+function Story(props) {
+  return (
     <Sheet>
       {({ classes }) => (
-        <Layout
-          direction={select('Direction', {
-            column: 'Column',
-            row: 'Row',
-          }, 'row')}
-          reverse={boolean('Reverse', false)}
-          inline={boolean('Inline', false)}
-        >
+        <Layout {...props}>
           <Card className={classes.box}>1</Card>
           <Card className={classes.box}>2</Card>
           <Card className={classes.box}>3</Card>
@@ -43,4 +36,17 @@ storiesOf('App Elements', module)
         </Layout>
       )}
     </Sheet>
+  );
+}
+
+storiesOf('App Elements', module)
+  .add('Layout', () => (
+    <Story
+      direction={select('Direction', {
+        column: 'Column',
+        row: 'Row',
+      }, 'row')}
+      reverse={boolean('Reverse', false)}
+      inline={boolean('Inline', false)}
+    />
   ));

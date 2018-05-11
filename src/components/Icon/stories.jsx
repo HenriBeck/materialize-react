@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/react';
 import {
   boolean,
   number,
+  text,
 } from '@storybook/addon-knobs';
 
 import Icon from '.';
@@ -12,8 +13,9 @@ import Icon from '.';
 storiesOf('Basic Elements', module)
   .add('Icon', () => (
     <Icon
-      icon="chevron-down"
       disabled={boolean('Disabled', false)}
       size={number('Size', 24)}
-    />
+    >
+      {text('Icon', 'chevron-down')}
+    </Icon>
   ));

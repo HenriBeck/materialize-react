@@ -4,6 +4,7 @@ import React, {
   type Element,
   type ElementType,
 } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import IconButton from '../IconButton';
 import { cloneElement } from '../../utils/react';
@@ -18,31 +19,26 @@ type Props = {
   children: Element<ElementType>,
 };
 
-function Fab({
-  color,
-  mini,
-  className,
-  onPress,
-  children,
-  ...props
-}: Props) {
-  const data: Data = { color };
+function Fab(props: Props) {
+  const data: Data = { color: props.color };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <IconButton
-          {...props}
-          size={mini ? 40 : 56}
-          className={`${classes.fab} ${className}`}
-          onPress={onPress}
+          size={props.mini ? 40 : 56}
+          className={`${classes.fab} ${props.className}`}
+          onPress={props.onPress}
+          {...getNotDeclaredProps(props, Fab)}
         >
-          {cloneElement(children, { className: classes.icon })}
+          {cloneElement(props.children, { className: classes.icon })}
         </IconButton>
       )}
     </Sheet>
   );
 }
+
+Fab.propTypes = {};
 
 Fab.defaultProps = {
   mini: false,
