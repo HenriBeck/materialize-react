@@ -32,6 +32,8 @@ export default class IconButton extends React.PureComponent<Props, State> {
     size: 48,
   };
 
+  state = { isFocused: false };
+
   handleFocus = () => {
     this.setState({ isFocused: true });
   };

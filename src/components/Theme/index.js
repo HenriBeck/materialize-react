@@ -7,7 +7,6 @@ import React, {
 import { ThemeProvider } from 'react-jss';
 import merge from 'lodash.merge';
 
-import { createTheme } from '../../theme';
 import { type Theme as ThemeType } from '../../theme/types';
 
 type Props = {
@@ -16,17 +15,17 @@ type Props = {
 };
 
 export default class Theme extends React.Component<Props> {
-  static createTheme = createTheme;
-
-  mergeTheme = (outerTheme: ThemeType | null) => (
-    outerTheme === null
-      ? this.props.theme
-      : merge({}, outerTheme, this.props.theme)
-  );
+  static merge(innerTheme: ThemeType | {}) {
+    return (outerTheme: ThemeType | null) => (
+      outerTheme === null
+        ? innerTheme
+        : merge({}, outerTheme, innerTheme)
+    );
+  }
 
   render() {
     return (
-      <ThemeProvider theme={this.mergeTheme}>
+      <ThemeProvider theme={Theme.merge(this.props.theme)}>
         {this.props.children}
       </ThemeProvider>
     );
