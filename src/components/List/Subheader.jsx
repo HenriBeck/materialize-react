@@ -22,9 +22,7 @@ const Sheet = createSheet('List-Subheader', {
     boxSizing: 'border-box',
     width: '100%',
     lineHeight: '16px',
-    paddingLeft(data: Data): number | null {
-      return data.inset ? 72 : null;
-    },
+    paddingLeft: (data: Data) => (data.inset ? 72 : null),
   },
 });
 

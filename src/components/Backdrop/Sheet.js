@@ -46,9 +46,7 @@ export default createSheet('Backdrop', (theme: Theme) => {
       animationDuration: 200,
       transform: 'scale(0)',
       opacity: 0,
-      animationName(data: Data): string | null {
-        return data.animationName;
-      },
+      animationName: (data: Data) => data.animationName,
     },
   };
 });

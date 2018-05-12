@@ -17,11 +17,7 @@ export default createSheet('AppBar', (theme: Theme) => {
       boxSizing: 'border-box',
       display: 'flex',
       zIndex: theme.zIndexes.appBar,
-
-      height(data: Data) {
-        return data.tall ? 128 : 56;
-      },
-
+      height: (data: Data) => (data.tall ? 128 : 56),
       color(data: Data) {
         switch (data.color) {
           case 'primary': return theme.primary.contrastTextColor;
@@ -29,7 +25,6 @@ export default createSheet('AppBar', (theme: Theme) => {
           default: return null;
         }
       },
-
       backgroundColor(data: Data) {
         switch (data.color) {
           case 'primary': return theme.primary.base;

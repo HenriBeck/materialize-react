@@ -37,10 +37,9 @@ export default createSheet('Switch', (theme: Theme) => {
       top: -3,
       height: 20,
       width: 20,
-
       transform: (data: Data) => `translateX(${data.toggled ? 16 : 0}px)`,
       color: (data: Data) => (data.toggled ? getActiveColor(theme, data.color) : null),
-      backgroundColor(data: Data): string {
+      backgroundColor(data: Data) {
         if (data.disabled) {
           return theme.type === 'dark' ? getColor('grey', '800') : getColor('grey', '400');
         } else if (data.toggled) {
@@ -59,7 +58,7 @@ export default createSheet('Switch', (theme: Theme) => {
       transitionProperty: 'background-color',
       transitionDuration: 150,
       borderRadius: 7,
-      backgroundColor(data: Data): string {
+      backgroundColor(data: Data) {
         if (data.disabled) {
           return theme.divider;
         }

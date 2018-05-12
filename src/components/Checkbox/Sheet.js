@@ -23,15 +23,13 @@ export default createSheet('Checkbox', (theme: Theme) => {
       outline: 0,
       padding: 8,
       backgroundColor: 'inherit',
-      cursor(data: Data): string {
-        return data.disabled ? 'disabled' : 'pointer';
-      },
-      pointerEvents(data: Data): string {
-        return data.disabled ? 'none' : 'auto';
-      },
-      color(data: Data): string {
-        return data.checked ? getActiveColor(theme, data.color) : theme.text.secondary;
-      },
+      cursor: (data: Data) => (data.disabled ? 'disabled' : 'pointer'),
+      pointerEvents: (data: Data) => (data.disabled ? 'none' : 'auto'),
+      color: (data: Data) => (
+        data.checked
+          ? getActiveColor(theme, data.color)
+          : theme.text.secondary
+      ),
     },
 
     icon: {
@@ -40,8 +38,7 @@ export default createSheet('Checkbox', (theme: Theme) => {
       left: 12,
       right: 12,
       bottom: 12,
-
-      color(data: Data): string {
+      color(data: Data) {
         if (data.disabled) {
           return theme.disabled;
         }

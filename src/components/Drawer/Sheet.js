@@ -32,7 +32,7 @@ export default createSheet('Drawer', (theme: Theme) => {
       left: (data: Data) => (data.position === 'left' ? -data.width : 'auto'),
       right: (data: Data) => (data.position === 'left' ? 'auto' : -data.width),
       boxShadow: (data: Data) => (data.isNarrow && data.isOpen ? theme.elevation['16'] : 'none'),
-      transform(data: Data): string {
+      transform(data: Data) {
         if (!data.isNarrow || data.isOpen) {
           return `translateX(${data.position === 'left' ? 100 : -100}%)`;
         }
@@ -45,7 +45,7 @@ export default createSheet('Drawer', (theme: Theme) => {
       width: '100%',
       height: '100%',
       boxSizing: 'border-box',
-      padding(data: Data): string | number {
+      padding(data: Data) {
         if (data.isNarrow) {
           return 0;
         }

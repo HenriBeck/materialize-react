@@ -23,7 +23,7 @@ export default createSheet('Badge', (theme: Theme) => {
       lineHeight: 1,
       fontSize: 11,
       backgroundColor: (data: Data) => getActiveColor(theme, data.color),
-      color(data: Data): string {
+      color(data: Data) {
         switch (data.color) {
           case 'primary': return theme.primary.contrastTextColor;
           case 'accent': return theme.accent.contrastTextColor;
