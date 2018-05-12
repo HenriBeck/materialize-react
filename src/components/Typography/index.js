@@ -4,6 +4,7 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
@@ -38,7 +39,25 @@ function Typography(props: Props) {
   );
 }
 
-Typography.propTypes = {};
+Typography.propTypes = {
+  typography: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  element: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+  ]),
+  color: PropTypes.oneOf([
+    'text',
+    'secondary',
+    'hint',
+    'disabled',
+    'primary',
+    'accent',
+    'error',
+    null,
+  ]),
+  className: PropTypes.string,
+};
 
 Typography.defaultProps = {
   element: 'span',
