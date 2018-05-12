@@ -19,7 +19,7 @@ export default createSheet('Button', (theme: Theme) => {
       boxSizing: 'border-box',
       outline: 0,
       border: 0,
-      borderRadius: 2,
+      borderRadius: 4,
       margin: '0 8px',
       height: 36,
       minWidth: 64,
