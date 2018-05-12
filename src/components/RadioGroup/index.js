@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Layout from '../Layout';
@@ -35,7 +36,11 @@ function RadioGroup(props: Props) {
   );
 }
 
-RadioGroup.propTypes = {};
+RadioGroup.propTypes = {
+  selected: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export { Context };
 
