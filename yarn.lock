@@ -1009,32 +1009,34 @@
   dependencies:
     samsam "1.3.0"
 
-"@storybook/addon-actions@4.0.0-alpha.4":
-  version "4.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-4.0.0-alpha.4.tgz#3ea9e8d914fe8ec26183241887c53c78a681e1aa"
+"@storybook/addon-actions@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-4.0.0-alpha.6.tgz#c87c7748e9f2b4397b8f391e764b637e8b65d887"
   dependencies:
-    "@storybook/addons" "4.0.0-alpha.4"
-    "@storybook/components" "4.0.0-alpha.4"
+    "@storybook/addons" "4.0.0-alpha.6"
+    "@storybook/components" "4.0.0-alpha.6"
+    "@storybook/core-events" "4.0.0-alpha.6"
     babel-runtime "^6.26.0"
     deep-equal "^1.0.1"
     glamor "^2.20.40"
-    glamorous "^4.12.4"
+    glamorous "^4.12.5"
     global "^4.3.2"
+    lodash.isequal "^4.5.0"
     make-error "^1.3.4"
     prop-types "^15.6.1"
     react-inspector "^2.3.0"
     uuid "^3.2.1"
 
-"@storybook/addon-info@4.0.0-alpha.4":
-  version "4.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-4.0.0-alpha.4.tgz#2425722f197006f4b3cce960f6c425da0d684bc9"
+"@storybook/addon-info@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-4.0.0-alpha.6.tgz#566b407bd13d7409751b86586d8539da5bfb561c"
   dependencies:
-    "@storybook/client-logger" "4.0.0-alpha.4"
-    "@storybook/components" "4.0.0-alpha.4"
+    "@storybook/client-logger" "4.0.0-alpha.6"
+    "@storybook/components" "4.0.0-alpha.6"
     babel-runtime "^6.26.0"
-    core-js "2.5.5"
+    core-js "2.5.6"
     glamor "^2.20.40"
-    glamorous "^4.12.4"
+    glamorous "^4.12.5"
     global "^4.3.2"
     marksy "^6.0.3"
     nested-object-assign "^1.0.1"
@@ -1077,6 +1079,13 @@
     "@storybook/channels" "4.0.0-alpha.4"
     global "^4.3.2"
 
+"@storybook/addons@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-4.0.0-alpha.6.tgz#38a9962d92e863a06f3b39e6c68de49072e507e8"
+  dependencies:
+    "@storybook/channels" "4.0.0-alpha.6"
+    global "^4.3.2"
+
 "@storybook/channel-postmessage@4.0.0-alpha.4":
   version "4.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-4.0.0-alpha.4.tgz#2f16842743aecba0ce3f9ce9d0a444a920b4eecc"
@@ -1089,9 +1098,17 @@
   version "4.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-4.0.0-alpha.4.tgz#53ddbbada45bfd5e49141e7d970e605721d0be3c"
 
+"@storybook/channels@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-4.0.0-alpha.6.tgz#bb28454e5848ed0e4a66d272a0e0f00cdc41ccc2"
+
 "@storybook/client-logger@4.0.0-alpha.4":
   version "4.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-4.0.0-alpha.4.tgz#92d8c72378f13c99448999614b99a07ba2adb8a1"
+
+"@storybook/client-logger@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-4.0.0-alpha.6.tgz#881626cf638f249a3e113928cdbb62e337bb811a"
 
 "@storybook/components@4.0.0-alpha.4":
   version "4.0.0-alpha.4"
@@ -1100,6 +1117,18 @@
     glamor "^2.20.40"
     glamorous "^4.12.4"
     prop-types "^15.6.1"
+
+"@storybook/components@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-4.0.0-alpha.6.tgz#6b97a5cae33963b27e30d45fd90940854c1a7860"
+  dependencies:
+    glamor "^2.20.40"
+    glamorous "^4.12.5"
+    prop-types "^15.6.1"
+
+"@storybook/core-events@4.0.0-alpha.6":
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@storybook/core-events/-/core-events-4.0.0-alpha.6.tgz#ccab6740b1f58a825cff4cbaee4402881f59cc16"
 
 "@storybook/core@4.0.0-alpha.4":
   version "4.0.0-alpha.4"
@@ -3625,9 +3654,9 @@ core-assert@^0.2.0:
     buf-compare "^1.0.0"
     is-error "^2.2.0"
 
-core-js@2.5.5, core-js@^2.5.5:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.5.tgz#b14dde936c640c0579a6b50cabcc132dd6127e3b"
+core-js@2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.6.tgz#0fe6d45bf3cac3ac364a9d72de7576f4eb221b9d"
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -3644,6 +3673,10 @@ core-js@^2.4.1:
 core-js@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.3.tgz#8acc38345824f16d8365b7c9b4259168e8ed603e"
+
+core-js@^2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.5.tgz#b14dde936c640c0579a6b50cabcc132dd6127e3b"
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -5332,6 +5365,19 @@ glamor@^2.20.40:
 glamorous@^4.12.4:
   version "4.12.5"
   resolved "https://registry.yarnpkg.com/glamorous/-/glamorous-4.12.5.tgz#909e0ec2ab3136e4749bf82edd9f33b51745e41f"
+  dependencies:
+    brcast "^3.0.0"
+    csstype "^2.2.0"
+    fast-memoize "^2.2.7"
+    html-tag-names "^1.1.1"
+    is-function "^1.0.1"
+    is-plain-object "^2.0.4"
+    react-html-attributes "^1.4.2"
+    svg-tag-names "^1.1.0"
+
+glamorous@^4.12.5:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/glamorous/-/glamorous-4.13.0.tgz#4ac5cb05633aa49a0396d409f665dd9b614f1b5a"
   dependencies:
     brcast "^3.0.0"
     csstype "^2.2.0"
