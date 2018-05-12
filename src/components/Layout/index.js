@@ -4,6 +4,7 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -62,7 +63,19 @@ function Layout(props: Props) {
   );
 }
 
-Layout.propTypes = {};
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  component: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+  ]),
+  direction: PropTypes.oneOf(['row', 'column']),
+  mainAlign: PropTypes.oneOf(['flex-start', 'flex-end', 'center', 'space-between', 'space-around']),
+  crossAlign: PropTypes.oneOf(['flex-start', 'flex-end', 'center', 'baseline', 'stretch']),
+  className: PropTypes.string,
+  inline: PropTypes.bool,
+  reverse: PropTypes.bool,
+};
 
 Layout.defaultProps = {
   component: 'div',
