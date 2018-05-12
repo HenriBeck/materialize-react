@@ -43,7 +43,6 @@ export default createSheet('Slider', (theme: Theme) => {
         content: '""',
         transformOrigin: 'left center',
         transition: 'transform 100ms linear',
-
         backgroundColor: (data: Data) => (data.disabled ? 'transparent' : theme.primary.base),
         transform: (data: Data) => `scaleX(${data.value / 100})`,
       },
@@ -60,7 +59,6 @@ export default createSheet('Slider', (theme: Theme) => {
       borderRadius: '50%',
       cursor: 'drag',
       transition: 'transform 100ms linear',
-
       borderColor(data: Data) {
         if (data.disabled) {
           return disabledColor;

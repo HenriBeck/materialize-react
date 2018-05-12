@@ -23,9 +23,11 @@ const Sheet = createSheet('TextArea-Label', {
     padding: '4px 0',
     transformOrigin: 'left center',
     transition: 'transform 140ms',
-    transform(data: Data) {
-      return data.expanded ? 'scale(1.25) translateY(4px)' : 'scale(1) translateY(0)';
-    },
+    transform: (data: Data) => (
+      data.expanded
+        ? 'scale(1.25) translateY(4px)'
+        : 'scale(1) translateY(0)'
+    ),
   },
 });
 
