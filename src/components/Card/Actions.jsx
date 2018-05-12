@@ -13,7 +13,7 @@ type Props = {
 };
 type Data = { stacked: boolean };
 
-const Sheet = createSheet('Actions', {
+const Sheet = createSheet('Card-Actions', {
   actions: {
     gridGap: '0 4px',
     padding: '8px 0',

@@ -6,7 +6,7 @@ import { getActiveColor } from '../../theme/utils';
 
 export type Data = { color: 'accent' | 'primary' };
 
-export default createSheet('FAB', (theme: Theme) => {
+export default createSheet('Fab', (theme: Theme) => {
   return {
     fab: {
       zIndex: theme.zIndexes.fab,

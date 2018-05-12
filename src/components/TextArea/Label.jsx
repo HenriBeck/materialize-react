@@ -16,7 +16,7 @@ type Props = {
 };
 type Data = { expanded: boolean };
 
-const Sheet = createSheet('Label', {
+const Sheet = createSheet('TextArea-Label', {
   label: {
     lineHeight: 1,
     fontSize: 12,

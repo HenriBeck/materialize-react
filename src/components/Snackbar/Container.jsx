@@ -19,7 +19,7 @@ type Data = {
   position: Position,
 };
 
-const Sheet = createSheet('SnackbarContainer', (theme: Theme) => {
+const Sheet = createSheet('Snackbar-Container', (theme: Theme) => {
   return {
     container: {
       position: 'fixed',

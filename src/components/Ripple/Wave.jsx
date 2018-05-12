@@ -23,7 +23,7 @@ type Data = {
   initialOpacity: number,
 };
 
-const Sheet = createSheet('Wave', {
+const Sheet = createSheet('Ripple-Wave', {
   '@keyframes wave--scale-in': {
     from: { transform: 'scale(0)' },
     to: { transform: 'scale(1)' },

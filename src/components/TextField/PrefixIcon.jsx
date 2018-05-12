@@ -25,7 +25,7 @@ type Data = {
   hasError: boolean,
 };
 
-const Sheet = createSheet('PrefixIcon', (theme: Theme) => {
+const Sheet = createSheet('TextField-PrefixIcon', (theme: Theme) => {
   return {
     prefixIcon: {
       width: 24,

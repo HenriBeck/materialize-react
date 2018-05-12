@@ -10,7 +10,7 @@ export type Data = {
   isSelected: boolean,
 };
 
-export default createSheet('Tab', (theme: Theme): {} => {
+export default createSheet('Tab', (theme: Theme) => {
   return {
     tab: {
       position: 'relative',

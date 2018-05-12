@@ -5,7 +5,7 @@ import { type Theme } from '../../theme/types';
 
 export type Data = { color: 'primary' | 'default' };
 
-export default createSheet('StatusBar', (theme: Theme): { statusBar: {} } => {
+export default createSheet('StatusBar', (theme: Theme) => {
   return {
     statusBar: {
       height: 24,

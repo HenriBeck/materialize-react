@@ -14,7 +14,7 @@ type Props = {
 };
 type Data = { inset: boolean };
 
-const Sheet = createSheet('Subheader', {
+const Sheet = createSheet('List-Subheader', {
   subheader: {
     position: 'relative',
     padding: 16,

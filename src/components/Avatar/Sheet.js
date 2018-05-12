@@ -13,7 +13,7 @@ export type Data = {
   bgColor: string,
 };
 
-export default createSheet('Avatar', (theme: Theme): {} => {
+export default createSheet('Avatar', (theme: Theme) => {
   return {
     avatar: {
       borderRadius: '50%',

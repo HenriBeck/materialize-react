@@ -10,7 +10,7 @@ type Props = {
   children: Node,
 };
 
-const Sheet = createSheet('HelperText', {
+const Sheet = createSheet('TextField-HelperText', {
   helperText: {
     fontSize: 12,
     lineHeight: 1,

@@ -12,7 +12,7 @@ type Props = {
   url: string,
 };
 
-const Sheet = createSheet('Media', {
+const Sheet = createSheet('Card-Media', {
   media: {
     width: '100%',
     height: 'auto',

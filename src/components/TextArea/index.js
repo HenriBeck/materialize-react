@@ -29,7 +29,7 @@ type Data = {
   hasError: boolean,
 };
 
-const Sheet = createSheet('TextArea', (theme: Theme): {} => {
+const Sheet = createSheet('TextArea', (theme: Theme) => {
   return {
     container: {
       display: 'flex',

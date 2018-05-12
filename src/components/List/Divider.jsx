@@ -12,7 +12,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('Divider', { divider: { paddingLeft: 72 } });
+const Sheet = createSheet('List-Divider', { divider: { paddingLeft: 72 } });
 
 function Divider(props: Props) {
   if (!props.inset) {

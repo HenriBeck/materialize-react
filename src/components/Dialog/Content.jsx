@@ -11,7 +11,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('DialogContent', {
+const Sheet = createSheet('Dialog-Content', {
   content: {
     padding: 24,
     paddingTop: 0,

@@ -10,7 +10,7 @@ import Typography, { type Color } from '.';
 
 type Props = { color: Color };
 
-const Sheet = createSheet('TypoStory', {
+const Sheet = createSheet('Typography-Story', {
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr',

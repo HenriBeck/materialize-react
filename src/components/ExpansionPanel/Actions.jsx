@@ -12,7 +12,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('ExpansionPanelActions', (theme: Theme) => {
+const Sheet = createSheet('ExpansionPanel-Actions', (theme: Theme) => {
   return {
     actions: {
       display: 'flex',

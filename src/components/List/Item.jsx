@@ -17,7 +17,7 @@ type Props = {
 };
 type Data = { withSecondaryContent: boolean };
 
-const Sheet = createSheet('Item', {
+const Sheet = createSheet('List-Item', {
   item: {
     display: 'flex',
     alignItems: 'center',
