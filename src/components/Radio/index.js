@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 import subscribeToContext from 'react-context-subscriber';
 
@@ -27,6 +28,18 @@ type Props = {
 type State = { isFocused: boolean };
 
 class Radio extends React.PureComponent<Props, State> {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    context: PropTypes.shape({
+      onChange: PropTypes.func.isRequired,
+      selected: PropTypes.string.isRequired,
+    }).isRequired,
+    disabled: PropTypes.bool,
+    noink: PropTypes.bool,
+    className: PropTypes.string,
+    color: PropTypes.oneOf(['primary', 'accent']),
+  };
+
   static defaultProps = {
     disabled: false,
     noink: false,
