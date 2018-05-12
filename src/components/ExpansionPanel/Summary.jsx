@@ -16,7 +16,7 @@ type Props = {
 };
 type Data = { expanded: boolean };
 
-const Sheet = createSheet('ExpansionPanelSummary', {
+const Sheet = createSheet('ExpansionPanel-Summary', {
   summary: {
     display: 'flex',
     justifyContent: 'space-between',

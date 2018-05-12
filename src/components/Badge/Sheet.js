@@ -6,7 +6,7 @@ import { getActiveColor } from '../../theme/utils';
 
 export type Data = { color: 'primary' | 'accent' };
 
-export default createSheet('Badge', (theme: Theme): { badge: {} } => {
+export default createSheet('Badge', (theme: Theme) => {
   return {
     badge: {
       display: 'inline-flex',

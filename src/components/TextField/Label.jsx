@@ -24,7 +24,7 @@ type Data = {
   translateX: number,
 };
 
-const Sheet = createSheet('Label', {
+const Sheet = createSheet('TextField-Label', {
   label: {
     position: 'absolute',
     transitionDuration: 140,

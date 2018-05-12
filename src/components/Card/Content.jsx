@@ -11,7 +11,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('Content', {
+const Sheet = createSheet('Card-Content', {
   content: {
     padding: '0 16px',
     margin: '16px 0',

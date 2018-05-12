@@ -11,7 +11,7 @@ type Props = {
   children: Node,
 };
 
-const Sheet = createSheet('ExpansionPanelDetails', {
+const Sheet = createSheet('ExpansionPanel-Details', {
   details: {
     display: 'flex',
     flexGrow: 1,

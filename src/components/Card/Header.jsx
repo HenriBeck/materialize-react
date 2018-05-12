@@ -15,7 +15,7 @@ type Props = {
 };
 type Data = { withAvatar: boolean };
 
-const Sheet = createSheet('Header', {
+const Sheet = createSheet('Card-Header', {
   header: {
     display: 'flex',
     flexDirection: 'row',

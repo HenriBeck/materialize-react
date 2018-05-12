@@ -11,7 +11,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('DialogActions', {
+const Sheet = createSheet('Dialog-Actions', {
   actions: {
     padding: 8,
     width: '100%',

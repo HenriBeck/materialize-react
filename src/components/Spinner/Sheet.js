@@ -15,7 +15,7 @@ const EXPAND_CONTRACT_DURATION = 1333;
 
 export type { Data };
 
-export default createSheet('Spinner', (theme: Theme): {} => {
+export default createSheet('Spinner', (theme: Theme) => {
   return {
     '@keyframes Spinner--fade-in': {
       from: {

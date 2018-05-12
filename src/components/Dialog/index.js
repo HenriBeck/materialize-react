@@ -26,7 +26,7 @@ type Data = {
   animationName: string | null,
 };
 
-const Sheet = createSheet('Dialog', (theme: Theme): {} => {
+const Sheet = createSheet('Dialog', (theme: Theme) => {
   return {
     '@keyframes Dialog--animate-in': {
       from: { opacity: 0 },

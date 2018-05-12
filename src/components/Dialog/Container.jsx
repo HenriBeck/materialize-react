@@ -21,7 +21,7 @@ type Props = {
 };
 type Data = { hasActiveDialog: boolean };
 
-const Sheet = createSheet('DialogContainer', (theme: Theme) => {
+const Sheet = createSheet('Dialog-Container', (theme: Theme) => {
   return {
     container: {
       position: 'fixed',

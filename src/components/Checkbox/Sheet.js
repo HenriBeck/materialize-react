@@ -4,17 +4,13 @@ import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
 import { getActiveColor } from '../../theme/utils';
 
-type Styles = {
-  checkbox: {},
-  icon: {},
-};
 export type Data = {
   disabled: boolean,
   checked: boolean,
   color: 'primary' | 'accent',
 };
 
-export default createSheet('Checkbox', (theme: Theme): Styles => {
+export default createSheet('Checkbox', (theme: Theme) => {
   return {
     checkbox: {
       display: 'inline-block',

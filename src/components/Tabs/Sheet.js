@@ -9,7 +9,7 @@ export type Data = {
   color: 'primary' | 'accent',
 };
 
-export default createSheet('Tabs', (theme: Theme): {} => {
+export default createSheet('Tabs', (theme: Theme) => {
   return {
     tabs: {
       display: 'inline-flex',

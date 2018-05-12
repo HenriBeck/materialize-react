@@ -8,7 +8,7 @@ export type Data = {
   disabled: boolean,
 };
 
-export default createSheet('Button', (theme: Theme): { button: {} } => {
+export default createSheet('Button', (theme: Theme) => {
   return {
     button: {
       userSelect: 'none',
