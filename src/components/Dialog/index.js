@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 
 import createSheet from '../../styles/create-sheet';
@@ -13,12 +14,11 @@ import Actions from './Actions';
 
 type Props = {
   children: Node,
-  isOpen: boolean, // eslint-disable-line react/no-unused-prop-types
+  isOpen: boolean,
   fullscreen: boolean,
   className: string,
-  // eslint-disable-next-line react/no-unused-prop-types
   onCloseRequest: (ev: SyntheticMouseEvent<HTMLDivElement>) => void,
-  backdrop: boolean, // eslint-disable-line react/no-unused-prop-types
+  backdrop: boolean,
 };
 type State = { animationName: string | null };
 type Data = {
@@ -67,6 +67,15 @@ const Sheet = createSheet('Dialog', (theme: Theme): {} => {
 });
 
 export default class Dialog extends React.PureComponent<Props, State> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    isOpen: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+    fullscreen: PropTypes.bool,
+    className: PropTypes.string,
+    onCloseRequest: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    backdrop: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  };
+
   static defaultProps = {
     fullscreen: false,
     className: '',
