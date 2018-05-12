@@ -22,7 +22,7 @@ export default createSheet('Button', (theme: Theme) => {
       borderRadius: 2,
       margin: '0 8px',
       height: 36,
-      minWidth: 88,
+      minWidth: 64,
       padding: '0 8px',
       color: (data: Data) => (
         data.raised && !data.disabled
