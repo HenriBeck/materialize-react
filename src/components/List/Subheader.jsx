@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -47,7 +48,11 @@ function Subheader(props: Props) {
   );
 }
 
-Subheader.propTypes = {};
+Subheader.propTypes = {
+  children: PropTypes.node.isRequired,
+  inset: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Subheader.defaultProps = {
   inset: false,
