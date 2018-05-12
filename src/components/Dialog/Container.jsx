@@ -4,6 +4,7 @@ import React, {
   type ChildrenArray,
   type Element,
 } from 'react';
+import PropTypes from 'prop-types';
 
 import Backdrop from '../Backdrop';
 import createSheet from '../../styles/create-sheet';
@@ -41,6 +42,11 @@ const Sheet = createSheet('DialogContainer', (theme: Theme) => {
 });
 
 export default class Container extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
+  };
+
   static defaultProps = { className: '' };
 
   static getCurrentDialog(props: Props): ?Element<typeof Dialog> {

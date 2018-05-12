@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -37,7 +38,10 @@ function Divider(props: Props) {
   );
 }
 
-Divider.propTypes = {};
+Divider.propTypes = {
+  vertical: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Divider.defaultProps = {
   className: '',

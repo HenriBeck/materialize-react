@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet from './Sheet';
@@ -25,7 +26,10 @@ function Background(props: Props) {
   );
 }
 
-Background.propTypes = {};
+Background.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Background.defaultProps = { className: '' };
 

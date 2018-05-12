@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
@@ -12,6 +13,11 @@ type Props = {
 type State = { animationName: string | null };
 
 export default class Backdrop extends React.PureComponent<Props, State> {
+  static propTypes = {
+    active: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+  };
+
   static defaultProps = { className: '' };
 
   // $FlowFixMe: Waiting for typing support for getDerivedStateFromProps

@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -22,6 +23,18 @@ type Props = {
 type State = { isFocused: boolean };
 
 export default class Switch extends React.PureComponent<Props, State> {
+  static propTypes = {
+    toggled: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+    noink: PropTypes.bool,
+    color: PropTypes.oneOf([
+      'primary',
+      'accent',
+    ]),
+  };
+
   static defaultProps = {
     className: '',
     disabled: false,

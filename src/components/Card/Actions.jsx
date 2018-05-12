@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -38,7 +39,11 @@ function Actions(props: Props) {
   );
 }
 
-Actions.propTypes = {};
+Actions.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  stacked: PropTypes.bool,
+};
 
 Actions.defaultProps = {
   stacked: false,

@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Typography from '../Typography';
 import createSheet from '../../styles/create-sheet';
@@ -56,7 +58,7 @@ function Item(props: Props) {
       {({ classes }) => (
         <li
           className={`${classes.item} ${props.className}`}
-          {...props}
+          {...getNotDeclaredProps(props, Item)}
         >
           {(props.inset || props.leftItem) && (
             <span className={classes.leftItem}>
@@ -93,6 +95,15 @@ function Item(props: Props) {
     </Sheet>
   );
 }
+
+Item.propTypes = {
+  children: PropTypes.node.isRequired,
+  secondaryContent: PropTypes.node,
+  inset: PropTypes.bool,
+  className: PropTypes.string,
+  rightItem: PropTypes.node,
+  leftItem: PropTypes.node,
+};
 
 Item.defaultProps = {
   inset: false,

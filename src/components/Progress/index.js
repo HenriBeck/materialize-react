@@ -2,6 +2,7 @@
 
 import React from 'react';
 import clamp from 'clamp';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
@@ -39,7 +40,12 @@ function Progress(props: Props) {
   );
 }
 
-Progress.propTypes = {};
+Progress.propTypes = {
+  progress: PropTypes.number,
+  indeterminate: PropTypes.bool,
+  active: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Progress.defaultProps = {
   progress: 0,

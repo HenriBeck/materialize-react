@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -33,7 +34,10 @@ function Details(props: Props) {
   );
 }
 
-Details.propTypes = {};
+Details.propTypes = {
+  node: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Details.defaultProps = { className: '' };
 

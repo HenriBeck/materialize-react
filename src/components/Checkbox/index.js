@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -22,6 +23,14 @@ type Props = {
 type State = { isFocused: boolean };
 
 export default class Checkbox extends React.PureComponent<Props, State> {
+  static propTypes = {
+    checked: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+    color: PropTypes.oneOf(['primary', 'accent']),
+  };
+
   static defaultProps = {
     disabled: false,
     className: '',

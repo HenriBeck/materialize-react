@@ -5,6 +5,7 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Collapse from '../Collapse';
@@ -89,7 +90,13 @@ function ExpansionPanel(props: Props) {
   );
 }
 
-ExpansionPanel.propTypes = {};
+ExpansionPanel.propTypes = {
+  expanded: PropTypes.bool.isRequired,
+  summary: PropTypes.element.isRequired,
+  onChange: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 ExpansionPanel.defaultProps = { className: '' };
 

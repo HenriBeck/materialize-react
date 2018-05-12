@@ -1,6 +1,7 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
@@ -33,7 +34,13 @@ function Icon(props: Props) {
   );
 }
 
-Icon.propTypes = {};
+Icon.propTypes = {
+  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  color: PropTypes.oneOf(['light', 'dark', null]),
+};
 
 Icon.defaultProps = {
   className: '',

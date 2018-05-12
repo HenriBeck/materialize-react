@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Typography from '../Typography';
@@ -37,7 +38,10 @@ function Header(props: Props) {
   );
 }
 
-Header.propTypes = {};
+Header.propTypes = {
+  node: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Header.defaultProps = { className: '' };
 

@@ -1,10 +1,10 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
-// eslint-disable-next-line import/no-named-default
-import { default as DividerComponent } from '../Divider';
+import DividerComponent from '../Divider';
 import createSheet from '../../styles/create-sheet';
 
 type Props = {
@@ -35,7 +35,10 @@ function Divider(props: Props) {
   );
 }
 
-Divider.propTypes = {};
+Divider.propTypes = {
+  inset: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Divider.defaultProps = {
   inset: false,

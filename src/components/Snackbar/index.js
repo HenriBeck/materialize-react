@@ -5,6 +5,7 @@ import React, {
   type Element,
   type ElementType,
 } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 import EventListener from 'react-event-listener';
@@ -80,6 +81,18 @@ const Sheet = createSheet('Snackbar', (theme: Theme) => {
 });
 
 export default class Snackbar extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    action: PropTypes.element,
+    className: PropTypes.string,
+    isVisible: PropTypes.bool,
+    isAnimatingOut: PropTypes.bool,
+    closeOnOutsideClick: PropTypes.bool,
+    autoCloseTimer: PropTypes.number,
+    onCloseRequest: PropTypes.func,
+    onRemoveRequest: PropTypes.func,
+  };
+
   static defaultProps = {
     action: null,
     className: '',

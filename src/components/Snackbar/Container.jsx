@@ -1,19 +1,22 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import getNotDeclaredProps from 'react-get-not-declared-props';
+import PropTypes from 'prop-types';
 
 import createSheet from '../../styles/create-sheet';
 import { up } from '../../utils/breakpoints';
 import { type Theme } from '../../theme/types';
 
+type Position = 'left' | 'right' | 'center';
 type Props = {
   children: Node,
-  position: 'left' | 'right' | 'center',
+  position: Position,
   className: string,
 };
 type Data = {
   hide: boolean,
-  position: 'left' | 'right' | 'center',
+  position: Position,
 };
 
 const Sheet = createSheet('SnackbarContainer', (theme: Theme) => {
@@ -42,6 +45,12 @@ const Sheet = createSheet('SnackbarContainer', (theme: Theme) => {
 });
 
 export default class Container extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    position: PropTypes.oneOf(['left', 'center', 'right']),
+    className: PropTypes.string,
+  };
+
   static defaultProps = {
     position: 'center',
     className: '',
@@ -64,7 +73,10 @@ export default class Container extends React.PureComponent<Props> {
     return (
       <Sheet data={data}>
         {({ classes }) => (
-          <div className={`${classes.container} ${this.props.className}`}>
+          <div
+            className={`${classes.container} ${this.props.className}`}
+            {...getNotDeclaredProps(this.props, Container)}
+          >
             {this.renderChildren()}
           </div>
         )}

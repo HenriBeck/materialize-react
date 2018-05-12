@@ -2,6 +2,7 @@
 
 import React from 'react';
 import clamp from 'clamp';
+import PropTypes from 'prop-types';
 import EventListener from 'react-event-listener';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
@@ -22,6 +23,13 @@ type State = {
 };
 
 export default class Slider extends React.PureComponent<Props, State> {
+  static propTypes = {
+    value: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+  };
+
   static defaultProps = {
     disabled: false,
     className: '',
