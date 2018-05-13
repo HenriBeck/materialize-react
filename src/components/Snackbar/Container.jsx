@@ -26,7 +26,7 @@ const Sheet = createSheet('Snackbar-Container', (theme: Theme) => {
       bottom: 0,
       left: 0,
       right: 0,
-      height: 80,
+      height: 68,
       display: 'flex',
       zIndex: theme.zIndexes.snackbar,
       transform: (data: Data) => (data.hide ? 'scale(0)' : 'scale(1)'),
