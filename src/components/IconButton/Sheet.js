@@ -13,7 +13,6 @@ export default createSheet('IconButton', {
     borderRadius: '50%',
     boxSizing: 'border-box',
     display: 'inline-flex',
-    overflow: 'hidden',
     outline: 0,
     border: 0,
     alignItems: 'center',

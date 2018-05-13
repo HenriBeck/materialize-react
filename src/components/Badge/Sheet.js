@@ -8,6 +8,12 @@ export type Data = { color: 'primary' | 'accent' };
 
 export default createSheet('Badge', (theme: Theme) => {
   return {
+    container: {
+      position: 'relative',
+      display: 'inline',
+      boxSizing: 'border-box',
+    },
+
     badge: {
       display: 'inline-flex',
       flexDirection: 'row',
@@ -22,6 +28,7 @@ export default createSheet('Badge', (theme: Theme) => {
       borderRadius: '50%',
       lineHeight: 1,
       fontSize: 11,
+      userSelect: 'none',
       backgroundColor: (data: Data) => getActiveColor(theme, data.color),
       color(data: Data) {
         switch (data.color) {
