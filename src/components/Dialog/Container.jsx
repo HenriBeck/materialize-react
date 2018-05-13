@@ -91,7 +91,7 @@ export default class Container extends React.PureComponent<Props> {
         {({ classes }) => (
           <div
             aria-modal
-            className={`${classes.dialogContainer} ${this.props.className}`}
+            className={`${classes.container} ${this.props.className}`}
           >
             <Backdrop
               active={hasBackdrop}

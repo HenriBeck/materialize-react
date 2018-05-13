@@ -39,7 +39,7 @@ function Header(props: Props) {
 }
 
 Header.propTypes = {
-  node: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 

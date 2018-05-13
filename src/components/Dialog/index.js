@@ -61,6 +61,7 @@ const Sheet = createSheet('Dialog', (theme: Theme) => {
       borderRadius: (data: Data) => (data.fullscreen ? 0 : 2),
       boxShadow: (data: Data) => theme.elevation[data.fullscreen ? '0' : '24'],
       opacity: (data: Data) => (data.fullscreen ? 1 : 0),
+      transform: (data: Data) => (data.fullscreen ? 'translateY(100%)' : null),
       animationName: (data: Data) => data.animationName,
     },
   };
@@ -97,11 +98,10 @@ export default class Dialog extends React.PureComponent<Props, State> {
       return null;
     }
 
-    return {
-      animationName: nextProps.fullscreen
-        ? `Dialog--animate-${nextProps.isOpen ? 'in' : 'out'}-fullscreen`
-        : `Dialog--animate-${nextProps.isOpen ? 'in' : 'out'}`,
-    };
+    const animationDirection = nextProps.isOpen ? 'in' : 'out';
+    const fullscreenSuffix = nextProps.fullscreen ? '-fullscreen' : '';
+
+    return { animationName: `Dialog--animate-${animationDirection}${fullscreenSuffix}` };
   }
 
   state = { animationName: null };
