@@ -1,12 +1,12 @@
 // @flow strict
 
-import React, { type Node } from 'react';
-import Aux from 'react-aux';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import Button from '../Button';
 
 import Dialog from '.';
+import Container from './Container';
 
 type Props = {};
 type State = {
@@ -26,9 +26,9 @@ class Story extends React.PureComponent<Props, State> {
 
   handleDialogClose = name => () => this.setState({ [name]: false });
 
-  render(): Node {
+  render() {
     return (
-      <Aux>
+      <React.Fragment>
         <div>
           <Button onPress={this.handleDialogOpen('isSimpleDialogOpen')}>
             Open basic dialog
@@ -43,7 +43,7 @@ class Story extends React.PureComponent<Props, State> {
           </Button>
         </div>
 
-        <Dialog.Container>
+        <Container>
           <Dialog
             backdrop
             isOpen={this.state.isAdvancedDialogOpen}
@@ -92,8 +92,8 @@ class Story extends React.PureComponent<Props, State> {
               Close
             </Button>
           </Dialog>
-        </Dialog.Container>
-      </Aux>
+        </Container>
+      </React.Fragment>
     );
   }
 }
