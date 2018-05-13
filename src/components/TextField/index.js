@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -54,14 +55,32 @@ const Sheet = createSheet('TextField', {
 });
 
 export default class TextField extends React.PureComponent<Props, State> {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    label: PropTypes.node,
+    floatingLabel: PropTypes.bool,
+    placeholder: PropTypes.string,
+    disabled: PropTypes.bool,
+    error: PropTypes.node,
+    helperText: PropTypes.node,
+    type: PropTypes.string,
+    color: PropTypes.oneOf(['primary', 'accent']),
+    counter: PropTypes.node,
+    prefix: PropTypes.node,
+    suffix: PropTypes.node,
+    prefixIcon: PropTypes.node,
+  };
+
   static defaultProps = {
     className: '',
-    label: '',
+    label: null,
     floatingLabel: false,
     placeholder: '',
     disabled: false,
-    error: '',
-    helperText: '',
+    error: null,
+    helperText: null,
     color: 'primary',
     type: 'text',
     prefix: null,

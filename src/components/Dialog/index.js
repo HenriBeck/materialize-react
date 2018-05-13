@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 
 import createSheet from '../../styles/create-sheet';
@@ -13,12 +14,11 @@ import Actions from './Actions';
 
 type Props = {
   children: Node,
-  isOpen: boolean, // eslint-disable-line react/no-unused-prop-types
+  isOpen: boolean,
   fullscreen: boolean,
   className: string,
-  // eslint-disable-next-line react/no-unused-prop-types
   onCloseRequest: (ev: SyntheticMouseEvent<HTMLDivElement>) => void,
-  backdrop: boolean, // eslint-disable-line react/no-unused-prop-types
+  backdrop: boolean,
 };
 type State = { animationName: string | null };
 type Data = {
@@ -26,7 +26,7 @@ type Data = {
   animationName: string | null,
 };
 
-const Sheet = createSheet('Dialog', (theme: Theme): {} => {
+const Sheet = createSheet('Dialog', (theme: Theme) => {
   return {
     '@keyframes Dialog--animate-in': {
       from: { opacity: 0 },
@@ -61,12 +61,22 @@ const Sheet = createSheet('Dialog', (theme: Theme): {} => {
       borderRadius: (data: Data) => (data.fullscreen ? 0 : 2),
       boxShadow: (data: Data) => theme.elevation[data.fullscreen ? '0' : '24'],
       opacity: (data: Data) => (data.fullscreen ? 1 : 0),
+      transform: (data: Data) => (data.fullscreen ? 'translateY(100%)' : null),
       animationName: (data: Data) => data.animationName,
     },
   };
 });
 
 export default class Dialog extends React.PureComponent<Props, State> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    isOpen: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+    fullscreen: PropTypes.bool,
+    className: PropTypes.string,
+    onCloseRequest: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    backdrop: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  };
+
   static defaultProps = {
     fullscreen: false,
     className: '',
@@ -88,11 +98,10 @@ export default class Dialog extends React.PureComponent<Props, State> {
       return null;
     }
 
-    return {
-      animationName: nextProps.fullscreen
-        ? `Dialog--animate-${nextProps.isOpen ? 'in' : 'out'}-fullscreen`
-        : `Dialog--animate-${nextProps.isOpen ? 'in' : 'out'}`,
-    };
+    const animationDirection = nextProps.isOpen ? 'in' : 'out';
+    const fullscreenSuffix = nextProps.fullscreen ? '-fullscreen' : '';
+
+    return { animationName: `Dialog--animate-${animationDirection}${fullscreenSuffix}` };
   }
 
   state = { animationName: null };

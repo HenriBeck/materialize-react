@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Typography from '../Typography';
 import createSheet from '../../styles/create-sheet';
@@ -15,7 +17,7 @@ type Props = {
 };
 type Data = { withSecondaryContent: boolean };
 
-const Sheet = createSheet('Item', {
+const Sheet = createSheet('List-Item', {
   item: {
     display: 'flex',
     alignItems: 'center',
@@ -48,27 +50,19 @@ const Sheet = createSheet('Item', {
   },
 });
 
-function Item({
-  children,
-  secondaryContent,
-  inset,
-  className,
-  rightItem,
-  leftItem,
-  ...props
-}: Props) {
-  const data: Data = { withSecondaryContent: Boolean(secondaryContent) };
+function Item(props: Props) {
+  const data: Data = { withSecondaryContent: Boolean(props.secondaryContent) };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <li
-          className={`${classes.item} ${className}`}
-          {...props}
+          className={`${classes.item} ${props.className}`}
+          {...getNotDeclaredProps(props, Item)}
         >
-          {(inset || leftItem) && (
+          {(props.inset || props.leftItem) && (
             <span className={classes.leftItem}>
-              {leftItem}
+              {props.leftItem}
             </span>
           )}
 
@@ -77,23 +71,23 @@ function Item({
               typography="body"
               className={classes.mainText}
             >
-              {children}
+              {props.children}
             </Typography>
 
-            {secondaryContent && (
+            {props.secondaryContent && (
               <Typography
                 typography="body"
                 color="secondary"
                 className={classes.secondaryContent}
               >
-                {secondaryContent}
+                {props.secondaryContent}
               </Typography>
             )}
           </span>
 
-          {rightItem && (
+          {props.rightItem && (
             <span className={classes.rightItem}>
-              {rightItem}
+              {props.rightItem}
             </span>
           )}
         </li>
@@ -101,6 +95,15 @@ function Item({
     </Sheet>
   );
 }
+
+Item.propTypes = {
+  children: PropTypes.node.isRequired,
+  secondaryContent: PropTypes.node,
+  inset: PropTypes.bool,
+  className: PropTypes.string,
+  rightItem: PropTypes.node,
+  leftItem: PropTypes.node,
+};
 
 Item.defaultProps = {
   inset: false,

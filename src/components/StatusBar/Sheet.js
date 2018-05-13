@@ -3,21 +3,21 @@
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
 
-type Data = { color: 'primary' | 'default' };
+export type Data = { color: 'primary' | 'default' };
 
-export default createSheet('StatusBar', (theme: Theme): { statusBar: {} } => {
+export default createSheet('StatusBar', (theme: Theme) => {
   return {
     statusBar: {
       height: 24,
       width: '100%',
-      backgroundColor(data: Data): string | null {
+      backgroundColor(data: Data) {
         switch (data.color) {
           case 'primary': return theme.primary.dark;
           case 'default': return theme.statusBar;
           default: return null;
         }
       },
-      color(data: Data): string | null {
+      color(data: Data) {
         switch (data.color) {
           case 'primary': return theme.primary.contrastTextColor;
           default: return null;

@@ -1,14 +1,16 @@
 // @flow strict
 
-import React, { type Node } from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
 
 import createSheet from '../../styles/create-sheet';
 
-import Typography from '.';
+import Typography, { type Color } from '.';
 
-const Sheet = createSheet('TypoStory', {
+type Props = { color: Color };
+
+const Sheet = createSheet('Typography-Story', {
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -16,50 +18,54 @@ const Sheet = createSheet('TypoStory', {
   },
 });
 
+function Story(props: Props) {
+  return (
+    <Sheet>
+      {({ classes }) => (
+        <div className={classes.container}>
+          <Typography
+            color={props.color}
+            typography="headline"
+          >
+            Headline
+          </Typography>
+
+          <Typography
+            color={props.color}
+            typography="title"
+          >
+            Title
+          </Typography>
+
+          <Typography
+            color={props.color}
+            typography="body1"
+          >
+            Body 1
+          </Typography>
+
+          <Typography
+            color={props.color}
+            typography="button"
+          >
+            Button
+          </Typography>
+        </div>
+      )}
+    </Sheet>
+  );
+}
+
 storiesOf('Basic Elements', module)
-  .add('Typography', (): Node => {
-    const color = select('Color', {
-      text: 'Text',
-      secondary: 'Secondary',
-      disabled: 'Disabled',
-      hint: 'Hint',
-      primary: 'Primary',
-      accent: 'Accent',
-    }, 'text');
-
-    return (
-      <Sheet>
-        {({ classes }) => (
-          <div className={classes.container}>
-            <Typography
-              color={color}
-              typography="headline"
-            >
-              Headline
-            </Typography>
-
-            <Typography
-              color={color}
-              typography="title"
-            >
-              Title
-            </Typography>
-
-            <Typography
-              color={color}
-              typography="body1"
-            >
-              Body 1
-            </Typography>
-
-            <Typography
-              color={color}
-              typography="button"
-            >
-              Button
-            </Typography>
-          </div>
-        )}
-      </Sheet>
-    );
-  });
+  .add('Typography', () => (
+    <Story
+      color={select('Color', {
+        text: 'Text',
+        secondary: 'Secondary',
+        disabled: 'Disabled',
+        hint: 'Hint',
+        primary: 'Primary',
+        accent: 'Accent',
+      }, 'text')}
+    />
+  ));

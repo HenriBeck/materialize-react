@@ -7,7 +7,7 @@ import createSheet from '../../styles/create-sheet';
 
 type Props = { children: Node };
 
-const Sheet = createSheet('Counter', {
+const Sheet = createSheet('TextField-Counter', {
   counter: {
     fontSize: 12,
     lineHeight: 1,

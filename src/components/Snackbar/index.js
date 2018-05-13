@@ -5,6 +5,7 @@ import React, {
   type Element,
   type ElementType,
 } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 import EventListener from 'react-event-listener';
@@ -12,10 +13,7 @@ import EventListener from 'react-event-listener';
 import createSheet from '../../styles/create-sheet';
 import { cloneElement } from '../../utils/react';
 import isDescendant from '../../utils/is-descendant';
-import {
-  only,
-  up,
-} from '../../utils/breakpoints';
+import { only } from '../../utils/breakpoints';
 import { type Theme } from '../../theme/types';
 import { themes } from '../../theme';
 
@@ -29,63 +27,77 @@ type Props = {
   className: string,
   isVisible: boolean,
   isAnimatingOut: boolean,
-  closeOnOutsideClick: boolean,
   autoCloseTimer: number,
   onCloseRequest: (
     type: 'action-click' | 'outside-click' | 'auto-close-timer',
-    ev?: SyntheticEvent<HTMLElement>,
+    ev?: SyntheticEvent<HTMLElement> | MouseEvent,
   ) => void,
   onRemoveRequest: () => void,
 };
-declare class MouseEvent<T: EventTarget> extends SyntheticMouseEvent<T> { target: HTMLElement }
 
 const Sheet = createSheet('Snackbar', (theme: Theme) => {
   return {
+    '@keyframes Snackbar--animate-in': {
+      from: { transform: 'translateY(100%)' },
+      to: { transform: 'translateY(0)' },
+    },
+
+    '@keyframes Snackbar--animate-out': {
+      from: { transform: 'translateY(0)' },
+      to: { transform: 'translateY(100%)' },
+    },
+
     snackbar: {
-      color: theme.type === 'dark' ? themes.light.text.primary : themes.dark.text.primary,
-      boxSizing: 'border-box',
-      padding: '14px 24px',
-      height: 48,
-      backgroundColor: theme.type === 'dark' ? '#ffffff' : '#323232',
+      padding: '0 8px',
+      width: 344,
+      borderRadius: 4,
+      minHeight: 48,
+      maxHeight: 68,
+      backgroundColor: 'rgba(0, 0, 0, 0.87)',
       position: 'absolute',
-      bottom: -48,
+      bottom: 0,
       display: 'flex',
-      justifyContent: 'space-between',
       alignItems: 'center',
-      transition: 'transform 200ms',
+      boxShadow: theme.elevation['6'],
+      color: themes.dark.text.primary,
       animationFillMode: 'forwards',
-      animationDuration: 250,
-      animationName: (data: Data) => (
-        data.isVisible
-          ? `snackbar--animate-${data.isAnimatingOut ? 'out' : 'in'}`
-          : null
-      ),
+      animationDuration: 200,
+      animationName: (data: Data) => `Snackbar--animate-${data.isAnimatingOut ? 'out' : 'in'}`,
 
-      [only(theme, 'mobile')]: { width: '100%' },
-
-      [up(theme, 'tablet')]: {
-        borderRadius: 2,
-        minWidth: 288,
-        maxWidth: 568,
+      [only(theme, 'mobile')]: {
+        width: '100%',
+        boxShadow: 'none',
       },
     },
 
-    action: {
-      marginLeft: 24,
-      marginRight: 0,
-
-      [up(theme, 'tablet')]: { marginLeft: 48 },
+    message: {
+      flex: 1,
+      padding: '14px 8px',
+      lineHeight: '20px',
+      fontSize: 14,
     },
+
+    action: { margin: 0 },
   };
 });
 
 export default class Snackbar extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    action: PropTypes.element,
+    className: PropTypes.string,
+    isVisible: PropTypes.bool,
+    isAnimatingOut: PropTypes.bool,
+    autoCloseTimer: PropTypes.number,
+    onCloseRequest: PropTypes.func,
+    onRemoveRequest: PropTypes.func,
+  };
+
   static defaultProps = {
     action: null,
     className: '',
     isVisible: false,
     isAnimatingOut: false,
-    closeOnOutsideClick: false,
     autoCloseTimer: 0,
     onRemoveRequest: noop,
     onCloseRequest: noop,
@@ -111,23 +123,25 @@ export default class Snackbar extends React.PureComponent<Props> {
 
   handleAnimationEnd = () => {
     if (this.props.isAnimatingOut) {
+      this.props.onRemoveRequest();
+    } else {
       this.isAnimatedIn = true;
 
-      this.props.onRemoveRequest();
-    } else if (this.props.autoCloseTimer > 0) {
-      this.timeout = setTimeout(() => {
-        this.props.onCloseRequest('auto-close-timer');
-      }, this.props.autoCloseTimer);
+      if (this.props.autoCloseTimer > 0) {
+        this.timeout = setTimeout(
+          () => this.props.onCloseRequest('auto-close-timer'),
+          this.props.autoCloseTimer,
+        );
+      }
     }
   };
 
-  handleWindowClick = (ev: MouseEvent<HTMLElement>) => {
-    ev.persist();
-
+  handleWindowClick = (ev: MouseEvent) => {
     if (ev.defaultPrevented || !this.isAnimatedIn) {
       return;
     }
 
+    // $FlowFixMe
     if (this.root.current && isDescendant(this.root.current, ev.target)) {
       return;
     }
@@ -148,10 +162,14 @@ export default class Snackbar extends React.PureComponent<Props> {
   };
 
   renderAction(className: string) {
-    return this.props.action ? cloneElement(this.props.action, {
-      className,
-      onPress: this.handleActionPress,
-    }) : null;
+    if (this.props.action) {
+      return cloneElement(this.props.action, {
+        onPress: this.handleActionPress,
+        className,
+      });
+    }
+
+    return null;
   }
 
   render() {
@@ -177,7 +195,9 @@ export default class Snackbar extends React.PureComponent<Props> {
               onAnimationEnd={this.handleAnimationEnd}
               {...getNotDeclaredProps(this.props, Snackbar)}
             >
-              {this.props.children}
+              <span className={classes.message}>
+                {this.props.children}
+              </span>
 
               {this.renderAction(classes.action)}
             </div>

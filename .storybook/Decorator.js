@@ -5,14 +5,17 @@ import { create } from 'jss';
 import preset from 'jss-preset-default';
 import { JssProvider } from 'react-jss';
 
-import Theme from '../src/components/Theme';
-import Background from '../src/components/Background';
-import Switch from '../src/components/Switch';
-import Layout from '../src/components/Layout';
-import Label from '../src/components/Label';
-import AppBar from '../src/components/AppBar';
-import Typography from '../src/components/Typography';
-import createSheet from '../src/styles/create-sheet';
+import {
+  Theme,
+  Background,
+  Switch,
+  Layout,
+  Label,
+  AppBar,
+  Typography,
+  createTheme,
+  createSheet,
+} from '../src';
 
 type Props = {
   children: Node,
@@ -46,21 +49,21 @@ const Sheet = createSheet('Decorator', {
 export default class Decorator extends React.PureComponent<Props, State> {
   state = { darkTheme: Boolean(window.sessionStorage.getItem('theme')) };
 
-  componentWillUnmount() {
+  saveTheme() {
     window.sessionStorage.setItem('theme', this.state.darkTheme);
   }
 
   handleChange = () => {
     this.setState(({ darkTheme }) => {
       return { darkTheme: !darkTheme };
-    });
+    }, () => this.saveTheme());
   };
 
   render() {
-    const theme = Theme.createTheme({
+    const theme = createTheme({
       type: this.state.darkTheme ? 'dark' : 'light',
-      primary: 'indigo',
-      accent: 'deepOrange',
+      primary: 'blue',
+      accent: 'yellow',
     });
 
     return (
@@ -69,10 +72,7 @@ export default class Decorator extends React.PureComponent<Props, State> {
           {({ classes }) => (
             <Theme theme={theme}>
               <Background className={classes.container}>
-                <AppBar
-                  color="primary"
-                  className={classes.toolbar}
-                >
+                <AppBar className={classes.toolbar}>
                   <Typography typography="title">
                     {this.props.info.kind.replace('/', ' > ')} &gt; {this.props.info.story}
                   </Typography>
@@ -80,7 +80,6 @@ export default class Decorator extends React.PureComponent<Props, State> {
                   <Label
                     control={(
                       <Switch
-                        color="accent"
                         toggled={this.state.darkTheme}
                         onChange={this.handleChange}
                       />

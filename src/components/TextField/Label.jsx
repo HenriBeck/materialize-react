@@ -24,7 +24,7 @@ type Data = {
   translateX: number,
 };
 
-const Sheet = createSheet('Label', {
+const Sheet = createSheet('TextField-Label', {
   label: {
     position: 'absolute',
     transitionDuration: 140,
@@ -32,11 +32,9 @@ const Sheet = createSheet('Label', {
     right: 0,
     top: 0,
     lineHeight: 1,
-
     transitionProperty: (data: Data) => (data.isFloating ? 'transform' : 'opacity'),
     fontSize: (data: Data) => (data.isActive && data.isFloating ? 12 : 16),
     opacity: (data: Data) => (data.hasValue && !data.isFloating ? 0 : 1),
-
     transform(data: Data) {
       const translateX = data.isActive && data.isFloating ? 0 : data.translateX;
       const floatingTranslate = data.hasValue || data.isFocused ? 16 : 36;

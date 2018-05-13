@@ -4,6 +4,7 @@ import React, {
   type ChildrenArray,
   type Element,
 } from 'react';
+import PropTypes from 'prop-types';
 
 import Backdrop from '../Backdrop';
 import createSheet from '../../styles/create-sheet';
@@ -20,7 +21,7 @@ type Props = {
 };
 type Data = { hasActiveDialog: boolean };
 
-const Sheet = createSheet('DialogContainer', (theme: Theme) => {
+const Sheet = createSheet('Dialog-Container', (theme: Theme) => {
   return {
     container: {
       position: 'fixed',
@@ -41,6 +42,11 @@ const Sheet = createSheet('DialogContainer', (theme: Theme) => {
 });
 
 export default class Container extends React.PureComponent<Props> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
+  };
+
   static defaultProps = { className: '' };
 
   static getCurrentDialog(props: Props): ?Element<typeof Dialog> {
@@ -85,7 +91,7 @@ export default class Container extends React.PureComponent<Props> {
         {({ classes }) => (
           <div
             aria-modal
-            className={`${classes.dialogContainer} ${this.props.className}`}
+            className={`${classes.container} ${this.props.className}`}
           >
             <Backdrop
               active={hasBackdrop}

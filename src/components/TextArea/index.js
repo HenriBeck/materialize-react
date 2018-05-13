@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -28,7 +29,7 @@ type Data = {
   hasError: boolean,
 };
 
-const Sheet = createSheet('TextArea', (theme: Theme): {} => {
+const Sheet = createSheet('TextArea', (theme: Theme) => {
   return {
     container: {
       display: 'flex',
@@ -72,11 +73,21 @@ const Sheet = createSheet('TextArea', (theme: Theme): {} => {
 });
 
 export default class TextArea extends React.PureComponent<Props, State> {
+  static propTypes = {
+    label: PropTypes.node.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    error: PropTypes.node,
+    helperText: PropTypes.node,
+    color: PropTypes.oneOf(['primary', 'accent']),
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+  };
+
   static defaultProps = {
-    error: '',
-    helperText: '',
+    error: null,
+    helperText: null,
     disabled: false,
-    textareaProps: {},
     color: 'primary',
     className: '',
   };
@@ -117,7 +128,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
                 hasValue={this.props.value.length > 0}
                 isFocused={this.state.isFocused}
                 disabled={this.props.disabled}
-                hasError={this.props.error.length > 0}
+                hasError={this.props.error !== null}
                 color={this.props.color}
               >
                 {this.props.label}

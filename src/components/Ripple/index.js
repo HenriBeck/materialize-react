@@ -2,6 +2,7 @@
 
 import React, { type Node } from 'react';
 import noop from 'lodash.noop';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
@@ -80,6 +81,19 @@ const Sheet = createSheet('Ripple', {
 });
 
 export default class Ripple extends React.PureComponent<Props, State> {
+  static propTypes = {
+    isFocused: PropTypes.bool,
+    focusOpacity: PropTypes.number,
+    focusColor: PropTypes.string,
+    initialOpacity: PropTypes.number,
+    className: PropTypes.string,
+    center: PropTypes.bool,
+    color: PropTypes.string,
+    round: PropTypes.bool,
+    nowaves: PropTypes.bool,
+    onPress: PropTypes.func,
+  };
+
   static defaultProps = {
     isFocused: false,
     focusOpacity: 0.12,

@@ -8,7 +8,7 @@ export type Data = {
   disabled: boolean,
 };
 
-export default createSheet('Button', (theme: Theme): { button: {} } => {
+export default createSheet('Button', (theme: Theme) => {
   return {
     button: {
       userSelect: 'none',
@@ -19,25 +19,20 @@ export default createSheet('Button', (theme: Theme): { button: {} } => {
       boxSizing: 'border-box',
       outline: 0,
       border: 0,
-      borderRadius: 2,
+      borderRadius: 4,
       margin: '0 8px',
       height: 36,
-      minWidth: 88,
+      minWidth: 64,
       padding: '0 8px',
-
-      color(data: Data): string | null {
-        return data.raised && !data.disabled ? theme.primary.contrastTextColor : null;
-      },
-      cursor(data: Data): string {
-        return data.disabled ? 'disabled' : 'pointer';
-      },
-      pointerEvents(data: Data): string {
-        return data.disabled ? 'none' : 'auto';
-      },
-      boxShadow(data: Data): string {
-        return data.raised && !data.disabled ? theme.elevation['2'] : 'none';
-      },
-      backgroundColor(data: Data): string {
+      color: (data: Data) => (
+        data.raised && !data.disabled
+          ? theme.primary.contrastTextColor
+          : null
+      ),
+      cursor: (data: Data) => (data.disabled ? 'disabled' : 'pointer'),
+      pointerEvents: (data: Data) => (data.disabled ? 'none' : 'auto'),
+      boxShadow: (data: Data) => theme.elevation[data.raised && !data.disabled ? '2' : '0'],
+      backgroundColor(data: Data) {
         if (data.disabled && data.raised) {
           return theme.divider;
         }

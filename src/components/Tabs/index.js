@@ -2,6 +2,7 @@
 
 import React, { type Node } from 'react';
 import noop from 'lodash.noop';
+import PropTypes from 'prop-types';
 import EventListener from 'react-event-listener';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
@@ -26,6 +27,15 @@ export const Context = React.createContext({
 });
 
 export default class Tabs extends React.PureComponent<Props, State> {
+  static propTypes = {
+    tab: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    tabStyle: PropTypes.oneOf(['text', 'text-and-icons', 'icons']),
+    className: PropTypes.string,
+    onChange: PropTypes.func,
+    color: PropTypes.oneOf(['primary', 'accent']),
+  };
+
   static defaultProps = {
     tabStyle: 'text',
     className: '',

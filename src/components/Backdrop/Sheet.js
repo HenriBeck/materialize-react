@@ -5,7 +5,7 @@ import { type Theme } from '../../theme/types';
 
 export type Data = { animationName: string | null };
 
-export default createSheet('Backdrop', (theme: Theme): {} => {
+export default createSheet('Backdrop', (theme: Theme) => {
   return {
     '@keyframes Backdrop--animate-out': {
       from: {
@@ -46,9 +46,7 @@ export default createSheet('Backdrop', (theme: Theme): {} => {
       animationDuration: 200,
       transform: 'scale(0)',
       opacity: 0,
-      animationName(data: Data): string | null {
-        return data.animationName;
-      },
+      animationName: (data: Data) => data.animationName,
     },
   };
 });

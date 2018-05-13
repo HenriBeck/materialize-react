@@ -51,7 +51,6 @@ export default createSheet('Progress', (theme: Theme): {} => {
       animationIterationCount: 'infinite',
       zIndex: 1,
       animationDuration: 2 * 1000,
-
       transformOrigin: (data: Data) => (data.indeterminate ? 'right center' : 'left center'),
       transform: (data: Data) => `scaleX(${data.progress / 100})`,
       animationName: (data: Data) => (data.indeterminate && data.active ? 'Progress--bar' : null),
@@ -67,7 +66,6 @@ export default createSheet('Progress', (theme: Theme): {} => {
         animationIterationCount: 'infinite',
         backgroundColor: theme.primary.light,
         animationDuration: 2 * 1000,
-
         height: (data: Data) => (data.indeterminate ? 4 : 0),
         animationName: (data: Data) => (
           data.indeterminate && data.active

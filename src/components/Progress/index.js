@@ -2,6 +2,8 @@
 
 import React from 'react';
 import clamp from 'clamp';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
 
@@ -12,17 +14,11 @@ type Props = {
   className: string,
 };
 
-function Progress({
-  progress: progressProp,
-  indeterminate,
-  active,
-  className,
-  ...props
-}: Props) {
-  const progress = clamp(progressProp, 0, 100);
+function Progress(props: Props) {
+  const progress = clamp(props.progress, 0, 100);
   const data: Data = {
-    indeterminate,
-    active,
+    indeterminate: props.indeterminate,
+    active: props.active,
     progress,
   };
 
@@ -30,9 +26,9 @@ function Progress({
     <Sheet data={data}>
       {({ classes }) => (
         <span
-          {...props}
+          {...getNotDeclaredProps(props, Progress)}
           role="progressbar"
-          className={`${classes.progress} ${className}`}
+          className={`${classes.progress} ${props.className}`}
           aria-valuenow={progress}
           aria-valuemax="100"
           aria-valuemin="0"
@@ -43,6 +39,13 @@ function Progress({
     </Sheet>
   );
 }
+
+Progress.propTypes = {
+  progress: PropTypes.number,
+  indeterminate: PropTypes.bool,
+  active: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Progress.defaultProps = {
   progress: 0,

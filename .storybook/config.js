@@ -11,10 +11,11 @@ import React, { StrictMode } from 'react';
 import whyDidYouUpdate from 'why-did-you-update';
 
 import 'normalize.css';
+import 'mdi/css/materialdesignicons.css';
 
 import Decorator from './Decorator';
 
-whyDidYouUpdate(React, { exclude: /^Sheet$/ });
+whyDidYouUpdate(React, { exclude: /^(Sheet|WrapStory)$/ });
 
 addDecorator((story, info) => (
   <StrictMode>

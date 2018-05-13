@@ -1,6 +1,8 @@
 // @flow strict
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
@@ -21,24 +23,25 @@ const Sheet = createSheet('Divider', (theme: Theme) => {
   };
 });
 
-function Divider({
-  vertical,
-  className,
-  ...props
-}: Props) {
-  const data: Data = { vertical };
+function Divider(props: Props) {
+  const data: Data = { vertical: props.vertical };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <div
-          {...props}
-          className={`${classes.divider} ${className}`}
+          className={`${classes.divider} ${props.className}`}
+          {...getNotDeclaredProps(props, Divider)}
         />
       )}
     </Sheet>
   );
 }
+
+Divider.propTypes = {
+  vertical: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Divider.defaultProps = {
   className: '',

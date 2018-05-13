@@ -5,6 +5,7 @@ import React, {
   type Element,
   type ElementType,
 } from 'react';
+import PropTypes from 'prop-types';
 import subscribeToContext from 'react-context-subscriber';
 
 import Typography from '../Typography';
@@ -30,6 +31,21 @@ type Props = {
 };
 
 class Tab extends React.PureComponent<Props> {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    context: PropTypes.shape({
+      onChange: PropTypes.func.isRequired,
+      createRef: PropTypes.func.isRequired,
+      selectedTab: PropTypes.func.isRequired,
+      tabStyle: PropTypes.oneOf(['text', 'text-and-icons', 'icons']).isRequired,
+      color: PropTypes.oneOf(['primary', 'accent']).isRequired,
+    }).isRequired,
+    children: PropTypes.node,
+    icon: PropTypes.element,
+    className: PropTypes.string,
+    noink: PropTypes.bool,
+  };
+
   static defaultProps = {
     children: null,
     icon: null,

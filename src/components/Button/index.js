@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -19,18 +20,40 @@ type Props = {
   raised: boolean,
   noink: boolean,
   className: string,
+  color: 'primary' | 'accent' | null,
 };
 type State = { isFocused: boolean };
 
 export default class Button extends React.PureComponent<Props, State> {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    onPress: PropTypes.func,
+    disabled: PropTypes.bool,
+    raised: PropTypes.bool,
+    noink: PropTypes.bool,
+    className: PropTypes.string,
+    color: PropTypes.oneOf(['primary', 'accent']),
+  };
+
   static defaultProps = {
     disabled: false,
     raised: false,
     noink: false,
     className: '',
+    color: null,
   };
 
   state = { isFocused: false };
+
+  getColor() {
+    if (this.props.disabled) {
+      return 'disabled';
+    } else if (this.props.raised) {
+      return null;
+    }
+
+    return this.props.color;
+  }
 
   handleFocus = () => {
     this.setState({ isFocused: true });
@@ -60,7 +83,7 @@ export default class Button extends React.PureComponent<Props, State> {
             typography="button"
             role="button"
             element="button"
-            color={this.props.disabled ? 'disabled' : 'text'}
+            color={this.getColor()}
             className={`${classes.button} ${this.props.className}`}
             tabIndex={this.props.disabled ? -1 : 0}
             aria-disabled={this.props.disabled}

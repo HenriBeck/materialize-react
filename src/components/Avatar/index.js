@@ -1,6 +1,7 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Sheet, { type Data } from './Sheet';
@@ -15,6 +16,15 @@ type Props = {
 };
 
 export default class Avatar extends React.Component<Props> {
+  static propTypes = {
+    type: PropTypes.oneOf(['img', 'name']).isRequired,
+    src: PropTypes.string,
+    bgColor: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  };
+
   static defaultProps = {
     size: '100%',
     src: '',

@@ -40,7 +40,6 @@ export default createSheet('Radio', (theme: Theme): {} => {
       bottom: 0,
       borderWidth: 2,
       transition: 'border-color 200ms',
-
       borderColor(data: Data) {
         if (data.disabled) {
           return theme.disabled;

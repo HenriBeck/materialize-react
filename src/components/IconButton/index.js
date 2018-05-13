@@ -1,10 +1,10 @@
 // @flow strict
 
 import React, {
-  type Node,
   type Element,
   type ElementType,
 } from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -26,12 +26,23 @@ type Props = {
 type State = { isFocused: boolean };
 
 export default class IconButton extends React.PureComponent<Props, State> {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    onPress: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    noink: PropTypes.bool,
+    className: PropTypes.string,
+    size: PropTypes.number,
+  };
+
   static defaultProps = {
     disabled: false,
     noink: false,
     className: '',
     size: 48,
   };
+
+  state = { isFocused: false };
 
   handleFocus = () => {
     this.setState({ isFocused: true });
@@ -47,7 +58,7 @@ export default class IconButton extends React.PureComponent<Props, State> {
     }
   };
 
-  render(): Node {
+  render() {
     const data: Data = {
       disabled: this.props.disabled,
       size: this.props.size,

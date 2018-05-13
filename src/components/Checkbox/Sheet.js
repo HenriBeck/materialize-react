@@ -4,17 +4,13 @@ import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
 import { getActiveColor } from '../../theme/utils';
 
-type Styles = {
-  checkbox: {},
-  icon: {},
-};
 export type Data = {
   disabled: boolean,
   checked: boolean,
   color: 'primary' | 'accent',
 };
 
-export default createSheet('Checkbox', (theme: Theme): Styles => {
+export default createSheet('Checkbox', (theme: Theme) => {
   return {
     checkbox: {
       display: 'inline-block',
@@ -27,15 +23,13 @@ export default createSheet('Checkbox', (theme: Theme): Styles => {
       outline: 0,
       padding: 8,
       backgroundColor: 'inherit',
-      cursor(data: Data): string {
-        return data.disabled ? 'disabled' : 'pointer';
-      },
-      pointerEvents(data: Data): string {
-        return data.disabled ? 'none' : 'auto';
-      },
-      color(data: Data): string {
-        return data.checked ? getActiveColor(theme, data.color) : theme.text.secondary;
-      },
+      cursor: (data: Data) => (data.disabled ? 'disabled' : 'pointer'),
+      pointerEvents: (data: Data) => (data.disabled ? 'none' : 'auto'),
+      color: (data: Data) => (
+        data.checked
+          ? getActiveColor(theme, data.color)
+          : theme.text.secondary
+      ),
     },
 
     icon: {
@@ -44,8 +38,7 @@ export default createSheet('Checkbox', (theme: Theme): Styles => {
       left: 12,
       right: 12,
       bottom: 12,
-
-      color(data: Data): string {
+      color(data: Data) {
         if (data.disabled) {
           return theme.disabled;
         }

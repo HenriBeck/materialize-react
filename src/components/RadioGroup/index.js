@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Layout from '../Layout';
 
@@ -15,29 +17,30 @@ const Context = React.createContext({
   onChange: () => null,
 });
 
-function RadioGroup({
-  selected,
-  onChange,
-  children,
-  ...props
-}: Props) {
+function RadioGroup(props: Props) {
+  const context = {
+    selected: props.selected,
+    onChange: props.onChange,
+  };
+
   return (
     <Layout
       inline
       direction="column"
-      {...props}
+      {...getNotDeclaredProps(props, Layout)}
     >
-      <Context.Provider
-        value={{
-          selected,
-          onChange,
-        }}
-      >
-        {children}
+      <Context.Provider value={context}>
+        {props.children}
       </Context.Provider>
     </Layout>
   );
 }
+
+RadioGroup.propTypes = {
+  selected: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export { Context };
 

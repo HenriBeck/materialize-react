@@ -72,13 +72,13 @@ storiesOf('Interactive Elements/Tabs', module)
       }, 'primary')}
       tabs={[{
         name: 'test1',
-        icon: <Icon icon="settings" />,
+        icon: <Icon>settings</Icon>,
       }, {
         name: 'test2',
-        icon: <Icon icon="bell" />,
+        icon: <Icon>bell</Icon>,
       }, {
         name: 'test3',
-        icon: <Icon icon="account" />,
+        icon: <Icon>account</Icon>,
       }]}
     />
   ))
@@ -92,15 +92,15 @@ storiesOf('Interactive Elements/Tabs', module)
       tabs={[{
         name: 'test1',
         children: 'Test 1',
-        icon: <Icon icon="settings" />,
+        icon: <Icon>settings</Icon>,
       }, {
         name: 'test2',
         children: 'Test 2',
-        icon: <Icon icon="bell" />,
+        icon: <Icon>bell</Icon>,
       }, {
         name: 'test3',
         children: 'Test 3',
-        icon: <Icon icon="account" />,
+        icon: <Icon>account</Icon>,
       }]}
     />
   ));

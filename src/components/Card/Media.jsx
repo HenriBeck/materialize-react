@@ -1,6 +1,8 @@
 // @flow strict
 
-import React, { type Node } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -10,32 +12,33 @@ type Props = {
   url: string,
 };
 
-const Sheet = createSheet('Media', {
+const Sheet = createSheet('Card-Media', {
   media: {
     width: '100%',
     height: 'auto',
   },
 });
 
-function Media({
-  className,
-  alt,
-  url,
-  ...props
-}: Props): Node {
+function Media(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <img
-          {...props}
-          alt={alt}
-          className={`${classes.media} ${className}`}
-          src={url}
+          alt={props.alt}
+          className={`${classes.media} ${props.className}`}
+          src={props.url}
+          {...getNotDeclaredProps(props, Media)}
         />
       )}
     </Sheet>
   );
 }
+
+Media.propTypes = {
+  url: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+  className: PropTypes.string,
+};
 
 Media.defaultProps = {
   className: '',

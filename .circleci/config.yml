@@ -4,7 +4,7 @@ jobs:
   lint:
     working_directory: ~/materialize-react
     docker:
-      - image: circleci/node:6@sha256:575a3e2e090b30f69ed14b1137e49d6cb4cfbbab69c182de40349b690bf8a7e3
+      - image: circleci/node:8@sha256:2a62e79a70c80b83671a8d06523fe34c8773c0aa9d33f635acf02643c861316f
     steps:
       - checkout
       - run:
@@ -17,7 +17,7 @@ jobs:
   flow:
     working_directory: ~/materialize-react
     docker:
-      - image: circleci/node:6@sha256:575a3e2e090b30f69ed14b1137e49d6cb4cfbbab69c182de40349b690bf8a7e3
+      - image: circleci/node:8@sha256:2a62e79a70c80b83671a8d06523fe34c8773c0aa9d33f635acf02643c861316f
     steps:
       - checkout
       - run:
@@ -30,7 +30,7 @@ jobs:
   test:
     working_directory: ~/materialize-react
     docker:
-      - image: circleci/node:8@sha256:744c0829877ab7f73473d0553f1df84efc9d50f4cdc1cd256a4b0c271834b40d
+      - image: circleci/node:8@sha256:2a62e79a70c80b83671a8d06523fe34c8773c0aa9d33f635acf02643c861316f
     steps:
       - checkout
       - run:
@@ -43,7 +43,7 @@ jobs:
   build:
     working_directory: ~/materialize-react
     docker:
-      - image: circleci/node:8@sha256:744c0829877ab7f73473d0553f1df84efc9d50f4cdc1cd256a4b0c271834b40d
+      - image: circleci/node:8@sha256:2a62e79a70c80b83671a8d06523fe34c8773c0aa9d33f635acf02643c861316f
     steps:
       - checkout
       - run:

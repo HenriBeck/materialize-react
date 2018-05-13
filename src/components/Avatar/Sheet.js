@@ -13,7 +13,7 @@ export type Data = {
   bgColor: string,
 };
 
-export default createSheet('Avatar', (theme: Theme): {} => {
+export default createSheet('Avatar', (theme: Theme) => {
   return {
     avatar: {
       borderRadius: '50%',
@@ -21,26 +21,16 @@ export default createSheet('Avatar', (theme: Theme): {} => {
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      height(data: Data) {
-        return data.size;
-      },
-      width(data: Data) {
-        return data.size;
-      },
-      backgroundColor(data: Data) {
-        return data.type === 'img' ? theme.disabled : data.bgColor;
-      },
-      color(data: Data) {
-        if (data.type === 'name') {
-          return getContrastColor({
-            background: data.bgColor,
-            lightColor: '#ffffff',
-            darkColor: 'rgba(0, 0, 0, 0.87)',
-          });
-        }
-
-        return null;
-      },
+      height: (data: Data) => data.size,
+      width: (data: Data) => data.size,
+      backgroundColor: (data: Data) => (data.type === 'img' ? theme.disabled : data.bgColor),
+      color: (data: Data) => (
+        data.type === 'name' ? getContrastColor({
+          background: data.bgColor,
+          lightColor: '#ffffff',
+          darkColor: 'rgba(0, 0, 0, 0.87)',
+        }) : null
+      ),
     },
   };
 });

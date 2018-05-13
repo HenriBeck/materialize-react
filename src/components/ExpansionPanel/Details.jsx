@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -9,7 +11,7 @@ type Props = {
   children: Node,
 };
 
-const Sheet = createSheet('ExpansionPanelDetails', {
+const Sheet = createSheet('ExpansionPanel-Details', {
   details: {
     display: 'flex',
     flexGrow: 1,
@@ -17,24 +19,25 @@ const Sheet = createSheet('ExpansionPanelDetails', {
   },
 });
 
-function Details({
-  className,
-  children,
-  ...props
-}: Props) {
+function Details(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div
-          className={`${classes.details}${className}`}
-          {...props}
+          className={`${classes.details} ${props.className}`}
+          {...getNotDeclaredProps(props, Details)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Details.propTypes = {
+  node: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Details.defaultProps = { className: '' };
 

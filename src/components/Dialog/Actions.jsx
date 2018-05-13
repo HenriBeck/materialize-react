@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 
@@ -9,7 +11,7 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('DialogActions', {
+const Sheet = createSheet('Dialog-Actions', {
   actions: {
     padding: 8,
     width: '100%',
@@ -22,24 +24,25 @@ const Sheet = createSheet('DialogActions', {
   },
 });
 
-function Actions({
-  children,
-  className,
-  ...props
-}: Props) {
+function Actions(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div
-          className={`${classes.actions} ${className}`}
-          {...props}
+          className={`${classes.actions} ${props.className}`}
+          {...getNotDeclaredProps(props, Actions)}
         >
-          {children}
+          {props.children}
         </div>
       )}
     </Sheet>
   );
 }
+
+Actions.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Actions.defaultProps = { className: '' };
 

@@ -1,7 +1,9 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Icon from '../Icon';
 import createSheet from '../../styles/create-sheet';
@@ -14,7 +16,7 @@ type Props = {
 };
 type Data = { expanded: boolean };
 
-const Sheet = createSheet('ExpansionPanelSummary', {
+const Sheet = createSheet('ExpansionPanel-Summary', {
   summary: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -41,23 +43,18 @@ const Sheet = createSheet('ExpansionPanelSummary', {
   },
 });
 
-function Summary({
-  expanded,
-  className,
-  children,
-  ...props
-}: Props): Node {
-  const data: Data = { expanded };
+function Summary(props: Props) {
+  const data: Data = { expanded: props.expanded };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <div
-          className={`${classes.summary} ${className}`}
-          {...props}
+          className={`${classes.summary} ${props.className}`}
+          {...getNotDeclaredProps(props, Summary)}
         >
           <div className={classes.content}>
-            {children}
+            {props.children}
           </div>
 
           <IconButton
@@ -65,13 +62,19 @@ function Summary({
             className={classes.expandIcon}
             onPress={noop}
           >
-            <Icon icon="chevron-down" />
+            <Icon>chevron-down</Icon>
           </IconButton>
         </div>
       )}
     </Sheet>
   );
 }
+
+Summary.propTypes = {
+  expanded: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Summary.defaultProps = {
   expanded: false,

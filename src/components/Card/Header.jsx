@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import Typography from '../Typography';
@@ -13,7 +15,7 @@ type Props = {
 };
 type Data = { withAvatar: boolean };
 
-const Sheet = createSheet('Header', {
+const Sheet = createSheet('Card-Header', {
   header: {
     display: 'flex',
     flexDirection: 'row',
@@ -48,26 +50,20 @@ const Sheet = createSheet('Header', {
   },
 });
 
-function Header({
-  className,
-  avatar,
-  children,
-  subtitle,
-  ...props
-}: Props): Node {
-  const withAvatar = Boolean(avatar);
+function Header(props: Props) {
+  const withAvatar = Boolean(props.avatar);
   const data: Data = { withAvatar };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <header
-          className={`${classes.header} ${className}`}
-          {...props}
+          className={`${classes.header} ${props.className}`}
+          {...getNotDeclaredProps(props, Header)}
         >
           {withAvatar && (
             <span className={classes.avatar}>
-              {avatar}
+              {props.avatar}
             </span>
           )}
 
@@ -76,16 +72,16 @@ function Header({
               typography={withAvatar ? 'body' : 'headline'}
               className={classes.title}
             >
-              {children}
+              {props.children}
             </Typography>
 
-            {Boolean(subtitle) && (
+            {props.subtitle && (
               <Typography
                 color="secondary"
                 typography="body"
                 className={classes.subtitle}
               >
-                {subtitle}
+                {props.subtitle}
               </Typography>
             )}
           </div>
@@ -95,8 +91,15 @@ function Header({
   );
 }
 
+Header.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  avatar: PropTypes.node,
+  subtitle: PropTypes.node,
+};
+
 Header.defaultProps = {
-  subtitle: '',
+  subtitle: null,
   avatar: null,
   className: '',
 };

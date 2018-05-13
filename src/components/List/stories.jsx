@@ -86,11 +86,11 @@ storiesOf('List', module)
   ))
   .add('Inset List with icon', () => (
     <List style={styles}>
-      <List.Item leftItem={<Icon icon="account" />}>List item 1</List.Item>
-      <List.Item leftItem={<Icon icon="account" />}>List item 2</List.Item>
-      <List.Item leftItem={<Icon icon="account" />}>List item 3</List.Item>
-      <List.Item leftItem={<Icon icon="account" />}>List item 4</List.Item>
-      <List.Item leftItem={<Icon icon="account" />}>List item 5</List.Item>
+      <List.Item leftItem={<Icon>account</Icon>}>List item 1</List.Item>
+      <List.Item leftItem={<Icon>account</Icon>}>List item 2</List.Item>
+      <List.Item leftItem={<Icon>account</Icon>}>List item 3</List.Item>
+      <List.Item leftItem={<Icon>account</Icon>}>List item 4</List.Item>
+      <List.Item leftItem={<Icon>account</Icon>}>List item 5</List.Item>
     </List>
   ))
   .add('Inset List with Avatar', () => (
@@ -115,7 +115,7 @@ storiesOf('List', module)
     <List style={styles}>
       <List.Subheader>Settings</List.Subheader>
       <List.Item
-        leftItem={<Icon icon="wifi" />}
+        leftItem={<Icon>wifi</Icon>}
         rightItem={(
           <Switch
             toggled
@@ -126,7 +126,7 @@ storiesOf('List', module)
         Wi-Fi
       </List.Item>
       <List.Item
-        leftItem={<Icon icon="bluetooth" />}
+        leftItem={<Icon>bluetooth</Icon>}
         rightItem={(
           <Switch
             toggled={false}

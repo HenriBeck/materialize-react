@@ -50,7 +50,7 @@ class DrawerStory extends React.PureComponent<Props, State> {
             Drawer Content
 
             <IconButton onPress={this.handleDrawerClose}>
-              <Icon icon="close" />
+              <Icon>close</Icon>
             </IconButton>
           </div>
         )}
@@ -58,7 +58,7 @@ class DrawerStory extends React.PureComponent<Props, State> {
       >
         <div style={{ padding: 32 }}>
           <IconButton onPress={this.handleDrawerOpen}>
-            <Icon icon="menu" />
+            <Icon>menu</Icon>
           </IconButton>
 
           Main Content

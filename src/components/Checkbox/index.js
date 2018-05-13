@@ -1,6 +1,7 @@
 // @flow strict
 
-import React, { type Node } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Ripple from '../Ripple';
@@ -22,11 +23,21 @@ type Props = {
 type State = { isFocused: boolean };
 
 export default class Checkbox extends React.PureComponent<Props, State> {
+  static propTypes = {
+    checked: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+    color: PropTypes.oneOf(['primary', 'accent']),
+  };
+
   static defaultProps = {
     disabled: false,
     className: '',
     color: 'primary',
   };
+
+  state = { isFocused: false };
 
   handleFocus = () => {
     this.setState({ isFocused: true });
@@ -51,7 +62,7 @@ export default class Checkbox extends React.PureComponent<Props, State> {
     }
   };
 
-  render(): Node {
+  render() {
     const data: Data = {
       disabled: this.props.disabled,
       checked: this.props.checked,
@@ -74,10 +85,11 @@ export default class Checkbox extends React.PureComponent<Props, State> {
             onClick={this.handleClick}
           >
             <Icon
-              icon={this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
               size={24}
               className={classes.icon}
-            />
+            >
+              {this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
+            </Icon>
 
             <Ripple
               round

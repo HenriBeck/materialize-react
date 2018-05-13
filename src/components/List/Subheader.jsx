@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import createSheet from '../../styles/create-sheet';
 import Typography from '../Typography';
@@ -12,7 +14,7 @@ type Props = {
 };
 type Data = { inset: boolean };
 
-const Sheet = createSheet('Subheader', {
+const Sheet = createSheet('List-Subheader', {
   subheader: {
     position: 'relative',
     padding: 16,
@@ -20,36 +22,35 @@ const Sheet = createSheet('Subheader', {
     boxSizing: 'border-box',
     width: '100%',
     lineHeight: '16px',
-    paddingLeft(data: Data): number | null {
-      return data.inset ? 72 : null;
-    },
+    paddingLeft: (data: Data) => (data.inset ? 72 : null),
   },
 });
 
-function Subheader({
-  children,
-  inset,
-  className,
-  ...props
-}: Props) {
-  const data: Data = { inset };
+function Subheader(props: Props) {
+  const data: Data = { inset: props.inset };
 
   return (
     <Sheet data={data}>
       {({ classes }) => (
         <Typography
-          {...props}
+          {...getNotDeclaredProps(props, Subheader)}
           element="li"
           color="secondary"
           typography="body"
-          className={`${classes.subheader} ${className}`}
+          className={`${classes.subheader} ${props.className}`}
         >
-          {children}
+          {props.children}
         </Typography>
       )}
     </Sheet>
   );
 }
+
+Subheader.propTypes = {
+  children: PropTypes.node.isRequired,
+  inset: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 Subheader.defaultProps = {
   inset: false,

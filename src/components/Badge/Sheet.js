@@ -6,7 +6,7 @@ import { getActiveColor } from '../../theme/utils';
 
 export type Data = { color: 'primary' | 'accent' };
 
-export default createSheet('Badge', (theme: Theme): { badge: {} } => {
+export default createSheet('Badge', (theme: Theme) => {
   return {
     badge: {
       display: 'inline-flex',
@@ -22,10 +22,8 @@ export default createSheet('Badge', (theme: Theme): { badge: {} } => {
       borderRadius: '50%',
       lineHeight: 1,
       fontSize: 11,
-      backgroundColor(data: Data): string {
-        return getActiveColor(theme, data.color);
-      },
-      color(data: Data): string {
+      backgroundColor: (data: Data) => getActiveColor(theme, data.color),
+      color(data: Data) {
         switch (data.color) {
           case 'primary': return theme.primary.contrastTextColor;
           case 'accent': return theme.accent.contrastTextColor;

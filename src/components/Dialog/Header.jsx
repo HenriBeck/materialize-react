@@ -1,6 +1,8 @@
 // @flow strict
 
 import React, { type Node } from 'react';
+import PropTypes from 'prop-types';
+import getNotDeclaredProps from 'react-get-not-declared-props';
 
 import Typography from '../Typography';
 import createSheet from '../../styles/create-sheet';
@@ -10,8 +12,8 @@ type Props = {
   className: string,
 };
 
-const Sheet = createSheet('DialogContent', {
-  content: {
+const Sheet = createSheet('Dialog-Header', {
+  header: {
     padding: 24,
     paddingBottom: 20,
     width: '100%',
@@ -19,26 +21,27 @@ const Sheet = createSheet('DialogContent', {
   },
 });
 
-function Header({
-  className,
-  children,
-  ...props
-}: Props): Node {
+function Header(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <Typography
           typography="title"
           element="header"
-          className={`${classes.header} ${className}`}
-          {...props}
+          className={`${classes.header} ${props.className}`}
+          {...getNotDeclaredProps(props, Header)}
         >
-          {children}
+          {props.children}
         </Typography>
       )}
     </Sheet>
   );
 }
+
+Header.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
 Header.defaultProps = { className: '' };
 
