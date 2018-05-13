@@ -9,10 +9,7 @@ src/
 node_modules/jss/flow-typed
 
 [lints]
-sketchy-null=error
-unclear-type=warn
-untyped-import=warn
-untyped-type-import=error
+all=error
 
 [options]
 emoji=true
