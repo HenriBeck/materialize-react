@@ -128,7 +128,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
                 hasValue={this.props.value.length > 0}
                 isFocused={this.state.isFocused}
                 disabled={this.props.disabled}
-                hasError={this.props.error.length > 0}
+                hasError={this.props.error !== null}
                 color={this.props.color}
               >
                 {this.props.label}
