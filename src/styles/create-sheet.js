@@ -3,10 +3,8 @@
 import React, { type Node } from 'react';
 import { jss as jssNs } from 'react-jss/lib/ns';
 import { createTheming } from 'react-jss';
-import {
-  SheetsManager,
-  getDynamicStyles,
-} from 'jss';
+import { getDynamicStyles } from 'jss';
+import SheetsManager from 'jss/lib/SheetsManager';
 import Jss from 'jss/lib/Jss';
 import contextTypes from 'react-jss/lib/contextTypes';
 import StyleSheet from 'jss/lib/StyleSheet';

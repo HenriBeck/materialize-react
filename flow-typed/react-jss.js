@@ -40,8 +40,6 @@ declare module 'react-jss' {
     },
   };
 
-  declare export function withTheme<P: {}>(Component: ComponentType<P>): ComponentType<P>;
-
   declare export default typeof injectSheet;
 }
 
@@ -54,10 +52,4 @@ declare module 'react-jss/lib/ns' {
 
 declare module 'react-jss/lib/contextTypes' {
   declare export default {};
-}
-
-declare module 'jss-preset-default' {
-  declare function preset(): void;
-
-  declare export default typeof preset;
 }
