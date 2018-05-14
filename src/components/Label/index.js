@@ -13,7 +13,7 @@ import Typography from '../Typography';
 import Sheet, { type Data } from './Sheet';
 
 type Props = {
-  control: Element<ComponentType<Object>>, // eslint-disable-line flowtype/no-weak-types
+  control: Element<ComponentType<{}>>,
   children: Node,
   className: string,
   disabled: boolean,
