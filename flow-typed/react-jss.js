@@ -9,8 +9,6 @@ import Jss from 'jss/lib/Jss';
 import { type Rule } from 'jss/lib/types';
 import StyleSheet from 'jss/lib/StyleSheet';
 
-declare type StaticClasses<S> = { [keys: $Keys<S>]: string };
-
 declare module 'react-jss' {
   declare type StaticStyles = { [key: string]: {} };
   declare type ThemedStyles = (theme: {}) => StaticStyles;
@@ -41,8 +39,6 @@ declare module 'react-jss' {
       unsubscribe: (context: {}, subId: string) => void,
     },
   };
-
-  declare export function withTheme<P: {}>(Component: ComponentType<P>): ComponentType<P>;
 
   declare export default typeof injectSheet;
 }

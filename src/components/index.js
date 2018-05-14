@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import AppBar from './AppBar';
 import Avatar from './Avatar';

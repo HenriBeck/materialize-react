@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import { type Device } from '../theme/breakpoints';
 import { type Theme } from '../theme/types';

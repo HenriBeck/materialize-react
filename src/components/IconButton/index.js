@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import React, {
   type Element,
@@ -77,6 +77,8 @@ export default class IconButton extends React.PureComponent<Props, State> {
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
           >
+            {React.cloneElement(this.props.children, { disabled: this.props.disabled })}
+
             <Ripple
               round
               center
@@ -84,8 +86,6 @@ export default class IconButton extends React.PureComponent<Props, State> {
               isFocused={this.state.isFocused}
               onPress={this.props.onPress}
             />
-
-            {React.cloneElement(this.props.children, { disabled: this.props.disabled })}
           </span>
         )}
       </Sheet>

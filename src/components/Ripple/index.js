@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import React, { type Node } from 'react';
 import noop from 'lodash.noop';
@@ -28,13 +28,13 @@ type Props = {
   onPress: (ev: Event) => void,
 };
 type State = {
-  waves: $ReadOnlyArray<{
+  waves: $ReadOnlyArray<{|
     id: number,
     animatingOut: boolean,
     radius: number,
     startPosX: number,
     startPosY: number,
-  }>,
+  |}>,
 };
 type Data = {
   round: boolean,
@@ -158,18 +158,25 @@ export default class Ripple extends React.PureComponent<Props, State> {
       startPosY: startPos.y,
     };
 
-    this.setState(({ waves }: State): State => {
+    this.setState(({ waves }) => {
       return { waves: [...waves, wave] };
     });
   };
 
   handleRelease = () => {
-    this.setState(({ waves }: State): State | null => {
+    this.setState(({ waves }) => {
       if (waves.length === 0) {
         return null;
       }
 
-      return { waves: waves.map(wave => Object.assign({}, wave, { animatingOut: true })) };
+      return {
+        waves: waves.map((wave) => {
+          return {
+            ...wave,
+            animatingOut: true,
+          };
+        }),
+      };
     });
   };
 

@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 type Breakpoints = {
   mobile: [null, number],

@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import React from 'react';
 import clamp from 'clamp';
@@ -80,7 +80,7 @@ export default class Slider extends React.PureComponent<Props, State> {
       : this.props.value;
   }
 
-  get thumbTransform() {
+  getThumbTransform() {
     const draggingScale = this.state.isDragging ? ' scale(1.5)' : '';
     const disabledScale = this.props.disabled ? ' scale(0.75)' : '';
 
@@ -134,7 +134,7 @@ export default class Slider extends React.PureComponent<Props, State> {
   render() {
     const value = clamp(this.props.value, 0, 100);
     const data: Data = {
-      thumbTransform: this.thumbTransform,
+      thumbTransform: this.getThumbTransform(),
       isActive: this.props.value > 0,
       disabled: this.props.disabled,
       value,
