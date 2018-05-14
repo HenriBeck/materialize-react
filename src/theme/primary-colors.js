@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import { getContrastColor } from '../styles/utils';
 import {

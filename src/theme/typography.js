@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 type Typography = {|
   headline: { [key: string]: string | number },

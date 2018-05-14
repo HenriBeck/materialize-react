@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import { type Elevations } from './elevation';
 import { type Typography } from './typography';

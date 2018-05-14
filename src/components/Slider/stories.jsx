@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import React, { type Node } from 'react';
 import { storiesOf } from '@storybook/react';

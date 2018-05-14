@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 export default function isDescendant(el: HTMLElement, target: ?HTMLElement) {
   if (target) {

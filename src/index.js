@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 // Styles
 import createSheet from './styles/create-sheet';
