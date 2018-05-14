@@ -9,8 +9,6 @@ import Jss from 'jss/lib/Jss';
 import { type Rule } from 'jss/lib/types';
 import StyleSheet from 'jss/lib/StyleSheet';
 
-declare type StaticClasses<S> = { [keys: $Keys<S>]: string };
-
 declare module 'react-jss' {
   declare type StaticStyles = { [key: string]: {} };
   declare type ThemedStyles = (theme: {}) => StaticStyles;
@@ -56,4 +54,10 @@ declare module 'react-jss/lib/ns' {
 
 declare module 'react-jss/lib/contextTypes' {
   declare export default {};
+}
+
+declare module 'jss-preset-default' {
+  declare function preset(): void;
+
+  declare export default typeof preset;
 }
