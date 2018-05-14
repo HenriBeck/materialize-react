@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 type Elevation = '0' | '2' | '3' | '4' | '6' | '8' | '12' | '16' | '24';
 type Elevations = { [key: Elevation]: string };

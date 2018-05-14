@@ -1,5 +1,5 @@
 // eslint-disable-line max-lines
-// @flow strict
+// @flow strict-local
 
 type Shade = '50'
   | '100'

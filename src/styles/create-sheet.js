@@ -1,12 +1,10 @@
-// @flow strict
+// @flow strict-local
 
 import React, { type Node } from 'react';
 import { jss as jssNs } from 'react-jss/lib/ns';
-import defaultTheming from 'theming';
-import {
-  SheetsManager,
-  getDynamicStyles,
-} from 'jss';
+import { createTheming } from 'react-jss';
+import { getDynamicStyles } from 'jss';
+import SheetsManager from 'jss/lib/SheetsManager';
 import Jss from 'jss/lib/Jss';
 import contextTypes from 'react-jss/lib/contextTypes';
 import StyleSheet from 'jss/lib/StyleSheet';
@@ -29,7 +27,7 @@ type Props = {
 };
 
 let indexCounter = -100000; // eslint-disable-line fp/no-let
-const { themeListener } = defaultTheming;
+const { themeListener } = createTheming();
 const DynamicStylesMap = new Map();
 const noTheme = {};
 
@@ -53,12 +51,10 @@ export default function createSheet(name: string, styles: Styles) {
     constructor(props: Props, context: Context) {
       super(props, context);
 
-      this.dynamicSheet = null;
-      this.unsubscribeId = null;
-
       const initialTheme = isThemingEnabled ? themeListener.initial(context) : noTheme;
 
       this.state = this.createState(initialTheme);
+      this.jss = context[jssNs];
 
       if (isThemingEnabled) {
         this.unsubscribeId = themeListener.subscribe(context, this.handleThemeUpdate);
@@ -83,13 +79,11 @@ export default function createSheet(name: string, styles: Styles) {
       }
     }
 
-    dynamicSheet: StyleSheet | null;
+    dynamicSheet: StyleSheet | null = null;
 
-    unsubscribeId: string | null;
+    unsubscribeId: string | null = null;
 
-    get jss(): Jss {
-      return this.context[jssNs];
-    }
+    jss: Jss;
 
     createStaticSheet(theme: Theme): StyleSheet {
       const compiledStyles = typeof styles === 'function' ? styles(theme) : styles;

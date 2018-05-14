@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import React, { type Node } from 'react';
 import { storiesOf } from '@storybook/react';
@@ -10,13 +10,13 @@ import {
 
 import TextArea from '.';
 
-type Props = {
+type Props = {|
   label: Node,
   error: Node,
   helperText: Node,
   disabled: boolean,
   color: 'primary' | 'accent',
-};
+|};
 type State = { value: string };
 
 class Story extends React.PureComponent<Props, State> {

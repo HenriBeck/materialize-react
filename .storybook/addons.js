@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import '@storybook/addon-actions/register';
 import '@storybook/addon-knobs/register';

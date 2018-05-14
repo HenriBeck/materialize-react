@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import React, { type Node } from 'react';
 import { storiesOf } from '@storybook/react';
@@ -6,7 +6,7 @@ import { boolean } from '@storybook/addon-knobs';
 
 import Slider from '.';
 
-class Story extends React.PureComponent<{}, { value: number }> {
+class Story extends React.PureComponent<{| disabled: boolean |}, { value: number }> {
   state = { value: 50 };
 
   handleChange = (value: number) => {

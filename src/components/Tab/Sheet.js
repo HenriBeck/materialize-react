@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';

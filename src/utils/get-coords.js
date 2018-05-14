@@ -1,4 +1,4 @@
-// @flow strict
+// @flow strict-local
 
 type Event = SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>;
 
