@@ -1,6 +1,9 @@
 // @flow strict-local
 
-import React from 'react';
+import React, {
+  type Element,
+  type ElementType,
+} from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
 
@@ -10,10 +13,11 @@ import Icon from '../Icon';
 import Tabs from '.';
 
 type Props = {
-  tabs: $ReadOnlyArray<{
+  tabs: $ReadOnlyArray<{|
     name: string,
     children?: string,
-  }>,
+    icon?: Element<ElementType>,
+  |}>,
   color: 'primary' | 'accent',
   tabStyle: 'text' | 'icons' | 'text-and-icons',
 };
