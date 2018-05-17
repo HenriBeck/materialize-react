@@ -76,7 +76,7 @@
     "jss-preset-default": "4.5.0",
     "mdi": "2.2.43",
     "normalize.css": "8.0.0",
-    "nyc": "11.7.3",
+    "nyc": "11.8.0",
     "raf": "3.4.0",
     "react": "16.3.2",
     "react-aux": "1.1.0",

@@ -51,10 +51,11 @@ export default function createSheet(name: string, styles: Styles) {
     constructor(props: Props, context: Context) {
       super(props, context);
 
+      this.jss = context[jssNs];
+
       const initialTheme = isThemingEnabled ? themeListener.initial(context) : noTheme;
 
       this.state = this.createState(initialTheme);
-      this.jss = context[jssNs];
 
       if (isThemingEnabled) {
         this.unsubscribeId = themeListener.subscribe(context, this.handleThemeUpdate);
