@@ -1,8 +1,15 @@
 // @flow strict-local
 
 import React, { type Node } from 'react';
-import { jss as jssNs } from 'react-jss/lib/ns';
-import { createTheming } from 'react-jss';
+import {
+  jss as jssNs,
+  sheetOptions as sheetOptionsNs,
+  sheetsRegistry as sheetsRegistryNs,
+} from 'react-jss/lib/ns';
+import {
+  createTheming,
+  jss,
+} from 'react-jss';
 import { getDynamicStyles } from 'jss';
 import SheetsManager from 'jss/lib/SheetsManager';
 import Jss from 'jss/lib/Jss';
@@ -27,38 +34,43 @@ type Props = {
 };
 
 let indexCounter = -100000; // eslint-disable-line fp/no-let
-const { themeListener } = createTheming();
+const defaultTheming = createTheming();
+const { themeListener } = defaultTheming;
 const DynamicStylesMap = new Map();
 const noTheme = {};
+const env = process.env.NODE_ENV; // eslint-disable-line no-undef
 
 export default function createSheet(name: string, styles: Styles) {
   const isThemingEnabled = typeof styles === 'function';
   const manager = new SheetsManager();
+  const meta = `${name}, ${isThemingEnabled ? 'Themed' : 'Unthemed'}`;
+  const defaultClassNamePrefix = env === 'production' ? null : `${name}-`;
 
   indexCounter += 1;
 
-  class Sheet extends React.Component<Props, State> {
+  return class Sheet extends React.Component<Props, State> {
     static defaultProps = { data: null };
 
-    static contextTypes = Object.assign(
-      {},
-      contextTypes,
-      isThemingEnabled ? themeListener.contextTypes : {},
-    );
+    static contextTypes = {
+      [jssNs]: contextTypes[jssNs],
+      [sheetOptionsNs]: contextTypes[sheetOptionsNs],
+      [sheetsRegistryNs]: contextTypes[sheetsRegistryNs],
+      ...isThemingEnabled ? themeListener.contextTypes : {},
+    };
 
     static index = indexCounter;
 
     constructor(props: Props, context: Context) {
       super(props, context);
 
-      this.jss = context[jssNs];
-
       const initialTheme = isThemingEnabled ? themeListener.initial(context) : noTheme;
 
       this.state = this.createState(initialTheme);
+    }
 
+    componentDidMount() {
       if (isThemingEnabled) {
-        this.unsubscribeId = themeListener.subscribe(context, this.handleThemeUpdate);
+        this.unsubscribeId = themeListener.subscribe(this.context, this.handleThemeUpdate);
       }
     }
 
@@ -76,22 +88,35 @@ export default function createSheet(name: string, styles: Styles) {
       manager.unmanage(this.state.theme);
 
       if (this.dynamicSheet) {
-        this.jss.removeStyleSheet(this.dynamicSheet);
+        this.getJss().removeStyleSheet(this.dynamicSheet);
       }
+    }
+
+    getJss(): Jss {
+      return this.context[jssNs] || jss;
     }
 
     dynamicSheet: StyleSheet | null = null;
 
     unsubscribeId: string | null = null;
 
-    jss: Jss;
+    createStylesheet(compiledStyles: Styles, { isDynamic }: { isDynamic: boolean }) {
+      const contextSheetOptions = this.context[sheetOptionsNs];
+
+      return this.getJss().createStyleSheet(compiledStyles, {
+        ...contextSheetOptions,
+        link: isDynamic,
+        meta: `${meta}, ${isDynamic ? 'Dynamic' : 'Static'}`,
+        index: Sheet.index,
+        classNamePrefix: contextSheetOptions && contextSheetOptions.classNamePrefix
+          ? contextSheetOptions.classNamePrefix + defaultClassNamePrefix
+          : defaultClassNamePrefix,
+      });
+    }
 
     createStaticSheet(theme: Theme): StyleSheet {
       const compiledStyles = typeof styles === 'function' ? styles(theme) : styles;
-      const staticSheet = this.jss.createStyleSheet(compiledStyles, {
-        meta: `${name}, ${isThemingEnabled ? 'Themed' : 'Unthemed'}, Static`,
-        index: Sheet.index,
-      });
+      const staticSheet = this.createStylesheet(compiledStyles, { isDynamic: false });
 
       DynamicStylesMap.set(styles, getDynamicStyles(compiledStyles));
 
@@ -102,21 +127,26 @@ export default function createSheet(name: string, styles: Styles) {
 
     createState(theme: Theme): State {
       const staticSheet = manager.get(theme) || this.createStaticSheet(theme);
+      const registry = this.context[sheetsRegistryNs];
 
       manager.manage(theme);
+
+      if (registry) {
+        registry.add(staticSheet);
+      }
 
       const dynamicStyles = DynamicStylesMap.get(styles);
 
       if (dynamicStyles) {
-        this.dynamicSheet = this.jss.createStyleSheet(dynamicStyles, {
-          meta: `${name}, ${isThemingEnabled ? 'Themed' : 'Unthemed'}, Dynamic`,
-          link: true,
-          index: Sheet.index,
-        });
+        this.dynamicSheet = this.createStylesheet(dynamicStyles, { isDynamic: true });
 
         this.dynamicSheet
           .update(this.props.data)
           .attach();
+
+        if (registry) {
+          registry.add(this.dynamicSheet);
+        }
       }
 
       return {
@@ -136,15 +166,13 @@ export default function createSheet(name: string, styles: Styles) {
         manager.unmanage(oldState);
 
         if (oldDynamicSheet) {
-          this.jss.removeStyleSheet(oldDynamicSheet);
+          this.getJss().removeStyleSheet(oldDynamicSheet);
         }
       });
     };
 
-    render(): Node {
+    render() {
       return this.props.children({ classes: this.state.classes });
     }
-  }
-
-  return Sheet;
+  };
 }

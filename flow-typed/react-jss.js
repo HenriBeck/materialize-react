@@ -28,17 +28,19 @@ declare module 'react-jss' {
 
   declare function injectSheet(styles: Styles): <P>(comp: ComponentType<P>) => ComponentType<P>;
 
-  declare export function createTheming(channel?: string): {
-    channel: string,
+  declare export function createTheming<Channel: string, Context: { [key: Channel]: {} }, SubId: string>(channel?: Channel): {
+    channel: Channel,
     withTheme: <Props: {}>(Component: ComponentType<Props>) => ComponentType<Props>,
     ThemeProvider: ThemeProvider,
     themeListener: {
-      contextTypes: {},
-      initial: (context: {}) => {},
-      subscribe: (context: {}, (theme: {}) => void) => string,
-      unsubscribe: (context: {}, subId: string) => void,
+      contextTypes: {| [key: Channel]: () => void |},
+      initial: (context: Context) => {},
+      subscribe: (context: Context, (theme: {}) => void) => SubId,
+      unsubscribe: (context: Context, subId: SubId) => void,
     },
   };
+
+  declare export var jss: Jss;
 
   declare export default typeof injectSheet;
 }
