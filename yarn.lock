@@ -2103,13 +2103,14 @@ babel-helper-to-multiple-sequence-expressions@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/babel-helper-to-multiple-sequence-expressions/-/babel-helper-to-multiple-sequence-expressions-0.4.1.tgz#154ecc38118f5c1c9b0e9fc235ddb5392149bc8f"
 
-babel-loader@8.0.0-beta.2:
-  version "8.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.0-beta.2.tgz#4d5b67c964dc8c9cba866fd13d6b90df3acf8723"
+babel-loader@8.0.0-beta.3:
+  version "8.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.0-beta.3.tgz#49efeea6e8058d5af860a18a6de88b8c1450645b"
   dependencies:
     find-cache-dir "^1.0.0"
     loader-utils "^1.0.2"
     mkdirp "^0.5.1"
+    util.promisify "^1.0.0"
 
 babel-loader@^7.1.4:
   version "7.1.4"
@@ -10571,7 +10572,7 @@ util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
-util.promisify@1.0.0:
+util.promisify@1.0.0, util.promisify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/util.promisify/-/util.promisify-1.0.0.tgz#440f7165a459c9a16dc145eb8e72f35687097030"
   dependencies:
