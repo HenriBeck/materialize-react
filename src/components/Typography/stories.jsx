@@ -17,39 +17,36 @@ const Sheet = createSheet('Typography-Story', {
     gridGap: '16px',
   },
 });
+const typos = [
+  ['headline1', 'Headline 1'],
+  ['headline2', 'Headline 2'],
+  ['headline3', 'Headline 3'],
+  ['headline4', 'Headline 4'],
+  ['headline5', 'Headline 5'],
+  ['headline6', 'Headline 6'],
+  ['subtitle1', 'Subtitle 1'],
+  ['subtitle2', 'Subtitle 2'],
+  ['body1', 'Body 1'],
+  ['body2', 'Body 2'],
+  ['button', 'Button'],
+  ['caption', 'Caption'],
+  ['overline', 'Overline'],
+];
 
 function Story(props: Props) {
   return (
     <Sheet>
       {({ classes }) => (
         <div className={classes.container}>
-          <Typography
-            color={props.color}
-            typography="headline"
-          >
-            Headline
-          </Typography>
-
-          <Typography
-            color={props.color}
-            typography="title"
-          >
-            Title
-          </Typography>
-
-          <Typography
-            color={props.color}
-            typography="body1"
-          >
-            Body 1
-          </Typography>
-
-          <Typography
-            color={props.color}
-            typography="button"
-          >
-            Button
-          </Typography>
+          {typos.map(([typo, display]) => (
+            <Typography
+              key={typo}
+              color={props.color}
+              typography={typo}
+            >
+              {display}
+            </Typography>
+          ))}
         </div>
       )}
     </Sheet>

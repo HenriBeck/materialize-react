@@ -68,7 +68,7 @@ function Item(props: Props) {
 
           <span className={classes.textContainer}>
             <Typography
-              typography="body"
+              typography="body1"
               className={classes.mainText}
             >
               {props.children}
@@ -76,7 +76,7 @@ function Item(props: Props) {
 
             {props.secondaryContent && (
               <Typography
-                typography="body"
+                typography="body2"
                 color="secondary"
                 className={classes.secondaryContent}
               >

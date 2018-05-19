@@ -12,7 +12,6 @@ type Props = {
 
 const Sheet = createSheet('TextField-HelperText', {
   helperText: {
-    fontSize: 12,
     lineHeight: 1,
     height: 12,
     flex: 1,
@@ -26,7 +25,7 @@ function HelperText(props: Props) {
       {({ classes }) => (
         <Typography
           color={props.error === null ? 'secondary' : 'error'}
-          typography="body"
+          typography="caption"
           className={classes.helperText}
         >
           {props.error === null ? props.children : props.error}

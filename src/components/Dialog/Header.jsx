@@ -26,7 +26,7 @@ function Header(props: Props) {
     <Sheet>
       {({ classes }) => (
         <Typography
-          typography="title"
+          typography="headline6"
           element="header"
           className={`${classes.header} ${props.className}`}
           {...getNotDeclaredProps(props, Header)}

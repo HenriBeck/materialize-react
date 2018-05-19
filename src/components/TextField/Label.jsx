@@ -71,7 +71,7 @@ function Label(props: Props) {
       {({ classes }) => (
         <Typography
           element="label"
-          typography="body"
+          typography="body2"
           color={getColor({
             disabled: props.disabled,
             hasError: props.hasError,
