@@ -70,7 +70,7 @@ const Sheet = createSheet('Dialog', (theme: Theme) => {
 export default class Dialog extends React.PureComponent<Props, State> {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    isOpen: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+    isOpen: PropTypes.bool,
     fullscreen: PropTypes.bool,
     className: PropTypes.string,
     onCloseRequest: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
@@ -117,6 +117,7 @@ export default class Dialog extends React.PureComponent<Props, State> {
         {({ classes }) => (
           <div
             role="dialog"
+            aria-hidden={!this.props.isOpen}
             className={`${classes.dialog} ${this.props.className}`}
           >
             {this.props.children}
