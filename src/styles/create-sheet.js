@@ -1,11 +1,7 @@
 // @flow strict-local
 
 import React, { type Node } from 'react';
-import {
-  jss as jssNs,
-  sheetOptions as sheetOptionsNs,
-  sheetsRegistry as sheetsRegistryNs,
-} from 'react-jss/lib/ns';
+import * as ns from 'react-jss/lib/ns'; // eslint-disable-line import/no-namespace
 import {
   createTheming,
   jss,
@@ -34,6 +30,7 @@ type Props = {
 };
 
 let indexCounter = -100000; // eslint-disable-line fp/no-let
+let managersCounter = 0; // eslint-disable-line fp/no-let
 const defaultTheming = createTheming();
 const { themeListener } = defaultTheming;
 const DynamicStylesMap = new Map();
@@ -47,18 +44,19 @@ export default function createSheet(name: string, styles: Styles) {
   const defaultClassNamePrefix = env === 'production' ? null : `${name}-`;
 
   indexCounter += 1;
+  managersCounter += 1;
 
   return class Sheet extends React.Component<Props, State> {
     static defaultProps = { data: null };
 
     static contextTypes = {
-      [jssNs]: contextTypes[jssNs],
-      [sheetOptionsNs]: contextTypes[sheetOptionsNs],
-      [sheetsRegistryNs]: contextTypes[sheetsRegistryNs],
+      ...contextTypes,
       ...isThemingEnabled ? themeListener.contextTypes : {},
     };
 
     static index = indexCounter;
+
+    static managerId = managersCounter;
 
     constructor(props: Props, context: Context) {
       super(props, context);
@@ -85,7 +83,7 @@ export default function createSheet(name: string, styles: Styles) {
         themeListener.unsubscribe(this.context, this.unsubscribeId);
       }
 
-      manager.unmanage(this.state.theme);
+      this.getManager().unmanage(this.state.theme);
 
       if (this.dynamicSheet) {
         this.getJss().removeStyleSheet(this.dynamicSheet);
@@ -93,7 +91,23 @@ export default function createSheet(name: string, styles: Styles) {
     }
 
     getJss(): Jss {
-      return this.context[jssNs] || jss;
+      return this.context[ns.jss] || jss;
+    }
+
+    getManager(): SheetsManager {
+      const managers = this.context[ns.managers];
+
+      // If `managers` map is present in the context, we use it in order to
+      // let JssProvider reset them when new response has to render server-side.
+      if (managers) {
+        if (!managers[Sheet.managerId]) {
+          managers[Sheet.managerId] = new SheetsManager();
+        }
+
+        return managers[Sheet.managerId];
+      }
+
+      return manager;
     }
 
     dynamicSheet: StyleSheet | null = null;
@@ -101,7 +115,7 @@ export default function createSheet(name: string, styles: Styles) {
     unsubscribeId: string | null = null;
 
     createStylesheet(compiledStyles: Styles, { isDynamic }: { isDynamic: boolean }) {
-      const contextSheetOptions = this.context[sheetOptionsNs];
+      const contextSheetOptions = this.context[ns.sheetOptions];
 
       return this.getJss().createStyleSheet(compiledStyles, {
         ...contextSheetOptions,
@@ -120,16 +134,16 @@ export default function createSheet(name: string, styles: Styles) {
 
       DynamicStylesMap.set(styles, getDynamicStyles(compiledStyles));
 
-      manager.add(theme, staticSheet);
+      this.getManager().add(theme, staticSheet);
 
       return staticSheet;
     }
 
     createState(theme: Theme): State {
-      const staticSheet = manager.get(theme) || this.createStaticSheet(theme);
-      const registry = this.context[sheetsRegistryNs];
+      const staticSheet = this.getManager().get(theme) || this.createStaticSheet(theme);
+      const registry = this.context[ns.sheetsRegistry];
 
-      manager.manage(theme);
+      this.getManager().manage(theme);
 
       if (registry) {
         registry.add(staticSheet);
@@ -163,7 +177,7 @@ export default function createSheet(name: string, styles: Styles) {
       const newState = this.createState(theme);
 
       this.setState(newState, () => {
-        manager.unmanage(oldState);
+        this.getManager().unmanage(oldState);
 
         if (oldDynamicSheet) {
           this.getJss().removeStyleSheet(oldDynamicSheet);
