@@ -1,5 +1,6 @@
 [ignore]
 .*/node_modules/jss/lib/.*\.js\.flow
+<PROJECT_ROOT>/lib/.*
 
 [include]
 
