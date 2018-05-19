@@ -37,6 +37,7 @@ const Sheet = createSheet('TextField-Input', (theme: Theme) => {
     },
 
     input: {
+      ...theme.typography.body1,
       lineHeight: '16px',
       padding: 0,
       border: 0,
@@ -87,7 +88,7 @@ export default class Input extends React.PureComponent<Props> {
             {this.props.prefix && (
               <Typography
                 data-input-prefix
-                typography="body"
+                typography="body1"
                 className={classes.prefix}
                 color={this.props.disabled ? 'disabled' : 'secondary'}
               >
@@ -109,7 +110,7 @@ export default class Input extends React.PureComponent<Props> {
 
             {this.props.suffix && (
               <Typography
-                typography="body"
+                typography="body1"
                 className={classes.suffix}
                 color={this.props.disabled ? 'disabled' : 'secondary'}
               >

@@ -78,7 +78,7 @@ export default class Label extends React.PureComponent<Props> {
             {this.renderControl()}
 
             <Typography
-              typography="body"
+              typography="body2"
               color={this.props.disabled ? 'disabled' : 'text'}
               className={classes.text}
               onMouseDown={this.handleClick}

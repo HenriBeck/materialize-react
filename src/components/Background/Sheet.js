@@ -8,7 +8,7 @@ export default createSheet('Background', (theme: Theme): { background: {} } => {
     background: {
       color: theme.text.primary,
       backgroundColor: theme.background,
-      ...theme.typography.body,
+      ...theme.typography.body1,
 
       '& *': { WebkitTapHighlightColor: 'transparent' },
     },

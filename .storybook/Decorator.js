@@ -73,7 +73,7 @@ export default class Decorator extends React.PureComponent<Props, State> {
             <Theme theme={theme}>
               <Background className={classes.container}>
                 <AppBar className={classes.toolbar}>
-                  <Typography typography="title">
+                  <Typography typography="headline6">
                     {this.props.info.kind.replace('/', ' > ')} &gt; {this.props.info.story}
                   </Typography>
 

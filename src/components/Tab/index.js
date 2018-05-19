@@ -83,7 +83,7 @@ class Tab extends React.PureComponent<Props> {
 
             {this.props.context.tabStyle.includes('text') && (
               <Typography
-                typography="body"
+                typography="body1"
                 color={isSelected ? 'text' : 'secondary'}
                 className={classes.text}
               >
