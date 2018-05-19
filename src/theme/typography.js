@@ -1,56 +1,132 @@
 // @flow strict-local
 
+type CSSStyles = { [key: string]: string | number };
 type Typography = {|
-  headline: { [key: string]: string | number },
-  title: { [key: string]: string | number },
-  body: { [key: string]: string | number },
-  button: { [key: string]: string | number },
+  headline1: CSSStyles,
+  headline2: CSSStyles,
+  headline3: CSSStyles,
+  headline4: CSSStyles,
+  headline5: CSSStyles,
+  headline6: CSSStyles,
+  subtitle1: CSSStyles,
+  subtitle2: CSSStyles,
+  body1: CSSStyles,
+  body2: CSSStyles,
+  button: CSSStyles,
+  caption: CSSStyles,
+  overline: CSSStyles,
 |};
 
-const noWrap = {
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-};
-
 const commonBase = {
-  fontFamily: '\'Roboto\', \'Noto\', sans-serif',
+  fontFamily: '\'Roboto\', sans-serif',
   WebkitFontSmoothing: 'antialiased',
 };
 
+const fontWeights = {
+  thin: 100,
+  light: 300,
+  regular: 400,
+  medium: 500,
+  bold: 700,
+  black: 900,
+};
+
 const defaultTypography: Typography = {
-  headline: {
+  headline1: {
     ...commonBase,
-    fontSize: 24,
-    fontWeight: 400,
-    letterSpacing: '-.012em',
-    lineHeight: 32 / 24,
+    fontSize: '6rem',
+    lineHeight: 1,
+    fontWeight: fontWeights.light,
+    letterSpacing: '-0.01562em',
   },
-
-  title: {
+  headline2: {
     ...commonBase,
-    ...noWrap,
-    fontSize: 20,
-    fontWeight: 400,
-    lineHeight: 28 / 20,
+    fontSize: '3.75rem',
+    lineHeight: 1,
+    fontWeight: fontWeights.light,
+    letterSpacing: '-0.00833em',
   },
-
-  body: {
+  headline3: {
     ...commonBase,
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: 20 / 14,
+    fontSize: '3rem',
+    lineHeight: '3.125rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: 'normal',
   },
-
+  headline4: {
+    ...commonBase,
+    fontSize: '2.125rem',
+    lineHeight: '2.5rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: '0.00735em',
+  },
+  headline5: {
+    ...commonBase,
+    fontSize: '1.5rem',
+    lineHeight: '2rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: 'normal',
+  },
+  headline6: {
+    ...commonBase,
+    fontSize: '1.25rem',
+    lineHeight: '2rem',
+    fontWeight: fontWeights.medium,
+    letterSpacing: '0.0125em',
+  },
+  subtitle1: {
+    ...commonBase,
+    fontSize: '1rem',
+    lineHeight: '1.75rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: '0.00937em',
+  },
+  subtitle2: {
+    ...commonBase,
+    fontSize: '.875rem',
+    lineHeight: '1.375rem',
+    fontWeight: fontWeights.medium,
+    letterSpacing: '.00714em',
+  },
+  body1: {
+    ...commonBase,
+    fontSize: '1rem',
+    lineHeight: '1.5rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: '.03125em',
+  },
+  body2: {
+    ...commonBase,
+    fontSize: '.875rem',
+    lineHeight: '1.25rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: '.01786em',
+  },
   button: {
     ...commonBase,
-    ...noWrap,
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: '0.018em',
-    lineHeight: 24 / 14,
+    fontSize: '.875rem',
+    lineHeight: '2.25rem',
+    fontWeight: fontWeights.medium,
+    letterSpacing: '.08929em',
+    textDecoration: 'none',
     textTransform: 'uppercase',
-    textAlign: 'center',
+  },
+  caption: {
+    ...commonBase,
+    fontSize: '.75rem',
+    lineHeight: '1.25rem',
+    fontWeight: fontWeights.regular,
+    letterSpacing: '.03333em',
+  },
+  overline: {
+    ...commonBase,
+    fontSize: '.75rem',
+    lineHeight: '2rem',
+    fontWeight: fontWeights.medium,
+    letterSpacing: '.16667em',
+    textDecoration: 'none',
+    textTransform: 'uppercase',
+
   },
 };
 

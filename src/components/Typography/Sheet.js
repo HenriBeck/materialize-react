@@ -2,12 +2,14 @@
 
 import createSheet from '../../styles/create-sheet';
 import { type Theme } from '../../theme/types';
+import { type Typography as TypographyTheme } from '../../theme/typography';
 
 import { type Color } from '.';
 
 type Data = {
   color: Color,
-  typography: string,
+  typography: $Keys<TypographyTheme>,
+  truncate: boolean,
 };
 
 function getColor(theme: Theme, color: Color): string {
@@ -23,6 +25,12 @@ function getColor(theme: Theme, color: Color): string {
   }
 }
 
+const truncate = {
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+};
+
 export type { Data };
 
 export default createSheet('Typography', (theme: Theme) => {
@@ -30,6 +38,7 @@ export default createSheet('Typography', (theme: Theme) => {
     typography(data: Data) {
       return {
         color: getColor(theme, data.color),
+        ...data.truncate ? truncate : {},
         ...theme.typography[data.typography],
       };
     },

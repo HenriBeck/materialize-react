@@ -61,7 +61,7 @@ function Label(props: Props): Node {
     <Sheet data={data}>
       {({ classes }) => (
         <Typography
-          typography="body"
+          typography="body2"
           color={color}
           htmlFor={props.id}
           className={classes.label}
