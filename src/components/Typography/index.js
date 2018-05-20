@@ -64,6 +64,7 @@ Typography.propTypes = {
     null,
   ]),
   className: PropTypes.string,
+  truncate: PropTypes.bool,
 };
 
 Typography.defaultProps = {
