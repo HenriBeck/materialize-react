@@ -8714,9 +8714,9 @@ react-error-overlay@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
 
-react-event-listener@0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.5.6.tgz#f9349fda4b7735fc6886ca403bdcfd6057e89ceb"
+react-event-listener@0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.5.8.tgz#b9a74d50740e7ce7915ba6c1ec8983c56a126ca4"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.42"
     fbjs "^0.8.16"
