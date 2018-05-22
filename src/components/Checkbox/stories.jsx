@@ -26,7 +26,7 @@ class Story extends React.PureComponent<Props, State> {
     });
   };
 
-  render(): Node {
+  render() {
     return (
       <Label
         disabled={this.props.disabled}

@@ -13,9 +13,8 @@ import Icon from '.';
 storiesOf('Basic Elements', module)
   .add('Icon', () => (
     <Icon
+      icon={text('Icon', 'chevron-down')}
       disabled={boolean('Disabled', false)}
       size={number('Size', 24)}
-    >
-      {text('Icon', 'chevron-down')}
-    </Icon>
+    />
   ));

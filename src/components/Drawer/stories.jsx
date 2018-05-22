@@ -39,7 +39,7 @@ class DrawerStory extends React.PureComponent<Props, State> {
     });
   };
 
-  render(): Node {
+  render() {
     return (
       <Drawer
         {...this.props}
@@ -50,7 +50,7 @@ class DrawerStory extends React.PureComponent<Props, State> {
             Drawer Content
 
             <IconButton onPress={this.handleDrawerClose}>
-              <Icon>close</Icon>
+              <Icon icon="close" />
             </IconButton>
           </div>
         )}
@@ -58,7 +58,7 @@ class DrawerStory extends React.PureComponent<Props, State> {
       >
         <div style={{ padding: 32 }}>
           <IconButton onPress={this.handleDrawerOpen}>
-            <Icon>menu</Icon>
+            <Icon icon="menu" />
           </IconButton>
 
           Main Content

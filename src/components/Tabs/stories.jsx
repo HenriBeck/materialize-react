@@ -2,7 +2,8 @@
 
 import React, {
   type Element,
-  type ElementType,
+  type ElementProps,
+  type ComponentType,
 } from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
@@ -16,7 +17,7 @@ type Props = {
   tabs: $ReadOnlyArray<{|
     name: string,
     children?: string,
-    icon?: Element<ElementType>,
+    icon?: Element<ComponentType<ElementProps<Icon>>>,
   |}>,
   color: 'primary' | 'accent',
   tabStyle: 'text' | 'icons' | 'text-and-icons',
@@ -76,13 +77,13 @@ storiesOf('Interactive Elements/Tabs', module)
       }, 'primary')}
       tabs={[{
         name: 'test1',
-        icon: <Icon>settings</Icon>,
+        icon: <Icon icon="settings" />,
       }, {
         name: 'test2',
-        icon: <Icon>bell</Icon>,
+        icon: <Icon icon="bell" />,
       }, {
         name: 'test3',
-        icon: <Icon>account</Icon>,
+        icon: <Icon icon="account" />,
       }]}
     />
   ))
@@ -96,15 +97,15 @@ storiesOf('Interactive Elements/Tabs', module)
       tabs={[{
         name: 'test1',
         children: 'Test 1',
-        icon: <Icon>settings</Icon>,
+        icon: <Icon icon="settings" />,
       }, {
         name: 'test2',
         children: 'Test 2',
-        icon: <Icon>bell</Icon>,
+        icon: <Icon icon="bell" />,
       }, {
         name: 'test3',
         children: 'Test 3',
-        icon: <Icon>account</Icon>,
+        icon: <Icon icon="account" />,
       }]}
     />
   ));
