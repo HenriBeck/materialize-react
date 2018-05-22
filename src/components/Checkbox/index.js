@@ -85,11 +85,10 @@ export default class Checkbox extends React.PureComponent<Props, State> {
             onClick={this.handleClick}
           >
             <Icon
+              icon={this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
               size={24}
               className={classes.icon}
-            >
-              {this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
-            </Icon>
+            />
 
             <Ripple
               round

@@ -1,6 +1,6 @@
 // @flow strict-local
 
-import React, { type Node } from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {
   boolean,
@@ -26,7 +26,7 @@ class Story extends React.PureComponent<Props, State> {
     });
   };
 
-  render(): Node {
+  render() {
     return (
       <Label
         disabled={this.props.disabled}
