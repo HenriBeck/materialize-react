@@ -1,6 +1,6 @@
 // @flow strict-local
 
-import React, { type Node } from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
 
