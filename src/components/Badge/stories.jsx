@@ -24,7 +24,7 @@ storiesOf('Badge', module)
       content={number('Badge content', 10)}
       color={select('Color', colorOptions, 'primary')}
     >
-      <Icon>bell</Icon>
+      <Icon icon="bell" />
     </Badge>
   ))
   .add('With Icon Button', () => (
@@ -34,7 +34,7 @@ storiesOf('Badge', module)
           content={number('Badge content', 10)}
           color={select('Color', colorOptions, 'primary')}
         >
-          <Icon>bell</Icon>
+          <Icon icon="bell" />
         </Badge>
       </IconButton>
     </div>
@@ -46,6 +46,5 @@ storiesOf('Badge', module)
       style={{ padding: 5 }}
     >
       Some text
-
     </Badge>
   ));

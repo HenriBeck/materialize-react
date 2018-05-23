@@ -9,7 +9,6 @@ type Props = { children: Node };
 
 const Sheet = createSheet('TextField-Counter', {
   counter: {
-    fontSize: 12,
     lineHeight: 1,
     height: 12,
   },
@@ -21,7 +20,7 @@ function Counter(props: Props) {
       {({ classes }) => (
         <Typography
           color="secondary"
-          typography="body"
+          typography="caption"
           className={classes.counter}
         >
           {props.children}

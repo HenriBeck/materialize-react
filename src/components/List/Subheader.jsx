@@ -21,7 +21,6 @@ const Sheet = createSheet('List-Subheader', {
     height: 48,
     boxSizing: 'border-box',
     width: '100%',
-    lineHeight: '16px',
     paddingLeft: (data: Data) => (data.inset ? 72 : null),
   },
 });
@@ -36,7 +35,7 @@ function Subheader(props: Props) {
           {...getNotDeclaredProps(props, Subheader)}
           element="li"
           color="secondary"
-          typography="body"
+          typography="subtitle1"
           className={`${classes.subheader} ${props.className}`}
         >
           {props.children}

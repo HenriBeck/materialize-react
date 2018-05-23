@@ -29,7 +29,7 @@ function HelperText(props: Props) {
       {({ classes }) => (
         <Typography
           color={props.error ? 'error' : 'secondary'}
-          typography="body"
+          typography="caption"
           className={classes.helperText}
         >
           {props.error ? props.error : props.children}

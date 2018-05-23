@@ -19,6 +19,9 @@ storiesOf('Buttons', module)
       size={number('Size', 48)}
       onPress={action('Click')}
     >
-      <Icon size={number('Icon size', 24)}>pencil</Icon>
+      <Icon
+        icon="pencil"
+        size={number('Icon size', 24)}
+      />
     </IconButton>
   ));

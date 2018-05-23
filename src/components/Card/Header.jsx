@@ -69,7 +69,8 @@ function Header(props: Props) {
 
           <div className={classes.container}>
             <Typography
-              typography={withAvatar ? 'body' : 'headline'}
+              truncate
+              typography={withAvatar ? 'headline6' : 'headline5'}
               className={classes.title}
             >
               {props.children}
@@ -77,8 +78,9 @@ function Header(props: Props) {
 
             {props.subtitle && (
               <Typography
+                truncate
                 color="secondary"
-                typography="body"
+                typography="body2"
                 className={classes.subtitle}
               >
                 {props.subtitle}

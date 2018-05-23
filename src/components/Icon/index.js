@@ -9,9 +9,10 @@ import Sheet, { type Data } from './Sheet';
 type Props = {
   size: number | string,
   disabled: boolean,
-  children: Node,
+  icon: string,
   color: 'light' | 'dark' | null,
   className: string,
+  children: Node,
 };
 
 function Icon(props: Props) {
@@ -26,7 +27,7 @@ function Icon(props: Props) {
       {({ classes }) => (
         <i
           {...getNotDeclaredProps(props, Icon)}
-          className={`mdi mdi-${props.children} ${classes.icon} ${props.className}`}
+          className={`mdi mdi-${props.icon} ${classes.icon} ${props.className}`}
           aria-disabled={props.disabled}
         />
       )}
@@ -37,9 +38,10 @@ function Icon(props: Props) {
 Icon.propTypes = {
   size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   disabled: PropTypes.bool,
-  children: PropTypes.node.isRequired,
+  icon: PropTypes.string.isRequired,
   className: PropTypes.string,
   color: PropTypes.oneOf(['light', 'dark', null]),
+  children: PropTypes.node,
 };
 
 Icon.defaultProps = {
@@ -47,6 +49,7 @@ Icon.defaultProps = {
   size: 24,
   disabled: false,
   color: null,
+  children: null,
 };
 
 export default Icon;

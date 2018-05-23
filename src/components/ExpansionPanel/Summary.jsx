@@ -62,7 +62,7 @@ function Summary(props: Props) {
             className={classes.expandIcon}
             onPress={noop}
           >
-            <Icon>chevron-down</Icon>
+            <Icon icon="chevron-down" />
           </IconButton>
         </div>
       )}
