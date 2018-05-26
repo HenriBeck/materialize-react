@@ -12,7 +12,7 @@ type Props = {
   icon: string,
   color: 'light' | 'dark' | null,
   className: string,
-  children: Node,
+  children?: Node,
 };
 
 function Icon(props: Props) {
@@ -41,7 +41,6 @@ Icon.propTypes = {
   icon: PropTypes.string.isRequired,
   className: PropTypes.string,
   color: PropTypes.oneOf(['light', 'dark', null]),
-  children: PropTypes.node,
 };
 
 Icon.defaultProps = {
@@ -49,7 +48,6 @@ Icon.defaultProps = {
   size: 24,
   disabled: false,
   color: null,
-  children: null,
 };
 
 export default Icon;
