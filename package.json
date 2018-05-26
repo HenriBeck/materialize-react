@@ -3,10 +3,11 @@
   "version": "0.3.4",
   "description": "React Components with materialize theme",
   "main": "lib/index.js",
-  "options": {
-    "eslint": "--ext .jsx,.js src/ .storybook/ tests/",
-    "storybook": "-p 9001"
-  },
+  "files": [
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start-storybook": "start-storybook -p 9001",
     "build-storybook": "build-storybook -o docs/",
