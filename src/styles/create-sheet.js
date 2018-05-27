@@ -79,14 +79,15 @@ export default function createSheet(name: string, styles: Styles) {
     }
 
     componentWillUnmount() {
-      if (this.unsubscribeId !== null) {
-        themeListener.unsubscribe(this.context, this.unsubscribeId);
-      }
-
       this.getManager().unmanage(this.state.theme);
 
-      if (this.dynamicSheet) {
+      if (this.dynamicSheet !== null) {
+        // $FlowFixMe: For some reason this produces an error
         this.getJss().removeStyleSheet(this.dynamicSheet);
+      }
+
+      if (this.unsubscribeId !== null) {
+        themeListener.unsubscribe(this.context, this.unsubscribeId);
       }
     }
 
