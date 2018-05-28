@@ -9,6 +9,10 @@ import Jss from 'jss/lib/Jss';
 import { type Rule } from 'jss/lib/types';
 import StyleSheet from 'jss/lib/StyleSheet';
 
+declare module 'jss-preset-default' {
+  declare export default function preset(): void;
+}
+
 declare module 'react-jss' {
   declare type StaticStyles = { [key: string]: {} };
   declare type ThemedStyles = (theme: {}) => StaticStyles;
