@@ -5,16 +5,17 @@ import { storiesOf } from '@storybook/react';
 import {
   boolean,
   number,
-  text,
 } from '@storybook/addon-knobs';
+import { ChevronDownIcon } from 'mdi-react';
 
 import Icon from '.';
 
 storiesOf('Basic Elements', module)
   .add('Icon', () => (
     <Icon
-      icon={text('Icon', 'chevron-down')}
       disabled={boolean('Disabled', false)}
       size={number('Size', 24)}
-    />
+    >
+      <ChevronDownIcon />
+    </Icon>
   ));

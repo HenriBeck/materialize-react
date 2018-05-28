@@ -7,6 +7,7 @@ import {
   boolean,
   number,
 } from '@storybook/addon-knobs';
+import { PencilIcon } from 'mdi-react';
 
 import Icon from '../Icon';
 
@@ -19,9 +20,8 @@ storiesOf('Buttons', module)
       size={number('Size', 48)}
       onPress={action('Click')}
     >
-      <Icon
-        icon="pencil"
-        size={number('Icon size', 24)}
-      />
+      <Icon size={number('Icon size', 24)}>
+        <PencilIcon />
+      </Icon>
     </IconButton>
   ));

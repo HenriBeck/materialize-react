@@ -4,6 +4,7 @@ import React, { type Node } from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
+import { ChevronDownIcon } from 'mdi-react';
 
 import Icon from '../Icon';
 import createSheet from '../../styles/create-sheet';
@@ -62,7 +63,9 @@ function Summary(props: Props) {
             className={classes.expandIcon}
             onPress={noop}
           >
-            <Icon icon="chevron-down" />
+            <Icon>
+              <ChevronDownIcon />
+            </Icon>
           </IconButton>
         </div>
       )}
