@@ -1,53 +1,49 @@
 // @flow strict-local
 
-import React from 'react';
+import React, {
+  type Element,
+  type ComponentType,
+} from 'react';
 import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
+import { withTheme } from 'react-jss';
 
-import Sheet, { type Data } from './Sheet';
+import { themes } from '../../theme';
+import { type Theme } from '../../theme/types';
 
 type Props = {
-  size: number | string,
+  theme: Theme,
+  size: number,
   disabled: boolean,
-  icon: string,
   color: 'light' | 'dark' | null,
-  className: string,
-  children?: Node,
+  children: Element<ComponentType<{
+    size: number,
+    color: string,
+  }>>,
 };
 
 function Icon(props: Props) {
-  const data: Data = {
-    disabled: props.disabled,
-    size: props.size,
-    color: props.color,
-  };
+  const type = props.color ? props.color : props.theme.type;
+  const color = props.disabled ? themes[type].disabled : themes[type].icon;
 
-  return (
-    <Sheet data={data}>
-      {({ classes }) => (
-        <i
-          {...getNotDeclaredProps(props, Icon)}
-          className={`mdi mdi-${props.icon} ${classes.icon} ${props.className}`}
-          aria-disabled={props.disabled}
-        />
-      )}
-    </Sheet>
-  );
+  return React.cloneElement(props.children, {
+    size: props.size,
+    color,
+    ...getNotDeclaredProps(props, Icon),
+  });
 }
 
 Icon.propTypes = {
-  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  theme: PropTypes.shape({}).isRequired,
+  size: PropTypes.number,
   disabled: PropTypes.bool,
-  icon: PropTypes.string.isRequired,
-  className: PropTypes.string,
   color: PropTypes.oneOf(['light', 'dark', null]),
 };
 
 Icon.defaultProps = {
-  className: '',
   size: 24,
   disabled: false,
   color: null,
 };
 
-export default Icon;
+export default withTheme(Icon);

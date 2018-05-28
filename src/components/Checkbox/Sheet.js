@@ -38,7 +38,7 @@ export default createSheet('Checkbox', (theme: Theme) => {
       left: 12,
       right: 12,
       bottom: 12,
-      color(data: Data) {
+      fill(data: Data) {
         if (data.disabled) {
           return theme.disabled;
         }

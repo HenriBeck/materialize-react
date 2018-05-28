@@ -40,6 +40,11 @@ declare module 'react-jss' {
     },
   };
 
+  declare export function withTheme<Props: {}>(Component: ComponentType<Props>): ComponentType<{
+    ...Props,
+    theme: {},
+  }>
+
   declare export var jss: Jss;
 
   declare export default typeof injectSheet;
