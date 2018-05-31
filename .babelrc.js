@@ -19,10 +19,5 @@ module.exports = {
     '@babel/plugin-proposal-export-default-from',
   ],
 
-  ignore: [
-    'src/components/**/stories.jsx',
-    'src/**/*.spec.js',
-  ],
-
   comments: false,
 };
