@@ -11,12 +11,13 @@
   "scripts": {
     "start-storybook": "start-storybook -p 9001",
     "build-storybook": "build-storybook -o docs/",
-    "test": "NODE_ENV=\"test\" ava --no-cache",
+    "test": "NODE_ENV=\"test\" ava",
     "test:coverage": "nyc yarn run test",
     "generate-report:html": "nyc report --reporter=html",
     "generate-report:lcov": "nyc report --reporter=text-lcov",
     "prebuild": "rimraf lib/",
-    "build": "NODE_ENV=\"build\" babel src -d lib && yarn run build:flow",
+    "build": "yarn run build:lib && yarn run build:flow",
+    "build:lib": "NODE_ENV=\"build\" babel src -d lib --ignore=\"stories.jsx,**/*.spec.js\"",
     "build:flow": "flow-copy-source src/ lib/ --ignore **/*.spec.js --ignore **/stories.jsx",
     "lint": "eslint src/ .storybook/ tests/ --ext .js,.jsx",
     "flow": "flow-check",
@@ -92,6 +93,7 @@
     "why-did-you-update": "0.1.1"
   },
   "ava": {
+    "cache": false,
     "files": [
       "src/**/*.spec.js"
     ],
