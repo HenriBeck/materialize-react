@@ -5,9 +5,17 @@ import {
   type Node,
   type ComponentType,
 } from 'react';
-import Jss from 'jss/lib/Jss';
-import { type Rule } from 'jss/lib/types';
-import StyleSheet from 'jss/lib/StyleSheet';
+import Jss from 'jss/src/Jss';
+import { type Rule } from 'jss/src/types';
+import StyleSheet from 'jss/src/StyleSheet';
+
+declare module 'jss/lib/StyleSheet' {
+  declare export default StyleSheet;
+}
+
+declare module 'jss/lib/Jss' {
+  declare export default Jss;
+}
 
 declare module 'jss-preset-default' {
   declare export default function preset(): void;

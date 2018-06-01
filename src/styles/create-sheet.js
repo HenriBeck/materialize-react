@@ -6,8 +6,10 @@ import {
   createTheming,
   jss,
 } from 'react-jss';
-import { getDynamicStyles } from 'jss';
-import SheetsManager from 'jss/lib/SheetsManager';
+import {
+  getDynamicStyles,
+  SheetsManager,
+} from 'jss';
 import Jss from 'jss/lib/Jss';
 import contextTypes from 'react-jss/lib/contextTypes';
 import StyleSheet from 'jss/lib/StyleSheet';
@@ -82,7 +84,6 @@ export default function createSheet(name: string, styles: Styles) {
       this.getManager().unmanage(this.state.theme);
 
       if (this.dynamicSheet !== null) {
-        // $FlowFixMe: For some reason this produces an error
         this.getJss().removeStyleSheet(this.dynamicSheet);
       }
 
