@@ -7,6 +7,7 @@ import {
   select,
 } from '@storybook/addon-knobs';
 import noop from 'lodash.noop';
+import { BellIcon } from 'mdi-react';
 
 import Icon from '../Icon';
 import IconButton from '../IconButton';
@@ -24,7 +25,9 @@ storiesOf('Badge', module)
       content={number('Badge content', 10)}
       color={select('Color', colorOptions, 'primary')}
     >
-      <Icon icon="bell" />
+      <Icon>
+        <BellIcon />
+      </Icon>
     </Badge>
   ))
   .add('With Icon Button', () => (
@@ -34,7 +37,9 @@ storiesOf('Badge', module)
           content={number('Badge content', 10)}
           color={select('Color', colorOptions, 'primary')}
         >
-          <Icon icon="bell" />
+          <Icon>
+            <BellIcon />
+          </Icon>
         </Badge>
       </IconButton>
     </div>

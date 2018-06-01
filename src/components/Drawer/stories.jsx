@@ -3,6 +3,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
+import {
+  CloseIcon,
+  MenuIcon,
+} from 'mdi-react';
 
 import IconButton from '../IconButton';
 import Icon from '../Icon';
@@ -50,7 +54,9 @@ class DrawerStory extends React.PureComponent<Props, State> {
             Drawer Content
 
             <IconButton onPress={this.handleDrawerClose}>
-              <Icon icon="close" />
+              <Icon>
+                <CloseIcon />
+              </Icon>
             </IconButton>
           </div>
         )}
@@ -58,7 +64,9 @@ class DrawerStory extends React.PureComponent<Props, State> {
       >
         <div style={{ padding: 32 }}>
           <IconButton onPress={this.handleDrawerOpen}>
-            <Icon icon="menu" />
+            <Icon>
+              <MenuIcon />
+            </Icon>
           </IconButton>
 
           Main Content

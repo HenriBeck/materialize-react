@@ -3,6 +3,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
+import {
+  CheckboxBlankOutlineIcon,
+  CheckboxMarkedIcon,
+} from 'mdi-react';
 
 import Ripple from '../Ripple';
 import Icon from '../Icon';
@@ -85,10 +89,11 @@ export default class Checkbox extends React.PureComponent<Props, State> {
             onClick={this.handleClick}
           >
             <Icon
-              icon={this.props.checked ? 'checkbox-marked' : 'checkbox-blank-outline'}
               size={24}
               className={classes.icon}
-            />
+            >
+              {this.props.checked ? <CheckboxMarkedIcon /> : <CheckboxBlankOutlineIcon />}
+            </Icon>
 
             <Ripple
               round

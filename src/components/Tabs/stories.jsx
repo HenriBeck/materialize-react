@@ -7,6 +7,11 @@ import React, {
 } from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
+import {
+  BellIcon,
+  SettingsIcon,
+  AccountIcon,
+} from 'mdi-react';
 
 import Tab from '../Tab';
 import Icon from '../Icon';
@@ -77,13 +82,13 @@ storiesOf('Interactive Elements/Tabs', module)
       }, 'primary')}
       tabs={[{
         name: 'test1',
-        icon: <Icon icon="settings" />,
+        icon: <Icon><SettingsIcon /></Icon>,
       }, {
         name: 'test2',
-        icon: <Icon icon="bell" />,
+        icon: <Icon><BellIcon /></Icon>,
       }, {
         name: 'test3',
-        icon: <Icon icon="account" />,
+        icon: <Icon><AccountIcon /></Icon>,
       }]}
     />
   ))
@@ -97,15 +102,15 @@ storiesOf('Interactive Elements/Tabs', module)
       tabs={[{
         name: 'test1',
         children: 'Test 1',
-        icon: <Icon icon="settings" />,
+        icon: <Icon><SettingsIcon /></Icon>,
       }, {
         name: 'test2',
         children: 'Test 2',
-        icon: <Icon icon="bell" />,
+        icon: <Icon><BellIcon /></Icon>,
       }, {
         name: 'test3',
         children: 'Test 3',
-        icon: <Icon icon="account" />,
+        icon: <Icon><AccountIcon /></Icon>,
       }]}
     />
   ));

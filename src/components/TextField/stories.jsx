@@ -7,6 +7,7 @@ import {
   text,
   select,
 } from '@storybook/addon-knobs';
+import { PhoneIcon } from 'mdi-react';
 
 import Icon from '../Icon';
 
@@ -32,7 +33,11 @@ class Story extends React.PureComponent<Props, State> {
         {...this.props}
         value={this.state.value}
         counter={`${this.state.value.length} / 20`}
-        prefixIcon={(<Icon icon="phone" />)}
+        prefixIcon={(
+          <Icon>
+            <PhoneIcon />
+          </Icon>
+        )}
         error={hasError ? 'Maximal 20 Characters' : this.props.error}
         onChange={this.handleChange}
       />
