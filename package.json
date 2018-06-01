@@ -67,7 +67,7 @@
     "@storybook/addon-options": "4.0.0-alpha.8",
     "@storybook/addons": "4.0.0-alpha.8",
     "@storybook/react": "4.0.0-alpha.8",
-    "ava": "1.0.0-beta.5",
+    "ava": "1.0.0-beta.5.1",
     "babel-loader": "8.0.0-beta.3",
     "browser-env": "3.2.5",
     "css-loader": "0.28.11",
