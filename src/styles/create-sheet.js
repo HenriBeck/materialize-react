@@ -10,9 +10,9 @@ import {
   getDynamicStyles,
   SheetsManager,
 } from 'jss';
-import Jss from 'jss/lib/Jss';
+import type Jss from 'jss/src/Jss'; // eslint-disable-line flowtype/type-import-style
 import contextTypes from 'react-jss/lib/contextTypes';
-import StyleSheet from 'jss/lib/StyleSheet';
+import type StyleSheet from 'jss/src/StyleSheet'; // eslint-disable-line flowtype/type-import-style
 
 import { mergeClassObjects } from './utils';
 
