@@ -7,7 +7,7 @@ import {
   select,
 } from '@storybook/addon-knobs';
 import noop from 'lodash.noop';
-import { BellIcon } from 'mdi-react';
+import BellIcon from 'mdi-react/BellIcon';
 
 import Icon from '../Icon';
 import IconButton from '../IconButton';
