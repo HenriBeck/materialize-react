@@ -84,6 +84,7 @@ export default function createSheet(name: string, styles: Styles) {
       this.getManager().unmanage(this.state.theme);
 
       if (this.dynamicSheet !== null) {
+        // $FlowFixMe: weirdly this bug came back
         this.getJss().removeStyleSheet(this.dynamicSheet);
       }
 
