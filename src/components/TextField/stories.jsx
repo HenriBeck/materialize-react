@@ -7,7 +7,7 @@ import {
   text,
   select,
 } from '@storybook/addon-knobs';
-import { PhoneIcon } from 'mdi-react';
+import PhoneIcon from 'mdi-react/PhoneIcon';
 
 import Icon from '../Icon';
 

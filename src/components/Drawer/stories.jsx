@@ -3,10 +3,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
-import {
-  CloseIcon,
-  MenuIcon,
-} from 'mdi-react';
+import CloseIcon from 'mdi-react/CloseIcon';
+import MenuIcon from 'mdi-react/MenuIcon';
 
 import IconButton from '../IconButton';
 import Icon from '../Icon';
