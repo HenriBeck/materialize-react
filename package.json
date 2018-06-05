@@ -78,7 +78,7 @@
     "eslint-config-henribeck": "4.19.6",
     "flow-bin": "0.73.0",
     "flow-checker": "0.3.0",
-    "flow-copy-source": "1.3.0",
+    "flow-copy-source": "2.0.0",
     "jss-preset-default": "4.5.0",
     "normalize.css": "8.0.0",
     "nyc": "12.0.2",
