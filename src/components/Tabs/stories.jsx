@@ -7,11 +7,9 @@ import React, {
 } from 'react';
 import { storiesOf } from '@storybook/react';
 import { select } from '@storybook/addon-knobs';
-import {
-  BellIcon,
-  SettingsIcon,
-  AccountIcon,
-} from 'mdi-react';
+import BellIcon from 'mdi-react/BellIcon';
+import SettingsIcon from 'mdi-react/SettingsIcon';
+import AccountIcon from 'mdi-react/AccountIcon';
 
 import Tab from '../Tab';
 import Icon from '../Icon';

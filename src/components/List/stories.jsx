@@ -3,11 +3,9 @@
 import React from 'react';
 import noop from 'lodash.noop';
 import { storiesOf } from '@storybook/react';
-import {
-  WifiIcon,
-  BluetoothIcon,
-  AccountIcon,
-} from 'mdi-react';
+import WifiIcon from 'mdi-react/WifiIcon';
+import BluetoothIcon from 'mdi-react/BluetoothIcon';
+import AccountIcon from 'mdi-react/AccountIcon';
 
 import Icon from '../Icon';
 import Avatar from '../Avatar';

@@ -6,7 +6,7 @@ import {
   boolean,
   number,
 } from '@storybook/addon-knobs';
-import { ChevronDownIcon } from 'mdi-react';
+import ChevronDownIcon from 'mdi-react/ChevronDownIcon';
 
 import Icon from '.';
 

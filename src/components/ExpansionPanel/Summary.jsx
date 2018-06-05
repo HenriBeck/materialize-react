@@ -4,7 +4,7 @@ import React, { type Node } from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash.noop';
 import getNotDeclaredProps from 'react-get-not-declared-props';
-import { ChevronDownIcon } from 'mdi-react';
+import ChevronDownIcon from 'mdi-react/ChevronDownIcon';
 
 import Icon from '../Icon';
 import createSheet from '../../styles/create-sheet';

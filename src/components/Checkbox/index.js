@@ -3,10 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import getNotDeclaredProps from 'react-get-not-declared-props';
-import {
-  CheckboxBlankOutlineIcon,
-  CheckboxMarkedIcon,
-} from 'mdi-react';
+import CheckboxBlankOutlineIcon from 'mdi-react/CheckboxBlankOutlineIcon';
+import CheckboxMarkedIcon from 'mdi-react/CheckboxMarkedIcon';
 
 import Ripple from '../Ripple';
 import Icon from '../Icon';

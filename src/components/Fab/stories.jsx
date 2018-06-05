@@ -3,7 +3,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { PlusIcon } from 'mdi-react';
+import PlusIcon from 'mdi-react/PlusIcon';
 import {
   boolean,
   select,

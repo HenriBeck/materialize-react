@@ -7,7 +7,7 @@ import {
   boolean,
   number,
 } from '@storybook/addon-knobs';
-import { PencilIcon } from 'mdi-react';
+import PencilIcon from 'mdi-react/PencilIcon';
 
 import Icon from '../Icon';
 
