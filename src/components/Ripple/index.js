@@ -81,6 +81,9 @@ const Sheet = createSheet('Ripple', {
 });
 
 export default class Ripple extends React.PureComponent<Props, State> {
+  // Measured in pixels
+  static MAX_RADIUS = 300;
+
   static propTypes = {
     isFocused: PropTypes.bool,
     focusOpacity: PropTypes.number,
@@ -106,9 +109,6 @@ export default class Ripple extends React.PureComponent<Props, State> {
     nowaves: false,
     onPress: noop,
   };
-
-  // Measured in pixels
-  static MAX_RADIUS = 300;
 
   state = { waves: [] };
 

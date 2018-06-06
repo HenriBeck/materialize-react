@@ -49,16 +49,16 @@ export default function createSheet(name: string, styles: Styles) {
   managersCounter += 1;
 
   return class Sheet extends React.Component<Props, State> {
-    static defaultProps = { data: null };
+    static index = indexCounter;
+
+    static managerId = managersCounter;
 
     static contextTypes = {
       ...contextTypes,
       ...isThemingEnabled ? themeListener.contextTypes : {},
     };
 
-    static index = indexCounter;
-
-    static managerId = managersCounter;
+    static defaultProps = { data: null };
 
     constructor(props: Props, context: Context) {
       super(props, context);

@@ -68,6 +68,14 @@ const Sheet = createSheet('Dialog', (theme: Theme) => {
 });
 
 export default class Dialog extends React.PureComponent<Props, State> {
+  static Container = Container;
+
+  static Header = Header;
+
+  static Content = Content;
+
+  static Actions = Actions;
+
   static propTypes = {
     children: PropTypes.node.isRequired,
     isOpen: PropTypes.bool,
@@ -84,16 +92,9 @@ export default class Dialog extends React.PureComponent<Props, State> {
     backdrop: true,
   };
 
-  static Container = Container;
+  state = { animationName: null };
 
-  static Header = Header;
-
-  static Content = Content;
-
-  static Actions = Actions;
-
-  // $FlowFixMe: Waiting for flow to support fully react 16.3
-  static getDerivedStateFromProps(nextProps, state) {
+  static getDerivedStateFromProps(nextProps: Props, state: State) {
     if (state.animationName === null && !nextProps.isOpen) {
       return null;
     }
@@ -103,8 +104,6 @@ export default class Dialog extends React.PureComponent<Props, State> {
 
     return { animationName: `Dialog--animate-${animationDirection}${fullscreenSuffix}` };
   }
-
-  state = { animationName: null };
 
   render() {
     const data: Data = {

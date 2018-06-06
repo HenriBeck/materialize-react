@@ -29,6 +29,8 @@ export default class Spinner extends React.PureComponent<Props, State> {
     color: 'primary',
   };
 
+  state = { animationName: null };
+
   static getDerivedStateFromProps(nextProps: Props, state: State): State | null {
     if (state.animationName === null && !nextProps.active) {
       return null;
@@ -36,8 +38,6 @@ export default class Spinner extends React.PureComponent<Props, State> {
 
     return { animationName: `Spinner--fade-${nextProps.active ? 'in' : 'out'}` };
   }
-
-  state = { animationName: null };
 
   render() {
     const data: Data = {
