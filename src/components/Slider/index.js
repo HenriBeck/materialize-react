@@ -23,6 +23,13 @@ type State = {
 };
 
 export default class Slider extends React.PureComponent<Props, State> {
+  static keyCodes: Map<number, number> = new Map([
+    [37, -2],
+    [38, 2],
+    [39, 2],
+    [40, -2],
+  ]);
+
   static propTypes = {
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -34,13 +41,6 @@ export default class Slider extends React.PureComponent<Props, State> {
     disabled: false,
     className: '',
   };
-
-  static keyCodes: Map<number, number> = new Map([
-    [37, -2],
-    [38, 2],
-    [39, 2],
-    [40, -2],
-  ]);
 
   state = {
     isDragging: false,
