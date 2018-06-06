@@ -49,15 +49,15 @@ export default class Container extends React.PureComponent<Props> {
 
   static defaultProps = { className: '' };
 
-  static getCurrentDialog(props: Props): ?Element<typeof Dialog> {
+  getCurrentDialog(): ?Element<typeof Dialog> {
     return React
       .Children
-      .toArray(props.children)
+      .toArray(this.props.children)
       .find(dialog => dialog.props.isOpen);
   }
 
   handleBackdropClick = (ev: SyntheticMouseEvent<HTMLDivElement>) => {
-    const dialog = Container.getCurrentDialog(this.props);
+    const dialog = this.getCurrentDialog();
 
     if (dialog && dialog.props.onCloseRequest) {
       dialog.props.onCloseRequest(ev);
@@ -82,7 +82,7 @@ export default class Container extends React.PureComponent<Props> {
   }
 
   render() {
-    const dialog = Container.getCurrentDialog(this.props);
+    const dialog = this.getCurrentDialog();
     const hasBackdrop = Boolean(dialog && dialog.props.backdrop && !dialog.props.fullscreen);
     const data: Data = { hasActiveDialog: Boolean(dialog) };
 

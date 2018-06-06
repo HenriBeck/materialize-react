@@ -20,16 +20,15 @@ export default class Backdrop extends React.PureComponent<Props, State> {
 
   static defaultProps = { className: '' };
 
-  // $FlowFixMe: Waiting for typing support for getDerivedStateFromProps
-  static getDerivedStateFromProps(nextProps, state) {
+  state = { animationName: null };
+
+  static getDerivedStateFromProps(nextProps: Props, state: State) {
     if (state.animationName === null && !nextProps.active) {
       return null;
     }
 
     return { animationName: `Backdrop--animate-${nextProps.active ? 'in' : 'out'}` };
   }
-
-  state = { animationName: null };
 
   render() {
     const data: Data = { animationName: this.state.animationName };

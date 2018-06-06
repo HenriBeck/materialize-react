@@ -75,7 +75,7 @@
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
-    "eslint-config-henribeck": "4.19.6",
+    "eslint-config-henribeck": "4.19.7",
     "flow-bin": "0.73.0",
     "check-flow": "0.9.0",
     "flow-copy-source": "2.0.0",
@@ -88,7 +88,7 @@
     "react-dom": "16.4.0",
     "react-test-renderer": "16.4.0",
     "rimraf": "2.6.2",
-    "sinon": "5.0.10",
+    "sinon": "5.1.0",
     "style-loader": "0.21.0",
     "why-did-you-update": "0.1.1"
   },
