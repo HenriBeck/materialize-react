@@ -45,7 +45,7 @@
     "react-context-subscriber": "0.4.0",
     "react-event-listener": "0.6.0",
     "react-get-not-declared-props": "1.0.0",
-    "react-jss": "8.4.0",
+    "react-jss": "8.5.0",
     "theming": "1.3.0"
   },
   "peerDependencies": {
