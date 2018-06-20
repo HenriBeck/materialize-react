@@ -40,7 +40,7 @@
     "lodash.noop": "3.0.1",
     "polished": "1.9.2",
     "mdi-react": "3.4.0",
-    "prop-types": "15.6.1",
+    "prop-types": "15.6.2",
     "randomstring": "1.1.5",
     "react-context-subscriber": "0.4.0",
     "react-event-listener": "0.6.1",
