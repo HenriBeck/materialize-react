@@ -35,7 +35,7 @@
   "homepage": "https://github.com/HenriBeck/materialize-react#readme",
   "dependencies": {
     "clamp": "1.0.1",
-    "jss": "9.8.3",
+    "jss": "9.8.6",
     "lodash.merge": " 4.6.1",
     "lodash.noop": "3.0.1",
     "polished": "1.9.2",
