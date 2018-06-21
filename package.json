@@ -76,7 +76,7 @@
     "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
     "eslint-config-henribeck": "4.19.7",
-    "flow-bin": "0.74.0",
+    "flow-bin": "0.75.0",
     "check-flow": "0.9.1",
     "flow-copy-source": "2.0.0",
     "jss-preset-default": "4.5.0",
