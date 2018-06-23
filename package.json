@@ -74,7 +74,7 @@
     "css-loader": "0.28.11",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
-    "eslint": "4.19.1",
+    "eslint": "5.0.0",
     "eslint-config-henribeck": "4.19.7",
     "flow-bin": "0.75.0",
     "check-flow": "0.9.1",
