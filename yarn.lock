@@ -3244,9 +3244,9 @@ chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
 
-check-flow@0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/check-flow/-/check-flow-0.9.1.tgz#dcf91f7633550b8afd32685125be3fde1c7826a4"
+check-flow@0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/check-flow/-/check-flow-0.9.2.tgz#b815f7c3cac361e19dd6cd4104fa0bb8b0fa74eb"
   dependencies:
     minimatch "3.0.4"
     ora "2.1.0"
